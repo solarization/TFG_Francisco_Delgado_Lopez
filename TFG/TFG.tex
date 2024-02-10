@@ -1,0 +1,68 @@
+\documentclass[10pt,a4paper]{book} %clase
+\input{preámbulo.tex} %insertamos preambulo
+
+%empieza el documento
+\begin{document}
+
+%elementos previos
+\frontmatter
+
+\include{capitulos/portada}
+
+\include{capitulos/firmas}
+
+\include{capitulos/licencia}
+
+\include{capitulos/evaluacion}
+
+%%\include{capitulos/agradecimientos}
+
+%%\include{capitulos/resumen}
+
+%genera índice
+\tableofcontents
+\addcontentsline{toc}{chapter}{Índice}
+
+%Índice de figuras.
+\listoffigures
+
+%Índice de tablas.
+\listoftables
+
+
+%Empieza la parte descriptiva del trabajo
+\mainmatter
+
+%%\include{capitulos/introduccion}
+
+%%\include{capitulos/marcoteorico}
+
+%%\include{capitulos/estadoarte}
+
+%%\include{capitulos/ejemplos}
+
+%%\include{capitulos/resultados}
+
+%%\include{capitulos/conclusion}
+
+\appendix
+
+%%\include{capitulos/apendice}
+
+\backmatter
+%Glosario, lista de símbolos, notas, etc.
+
+%estilo de bibliografía: plana, alfa...
+\bibliographystyle{plain}
+
+%genera doble hoja en blanco
+\cleardoublepage
+
+%apartado de bibliografía
+\addcontentsline{toc}{chapter}{Bibliografia}
+
+%se incluye la bibliografía. Archivo de tipo .bib (bibtex)
+%%\bibliography{bibliografia/bibliografia}
+
+%fin del documento
+\end{document}
