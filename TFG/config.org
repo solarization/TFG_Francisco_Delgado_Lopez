@@ -1,3 +1,2 @@
-#+LANGUAGE: es
 #+PROPERTY: header-args :results output :exports both :session R:datos :tangle yes :comments org
-#+OPTIONS: toc:nil
+#+STARTUP: inlineimages

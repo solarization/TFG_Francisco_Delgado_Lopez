@@ -1,4 +1,4 @@
-\documentclass[10pt,a4paper]{book} %clase
+\documentclass[oldfontcommands,a4paper]{book} %clase
 \input{preambulo.tex} %insertamos preambulo
 
 %empieza el documento
@@ -25,9 +25,16 @@
 
 %Índice de figuras.
 \listoffigures
+\addcontentsline{toc}{chapter}{Índice de figuras}
 
 %Índice de tablas.
 \listoftables
+\addcontentsline{toc}{chapter}{Índice de tablas}
+
+%Lista de abreviaturas y símbolos
+\printnomenclature
+\addcontentsline{toc}{chapter}{Lista de abreviaturas y símbolos}
+\cleardoublepage
 
 
 %Empieza la parte descriptiva del trabajo
@@ -58,7 +65,7 @@
 \cleardoublepage
 
 %apartado de bibliografía
-\addcontentsline{toc}{chapter}{Bibliografia}
+\addcontentsline{toc}{chapter}{Bibliografía}
 
 %se incluye la bibliografía. Archivo de tipo .bib (bibtex)
 \bibliography{bibliografia/bibliografia}
