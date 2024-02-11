@@ -1,4 +1,4 @@
-\documentclass[oldfontcommands,a4paper]{book} %clase
+\documentclass[oldfontcommands,a4paper]{memoir} %clase
 \input{preambulo.tex} %insertamos preambulo
 
 %empieza el documento
@@ -21,24 +21,24 @@
 
 %genera índice
 \tableofcontents
-\addcontentsline{toc}{chapter}{Índice}
+\clearpage
 
 %Índice de figuras.
 \listoffigures
-\addcontentsline{toc}{chapter}{Índice de figuras}
+\clearpage
 
 %Índice de tablas.
 \listoftables
-\addcontentsline{toc}{chapter}{Índice de tablas}
+\clearpage
 
 %Lista de abreviaturas y símbolos
-\printnomenclature
-\addcontentsline{toc}{chapter}{Lista de abreviaturas y símbolos}
+\printnomenclature{}
 \cleardoublepage
 
 
 %Empieza la parte descriptiva del trabajo
 \mainmatter
+
 %%\include{capitulos/introduccion}
 
 %%\include{capitulos/marcoteorico}
@@ -63,9 +63,6 @@
 
 %genera doble hoja en blanco
 \cleardoublepage
-
-%apartado de bibliografía
-\addcontentsline{toc}{chapter}{Bibliografía}
 
 %se incluye la bibliografía. Archivo de tipo .bib (bibtex)
 \bibliography{bibliografia/bibliografia}

@@ -1,5 +1,5 @@
 %Idioma español y acentos
-\usepackage[spanish, es-tabla]{babel}
+\usepackage[spanish]{babel}
 %\usepackage[latin1]{inputenc}
 \usepackage[utf8]{inputenc}
 
@@ -8,7 +8,6 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
-\usepackage{subfigure}
 \usepackage{listings}
 \usepackage{appendix}
 %Márgenes
@@ -39,6 +38,14 @@
 	urlcolor=Blue,
 }
 
+%nomenclatura
 \usepackage{nomencl}
 \makenomenclature
-\renewcommand{\nomname}{Lista de abreviaturas y símbolos}
+
+%traducciones
+\addto\captionsspanish{%
+	\def\tablename{Tabla}%
+	\def\listtablename{\'Indice de tablas}}
+
+\renewcommand\nomname{Nomenclatura}
+\def\nompreamble{\addcontentsline{toc}{chapter}{\nomname}\markboth{\nomname}{\nomname}}
