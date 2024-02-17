@@ -1,0 +1,13 @@
+\chapter{Resumen}
+
+Este proyecto se resume en ...............
+
+\section*{Palabras clave}
+palabraclave1, palabraclave2, palabraclave3
+
+\chapter{Abstract}
+
+In this project.........
+
+\section*{Keywords:}
+keyword1, keyword2, keyword3
