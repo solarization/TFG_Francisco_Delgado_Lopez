@@ -1,2 +1,19 @@
-#+PROPERTY: header-args :results output :exports both :session R:datos :tangle yes :comments org
-#+STARTUP: inlineimages
+#+TITLE: Francisco Delgado López - TFG - 2024
+#+AUTHOR: Francisco Delgado López
+#+KEYWORDS: geometría solar, radiación solar, energía solar, fotovoltaica, métodos de visualización, series temporales, datos espacio-temporales, S4
+#+LANGUAGE:  es
+#+OPTIONS:   num:t toc:nil \n:nil ':t @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   title:nil
+#+OPTIONS:   H:6
+#+LaTeX_CLASS: memoir-book
+#+LaTex_HEADER: \aliaspagestyle{title}{empty} 
+#+LaTex_HEADER: \aliaspagestyle{part}{empty}
+#+LaTex_HEADER: \usepackage{hyperref}
+#+latex_header: \hypersetup{
+#+latex_header: colorlinks = true,
+#+latex_header: citecolor = BrickRed,
+#+latex_header: filecolor = black,
+#+latex_header: linkcolor = Brown,
+#+latex_header: urlcolor = Blue,
+#+latex_header: }
+

@@ -18,7 +18,7 @@
 \end{flushleft}
 
 \large
-Realizado el acto de defensa y lectura del Trabajo Fin de Grado el día \ldots{}\ldots{}. de \ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}..   de \ldots{} en \ldots{}\ldots{}\ldots{}., en la Escuela Técnica Superior de Ingeniería y Diseño Industrial de la Universidad Politécnica de Madrid, acuerda otorgarle la CALIFICACIÓN de: $\backslash$\ [2 cm]
+Realizado el acto de defensa y lectura del Trabajo Fin de Grado el día ....... de ....................   de ... en .........., en la Escuela Técnica Superior de Ingeniería y Diseño Industrial de la Universidad Politécnica de Madrid, acuerda otorgarle la CALIFICACIÓN de: \\ [2 cm]
 
 \begin{center}
 	\large VOCAL \\ [2.2 cm]

@@ -1,10 +1,30 @@
-\documentclass[oldfontcommands,a4paper]{memoir} %clase
-\input{preambulo.tex} %insertamos preambulo
+% Created 2024-02-17 sá. 10:49
+% Intended LaTeX compiler: pdflatex
+\documentclass[twoside,a4paper]{memoir}
 
-%empieza el documento
+\aliaspagestyle{title}{empty}
+\aliaspagestyle{part}{empty}
+\usepackage{hyperref}
+\hypersetup{
+colorlinks = true,
+citecolor = BrickRed,
+filecolor = black,
+linkcolor = Brown,
+urlcolor = Blue,
+}
+\input{preambulo}
+\author{Francisco Delgado López}
+\date{\today}
+\title{Francisco Delgado López - TFG - 2024}
+\hypersetup{
+ pdfauthor={Francisco Delgado López},
+ pdftitle={Francisco Delgado López - TFG - 2024},
+ pdfkeywords={geometría solar, radiación solar, energía solar, fotovoltaica, métodos de visualización, series temporales, datos espacio-temporales, S4},
+ pdfsubject={},
+ pdfcreator={Emacs 29.2 (Org mode 9.6.18)}, 
+ pdflang={Spanish}}
 \begin{document}
 
-%elementos previos
 \frontmatter
 
 \include{capitulos/portada}
@@ -17,55 +37,29 @@
 
 \include{capitulos/agradecimientos}
 
-%%\include{capitulos/resumen}
-
-%genera índice
 \tableofcontents
 \clearpage
 
-%Índice de figuras.
 \listoffigures
 \clearpage
 
-%Índice de tablas.
 \listoftables
 \clearpage
 
-%Lista de abreviaturas y símbolos
 \printnomenclature{}
 \cleardoublepage
 
 
-%Empieza la parte descriptiva del trabajo
 \mainmatter
-
-%%\include{capitulos/introduccion}
-
-%%\include{capitulos/marcoteorico}
-
-%%\include{capitulos/estadoarte}
-
-%%\include{capitulos/ejemplos}
-
-%%\include{capitulos/resultados}
-
-%%\include{capitulos/conclusion}
 
 \appendix
 
-%%\include{capitulos/apendice}
-
 \backmatter
-%Glosario, lista de símbolos, notas, etc.
 
-%estilo de bibliografía: plana, alfa...
+
 \bibliographystyle{plain}
 
-%genera doble hoja en blanco
 \cleardoublepage
 
-%se incluye la bibliografía. Archivo de tipo .bib (bibtex)
 \bibliography{bibliografia/bibliografia}
-
-%fin del documento
 \end{document}

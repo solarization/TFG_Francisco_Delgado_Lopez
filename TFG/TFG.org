@@ -1,0 +1,63 @@
+#+setupfile: config.org
+#+latex_header: \input{preambulo}
+
+\frontmatter
+
+\include{capitulos/portada}
+
+\include{capitulos/firmas}
+
+\include{capitulos/licencia}
+
+\include{capitulos/evaluacion}
+
+\include{capitulos/agradecimientos}
+
+# \include{capitulos/resumen}
+
+\tableofcontents
+\clearpage
+
+# Índice de figuras.
+\listoffigures
+\clearpage
+
+# Índice de tablas.
+\listoftables
+\clearpage
+
+# Lista de abreviaturas y símbolos
+\printnomenclature{}
+\cleardoublepage
+
+
+# Empieza la parte descriptiva del trabajo
+\mainmatter
+
+# \include{capitulos/introduccion}
+
+# \include{capitulos/marcoteorico}
+
+# \include{capitulos/estadoarte}
+
+# \include{capitulos/ejemplos}
+
+# \include{capitulos/resultados}
+
+# \include{capitulos/conclusion}
+
+\appendix
+
+# \include{capitulos/apendice}
+
+\backmatter
+
+
+# estilo de bibliografía: plana, alfa...
+\bibliographystyle{plain}
+
+# genera doble hoja en blanco
+\cleardoublepage
+
+# se incluye la bibliografía. Archivo de tipo .bib (bibtex)
+\bibliography{bibliografia/bibliografia}
