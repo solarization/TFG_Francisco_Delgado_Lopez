@@ -1,0 +1,17 @@
+\chapter{Casos Prácticos}
+
+Como demostración se va a realizar un caso práctico...
+
+* =solaR2=
+
+...
+
+* =solaR=
+
+...
+
+* =PVsyst=
+
+...
+
+* Comparación entre los tres 

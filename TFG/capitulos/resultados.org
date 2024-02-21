@@ -1,0 +1,11 @@
+\chapter{Resultados y Discusión}
+
+En este capitulo...
+
+* Resultados
+
+Los resultados son...
+
+* Discusión
+
+Se puede observar...

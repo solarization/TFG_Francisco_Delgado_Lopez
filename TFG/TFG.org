@@ -34,21 +34,21 @@
 # Empieza la parte descriptiva del trabajo
 \mainmatter
 
-# \include{capitulos/introduccion}
+\include{capitulos/introduccion}
 
-# \include{capitulos/marcoteorico}
+\include{capitulos/marcoteorico}
 
-# \include{capitulos/estadoarte}
+\include{capitulos/estadoarte}
 
-# \include{capitulos/ejemplos}
+\include{capitulos/ejemplos}
 
-# \include{capitulos/resultados}
+\include{capitulos/resultados}
 
-# \include{capitulos/conclusion}
+\include{capitulos/conclusion}
 
 \appendix
 
-# \include{capitulos/apendice}
+\include{capitulos/apendice}
 
 \backmatter
 
