@@ -5,7 +5,7 @@
 
 \include{capitulos/portada}
 
-\include{capitulos/firmas}
+# \include{capitulos/firmas}
 
 \include{capitulos/licencia}
 
