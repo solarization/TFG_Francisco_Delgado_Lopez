@@ -5,8 +5,6 @@
 
 \include{capitulos/portada}
 
-# \include{capitulos/firmas}
-
 \include{capitulos/licencia}
 
 \include{capitulos/evaluacion}
@@ -36,15 +34,13 @@
 
 \include{capitulos/introduccion}
 
-\include{capitulos/marcoteorico}
-
 \include{capitulos/estadoarte}
+
+\include{capitulos/marcoteorico}
 
 \include{capitulos/ejemplos}
 
 \include{capitulos/programación}
-
-\include{capitulos/conclusion}
 
 \appendix
 

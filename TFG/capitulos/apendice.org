@@ -1,3 +1,9 @@
-\chapter{Anexo ...}
+#+header: :exports both
+\chapter{Código completo}
 
-...
+Todo el código que se muestra a continuación está disponible...
+
+* Funciones
+* Métodos
+* Clases
+* Tests

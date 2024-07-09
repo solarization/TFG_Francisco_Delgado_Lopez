@@ -1,15 +1,21 @@
 \chapter{Introducción}
 
-...
-
-* Motivación del proyecto
-
-...
-
 * Objetivos
+El objetivo de este proyecto es el desarrollo de un paquete en R\cite{rcoreteam23} con el cual poder realizar estimaciones y representaciones gráficas de la posible generación de una instalación fotovoltaica.
 
-...
+Durante el resto del documento, si fuera necesario, se hará referencia al paquete desarrollado en este proyecto con el nombre solaR2 [CITAR SOLAR2].
 
+El usuario podrá colocar los datos que considere convenientes (desde una base de datos oficial, una base de datos propia... etc.) en cada una de las funciones que ofrece el paquete pudiendo así obtener resultados de la geometría solar, de la radiación horizontal, de la eficaz y hasta de la producción de diferentes tipos de sistemas fotovoltaicos.
+
+El paquete también incluye una serie de funciones que permiten hacer representaciones gráficas de estas producciones con el fin de poder apreciar con más detalle las diferencias entre sistemas y contemplar cual es la mejor opción para el emplazamiento elegido.
+
+Este proyecto toma su origen en el paquete ya existente =solaR=\cite{perpinan12} el cual desarrolló el tutor de este proyecto en 2012. Por la antigüedad del código se propuso la idea de renovarlo teniendo en cuenta el paquete en el que basa su funcionamiento. El paquete =solaR= basó su funcionamiento en el paquete =zoo=\cite{zeileis05} el cual proporciona una sólida base para trabajar con series temporales. Sin embargo, como base de =solaR2= se optó por el paquete =data.table=\cite{barrett24}. Este paquete ofrece una extensión de los clásicos =data.frame= de R en los =data.table=, los cuales pueden trabajar rápidamente con enormes cantidades de datos (por ejemplo, 100 GB de RAM).
+
+La clave de ambos proyectos es que al estar alojados en R, cualquier usuario puede acceder a ellos de forma gratuita, tan solo necesitas tener instalado R en tu dispositivo.
+
+Para alojar este proyecto se toman dos vías:
+- =Github=\cite{github}: Donde se aloja la versión de desarrollo del paquete.
+- =CRAN=: Acrónimo de Comprehensive R Archive Network, es el repositorio donde se alojan las versiones definitivas de los paquetes y desde el cual se descargan a la sesión de R.
 * Materiales utilizados
 
 ...

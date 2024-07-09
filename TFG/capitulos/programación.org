@@ -1,2 +1,2 @@
-\chapter{Detelles de la programación}
+\chapter{Detalles de la programación}
 ...
