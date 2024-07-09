@@ -48,32 +48,77 @@
 \def\nompreamble{\addcontentsline{toc}{chapter}{\nomname}\markboth{\nomname}{\nomname}}
 
 %configuración de listings
+% \lstset{
+%   language=R,
+%   numberstyle=\tiny\color{Blue},
+%   framexleftmargin=5mm,
+%   xleftmargin=\parindent,
+%   keywordstyle=\color{Blue},
+%   emphstyle=\color{Blue},
+%   commentstyle=\color{YellowGreen},
+%   stringstyle=\color{YellowOrange},
+%   basicstyle=\ttfamily\small,
+%   index=[1][emph],
+%   indexstyle=[1]\indexfunctions,
+%   columns=fullflexible,
+%   breaklines=true,
+%   linewidth=\textwidth,
+%   backgroundcolor=\color{gray!7},
+%   basewidth={0.5em,0.4em},
+%   showstringspaces=false,
+%   frame=single,
+%   literate={á}{{\'a}}1 {ñ}{{\~n}}1 {é}{{\'e}}1 {ó}{{\'o}}1 {º}{{\textordmasculine}}1
+%   }
+
+\definecolor{mediumgray}{rgb}{0.3, 0.4, 0.4}
+\definecolor{mediumblue}{rgb}{0.16, 0.5, 0.73}
+\definecolor{forestgreen}{rgb}{0.13, 0.55, 0.13}
+\definecolor{darkviolet}{rgb}{0.58, 0.0, 0.83}
+\definecolor{royalblue}{rgb}{0.25, 0.41, 0.88}
+\definecolor{crimson}{rgb}{0.86, 0.8, 0.24}
+\definecolor{lightgrey}{rgb}{0.97, 0.97, 0.97}
+\definecolor{black}{rgb}{0.05, 0.05, 0.1}
+\definecolor{green}{rgb}{0.1529, 0.6823, 0.3764}
+\definecolor{red6}{rgb}{0.753, 0.224, 0.169}
+
 \lstset{
-  language=R,
-  numberstyle=\tiny\color{Blue},
-  framexleftmargin=5mm,
-  xleftmargin=\parindent,
-  keywordstyle=\color{Blue},
-  emphstyle=\color{Blue},
-  commentstyle=\color{YellowGreen},
-  stringstyle=\color{YellowOrange},
-  basicstyle=\ttfamily\small,
-  index=[1][emph],
-  indexstyle=[1]\indexfunctions,
+  language = R,
+  backgroundcolor=\color{lightgrey},
+  basicstyle=\fontsize{10}{12}\selectfont\ttfamily,
+  breakatwhitespace=false,
+  breaklines=false,
+  captionpos=b,
   columns=fullflexible,
-  breaklines=true,
-  linewidth=\textwidth,
-  backgroundcolor=\color{gray!7},
-  basewidth={0.5em,0.4em},
+  commentstyle=\color{mediumgray}\upshape,
+  emph={},
+  emphstyle=\color{crimson},
+  extendedchars=true,  % requires inputenc
+  fontadjust=true,
+  frame=single,
+  identifierstyle=\color{black},
+  keepspaces=true,
+  keywordstyle=\color{mediumblue},
+  keywordstyle={[2]\color{darkviolet}},
+  keywordstyle={[3]\color{red}},
+  numbers=left,
+  numbersep=10pt,
+  numberstyle=\tiny\color{black},
+  rulecolor=\color{black},
+  showlines=true,
+  showspaces=false,
   showstringspaces=false,
-%  frame=single,
-  literate={á}{{\'a}}1 {ñ}{{\~n}}1 {é}{{\'e}}1 {ó}{{\'o}}1 {º}{{\textordmasculine}}1
+  showtabs=false,
+  stringstyle=\color{green},
+  tabsize=2,
+  title=\lstname,
+  upquote=true  % requires textcomp
 }
+
 
 %configuración de verbatim
 \usepackage{fancyvrb}
 \DefineVerbatimEnvironment{verbatim}{Verbatim}{
-  fontsize=\footnotesize,
+  fontsize=\fontsize{8}{8},
   formatcom = {\color{black!70}}}
 
 %bibliografia
