@@ -42,7 +42,7 @@
 
 \include{capitulos/ejemplos}
 
-\include{capitulos/resultados}
+\include{capitulos/programación}
 
 \include{capitulos/conclusion}
 
@@ -52,12 +52,8 @@
 
 \backmatter
 
-
-# estilo de bibliografía: plana, alfa...
-\bibliographystyle{plain}
-
 # genera doble hoja en blanco
 \cleardoublepage
 
 # se incluye la bibliografía. Archivo de tipo .bib (bibtex)
-\bibliography{bibliografia/bibliografia}
+\printbibliography

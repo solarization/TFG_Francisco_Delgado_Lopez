@@ -1,4 +1,4 @@
-\chapter{Casos Prácticos}
+\chapter{Ejemplo práctico de aplicación}
 
 Como demostración se va a realizar un caso práctico...
 

@@ -1,2 +1,2 @@
-\chapter{Marco Teórico}
+\chapter{Parte teórica y desarrollo del código}
 ...
