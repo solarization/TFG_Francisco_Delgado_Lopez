@@ -1,4 +1,5 @@
 \chapter{Ejemplo práctico de aplicación}
+\label{sec:ejemplos}
 
 Como demostración se va a realizar un caso práctico...
 

@@ -1,7 +1,7 @@
 \chapter{Introducción}
 
 * Objetivos
-El objetivo de este proyecto es el desarrollo de un paquete en R\cite{rcoreteam23} con el cual poder realizar estimaciones y representaciones gráficas de la posible generación de una instalación fotovoltaica.
+El objetivo principal de este proyecto es el desarrollo de un paquete en R\cite{rcoreteam23} con el cual poder realizar estimaciones y representaciones gráficas de la posible generación de una instalación fotovoltaica.
 
 Durante el resto del documento, si fuera necesario, se hará referencia al paquete desarrollado en este proyecto con el nombre solaR2 [CITAR SOLAR2].
 
@@ -16,13 +16,84 @@ La clave de ambos proyectos es que al estar alojados en R, cualquier usuario pue
 Para alojar este proyecto se toman dos vías:
 - =Github=\cite{github}: Donde se aloja la versión de desarrollo del paquete.
 - =CRAN=: Acrónimo de Comprehensive R Archive Network, es el repositorio donde se alojan las versiones definitivas de los paquetes y desde el cual se descargan a la sesión de R.
-* Materiales utilizados
 
-...
+El paquete =solaR2= permite realizar las siguientes operaciones:
+- Cálculo de toda la geometría que caracteriza a la radiación procedente del Sol [CITAR CÓDIGO]
+- Tratamiento de datos meteorológicos (en especial de radiación), procedentes de datos ofrecidos del usuario y de la red de estaciones SIAR \cite{siar23} [CITAR CÓDIGO]
+- Una vez calculado lo anterior, se pueden hacer estimaciones de:
+  * Los componentes de radiación horizontal [CITAR CALCG0].
+  * Los componentes de radiación eficaz en el plano inclinado [CITAR CALCGEF].
+  * La producción de sistemas fotovoltaicos conectados a red [CITAR PRODGCPV] y sistemas fotovoltaivos de bombeo [CITAR PRODPVPS].
 
-* Estructura del documento
+Este proyecto ha tenido a su vez una serie de objetivos secundarios:
+- Uso y manejo de GNU Emacs \cite{emacs85} en el que se realizaron todos los archivos que componen este documento (utilizando el modo Org \cite{dominik03}) y el paquete descrito (empleando ESS \cite{ess24})
+- Dominio de diferentes paquetes de R:
+  * =zoo=\cite{zeileis05}: Paquete que proporciona un conjunto de clases y métodos en S3 para trabajar con series temporales regulares e irregulares.
+    Usado en el paquete =solaR= como pilar central.
+  * =data.table=\cite{barrett24}: Otorga una extensión a los datos de tipo data.frame que permite una alta eficiencia especialmente con conjuntos de datos muy grandes.
+    Se ha utilizado en el paquete =solaR2= en sustitución del paquete =zoo= como tipo de dato principal en el cual se construyen las clases y métodos de este paquete.
+  * =microbenchmark=\cite{mersmann23}: Proporciona infraestructura para medir y comparar con precisión el tiempo de ejecución de expresiones en R.
+    Usado para comparar los tiempos de ejecución de ambos paquetes.
+  * =profvis=\cite{wickham24}: Crea una interfaz gráfica donde explorar los datos de rendimiento de una expresión dada.
+    Aplicada junto con =microbenchmark= para detectar y corregir cuellos de botella en el paquete =solaR2=
+  * =lattice=\cite{sarkar08}: Proporciona diversas funciones con las que representar datos.
+    El paquete =solaR2= utiliza este paquete para representar de forma visual los datos obtenidos en las estimaciones.
+- Junto con el modo Org, se ha utilizado el prepador de textos \LaTeX (partiendo de un archivo .org, se puede exportar a un archivo .tex para posteriormente exportar un pdf).
+- Obtener conocimientos teóricos acerca de la radiación solar y de la producción de energía solar mediante sistemas fotovoltaicos y sus diversos tipos.
+  Para ello se ha usado en mayor medida el libro "Energía Solar Fotovoltaica" \cite{Perpinan2023}.
+* Análisis previo de soluciones
+Este proyecto, como ya se ha comentado, es el heredero del paquete =solaR= desarrollado por Oscar Perpiñán. La filosofía de ambos paquetes es la misma y los resultados que dan son muy similares. Sin embargo, lo que les diferencia es el paquete sobre el que construyen sus datos.
+Mientras que =solaR= basa sus clases y métodos en el paquete =zoo=, =solaR2= en el paquete =data.table=. Los dos paquetes pueden trabajar con series temporales, pero, mientras que =zoo= es más eficaz trabajando con series temporales, =data.table= es más eficiente a la hora de trabajar con una cantidad grande de datos, lo cual a la hora de realizar estimaciones muy precisas es beneficioso.
+Por otro lado, existen otras soluciones fuera de R:
+1. *PVsyst - Photovoltaic Software*\\
+   Este software es probablemente el más conocido dentro del ámbito del estudio y la estimación de instalaciones fotovoltaicas. Permite una gran personalización de todos los componentes de la instalación.
+2. *SISIFO*\\
+   Herramienta web diseañda por el *Grupo de Sistemas Fotovoltaicos del Instituto de Energía Solar de la Universidad Politécnica de Madrid*.
+3. *PVGIS*\\
+   Aplicación web desarrolada por el *European Commission Joint Research Center* desde 2001.
+4. *System Advisor Model*\\
+   Desarrollado por el *Laboratorio Nacional de Energías Renovables*, perteneciente al Departamento de energía del gobierno de EE.UU.
+En el apartado [ref:sec:ejemplos] se realizará un ejemplo práctico que compare los resultados entre *PVsyst*, =solaR= y =solaR2=
+* Aspectos técnicos
+Para elaborar un paquete en R se deben aportar una serie de ficheros:
+- *R*: Fichero que contiene todos los archivos .R que se van a ejecutar en la instalación del paquete. Esto incluye funciones, clases y métodos.
+- *data*: Aquí se incluyen los datos externos que el paquete necesita para funcionar.
+- *DESCRIPTION*: Contiene metadatos sobre el paquete, como el nombre, la versión, el autor, etc.
+- *NAMESPACE*: Especifica qué funciones y datos se exportan y se importan.
+- *inst*: Se usa para almacenar archivos importantes pero que no se almacenan en el resto de ficheros.
+- *tests*: Se utiliza para almacenar scripts de pruebas que aseguran que el código del paquete funcione correctamente.
+Una vez se tienen todos estos ficheros, el paquete se construye y se prueba:
+#+begin_src R :session *R* :results verbatim :exports code 
+  library(devtools)
+  library(roxygen2)
+  library(testthat)
+  old <- setwd(tempdir())
 
-A continuación y para facilitar la lectura del documento, se detalla el contenido de cada capítulo.
+  # Crear el paquete
+  create_package("miPaquete")
+#+end_src
 
-- En el capítulo 1 se realiza una introducción
-- En el capítulo 2 se hace un repaso...
+#+begin_src R :session *R* :exports none
+setwd('..')
+#+end_src
+
+#+begin_src R :session *R* :results verbatim :exports both
+# Agregar función
+writeLines('
+cuadrado <- function(x) {
+  return(x^2)
+}
+', "miPaquete/R/funciones.R")
+#+end_src
+
+#+begin_src R :session *R* :exports both
+# Documentar el paquete
+document("miPaquete")
+#+end_src
+
+#+begin_src R :session *R* :exports none
+setwd(old)
+#+end_src
+
+
+
