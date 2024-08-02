@@ -2,11 +2,42 @@
 
 Todo el código que se muestra a continuación está disponible\ldots{}
 
-\section{Funciones}
-\label{sec:org052a819}
+\section{Constructores}
+\label{sec:org2a829d2}
+\subsection{calcSol}
+\label{sec:orgd273e22}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+calcSol <- function(lat, BTd,
+                    sample = 'hour', BTi,
+                    EoT = TRUE,
+                    keep.night = TRUE,
+                    method = 'michalsky')
+{
+    if(missing(BTd)) BTd <- truncDay(BTi)
+    solD <- fSolD(lat, BTd, method = method)
+    solI <- fSolI(solD = solD, sample = sample,
+                  BTi = BTi, keep.night = keep.night,
+                  EoT = EoT)
+
+    if(!missing(BTi)){
+        sample <- solI$Dates[2]-solI$Dates[1]
+        sample <- format(sample)
+    }
+
+    solD[, lat := NULL]
+    solI[, lat := NULL]
+    result <- new('Sol',
+                  lat = lat,
+                  solD = solD,
+                  solI = solI,
+                  sample = sample,
+                  method = method)
+    return(result)
+}
+\end{lstlisting}
 \section{Métodos}
-\label{sec:org11e4ac3}
+\label{sec:orge4f60c5}
 \section{Clases}
-\label{sec:org11c3bd2}
+\label{sec:org1a30498}
 \section{Tests}
-\label{sec:orge1922f7}
+\label{sec:orgec7b817}
