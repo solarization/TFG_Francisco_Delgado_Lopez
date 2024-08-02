@@ -6,7 +6,6 @@
 #+OPTIONS:   num:t toc:nil \n:nil ':t @:t ::t |:t ^:t -:t f:t *:t <:t
 #+OPTIONS:   title:nil 
 #+OPTIONS:   H:6
-#+PROPERTY: header-args :results output :exports both :session R:TFG :comments org  
 #+LATEX_CLASS: memoir-book
 #+LaTex_HEADER: \aliaspagestyle{title}{empty} 
 #+LaTex_HEADER: \aliaspagestyle{part}{empty} 
