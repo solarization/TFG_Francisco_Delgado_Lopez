@@ -1,7 +1,7 @@
 \chapter{Introducción}
 
 \section{Objetivos}
-\label{sec:org03d29fe}
+\label{sec:org09ec8b7}
 El objetivo principal de este proyecto es el desarrollo de un paquete en R\cite{rcoreteam23} con el cual poder realizar estimaciones y representaciones gráficas de la posible generación de una instalación fotovoltaica.
 
 Durante el resto del documento, si fuera necesario, se hará referencia al paquete desarrollado en este proyecto con el nombre solaR2 [CITAR SOLAR2].
@@ -53,7 +53,7 @@ El paquete \texttt{solaR2} utiliza este paquete para representar de forma visual
 Para ello se ha usado en mayor medida el libro ``Energía Solar Fotovoltaica'' \cite{Perpinan2023}.
 \end{itemize}
 \section{Análisis previo de soluciones}
-\label{sec:org1e889c3}
+\label{sec:orgc930221}
 Este proyecto, como ya se ha comentado, es el heredero del paquete \texttt{solaR} desarrollado por Oscar Perpiñán. La filosofía de ambos paquetes es la misma y los resultados que dan son muy similares. Sin embargo, lo que les diferencia es el paquete sobre el que construyen sus datos.
 Mientras que \texttt{solaR} basa sus clases y métodos en el paquete \texttt{zoo}, \texttt{solaR2} en el paquete \texttt{data.table}. Los dos paquetes pueden trabajar con series temporales, pero, mientras que \texttt{zoo} es más eficaz trabajando con series temporales, \texttt{data.table} es más eficiente a la hora de trabajar con una cantidad grande de datos, lo cual a la hora de realizar estimaciones muy precisas es beneficioso.
 Por otro lado, existen otras soluciones fuera de R:
@@ -67,9 +67,9 @@ Aplicación web desarrolada por el \textbf{European Commission Joint Research Ce
 \item \textbf{System Advisor Model}\\[0pt]
 Desarrollado por el \textbf{Laboratorio Nacional de Energías Renovables}, perteneciente al Departamento de energía del gobierno de EE.UU.
 \end{enumerate}
-En el apartado [\ref{sec:ejemplos}] se realizará un ejemplo práctico que compare los resultados entre \textbf{PVsyst}, \texttt{solaR} y \texttt{solaR2}
+En el apartado [ref:sec:ejemplos] se realizará un ejemplo práctico que compare los resultados entre \textbf{PVsyst}, \texttt{solaR} y \texttt{solaR2}
 \section{Aspectos técnicos}
-\label{sec:org654c559}
+\label{sec:org1e13711}
 Para elaborar un paquete en R se deben aportar una serie de ficheros:
 \begin{itemize}
 \item \textbf{R}: Fichero que contiene todos los archivos .R que se van a ejecutar en la instalación del paquete. Esto incluye funciones, clases y métodos.
@@ -78,28 +78,7 @@ Para elaborar un paquete en R se deben aportar una serie de ficheros:
 \item \textbf{NAMESPACE}: Especifica qué funciones y datos se exportan y se importan.
 \item \textbf{inst}: Se usa para almacenar archivos importantes pero que no se almacenan en el resto de ficheros.
 \item \textbf{tests}: Se utiliza para almacenar scripts de pruebas que aseguran que el código del paquete funcione correctamente.
+\item \textbf{man}: Donde se alojan los ficheros .Rd relacionados con el manual de uso del paquete. En estos se almacenan la información de funciones, métodos, clases y datos.
 \end{itemize}
-Una vez se tienen todos estos ficheros, el paquete se construye y se prueba:
-\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
-library(devtools)
-library(roxygen2)
-library(testthat)
-old <- setwd(tempdir())
 
-# Crear el paquete
-create_package("miPaquete")
-\end{lstlisting}
-
-\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
-# Agregar función
-writeLines('
-cuadrado <- function(x) {
-  return(x^2)
-}
-', "miPaquete/R/funciones.R")
-\end{lstlisting}
-
-\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
-# Documentar el paquete
-document("miPaquete")
-\end{lstlisting}
+Una vez se tienen todos estos ficheros, el paquete se construye y se prueba.
