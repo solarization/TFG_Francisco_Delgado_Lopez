@@ -751,3 +751,11 @@ setMethod('indexI',
           definition = function(object){as.POSIXct(object@solI$Dates)
           })
 #+end_src
+** levelplot
+#+INCLUDE: "d:/solaR2/R/levelplot.R" src R :results none
+** losses
+#+INCLUDE: "d:/solaR2/R/losses.R" src R :results none
+** mergeSolar
+#+INCLUDE: "d:/solaR2/R/mergeSolar.R" src R :results none
+** shadeplot
+#+INCLUDE: "d:/solaR2/R/shadeplot.R" src R :results none

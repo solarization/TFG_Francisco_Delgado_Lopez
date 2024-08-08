@@ -3,9 +3,9 @@
 Todo el código que se muestra a continuación está disponible\ldots{}
 
 \section{Constructores}
-\label{sec:org32f4fd3}
+\label{sec:orgc396124}
 \subsection{calcSol}
-\label{sec:orgcb3bff2}
+\label{sec:org55f1d16}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 calcSol <- function(lat, BTd,
                     sample = 'hour', BTi,
@@ -36,7 +36,7 @@ calcSol <- function(lat, BTd,
 }
 \end{lstlisting}
 \subsection{calcG0}
-\label{sec:org37f5c02}
+\label{sec:orgb60d3e3}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 calcG0 <- function(lat,
                    modeRad='prom',
@@ -220,7 +220,7 @@ calcG0 <- function(lat,
 }
 \end{lstlisting}
 \subsection{calcGef}
-\label{sec:org60212a1}
+\label{sec:org5f92dfc}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 calcGef<-function(lat,
                   modeTrk='fixed',      #c('two','horiz','fixed')
@@ -323,7 +323,7 @@ calcGef<-function(lat,
 }
 \end{lstlisting}
 \subsection{prodGCPV}
-\label{sec:org948e540}
+\label{sec:org3f1038d}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 prodGCPV<-function(lat,
                    modeTrk='fixed', 
@@ -448,7 +448,7 @@ prodGCPV<-function(lat,
 }
 \end{lstlisting}
 \subsection{prodPVPS}
-\label{sec:org43bfe4c}
+\label{sec:org08c0b77}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 prodPVPS<-function(lat, 
                    modeTrk='fixed', 
@@ -602,7 +602,7 @@ prodPVPS<-function(lat,
 }
 \end{lstlisting}
 \subsection{calcShd}
-\label{sec:org811cbee}
+\label{sec:org3e24759}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 calcShd<-function(radEf,##class='Gef'
                   modeTrk='fixed',     #c('two','horiz','fixed')
@@ -691,7 +691,7 @@ calcShd<-function(radEf,##class='Gef'
 }
 \end{lstlisting}
 \subsection{optimShd}
-\label{sec:orgac17431}
+\label{sec:org77b594c}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 optimShd<-function(lat,
                    modeTrk='fixed', 
@@ -823,7 +823,7 @@ optimShd<-function(lat,
 }
 \end{lstlisting}
 \subsection{meteoReaders}
-\label{sec:orga41828a}
+\label{sec:orgbd2d198}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 #### monthly means of irradiation ####
 readG0dm <- function(G0dm, Ta = 25, lat = 0,
@@ -1050,7 +1050,7 @@ dt2Meteo <- function(file, lat, source = '', type){
 #### Liu and Jordan, Collares-Pereira and Rabl proposals ####
 collper <- function(sol, compD)
 {
-    ind.rep <- indexRep(sol)
+    ind.rep <- cumsum(c(1, as.Date(indexI(sol)) != 0))
     solI <- as.data.tableI(sol, complete = T)
     ws <- solI$ws
     w <- solI$w
@@ -1328,9 +1328,9 @@ readSIAR <- function(Lon = 0, Lat = 0,
 \end{lstlisting}
 
 \section{Clases}
-\label{sec:orgd2fd67c}
+\label{sec:org028b69f}
 \subsection{Sol}
-\label{sec:org18a6ded}
+\label{sec:orge7c9d34}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
          Class='Sol', ##Solar angles
@@ -1345,7 +1345,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{Meteo}
-\label{sec:org073ca01}
+\label{sec:orgd687749}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
     Class = 'Meteo', ##radiation and temperature data
@@ -1359,7 +1359,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{G0}
-\label{sec:org35183eb}
+\label{sec:org1e3cdc7}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
     Class = 'G0',
@@ -1376,7 +1376,7 @@ setClass(
 
 \end{lstlisting}
 \subsection{Gef}
-\label{sec:org523eb14}
+\label{sec:org6373691}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
          Class='Gef',
@@ -1399,7 +1399,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{ProdGCPV}
-\label{sec:org3badbab}
+\label{sec:org5849edd}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
          Class='ProdGCPV',
@@ -1418,7 +1418,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{ProdPVPS}
-\label{sec:orge8b1dad}
+\label{sec:org47582fb}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
          Class='ProdPVPS',
@@ -1438,7 +1438,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{Shade}
-\label{sec:orgbe975c4}
+\label{sec:org6ee6c51}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
          Class='Shade',
@@ -1458,9 +1458,9 @@ setClass(
 )
 \end{lstlisting}
 \section{Funciones}
-\label{sec:orge099a75}
+\label{sec:org05f1a9d}
 \subsection{corrFdKt}
-\label{sec:orgdf385b5}
+\label{sec:org0f21a17}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 #### monthly Kt ####
 Ktm <- function(sol, G0dm){
@@ -1580,8 +1580,9 @@ FdKtBRL <- function(sol, G0i){
     pers <- persistence(sol, ktd)
 
     ##indexRep for ktd and pers
-    ktd <- ktd[indexRep(sol)]
-    pers <- pers[indexRep(sol)]
+    ind.rep <- cumsum(c(1, as.Date(indexI(sol)) != 0))
+    ktd <- ktd[ind.rep]
+    pers <- pers[ind.rep]
 
     ##fd calculation
     Fd=(1+exp(-5.38+6.63*Kt+0.006*r2h(w)-0.007*r2d(AlS)+1.75*ktd+1.31*pers))^(-1)
@@ -1612,7 +1613,7 @@ persistence <- function(sol, Ktd){
 }
 \end{lstlisting}
 \subsection{fBTd}
-\label{sec:orgf1e2670}
+\label{sec:org1f85ce7}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fBTd<-function(mode='prom',
                year= as.POSIXlt(Sys.Date())$year+1900,
@@ -1632,7 +1633,7 @@ fBTd<-function(mode='prom',
 }
 \end{lstlisting}
 \subsection{fBTi}
-\label{sec:org83fdbf9}
+\label{sec:org2049ff8}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 intervalo <- function(day, sample){
     intervalo <- seq.POSIXt(from = as.POSIXct(paste(day, '00:00:00'), tz = 'UTC'),
@@ -1648,7 +1649,7 @@ fBTi <- function(d, sample = 'hour'){
 }
 \end{lstlisting}
 \subsection{fCompD}
-\label{sec:orgb8cf7d7}
+\label{sec:org5704e05}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fCompD <- function(sol, G0d, corr = 'CPR', f)
 {
@@ -1707,7 +1708,7 @@ fCompD <- function(sol, G0d, corr = 'CPR', f)
 }
 \end{lstlisting}
 \subsection{fCompI}
-\label{sec:org3760a08}
+\label{sec:org99bd199}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fCompI <- function(sol, compD, G0I,
                    corr = 'EKDh', f,
@@ -1791,7 +1792,7 @@ fCompI <- function(sol, compD, G0I,
 }
 \end{lstlisting}
 \subsection{fInclin}
-\label{sec:org39b4b4d}
+\label{sec:org137365b}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fInclin <- function(compI, angGen, iS = 2, alb = 0.2, horizBright = TRUE, HCPV = FALSE){
     ##compI es class='G0'
@@ -1858,7 +1859,7 @@ fInclin <- function(compI, angGen, iS = 2, alb = 0.2, horizBright = TRUE, HCPV =
 }
 \end{lstlisting}
 \subsection{fProd}
-\label{sec:orgb97156a}
+\label{sec:orgbb6cf48}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## voc, isc, vmpp, impp : *cell* values
 ## Voc, Isc, Vmpp, Impp: *module/generator* values
@@ -2121,7 +2122,7 @@ fProd <- function(inclin,
 }
 \end{lstlisting}
 \subsection{fPump}
-\label{sec:orgdd94e37}
+\label{sec:org0bd1295}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fPump <- function(pump, H){
 
@@ -2176,7 +2177,7 @@ fPump <- function(pump, H){
 }
 \end{lstlisting}
 \subsection{fSolD}
-\label{sec:org47fab43}
+\label{sec:org8553773}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fSolD <- function(lat, BTd, method = 'michalsky'){
     if (abs(lat) > 90){
@@ -2208,7 +2209,7 @@ fSolD <- function(lat, BTd, method = 'michalsky'){
 }
 \end{lstlisting}
 \subsection{fSolI}
-\label{sec:orgeeed9f3}
+\label{sec:orga94b46a}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fSolI <- function(solD, sample = 'hour', BTi,
                   EoT = TRUE, keep.night = TRUE, method = 'michalsky')
@@ -2275,7 +2276,7 @@ fSolI <- function(solD, sample = 'hour', BTi,
 }
 \end{lstlisting}
 \subsection{fSombra}
-\label{sec:org93b1ddf}
+\label{sec:orgbfbdde0}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fSombra<-function(angGen, distances, struct, modeTrk='fixed',prom=TRUE){
 
@@ -2395,7 +2396,7 @@ fSombraHoriz<-function(angGen, distances, struct)
 }
 \end{lstlisting}
 \subsection{fTemp}
-\label{sec:orgaf174c4}
+\label{sec:org638a2e9}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fTemp<-function(sol, BD)
 {
@@ -2408,7 +2409,8 @@ fTemp<-function(sol, BD)
     checkIndexD(indexD(sol), indexD(BD))
 
     Dates<-indexI(sol)	
-    ind.rep<-indexRep(sol)
+    x <- as.Date(Dates)
+    ind.rep <- cumsum(c(1, diff(x) != 0))
 
     TempMax <-  BD@data$TempMax[ind.rep]
     TempMin <-  BD@data$TempMin[ind.rep]
@@ -2437,7 +2439,7 @@ fTemp<-function(sol, BD)
 }
 \end{lstlisting}
 \subsection{fTheta}
-\label{sec:org514fcb4}
+\label{sec:org72e4a3b}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fTheta<-function(sol, beta, alfa=0, modeTrk='fixed', betaLim=90, 
                  BT=FALSE, struct, dist)
@@ -2514,7 +2516,7 @@ fTheta<-function(sol, beta, alfa=0, modeTrk='fixed', betaLim=90,
 }
 \end{lstlisting}
 \subsection{HQCurve}
-\label{sec:org6e204d3}
+\label{sec:org29be7cb}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## HQCurve: no visible binding for global variable ‘fb’
 ## HQCurve: no visible binding for global variable ‘Q’
@@ -2582,7 +2584,7 @@ HQCurve<-function(pump){
 }
 \end{lstlisting}
 \subsection{local2Solar}
-\label{sec:orgcabad87}
+\label{sec:orgfa5fa20}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 local2Solar <- function(x, lon=NULL){	
   tz=attr(x, 'tzone')
@@ -2608,7 +2610,7 @@ local2Solar <- function(x, lon=NULL){
 }
 \end{lstlisting}
 \subsection{NmgPVPS}
-\label{sec:orgbba8156}
+\label{sec:orgabbcef1}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## NmgPVPS: no visible binding for global variable ‘Pnom’
 ## NmgPVPS: no visible binding for global variable ‘group.value’
@@ -2701,7 +2703,7 @@ NmgPVPS <- function(pump, Pg, H, Gd, Ta=30,
 }
 \end{lstlisting}
 \subsection{utils-angle}
-\label{sec:orgf405f05}
+\label{sec:orga9b18d4}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 #degrees to radians
 d2r<-function(x){x*pi/180}
@@ -2728,7 +2730,7 @@ r2sec<-function(x){x*12/pi*3600}
 r2min<-function(x){x*12/pi*60}
 \end{lstlisting}
 \subsection{utils-time}
-\label{sec:orga88f99c}
+\label{sec:orgec4eef9}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 #complete time to hours
 t2h <- function(x)
@@ -2756,11 +2758,11 @@ dom <- function(x){
 truncDay <- function(x){as.POSIXct(trunc(x, units='days'))}
 \end{lstlisting}
 \section{Métodos}
-\label{sec:orgb59ad5a}
+\label{sec:orgbc9e4af}
 \subsection{as.data.tableI}
-\label{sec:org95cd0f0}
+\label{sec:org9e4e50f}
 \subsection{as.data.tableD}
-\label{sec:org7b11f62}
+\label{sec:org22de437}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setGeneric('as.data.tableD', function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.tableD')})
 
@@ -2878,7 +2880,7 @@ setMethod('as.data.tableD',
           )
 \end{lstlisting}
 \subsection{as.data.tableM}
-\label{sec:org7ad47a7}
+\label{sec:org211fdf7}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setGeneric('as.data.tableM', function(object, complete = FALSE, day=FALSE){standardGeneric('as.data.tableM')})
 
@@ -2958,7 +2960,7 @@ setMethod('as.data.tableM',
           )
 \end{lstlisting}
 \subsection{as.data.tableY}
-\label{sec:org4fd981e}
+\label{sec:org43c908d}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setGeneric('as.data.tableY', function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.tableY')})
 
@@ -3022,7 +3024,7 @@ setMethod('as.data.tableY',
           )
 \end{lstlisting}
 \subsection{compare}
-\label{sec:orgea5275f}
+\label{sec:org6478739}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## compareFunction: no visible binding for global variable ‘name’
 ## compareFunction: no visible binding for global variable ‘x’
@@ -3085,7 +3087,7 @@ setMethod('compare',
           )
 \end{lstlisting}
 \subsection{getData}
-\label{sec:org438dc74}
+\label{sec:org0de9a26}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## extracts the data for class Meteo ##
 setGeneric('getData', function(object){standardGeneric('getData')})
@@ -3099,7 +3101,7 @@ setMethod('getData',
           })
 \end{lstlisting}
 \subsection{getG0}
-\label{sec:orgad698f7}
+\label{sec:org0c8b4b9}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## extracts the global irradiance for class Meteo ##
 setGeneric('getG0', function(object){standardGeneric('getG0')})
@@ -3113,7 +3115,7 @@ setMethod('getG0',
           })
 \end{lstlisting}
 \subsection{getLat}
-\label{sec:orgea5be34}
+\label{sec:orgda90380}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## extracts the latitude from the objects ##
 setGeneric('getLat', function(object, units = 'rad')
@@ -3134,7 +3136,7 @@ setMethod('getLat',
           })
 \end{lstlisting}
 \subsection{indexD}
-\label{sec:orgd8802d2}
+\label{sec:orga6dcc04}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## extract the index of the daily data ##
 setGeneric('indexD', function(object){standardGeneric('indexD')})
@@ -3149,7 +3151,7 @@ setMethod('indexD',
           definition = function(object){as.POSIXct(getData(object)$Dates)})
 \end{lstlisting}
 \subsection{indexI}
-\label{sec:org5e26629}
+\label{sec:org405df9d}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## extract the index of the intradaily data ##
 setGeneric('indexI', function(object){standardGeneric('indexI')})
@@ -3158,4 +3160,320 @@ setMethod('indexI',
           signature = (object = 'Sol'),
           definition = function(object){as.POSIXct(object@solI$Dates)
           })
+\end{lstlisting}
+\subsection{levelplot}
+\label{sec:org1b27851}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setGeneric('levelplot')
+
+## setMethod('levelplot',
+##           signature=c(x='formula', data='zoo'),
+##           definition=function(x, data,
+##             par.settings=solaR.theme,
+##             ##            panel=panel.levelplot.raster, interpolate=TRUE,...){
+##             xscale.components=xscale.solar,
+##             yscale.components=yscale.solar,
+##             ...){
+##             data0=as.data.frame(data)
+##             ind=index(data)
+##             data0$day=doy(ind) ##Incorporo dia, mes y año para facilitar la formula.
+##             data0$month=month(ind)
+##             data0$year=year(ind)
+##             if (!('w' %in% names(data0))){
+##               data0$w=h2r(hms(ind)-12) ##hora solar en radianes
+##             }
+##             levelplot(x, data0, par.settings=par.settings,
+##                       xscale.components=xscale.components,
+##                       yscale.components=yscale.components,
+##                       ##                     panel=panel, interpolate=interpolate,
+##                       ...)
+##           }
+##           )
+
+
+setMethod('levelplot',
+          signature=c(x='formula', data='Meteo'),
+          definition=function(x, data,
+                              par.settings = solaR.theme,
+                              panel = panel.levelplot.raster, interpolate = TRUE,
+                              xscale.components = xscale.solar,
+                              yscale.components = yscale.solar,
+                              ...){
+            data0=getData(data)
+            levelplot(x, data0,
+                      par.settings = par.settings,
+                      xscale.components = xscale.components,
+                      yscale.components = yscale.components,
+                      panel = panel, interpolate = interpolate,
+                      ...)
+          }
+          )
+
+setMethod('levelplot',
+          signature=c(x='formula', data='Sol'),
+          definition=function(x, data,
+                              par.settings = solaR.theme,
+                              panel = panel.levelplot.raster, interpolate = TRUE,
+                              xscale.components = xscale.solar,
+                              yscale.components = yscale.solar,
+                              ...){
+            data0=as.data.tableI(data, complete=TRUE, day=TRUE)
+            levelplot(x, data0,
+                      par.settings = par.settings,
+                      xscale.components = xscale.components,
+                      yscale.components = yscale.components,
+                      panel = panel, interpolate = interpolate,
+                      ...)
+          }
+          )
+
+setMethod('levelplot',
+          signature=c(x='formula', data='G0'),
+          definition=function(x, data,
+                              par.settings = solaR.theme,
+                              panel = panel.levelplot.raster, interpolate = TRUE,
+                              xscale.components = xscale.solar,
+                              yscale.components = yscale.solar,
+                              ...){
+            data0=as.data.tableI(data, complete=TRUE, day=TRUE)
+            levelplot(x, data0, 
+                      par.settings = par.settings,
+                      xscale.components = xscale.components,
+                      yscale.components = yscale.components,
+                      panel = panel, interpolate = interpolate,
+                      ...)
+          }
+          )
+\end{lstlisting}
+\subsection{losses}
+\label{sec:org2ef65dd}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setGeneric('losses', function(object){standardGeneric('losses')})
+
+setMethod('losses',
+          signature=(object='Gef'),
+          definition=function(object){
+            dat <- as.data.tableY(object, complete=TRUE)
+            isShd=('Gef0d' %in% names(dat)) ##is there shadows?
+            if (isShd) {
+              shd <- with(dat, mean(1-Gefd/Gef0d))
+              eff <- with(dat, mean(1-Gef0d/Gd))
+            } else {
+              shd <- 0
+              eff <- with(dat, mean(1-Gefd/Gd))
+            }
+            result <- data.table(Shadows = shd, AoI = eff)
+            result
+          }
+          )
+
+setMethod('losses',
+          signature=(object='ProdGCPV'),
+          definition=function(object){
+              datY <- as.data.tableY(object, complete=TRUE)
+              module0=object@module
+              module0$CoefVT=0 ##No losses with temperature
+              Pg=object@generator$Pg
+              Nm=1/sample2Hours(object@sample)
+              datI <- as.data.tableI(object, complete=TRUE)
+              if (object@type=='prom'){
+                  datI[, DayOfMonth := DOM(datI)]
+                  YfDC0 <- datI[, sum(Vmpp*Impp/Pg*DayOfMonth, na.rm = TRUE),
+                                by = month(Dates)][[2]]
+                  YfDC0 <- sum(YfDC0, na.rm = TRUE)
+                  YfAC0 <- datI[, sum(Pdc*EffI/Pg*DayOfMonth, na.rm = TRUE),
+                                by = month(Dates)][[2]]
+                  YfAC0 <- sum(YfAC0, na.rm = TRUE)
+              } else {
+                  datI[, DayOfMonth := DOM(datI)]
+                  YfDC0 <- datI[, sum(Vmpp*Impp/Pg*DayOfMonth, na.rm = TRUE),
+                                by = year(Dates)][[2]]
+                  YfAC0 <- datI[, sum(Pdc*EffI/Pg*DayOfMonth, na.rm = TRUE),
+                                by = year(Dates)][[2]]     
+              }
+              gen <- mean(1-YfDC0/datY$Gefd)
+              YfDC <- datY$Edc/Pg*1000
+              DC=mean(1-YfDC/YfDC0)
+              inv=mean(1-YfAC0/YfDC)
+              AC=mean(1-datY$Yf/YfAC0)
+              result0 <- losses(as(object, 'Gef'))
+              result1 <- data.table(Generator = gen,
+                                    DC = DC,
+                                    Inverter = inv,
+                                    AC = AC)
+              result <- data.table(result0, result1)
+              result
+          }
+          )
+
+###compareLosses
+
+## compareLosses,ProdGCPV: no visible binding for global variable ‘name’
+if(getRversion() >= "2.15.1") globalVariables(c('name'))
+
+setGeneric('compareLosses', signature='...', function(...){standardGeneric('compareLosses')})
+
+setMethod('compareLosses', 'ProdGCPV',
+          definition=function(...){
+            dots <- list(...)
+            nms0 <- substitute(list(...))
+            if (!is.null(names(nms0))){ ##do.call
+              nms <- names(nms0[-1])
+            } else {
+              nms <- as.character(nms0[-1])
+            }
+            foo <- function(object, label){
+              yY <- losses(object)
+              yY <- cbind(yY, name=label)
+              yY
+            }
+            cdata <- mapply(FUN=foo, dots, nms, SIMPLIFY=FALSE)
+            z <- do.call(rbind, cdata)
+            z <- melt(z, id.vars = 'name')
+            p <- dotplot(variable~value*100, groups=name, data=z,
+                         par.settings=solaR.theme, type='b',
+                         auto.key=list(corner=c(0.95,0.2), cex=0.7), xlab='Losses (%)')
+            print(p)
+            return(z)
+          }
+          )
+\end{lstlisting}
+\subsection{mergeSolar}
+\label{sec:orgb99493b}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setGeneric('mergesolaR', signature='...', function(...){standardGeneric('mergesolaR')})
+
+fooMeteo <- function(object, var){yY <- getData(object)[, .SD,
+                                                        by = Dates,
+                                                        .SDcols = var]}
+
+fooG0 <- function(object, var){yY <- as.data.tableD(object)[, .SD,
+                                                            by = Dates,
+                                                            .SDcols = var]}
+
+mergeFunction <- function(..., foo, var){
+    dots <- list(...)
+    dots <- lapply(dots, as, class(dots[[1]])) ##the first element is the one that dictates the class to everyone
+    nms0 <- substitute(list(...))
+    if (!is.null(names(nms0))){ ##do.call
+        nms <- names(nms0[-1])
+    } else { 
+        nms <- as.character(nms0[-1])
+    }
+    cdata <- sapply(dots, FUN=foo, var, simplify=FALSE)
+    z <- cdata[[1]]
+    for (i in 2:length(cdata)){
+        z <- merge(z, cdata[[i]], by = 'Dates', suffixes = c("", paste0('.', i)))
+    }
+    names(z)[-1] <- nms
+    z
+}
+
+setMethod('mergesolaR',
+          signature='Meteo',
+          definition=function(...){
+            res <- mergeFunction(..., foo=fooMeteo, var='G0')
+            res
+          }
+          )
+
+setMethod('mergesolaR',
+          signature='G0',
+          definition=function(...){
+            res <- mergeFunction(..., foo=fooG0, var='G0d')
+            res
+          }
+          )
+
+setMethod('mergesolaR',
+          signature='Gef',
+          definition=function(...){
+            res <- mergeFunction(..., foo=fooG0, var='Gefd')
+            res
+          }
+          )
+
+setMethod('mergesolaR',
+          signature='ProdGCPV',
+          definition=function(...){
+            res <- mergeFunction(..., foo=fooG0, var='Yf')
+            res
+          }
+          )
+
+setMethod('mergesolaR',
+          signature='ProdPVPS',
+          definition=function(...){
+            res <- mergeFunction(..., foo=fooG0, var='Yf')
+            res
+          }
+          )
+\end{lstlisting}
+\subsection{shadeplot}
+\label{sec:orgee6e426}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setGeneric('shadeplot', function(x, ...)standardGeneric('shadeplot'))
+
+setMethod('shadeplot', signature(x='Shade'),
+          function(x,
+                   main='',
+                   xlab=expression(L[ew]),
+                   ylab=expression(L[ns]),
+                   n=9, ...){
+              red=x@distances
+              FS.loess=x@FS.loess
+              Yf.loess=x@Yf.loess
+              struct=x@struct
+              mode=x@modeTrk
+              if (mode=='two'){
+                  Lew=seq(min(red$Lew),max(red$Lew),length=100)
+                  Lns=seq(min(red$Lns),max(red$Lns),length=100)
+                  Red=expand.grid(Lew=Lew,Lns=Lns)
+                  FS=predict(FS.loess,Red)
+                  Red$FS=as.numeric(FS)
+                  AreaG=with(struct,L*W)
+                  GRR=Red$Lew*Red$Lns/AreaG
+                  Red$GRR=GRR
+                  FS.m<-matrix(1-FS,
+                               nrow=length(Lew),
+                               ncol=length(Lns))
+                  GRR.m<-matrix(GRR,
+                                nrow=length(Lew),
+                                ncol=length(Lns))
+                  niveles=signif(seq(min(FS.m),max(FS.m),l=n+1),3)
+                  pruebaCB<-("RColorBrewer" %in% .packages())
+                  if (pruebaCB) {
+                      paleta=rev(brewer.pal(n, 'YlOrRd'))
+                  } else {
+                      paleta=rev(heat.colors(n))}
+                  par(mar=c(4.1,4.1,2.1,2.1)) 
+                  filled.contour(x=Lew,y=Lns,z=FS.m,#...,
+                                 col=paleta, #levels=niveles,
+                                 nlevels=n,
+                                 plot.title=title(xlab=xlab,
+                                                  ylab=ylab, main=main),
+                                 plot.axes={
+                                     axis(1);axis(2);
+                                     contour(Lew, Lns, FS.m,
+                                             nlevels=n, #levels=niveles,
+                                             col="black", labcex=.8,  add=TRUE)
+                                     contour(Lew, Lns, GRR.m,
+                                             col="black", lty=3, labcex=.8, add=TRUE)
+                                     grid(col="white",lty=3)},
+                                 key.title=title("1-FS",cex.main=.8))
+              }
+              if (mode=='horiz') {
+                  Lew=seq(min(red$Lew),max(red$Lew),length=100)
+                  FS=predict(FS.loess,Lew)
+                  GRR=Lew/struct$L
+                  plot(GRR,1-FS,main=main,type='l',...)
+                  grid()    }
+              if (mode=='fixed'){
+                  D=seq(min(red$D),max(red$D),length=100)
+                  FS=predict(FS.loess,D)
+                  GRR=D/struct$L
+                  plot(GRR,1-FS,main=main,type='l',...)
+                  grid()    }
+          }
+          )
 \end{lstlisting}
