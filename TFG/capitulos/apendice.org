@@ -1,30 +1,24 @@
-# #+begin_export latex
-# \lstset{breaklines=true}
-# #+end_export
 \chapter{Código completo}
 
 Todo el código que se muestra a continuación está disponible...
 
 * Constructores
-#+begin_src R :exports none :results none
-library(solaR2)
-#+end_src
 ** calcSol
-#+INCLUDE: "d:/solaR2/R/calcSol.R" src R
+#+INCLUDE: "d:/solaR2/R/calcSol.R" src R :results none
 ** calcG0
-#+INCLUDE: "d:/solaR2/R/calcG0.R" src R
+#+INCLUDE: "d:/solaR2/R/calcG0.R" src R :results none
 ** calcGef
-#+INCLUDE: "d:/solar2/R/calcGef.R" src R
+#+INCLUDE: "d:/solar2/R/calcGef.R" src R :results none
 ** prodGCPV
-#+INCLUDE: "d:/solaR2/R/prodGCPV.R" src R
+#+INCLUDE: "d:/solaR2/R/prodGCPV.R" src R :results none
 ** prodPVPS
-#+INCLUDE: "d:/solaR2/R/prodPVPS.R" src R
+#+INCLUDE: "d:/solaR2/R/prodPVPS.R" src R :results none
 ** calcShd
-#+INCLUDE: "d:/solaR2/R/calcShd.R" src R
+#+INCLUDE: "d:/solaR2/R/calcShd.R" src R :results none
 ** optimShd
-#+INCLUDE: "d:/solaR2/R/optimShd.R" src R
+#+INCLUDE: "d:/solaR2/R/optimShd.R" src R :results none
 ** meteoReaders
-#+INCLUDE: "d:/solaR2/R/meteoReaders.R" src R
+#+INCLUDE: "d:/solaR2/R/meteoReaders.R" src R :results none
 
 * Clases
 ** Sol
@@ -47,7 +41,7 @@ setClass(
     Class = 'Meteo', ##radiation and temperature data
     slots = c(
         latm='numeric',#latitud in degrees, >0 if North
-        data='data.table',#data, incluying G (Wh/m2) and Ta
+        data='data.table',#data, incluying G (Wh/m2) and Ta (ºC)
         type='character',#choose between 'prom', 'bd' and 'bdI'
         source='character'#origin of the data
     ),
@@ -147,4 +141,613 @@ setClass(
          contains='ProdGCPV',##Resultado de prodGCPV sin sombras (Prod0)
          validity=function(object) {return(TRUE)}
 )
+#+end_src
+* Funciones
+** corrFdKt
+#+INCLUDE: "d:/solaR2/R/corrFdKt.R" src R :results none
+** fBTd
+#+INCLUDE: "d:/solaR2/R/fBTd.R" src R :results none
+** fBTi
+#+INCLUDE: "d:/solaR2/R/fBTi.R" src R :results none
+** fCompD
+#+INCLUDE: "d:/solaR2/R/fCompD.R" src R :results none
+** fCompI
+#+INCLUDE: "d:/solaR2/R/fCompI.R" src R :results none
+** fInclin
+#+INCLUDE: "d:/solaR2/R/fInclin.R" src R :results none
+** fProd
+#+INCLUDE: "d:/solaR2/R/fProd.R" src R :results none
+** fPump
+#+INCLUDE: "d:/solaR2/R/fPump.R" src R :results none
+** fSolD
+#+INCLUDE: "d:/solaR2/R/fSolD.R" src R :results none
+** fSolI
+#+INCLUDE: "d:/solaR2/R/fSolI.R" src R :results none
+** fSombra
+#+INCLUDE: "d:/solaR2/R/fSombra.R" src R :results none
+#+INCLUDE: "d:/solaR2/R/fSombra2X.R" src R :results none
+#+INCLUDE: "d:/solaR2/R/fSombra6.R" src R :results none
+#+INCLUDE: "d:/solaR2/R/fSombraEst.R" src R :results none
+#+INCLUDE: "d:/solaR2/R/fSombraHoriz.R" src R :results none
+** fTemp
+#+INCLUDE: "d:/solaR2/R/fTemp.R" src R :results none
+** fTheta
+#+INCLUDE: "d:/solaR2/R/fTheta.R" src R :results none
+** HQCurve
+#+INCLUDE: "d:/solaR2/R/HQCurve.R" src R :results none
+** local2Solar
+#+begin_src R :results none
+local2Solar <- function(x, lon=NULL){	
+  tz=attr(x, 'tzone')
+  if (tz=='' || is.null(tz)) {tz='UTC'}
+  ##Daylight savings time
+  AO=3600*dst(x)
+  AOneg=(AO<0)
+  if (any(AOneg)) {
+    AO[AOneg]=0
+    warning('Some Daylight Savings Time unknown. Set to zero.')
+  }
+  ##Difference between local longitude and time zone longitude LH
+  LH=lonHH(tz)
+  if (is.null(lon)) 
+    {deltaL=0
+   } else
+  {deltaL=d2r(lon)-LH
+ }
+  ##Local time corrected to UTC
+  tt <- format(x, tz=tz)
+  result <- as.POSIXct(tt, tz='UTC')-AO+r2sec(deltaL)
+  result
+}
+#+end_src
+** NmgPVPS
+#+INCLUDE: "d:/solaR2/R/NmgSFB.R" src R :results none
+** utils-angle
+#+begin_src R :results none
+#degrees to radians
+d2r<-function(x){x*pi/180}
+
+#radians to degrees
+r2d<-function(x){x*180/pi}
+
+#hours to radians
+h2r<-function(x){x*pi/12}
+
+#hours to degrees
+h2d<-function(x){x*180/12}
+
+#radians to hours
+r2h<-function(x){x*12/pi}
+
+#degrees to hours
+d2h<-function(x){x*12/180}
+
+#radians to seconds
+r2sec<-function(x){x*12/pi*3600}
+
+#radians to minutes
+r2min<-function(x){x*12/pi*60}
+#+end_src
+** utils-time
+#+begin_src R :results none
+#complete time to hours
+t2h <- function(x)
+{
+    hour(x)+minute(x)/60+second(x)/3600
+}
+
+#hours minutes and seconds to hours
+hms <- function(x)
+{
+    hour(x)+minute(x)/60+second(x)/3600
+}
+
+#day of the year
+doy <- function(x){
+  as.numeric(format(x, '%j'))
+}
+
+#day of the month
+dom <- function(x){
+  as.numeric(format(x, '%d'))
+}
+
+#trunc days
+truncDay <- function(x){as.POSIXct(trunc(x, units='days'))}
+#+end_src
+* Métodos
+** as.data.tableI
+#+begin_src R :exports none
+setGeneric('as.data.tableI',
+           function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.tableI')})
+
+setMethod('as.data.tableI',
+          signature=(object='Sol'),
+          definition=function(object, complete=FALSE, day=FALSE){
+              sol <- copy(object)
+              BTi <- indexI(sol)
+              BTi <- truncDay(BTi)
+              ind.rep <- cumsum(c(1, diff(BTi, units='days')!=0))
+              solI <- sol@solI
+              solD <- sol@solD[ind.rep]
+              if(complete){
+                  data <- data.table(solI, solD[, Dates := NULL])
+              } else{data <- solI}
+              if(day){
+                  ind <- indexI(sol)
+                  data[, day := doy(ind)]
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
+          }
+          )
+
+setMethod('as.data.tableI',
+          signature = (object='G0'),
+          definition = function(object, complete=FALSE, day=FALSE){
+              g0 <- copy(object)
+              BTi <- indexI(g0)
+              BTi <- truncDay(BTi)
+              ind.rep <- cumsum(c(1, diff(BTi)!=0))
+              G0I <- g0@G0I
+              solI <- g0@solI
+              solD <- g0@solD[ind.rep]
+              Ta <- g0@Ta
+              if(length(Ta[[1]]!=length(G0I[[1]]))) Ta <- Ta[ind.rep]
+              if(complete){
+                  data <- data.table(solI,
+                                     G0I[, Dates := NULL],
+                                     solD[, Dates := NULL],
+                                     Ta[, Dates := NULL])
+              } else{    
+                  G0I[, Kt := NULL]
+                  G0I[, Fd := NULL]
+                  data <- G0I
+              }
+              if(day){
+                  ind <- indexI(object)
+                  data[, day := doy(ind)]
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
+          }
+          )
+
+setMethod('as.data.tableI',
+          signature = (object='Gef'),
+          definition = function(object, complete=FALSE, day=FALSE){
+              gef <- copy(object)
+              BTi <- indexI(gef)
+              BTi <- truncDay(BTi)
+              ind.rep <- cumsum(c(1, diff(BTi, units='days')!=0))
+              GefI <- gef@GefI
+              G0I <- gef@G0I
+              solI <- gef@solI
+              solD <- gef@solD[ind.rep]
+              Ta <- gef@Ta
+              if(length(Ta[[1]]!=length(GefI[[1]]))) Ta <- Ta[ind.rep]
+              if(complete){
+                  data <- data.table(solI,
+                                     G0I[, Dates := NULL],
+                                     solD[, Dates := NULL],
+                                     Ta[, Dates := NULL],
+                                     GefI[, Dates := NULL])
+              } else {
+                  data <- GefI[, c('Dates','Gef',
+                                   'Bef', 'Def')]
+              }
+              if(day){
+                  ind <- indexI(object)
+                  data[, day := doy(ind)]
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
+          }
+          )
+
+setMethod('as.data.tableI',
+          signature = (object='ProdGCPV'),
+          definition = function(object, complete=FALSE, day=FALSE){
+              prodgcpv <- copy(object)
+              BTi <- indexI(prodgcpv)
+              BTi <- truncDay(BTi)
+              ind.rep <- cumsum(c(1, diff(BTi, units = 'days')!=0))
+              prodI <- prodgcpv@prodI
+              Theta <- prodgcpv@Theta
+              GefI <- prodgcpv@GefI
+              G0I <- prodgcpv@G0I
+              solI <- prodgcpv@solI
+              solD <- prodgcpv@solD[ind.rep]
+              Ta <- prodgcpv@Ta
+              if(length(Ta[[1]]!=length(prodI[[1]]))) Ta <- Ta[ind.rep]
+              if(complete){
+                  data <- data.table(solI,
+                                     G0I[, Dates := NULL],
+                                     solD[, Dates := NULL],
+                                     Ta[, Dates := NULL],
+                                     GefI[, Dates := NULL],
+                                     prodI[, Dates := NULL],
+                                     Theta[, Dates := NULL])
+              } else {
+                  data <- prodI[, c('Dates', 'Pac', 'Pdc')]
+              }
+              if(day){
+                  ind <- indexI(object)
+                  data[, day := doy(ind)]
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
+          }
+          )
+
+setMethod('as.data.tableI',
+          signature = (object='ProdPVPS'),
+          definition = function(object, complete=FALSE, day=FALSE){
+              prodpvps <- copy(object)
+              BTi <- indexI(prodpvps)
+              BTi <- truncDay(BTi)
+              ind.rep <- cumsum(c(1, diff(BTi, units='days')!=0))
+              prodI <- prodpvps@prodI
+              Theta <- prodpvps@Theta
+              GefI <- prodpvps@GefI
+              G0I <- prodpvps@G0I
+              solI <- prodpvps@solI
+              solD <- prodpvps@solD[ind.rep]
+              Ta <- prodpvps@Ta
+              if(length(Ta[[1]]!=length(prodI[[1]]))) Ta <- Ta[ind.rep]
+              if(complete){
+                  data <- data.table(solI,
+                                     G0I[, Dates := NULL],
+                                     solD[, Dates := NULL],
+                                     Ta[, Dates := NULL],
+                                     GefI[, Dates := NULL],
+                                     prodI[, Dates := NULL],
+                                     Theta[, Dates := NULL])
+              } else {
+                  data <- prodI[, c('Dates', 'Pac', 'Pdc')]
+              }
+              if(day){
+                  ind <- indexI(object)
+                  data[, day := doy(ind)]
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
+          }
+          )
+#+end_src
+** as.data.tableD
+#+begin_src R :results none
+setGeneric('as.data.tableD', function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.tableD')})
+
+setMethod('as.data.tableD',
+          signature=(object='Sol'),
+          definition=function(object, complete=FALSE, day=FALSE){
+              sol <- copy(object)
+              solD <- sol@solD
+              data <- solD
+              if(day){
+                  ind <- indexD(object)
+                  data[, day := doy(ind)]
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
+          }
+          )
+
+setMethod('as.data.tableD',
+          signature = (object='G0'),
+          definition = function(object, complete=FALSE, day=FALSE){
+              g0 <- copy(object)
+              G0D <- g0@G0D
+              solD <- g0@solD
+              if(complete){
+                  data <- data.table(G0D, solD[, Dates := NULL])
+              } else {
+                  G0D[, Fd := NULL]
+                  G0D[, Kt := NULL]
+                  data <- G0D
+              }
+              if(day){
+                  ind <- indexD(object)
+                  data[, day := doy(ind)]
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
+          })
+
+setMethod('as.data.tableD',
+          signature = (object='Gef'),
+          definition = function(object, complete=FALSE, day=FALSE){
+              gef <- copy(object)
+              GefD <- gef@GefD
+              G0D <- gef@G0D
+              solD <- gef@solD
+              if(complete){
+                  data <- data.table(GefD,
+                                     G0D[, Dates := NULL],
+                                     solD[, Dates := NULL])
+              } else {data <- GefD[, c('Dates', 'Gefd',
+                                       'Defd', 'Befd')]}
+              if(day){
+                  ind <- indexD(object)
+                  data[, day := doy(ind)]
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]     
+              }
+              return(data)
+          }
+          )
+
+setMethod('as.data.tableD',
+          signature = (object='ProdGCPV'),
+          definition = function(object, complete=FALSE, day=FALSE){
+              prodgcpv <- copy(object)
+              prodD <- prodgcpv@prodD
+              GefD <- prodgcpv@GefD
+              G0D <- prodgcpv@G0D
+              solD <- prodgcpv@solD
+              if(complete){
+                  data <- data.table(prodD,
+                                     GefD[, Dates := NULL],
+                                     G0D[, Dates := NULL],
+                                     solD[, Dates := NULL]
+                                     )
+              } else { data <- prodD[, c('Dates', 'Eac',
+                                         'Edc', 'Yf')]}
+              if(day){
+                  ind <- indexD(object)
+                  data[, day := doy(ind)]
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
+          }
+          )
+
+setMethod('as.data.tableD',
+          signature = (object='ProdPVPS'),
+          definition = function(object, complete=FALSE, day=FALSE){
+              prodpvps <- copy(object)
+              prodD <- prodpvps@prodD
+              GefD <- prodpvps@GefD
+              G0D <- prodpvps@G0D
+              solD <- prodpvps@solD
+              if(complete){
+                  data <- data.table(prodD,
+                                     GefD[, Dates := NULL],
+                                     G0D[, Dates := NULL],
+                                     solD[, Dates := NULL]
+                                     )
+              } else { data <- prodD[, c('Dates', 'Eac',
+                                         'Qd', 'Yf')]}
+              if(day){
+                  ind <- indexD(object)
+                  data[, day := doy(ind)]
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
+          }
+          )
+#+end_src
+** as.data.tableM
+#+begin_src R :results none
+setGeneric('as.data.tableM', function(object, complete = FALSE, day=FALSE){standardGeneric('as.data.tableM')})
+
+setMethod('as.data.tableM',
+          signature=(object='G0'),
+          definition=function(object, complete=FALSE, day=FALSE){
+              g0 <- copy(object)
+              G0dm <- g0@G0dm
+              data <- G0dm
+              if(day){
+                  ind <- indexD(object)
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
+          }
+          )
+
+setMethod('as.data.tableM',
+          signature=(object='Gef'),
+          definition = function(object, complete=FALSE, day=FALSE){
+              gef <- copy(object)
+              Gefdm <- gef@Gefdm
+              G0dm <- gef@G0dm
+              if(complete){
+                  data <- data.table(Gefdm, G0dm[, Dates := NULL])
+              } else {data <- Gefdm}
+              if(day){
+                  ind <- indexD(object)
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
+          }
+          )
+
+setMethod('as.data.tableM',
+          signature = (object='ProdGCPV'),
+          definition = function(object, complete=FALSE, day=FALSE){
+              prodgcpv <- copy(object)
+              prodDm <- prodgcpv@prodDm
+              Gefdm <- prodgcpv@Gefdm
+              G0dm <- prodgcpv@G0dm
+              if(complete){
+                  data <- data.table(prodDm,
+                                     Gefdm[, Dates := NULL],
+                                     G0dm[, Dates := NULL])
+              } else {data <- prodDm}
+              if(day){
+                  ind <- indexD(object)
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
+          }
+          )
+
+setMethod('as.data.tableM',
+          signature = (object='ProdPVPS'),
+          definition = function(object, complete=FALSE, day=FALSE){
+              prodpvps <- copy(object)
+              prodDm <- prodpvps@prodDm
+              Gefdm <- prodpvps@Gefdm
+              G0dm <- prodpvps@G0dm
+              if(complete){
+                  data <- data.table(prodDm,
+                                     Gefdm[, Dates := NULL],
+                                     G0dm[, Dates := NULL])
+              } else {data <- prodDm}
+              if(day){
+                  ind <- indexD(object)
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
+          }
+          )
+#+end_src
+** as.data.tableY
+#+begin_src R :results none
+setGeneric('as.data.tableY', function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.tableY')})
+
+setMethod('as.data.tableY',
+          signature=(object='G0'),
+          definition=function(object, complete=FALSE, day=FALSE){
+              g0 <- copy(object)
+              G0y <- g0@G0y
+              data <- G0y
+              if(day){data[, year := Dates]}
+              return(data)
+          }
+          )
+
+setMethod('as.data.tableY',
+          signature = (object='Gef'),
+          definition = function(object, complete=FALSE, day=FALSE){
+              gef <- copy(object)
+              Gefy <- gef@Gefy
+              G0y <- gef@G0y
+              if(complete){
+                  data <- data.table(Gefy, G0y[, Dates := NULL])
+              } else {data <- Gefy}
+              if(day){data[, year := Dates]}
+              return(data)
+          }
+          )
+
+setMethod('as.data.tableY',
+          signature = (object='ProdGCPV'),
+          definition = function(object, complete=FALSE, day=FALSE){
+              prodgcpv <- copy(object)
+              prody <- prodgcpv@prody
+              Gefy <- prodgcpv@Gefy
+              G0y <- prodgcpv@G0y
+              if(complete){
+                  data <- data.table(prody,
+                                     Gefy[, Dates := NULL],
+                                     G0y[, Dates := NULL])       
+              } else {data <- prody}
+              if(day){data[, year := Dates]}
+              return(data)
+          }
+          )
+
+setMethod('as.data.tableY',
+          signature = (object='ProdPVPS'),
+          definition = function(object, complete=FALSE, day=FALSE){
+              prodpvps <- copy(object)
+              prody <- prodpvps@prody
+              Gefy <- prodpvps@Gefy
+              G0y <- prodpvps@G0y
+              if(complete){
+                  data <- data.table(prody,
+                                     Gefy[, Dates := NULL],
+                                     G0y[, Dates := NULL])       
+              } else {data <- prody}
+              if(day){data[, year := Dates]}
+              return(data)
+          }
+          )
+#+end_src
+** compare
+#+INCLUDE: "d:/solaR2/R/compare.R" src R :results none
+** getData
+#+begin_src R :results none
+## extracts the data for class Meteo ##
+setGeneric('getData', function(object){standardGeneric('getData')})
+
+### getData ####
+setMethod('getData',
+          signature = (object = 'Meteo'),
+          definition = function(object){
+              result <- object@data
+              return(result)
+          })
+#+end_src
+** getG0
+#+begin_src R :results none
+## extracts the global irradiance for class Meteo ##
+setGeneric('getG0', function(object){standardGeneric('getG0')})
+
+### getG0 ###
+setMethod('getG0',
+          signature = (object = 'Meteo'),
+          definition = function(object){
+              result <- getData(object)
+              return(result$G0)
+          })
+#+end_src
+** getLat
+#+begin_src R :results none
+## extracts the latitude from the objects ##
+setGeneric('getLat', function(object, units = 'rad')
+{standardGeneric('getLat')})
+
+## extracts the latitude from the objects ##
+setGeneric('getLat', function(object, units = 'rad')
+{standardGeneric('getLat')})
+
+setMethod('getLat',
+          signature = (object = 'Meteo'),
+          definition = function(object, units = 'rad'){
+              stopifnot(units %in% c('deg', 'rad'))
+              result = switch(units,
+                              rad = d2r(object@latm),
+                              deg = object@latm)
+              return(result)
+          })
+#+end_src
+** indexD
+#+begin_src R :results none
+## extract the index of the daily data ##
+setGeneric('indexD', function(object){standardGeneric('indexD')})
+### indexD ###
+setMethod('indexD',
+          signature = (object = 'Sol'),
+          definition = function(object){as.POSIXct(object@solD$Dates)
+          })
+
+setMethod('indexD',
+          signature = (object = 'Meteo'),
+          definition = function(object){as.POSIXct(getData(object)$Dates)})
+#+end_src
+** indexI
+#+begin_src R :results none
+## extract the index of the intradaily data ##
+setGeneric('indexI', function(object){standardGeneric('indexI')})
+### indexI ###
+setMethod('indexI',
+          signature = (object = 'Sol'),
+          definition = function(object){as.POSIXct(object@solI$Dates)
+          })
 #+end_src

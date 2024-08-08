@@ -3,9 +3,9 @@
 Todo el código que se muestra a continuación está disponible\ldots{}
 
 \section{Constructores}
-\label{sec:orgbf5cd38}
+\label{sec:org32f4fd3}
 \subsection{calcSol}
-\label{sec:org542a2bd}
+\label{sec:orgcb3bff2}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 calcSol <- function(lat, BTd,
                     sample = 'hour', BTi,
@@ -35,9 +35,8 @@ calcSol <- function(lat, BTd,
     return(result)
 }
 \end{lstlisting}
-
 \subsection{calcG0}
-\label{sec:orgf7ccb51}
+\label{sec:org37f5c02}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 calcG0 <- function(lat,
                    modeRad='prom',
@@ -220,9 +219,8 @@ calcG0 <- function(lat,
     return(result)
 }
 \end{lstlisting}
-
 \subsection{calcGef}
-\label{sec:orga29da02}
+\label{sec:org60212a1}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 calcGef<-function(lat,
                   modeTrk='fixed',      #c('two','horiz','fixed')
@@ -324,9 +322,8 @@ calcGef<-function(lat,
     }
 }
 \end{lstlisting}
-
 \subsection{prodGCPV}
-\label{sec:org2efb3d9}
+\label{sec:org948e540}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 prodGCPV<-function(lat,
                    modeTrk='fixed', 
@@ -450,9 +447,8 @@ prodGCPV<-function(lat,
                   )
 }
 \end{lstlisting}
-
 \subsection{prodPVPS}
-\label{sec:orgfea25b9}
+\label{sec:org43bfe4c}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 prodPVPS<-function(lat, 
                    modeTrk='fixed', 
@@ -605,9 +601,8 @@ prodPVPS<-function(lat,
                 )
 }
 \end{lstlisting}
-
 \subsection{calcShd}
-\label{sec:org18bc738}
+\label{sec:org811cbee}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 calcShd<-function(radEf,##class='Gef'
                   modeTrk='fixed',     #c('two','horiz','fixed')
@@ -695,9 +690,8 @@ calcShd<-function(radEf,##class='Gef'
     return(radEf)
 }
 \end{lstlisting}
-
 \subsection{optimShd}
-\label{sec:orgf876829}
+\label{sec:orgac17431}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 optimShd<-function(lat,
                    modeTrk='fixed', 
@@ -828,9 +822,8 @@ optimShd<-function(lat,
     result
 }
 \end{lstlisting}
-
 \subsection{meteoReaders}
-\label{sec:orgbb6f5fe}
+\label{sec:orga41828a}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 #### monthly means of irradiation ####
 readG0dm <- function(G0dm, Ta = 25, lat = 0,
@@ -1335,9 +1328,9 @@ readSIAR <- function(Lon = 0, Lat = 0,
 \end{lstlisting}
 
 \section{Clases}
-\label{sec:org4753fc3}
+\label{sec:orgd2fd67c}
 \subsection{Sol}
-\label{sec:org5b0db8f}
+\label{sec:org18a6ded}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
          Class='Sol', ##Solar angles
@@ -1352,13 +1345,13 @@ setClass(
 )
 \end{lstlisting}
 \subsection{Meteo}
-\label{sec:orgc6a6f07}
+\label{sec:org073ca01}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
     Class = 'Meteo', ##radiation and temperature data
     slots = c(
         latm='numeric',#latitud in degrees, >0 if North
-        data='data.table',#data, incluying G (Wh/m2) and Ta
+        data='data.table',#data, incluying G (Wh/m2) and Ta (ºC)
         type='character',#choose between 'prom', 'bd' and 'bdI'
         source='character'#origin of the data
     ),
@@ -1366,7 +1359,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{G0}
-\label{sec:org58c821c}
+\label{sec:org35183eb}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
     Class = 'G0',
@@ -1383,7 +1376,7 @@ setClass(
 
 \end{lstlisting}
 \subsection{Gef}
-\label{sec:org9e86d6d}
+\label{sec:org523eb14}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
          Class='Gef',
@@ -1406,7 +1399,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{ProdGCPV}
-\label{sec:org6bf8255}
+\label{sec:org3badbab}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
          Class='ProdGCPV',
@@ -1425,7 +1418,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{ProdPVPS}
-\label{sec:org43eea68}
+\label{sec:orge8b1dad}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
          Class='ProdPVPS',
@@ -1445,7 +1438,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{Shade}
-\label{sec:org3f884f3}
+\label{sec:orgbe975c4}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
          Class='Shade',
@@ -1463,4 +1456,1706 @@ setClass(
          contains='ProdGCPV',##Resultado de prodGCPV sin sombras (Prod0)
          validity=function(object) {return(TRUE)}
 )
+\end{lstlisting}
+\section{Funciones}
+\label{sec:orge099a75}
+\subsection{corrFdKt}
+\label{sec:orgdf385b5}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+#### monthly Kt ####
+Ktm <- function(sol, G0dm){
+    solf <- sol@solD[, .(Dates, Bo0d)]
+    solf[, c('month', 'year') := .(month(Dates), year(Dates))]
+    solf[,Bo0m := mean(Bo0d), by = .(month, year)]
+    G0df <- G0dm@data[, .(Dates, G0d)]
+    G0df[, c('month', 'year') := .(month(Dates), year(Dates))]
+    G0df[, G0d := mean(G0d), by = .(month, year)]
+    Ktm <- G0df$G0d/solf$Bo0m
+    return(Ktm)
+}
+
+#### daily Kt ####
+Ktd <- function(sol, G0d){
+    Bo0d <- sol@solD$Bo0d
+    G0d <- getG0(G0d)
+    Ktd <- G0d/Bo0d
+    return(Ktd)
+}
+
+### intradaily
+Kti <- function(sol, G0i){
+    Bo0 <- sol@solI$Bo0
+    G0i <- getG0(G0i)
+    Kti <- G0i/Bo0
+    return(Kti)
+}
+
+
+#### monthly correlations ####
+
+### Page ###
+FdKtPage <- function(sol, G0dm){
+    Kt <- Ktm(sol, G0dm)
+    Fd=1-1.13*Kt
+    return(data.table(Fd, Kt))
+}
+
+### Liu and Jordan ###
+FdKtLJ <- function(sol, G0dm){
+    Kt <- Ktm(sol, G0dm)
+    Fd=(Kt<0.3)*0.595774 +
+        (Kt>=0.3 & Kt<=0.7)*(1.39-4.027*Kt+5.531*Kt^2-3.108*Kt^3)+
+        (Kt>0.7)*0.215246
+    return(data.table(Fd, Kt))
+}
+
+
+#### daily correlations ####
+
+### Collares-Pereira and Rabl
+FdKtCPR <- function(sol, G0d){
+    Kt <- Ktd(sol, G0d)
+    Fd=(0.99*(Kt<=0.17))+(Kt>0.17 & Kt<0.8)*
+        (1.188-2.272*Kt+9.473*Kt^2-21.856*Kt^3+14.648*Kt^4)+
+        (Kt>=0.8)*0.2426688      
+    return(data.table(Fd, Kt))
+}
+
+### Erbs, Klein and Duffie ###
+FdKtEKDd <- function(sol, G0d){
+    ws <- sol@solD$ws
+    Kt <- Ktd(sol, G0d)
+
+    WS1=(abs(ws)<1.4208)
+    Fd=WS1*((Kt<0.715)*(1-0.2727*Kt+2.4495*Kt^2-11.9514*Kt^3+9.3879*Kt^4)+
+            (Kt>=0.715)*(0.143))+
+        !WS1*((Kt<0.722)*(1+0.2832*Kt-2.5557*Kt^2+0.8448*Kt^3)+
+              (Kt>=0.722)*(0.175))
+  return(data.table(Fd, Kt))
+}
+
+### CLIMED1 ###
+FdKtCLIMEDd <- function(sol, G0d){
+    Kt <- Ktd(sol, G0d)
+    Fd=(Kt<=0.13)*(0.952)+
+    (Kt>0.13 & Kt<=0.8)*(0.868+1.335*Kt-5.782*Kt^2+3.721*Kt^3)+
+      (Kt>0.8)*0.141
+  return(data.table(Fd, Kt))
+}
+
+#### intradaily correlations ####
+
+### intradaily EKD ###
+FdKtEKDh <- function(sol, G0i){
+    Kt <- Kti(sol, G0i)
+    Fd=(Kt<=0.22)*(1-0.09*Kt)+
+    (Kt>0.22 & Kt<=0.8)*(0.9511-0.1604*Kt+4.388*Kt^2-16.638*Kt^3+12.336*Kt^4)+
+      (Kt>0.8)*0.165
+  return(data.table(Fd, Kt))
+}
+
+### intradaily CLIMED
+FdKtCLIMEDh <- function(sol, G0i){
+    Kt <- Kti(sol, G0i)
+    Fd=(Kt<=0.21)*(0.995-0.081*Kt)+
+        (Kt>0.21 & Kt<=0.76)*(0.724+2.738*Kt-8.32*Kt^2+4.967*Kt^3)+
+        (Kt>0.76)*0.180
+    return(data.table(Fd, Kt))
+}
+
+### intradaily Boland, Ridley and Lauret ###
+FdKtBRL <- function(sol, G0i){
+    Kt <- Kti(sol, G0i)
+    sample <- sol@sample
+
+    solI <- as.data.tableI(sol, complete = TRUE)
+    w <- solI$w
+    night <- solI$night
+    AlS <- solI$AlS
+
+    G0d <- Meteoi2Meteod(G0i)
+    ktd <- Ktd(sol, G0d)
+
+    ##persistence    
+    pers <- persistence(sol, ktd)
+
+    ##indexRep for ktd and pers
+    ktd <- ktd[indexRep(sol)]
+    pers <- pers[indexRep(sol)]
+
+    ##fd calculation
+    Fd=(1+exp(-5.38+6.63*Kt+0.006*r2h(w)-0.007*r2d(AlS)+1.75*ktd+1.31*pers))^(-1)
+
+    return(data.table(Fd, Kt))
+}
+
+persistence <- function(sol, Ktd){
+    kt <- data.table(indexD(sol), Ktd)
+    ktNA <- na.omit(kt)
+    iDay <- truncDay(ktNA[[1]])
+
+    x <- rle(as.numeric(iDay))$lengths
+    xLast <- cumsum(x)
+
+    lag1 <- shift(ktNA$Ktd, -1, fill = NA)
+    for (i in xLast){
+        if ((i-1) != 0){lag1[i] <- ktNA$Ktd[i-1]}
+    }
+
+    lag2 <- shift(ktNA$Ktd, 1, fill = NA)
+    for (i in xLast){
+        if ((i+1) <= length(ktNA$Ktd)){lag2[i] <- ktNA$Ktd[i+1]}
+    }
+    pers <- data.table(lag1, lag2)
+    pers[, mean := 1/2 * (lag1+lag2)]
+    pers[, mean]
+}
+\end{lstlisting}
+\subsection{fBTd}
+\label{sec:orgf1e2670}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fBTd<-function(mode='prom',
+               year= as.POSIXlt(Sys.Date())$year+1900,
+               start=paste('01-01-',year,sep=''),
+               end=paste('31-12-',year,sep=''), 
+               format='%d-%m-%Y'){
+    promDays<-c(17,14,15,15,15,10,18,18,18,19,18,13)
+    BTd=switch(mode,
+               serie={
+                   start.<-as.POSIXct(start, format=format, tz='UTC')
+                   end.<-as.POSIXct(end, format=format, tz='UTC')
+                   res<-seq(start., end., by="1 day")
+               },
+               prom=as.POSIXct(paste(year, 1:12, promDays, sep='-'), tz='UTC')
+               )
+    BTd
+}
+\end{lstlisting}
+\subsection{fBTi}
+\label{sec:org83fdbf9}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+intervalo <- function(day, sample){
+    intervalo <- seq.POSIXt(from = as.POSIXct(paste(day, '00:00:00'), tz = 'UTC'),
+                      to = as.POSIXct(paste(day, '23:59:59'), tz = 'UTC'),
+                      by = sample)
+    return(intervalo)
+}
+
+fBTi <- function(d, sample = 'hour'){
+    BTi <- lapply(d, intervalo, sample)
+    BTi <- do.call(c, BTi)
+    return(BTi)
+}
+\end{lstlisting}
+\subsection{fCompD}
+\label{sec:orgb8cf7d7}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fCompD <- function(sol, G0d, corr = 'CPR', f)
+{
+    if(!(corr %in% c('CPR', 'Page', 'LJ', 'EKDd', 'CLIMEDd', 'user', 'none'))){
+        warning('Wrong descriptor of correlation Fd-Ktd. Set CPR.')
+        corr <- 'CPR'
+    }
+    if(class(sol)[1] != 'Sol'){
+        sol <- sol[, calcSol(lat = unique(lat), BTi = Dates)]
+    }
+    if(class(G0d)[1] != 'Meteo'){
+        dt <- copy(data.table(G0d))
+        if(!('Dates' %in% names(dt))){
+            dt[, Dates := indexD(sol)]
+            setcolorder(dt, 'Dates')
+            setkey(dt, 'Dates')
+        }
+        if('lat' %in% names(dt)){
+            latg <- unique(dt$lat)
+            dt[, lat := NULL]
+        }else{latg <- getLat(sol)}
+        G0d <- dt2Meteo(dt, latg)
+    }  
+
+    stopifnot(indexD(sol) == indexD(G0d))
+    Bo0d <- sol@solD$Bo0d
+    G0 <- getData(G0d)$G0
+
+    is.na(G0) <- (G0>Bo0d)
+
+    ### the Direct and Difuse data is not given
+    if(corr != 'none'){
+        Fd <- switch(corr,
+                     CPR = FdKtCPR(sol, G0d),
+                     Page = FdKtPage(sol, G0d),
+                     LJ = FdKtLJ(sol, G0d),
+                     CLIMEDd = FdKtCLIMEDd(sol, G0d),
+                     user = f(sol, G0d))
+        Kt <- Fd$Kt
+        Fd <- Fd$Fd
+        D0d <- Fd * G0
+        B0d <- G0 - D0d
+    }
+    ### the Direct and Difuse data is given
+    else {
+        G0 <- getData(G0d)$G0
+        D0d <- getData(G0d)[['D0']]
+        B0d <- getData(G0d)[['B0']]
+        Fd <- D0d/G0
+        Kt <- G0/Bo0d
+    }
+
+    result <- data.table(Dates = indexD(sol), Fd, Kt, G0d = G0, D0d, B0d)
+    setkey(result, 'Dates')
+    result
+}
+\end{lstlisting}
+\subsection{fCompI}
+\label{sec:org3760a08}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fCompI <- function(sol, compD, G0I,
+                   corr = 'EKDh', f,
+                   filterG0 = TRUE){
+    if(!(corr %in% c('EKDh', 'CLIMEDh', 'BRL', 'user', 'none'))){
+        warning('Wrong descriptor of correlation Fd-Ktd. Set EKDh.')
+        corr <- 'EKDh'
+    }
+
+    if(class(sol)[1] != 'Sol'){
+        sol <- sol[, calcSol(lat = unique(lat), BTi = Dates)]
+    }
+
+    lat <- sol@lat
+    sample <- sol@sample
+    night <- sol@solI$night
+    Bo0 <- sol@solI$Bo0
+    Dates <- indexI(sol)
+
+    ## If instantaneous values are not provided, compD is used instead.
+    if (missing(G0I)) { 
+
+        G0I <- collper(sol, compD)
+        G0 <- G0I$G0
+        B0 <- G0I$B0
+        D0 <- G0I$D0
+
+        Fd <- D0/G0
+        Kt <- G0/Bo0
+
+    } else { ## Use instantaneous values if provided through G0I
+
+        if(class(G0I)[1] != 'Meteo'){
+            dt <- copy(G0I)
+            if(!('Dates' %in% names(G0I))){
+                dt[, Dates := indexI(sol)]
+                setcolorder(dt, 'Dates')
+                setkey(dt, 'Dates')
+            }
+            if('lat' %in% names(G0I)){latg <- unique(G0I$lat)}
+            else{latg <- lat}
+            G0I <- dt2Meteo(dt, latg)
+        }
+
+        if (corr!='none'){
+            G0 <- getG0(G0I)
+            ## Filter values: surface irradiation must be lower than
+            ## extraterrestial; 
+            if (filterG0) {is.na(G0) <- (G0 > Bo0)}
+
+            ## Fd-Kt correlation
+            Fd <- switch(corr,
+                         EKDh = FdKtEKDh(sol, G0I),
+                         CLIMEDh = FdKtCLIMEDh(sol, G0I),
+                         BRL = FdKtBRL(sol, G0I), 
+                         user = f(sol, G0I))
+
+            Kt <- Fd$Kt
+            Fd <- Fd$Fd
+            D0 <- Fd * G0
+            B0 <- G0 - D0
+
+        } else { 
+            G0 <- getG0(G0I)
+            D0 <- getData(G0I)[['D0']]
+            B0 <- getData(G0I)[['B0']]
+            ## Filter values: surface irradiation must be lower than
+            ## extraterrestial; 
+            if (isTRUE(filterG0)) is.na(G0) <- is.na(D0) <- is.na(B0) <- (G0 > Bo0)
+
+            Fd <- D0/G0
+            Kt <- G0/Bo0
+        }
+    }
+    ## Values outside sunrise-sunset are set to zero
+    G0[night] <- D0[night] <- B0[night] <- Kt[night] <- Fd[night] <- 0
+
+    result <- data.table(Dates, Fd, Kt, G0, D0, B0)
+    setkey(result, 'Dates')
+    result
+}
+\end{lstlisting}
+\subsection{fInclin}
+\label{sec:org39b4b4d}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fInclin <- function(compI, angGen, iS = 2, alb = 0.2, horizBright = TRUE, HCPV = FALSE){
+    ##compI es class='G0'
+
+    ##Arguments
+    stopifnot(iS %in% 1:4)
+    Beta <- angGen$Beta
+    Alfa <- angGen$Alfa
+    cosTheta <- angGen$cosTheta
+
+    comp <- as.data.tableI(compI, complete=TRUE)
+    night <- comp$night
+    B0 <- comp$B0
+    Bo0 <- comp$Bo0
+    D0 <- comp$D0
+    G0 <- comp$G0
+    cosThzS <- comp$cosThzS
+    is.na(cosThzS) <- night
+
+    ##N.Martin method for dirt and non-perpendicular incidence
+    Suc <- rbind(c(1, 0.17, -0.069),
+                 c(0.98,.2,-0.054),
+                 c(0.97,0.21,-0.049),
+                 c(0.92,0.27,-0.023))
+    FTb <- (exp(-cosTheta/Suc[iS,2]) - exp(-1/Suc[iS,2]))/(1 - exp(-1/Suc[iS,2]))
+    FTd <- exp(-1/Suc[iS,2] * (4/(3*pi) * (sin(Beta) + (pi - Beta - sin(Beta))/(1 + cos(Beta))) +
+                               Suc[iS,3] * (sin(Beta) + (pi - Beta - sin(Beta))/(1 + cos(Beta)))^2))
+    FTr <- exp(-1/Suc[iS,2] * (4/(3*pi) * (sin(Beta) + (Beta - sin(Beta))/(1 - cos(Beta))) +
+                               Suc[iS,3] * (sin(Beta) + (Beta - sin(Beta))/(1 - cos(Beta)))^2))
+
+    ##Hay and Davies method for diffuse treatment
+    B <- B0 * cosTheta/cosThzS * (cosThzS>0.007) #The factor cosThzS>0.007 is needed to eliminate erroneous results near dawn
+    k1 <- B0/(Bo0)
+    Di <- D0 * (1-k1) * (1+cos(Beta))/2
+    if (horizBright) Di <- Di * (1+sqrt(B0/G0) * sin(Beta/2)^3)
+    Dc <- D0 * k1 * cosTheta/cosThzS * (cosThzS>0.007)
+    R <- alb * G0 * (1-cos(Beta))/2
+    D <- (Di + Dc)
+    ##Extraterrestrial irradiance on the inclined plane
+    Bo <- Bo0 * cosTheta/cosThzS * (cosThzS>0.007) 
+    ##Normal direct irradiance (DNI)
+    Bn <- B0/cosThzS
+    ##Sum of components
+    G <- B + D + R
+    Ref <- R * Suc[iS,1] * (1-FTr) * (!HCPV)
+    Ref[is.nan(FTr)] <- 0 #When cos(Beta)=1, FTr=NaN. Cancel Ref.
+    Dief <- Di * Suc[iS,1] * (1 - FTd) * (!HCPV)
+    Dcef <- Dc * Suc[iS,1] * (1 - FTb) * (!HCPV)
+    Def <- Dief + Dcef
+    Bef <- B * Suc[iS,1] * (1 - FTb)
+    Gef <- Bef + Def + Ref
+
+    result <- data.table(Bo, Bn,
+                         G, D, Di, Dc, B, R,
+                         FTb, FTd, FTr,
+                         Dief, Dcef, Gef, Def, Bef, Ref) 
+
+    ## Use 0 instead of NA for irradiance values
+    result[night] <- 0
+    result[, Dates := indexI(compI)]
+    result[, .SD, by = Dates]
+    setcolorder(result, c('Dates', names(result)[-length(result)]))
+    result
+}
+\end{lstlisting}
+\subsection{fProd}
+\label{sec:orgb97156a}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+## voc, isc, vmpp, impp : *cell* values
+## Voc, Isc, Vmpp, Impp: *module/generator* values
+
+## Compute Current - Voltage characteristic of a solar *cell* with Gef
+## and Ta
+iv <- function(vocn, iscn, vmn, imn,
+               TONC, CoefVT = 2.3e-3,
+               Ta, Gef,
+               vmin = NULL, vmax = NULL)
+{
+    ##Cell Constants
+    Gstc <- 1000
+    Ct <- (TONC - 20) / 800
+    Vtn <- 0.025 * (273 + 25) / 300
+    m <- 1.3
+
+    ##Cell temperature
+    Tc <- Ta + Ct * Gef
+    Vt <- 0.025 * (Tc + 273)/300
+
+    ## Series resistance
+    Rs <- (vocn - vmn + m * Vtn * log(1 - imn/iscn)) / imn
+
+    ## Voc and Isc at ambient conditions
+    voc <- vocn - CoefVT * (Tc - 25)
+    isc <- iscn * Gef/Gstc
+
+    ## Ruiz method for computing voltage and current characteristic of a *cell*
+    rs <- Rs * isc/voc
+    koc <- voc/(m * Vt)
+
+    ## Maximum Power Point
+    Dm0 <- (koc - 1)/(koc - log(koc))
+    Dm <- Dm0 + 2 * rs * Dm0^2
+
+    impp <- isc * (1 - Dm/koc)
+    vmpp <- voc * (1 - log(koc/Dm)/koc - rs * (1 - Dm/koc))
+
+    vdc <- vmpp
+    idc <- impp
+
+    ## When the MPP is below/above the inverter voltage limits, it
+    ## sets the voltage point at the corresponding limit.
+
+
+    ## Auxiliary functions for computing the current at a defined
+    ## voltage.
+    ilimit <- function(v, koc, rs) 
+    {
+        if (is.na(koc)) 
+            result <- NA
+        else
+        {
+            ## The IV characteristic is an implicit equation. The starting
+            ## point is the voltage of the cell (imposed by the inverter
+            ## limit). 
+
+            izero <- function(i , v, koc, rs)
+            {
+                vp <- v + i * rs
+                Is <- 1/(1 - exp(-koc * (1 - rs)))
+                result <- i - (1 - Is * (exp(-koc * (1 - vp)) - exp(-koc * (1 - rs))))
+            }
+
+            result <- uniroot(f = izero,
+                              interval = c(0,1),
+                              v = v,
+                              koc = koc,
+                              rs = rs)$root
+        }
+        result
+    }
+    ## Inverter minimum voltage
+    if (!is.null(vmin))
+    {
+        if (any(vmpp < vmin, na.rm = TRUE))
+        {
+            indMIN <- which(vmpp < vmin)
+            imin <- sapply(indMIN, function(i)
+            {
+                vocMIN <- voc[i]
+                kocMIN <- koc[i]
+                rsMIN <- rs[i]
+                vmin <- vmin/vocMIN
+                ##v debe estar entre 0 y 1
+                vmin[vmin < 0] <- 0
+                vmin[vmin > 1] <- 1
+                ilimit(vmin, kocMIN, rsMIN)
+            })
+            iscMIN <- isc[indMIN]
+            idc[indMIN] <- imin * iscMIN
+            vdc[indMIN] <- vmin
+            warning('Minimum MPP voltage of the inverter has been reached')}
+    }
+
+    if (!is.null(vmax))
+    {
+        if (any(vmpp > vmax, na.rm = TRUE))
+        {
+            indMAX <- which(vmpp > vmax)
+            imax <- sapply(indMAX, function(i)
+            {
+                vocMAX <- voc[i]
+                kocMAX <- koc[i]
+                rsMAX <- rs[i]
+                vmax <- vmax / vocMAX
+                ##v debe estar entre 0 y 1
+                vmax[vmax < 0] <- 0
+                vmax[vmax > 1] <- 1
+                ilimit(vmax, kocMAX, rsMAX)
+            })
+            iscMAX <- isc[indMAX]
+            idc[indMAX] <- imax * iscMAX
+            vdc[indMAX] <- vmax
+            warning('Maximum MPP voltage of the inverter has been reached')
+        }
+    }
+    data.table(Ta, Tc, Gef, voc, isc, vmpp, impp, vdc, idc)
+}
+
+fProd <- function(inclin, 
+                  module=list(), 
+                  generator=list(), 
+                  inverter=list(),
+                  effSys=list()
+                  )
+{
+
+    stopifnot(is.list(module),
+              is.list(generator),
+              is.list(inverter),
+              is.list(effSys)
+              )
+    ## Extract data from objects
+    if (class(inclin)[1]=='Gef') {
+        indInclin <- indexI(inclin)
+        gefI <- as.data.tableI(inclin, complete = TRUE)
+        Gef <- gefI$Gef
+        Ta <- gefI$Ta
+    } else {
+        Gef <- inclin$Gef
+        Ta <- inclin$Ta
+    }
+
+    ## Module, generator, and inverter parameters
+    module.default <- list(Vocn = 57.6,
+                           Iscn = 4.7,
+                           Vmn = 46.08,
+                           Imn = 4.35,
+                           Ncs = 96,
+                           Ncp = 1,
+                           CoefVT = 0.0023,
+                           TONC = 47)
+    module <- modifyList(module.default, module)
+    ## Make these parameters visible because they will be used often.
+    Ncs <- module$Ncs
+    Ncp <- module$Ncp
+
+    generator.default <- list(Nms = 12,
+                              Nmp = 11)
+    generator <- modifyList(generator.default, generator)
+    generator$Pg <- (module$Vmn * generator$Nms) *
+        (module$Imn * generator$Nmp)
+    Nms <- generator$Nms
+    Nmp <- generator$Nmp
+
+    inverter.default <- list(Ki = c(0.01,0.025,0.05),
+                             Pinv = 25000,
+                             Vmin = 420,
+                             Vmax = 750,
+                             Gumb = 20)
+    inverter <- modifyList(inverter.default, inverter)
+    Pinv <- inverter$Pinv
+
+    effSys.default <- list(ModQual = 3,
+                           ModDisp = 2,
+                           OhmDC = 1.5,
+                           OhmAC = 1.5,
+                           MPP = 1,
+                           TrafoMT = 1,
+                           Disp = 0.5)
+    effSys <- modifyList(effSys.default, effSys)
+
+    ## Solar Cell i-v
+    vocn <- with(module, Vocn / Ncs)
+    iscn <- with(module, Iscn/ Ncp)
+    vmn <- with(module, Vmn / Ncs)
+    imn <- with(module, Imn / Ncp)
+    vmin <- with(inverter, Vmin / (Ncs * Nms))
+    vmax <- with(inverter, Vmax / (Ncs * Nms))
+
+    cell <- iv(vocn, iscn,
+               vmn, imn,
+               module$TONC, module$CoefVT,
+               Ta, Gef,
+               vmin, vmax)
+
+    ## Generator voltage and current
+    Idc <- Nmp * Ncp * cell$idc
+    Isc <- Nmp * Ncp * cell$isc
+    Impp <- Nmp * Ncp * cell$impp
+    Vdc <- Nms * Ncs * cell$vdc
+    Voc <- Nms * Ncs * cell$voc
+    Vmpp <- Nms * Ncs * cell$vmpp
+
+    ##DC power (normalization with nominal power of inverter)
+    ##including losses
+    PdcN <- with(effSys, (Idc * Vdc) / Pinv *
+                         (1 - ModQual / 100) *
+                         (1 - ModDisp / 100) *
+                         (1 - MPP / 100) *
+                         (1 - OhmDC / 100)
+                 ) 
+
+    ##Normalized AC power to the inverter
+    Ki <- inverter$Ki
+    if (is.matrix(Ki)) { #Ki is a matrix of nine coefficients-->dependence with tension
+        VP <- cbind(Vdc, PdcN)
+        PacN <- apply(VP, 1, solvePac, Ki)
+    } else { #Ki is a vector of three coefficients-->without dependence on voltage
+        A <- Ki[3]
+        B <- Ki[2] + 1
+        C <- Ki[1] - (PdcN)
+        PacN <- (-B + sqrt(B^2 - 4 * A * C))/(2 * A)
+    }
+    EffI <- PacN / PdcN
+    pacNeg <- PacN <= 0
+    PacN[pacNeg] <- PdcN[pacNeg] <- EffI[pacNeg] <- 0
+
+
+    ##AC and DC power without normalization
+    Pac <- with(effSys, PacN * Pinv *
+                        (Gef > inverter$Gumb) *
+                        (1 - OhmAC / 100) *
+                        (1 - TrafoMT / 100) *
+                        (1 - Disp / 100))
+    Pdc <- PdcN * Pinv * (Pac > 0)
+
+
+    ## Result
+    resProd <- data.table(Tc = cell$Tc,
+                         Voc, Isc,
+                         Vmpp, Impp,
+                         Vdc, Idc,
+                         Pac, Pdc,
+                         EffI)
+    if (class(inclin)[1] %in% 'Gef'){
+        result <- resProd[, .SD,
+                          by=.(Dates = indInclin)]
+        attr(result, 'generator') <- generator
+        attr(result, 'module') <- module
+        attr(result, 'inverter') <- inverter
+        attr(result, 'effSys') <- effSys
+        return(result)
+    } else {
+        result <- cbind(inclin, resProd)
+        return(result)
+    }
+}
+\end{lstlisting}
+\subsection{fPump}
+\label{sec:orgdd94e37}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fPump <- function(pump, H){
+
+    w1=3000 ##synchronous rpm frequency
+    wm=2870 ##rpm frequency with slip when applying voltage at 50 Hz
+    s=(w1-wm)/w1
+    fen=50 ##Nominal electrical frequency
+    fmin=sqrt(H/pump$a)
+    fmax=with(pump, (-b*Qmax+sqrt(b^2*Qmax^2-4*a*(c*Qmax^2-H)))/(2*a))
+    ##fb is rotation frequency (Hz) of the pump,  
+    ##fe is the electrical frequency applied to the motor
+    ##which makes it rotate at a frequency fb (and therefore also the pump).
+    fb=seq(fmin,min(60,fmax),length=1000) #The maximum frequency is 60
+    fe=fb/(1-s)
+
+###Flow
+    Q=with(pump, (-b*fb-sqrt(b^2*fb^2-4*c*(a*fb^2-H)))/(2*c))
+    Qmin=0.1*pump$Qn*fb/50
+    Q=Q+(Qmin-Q)*(Q<Qmin)
+
+###Hydraulic power
+    Ph=2.725*Q*H
+
+###Mechanical power
+    Q50=50*Q/fb
+    H50=H*(50/fb)^2
+    etab=with(pump, j*Q50^2+k*Q50+l)
+    Pb50=2.725*H50*Q50/etab
+    Pb=Pb50*(fb/50)^3
+
+###Electrical power
+    Pbc=Pb*50/fe
+    etam=with(pump, g*(Pbc/Pmn)^2+h*(Pbc/Pmn)+i)
+    Pmc=Pbc/etam
+    Pm=Pmc*fe/50
+    Pac=Pm
+    ##Pdc=Pm/(etac*(1-cab))
+
+###I build functions for flow, frequency and powers
+###to adjust the AC power.
+    fQ<-splinefun(Pac,Q)
+    fFreq<-splinefun(Pac,fe)
+    fPb<-splinefun(Pac,Pb)
+    fPh<-splinefun(Pac,Ph)
+    lim=c(min(Pac),max(Pac))
+    ##lim marks the operating range of the pump
+    result<-list(lim = lim,
+                 fQ = fQ,
+                 fPb = fPb,
+                 fPh = fPh,
+                 fFreq = fFreq)
+}
+\end{lstlisting}
+\subsection{fSolD}
+\label{sec:org47fab43}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fSolD <- function(lat, BTd, method = 'michalsky'){
+    if (abs(lat) > 90){
+        lat <- sign(lat) * 90
+        warning(paste('Latitude outside acceptable values. Set to', lat))
+    }
+    sun <- data.table(Dates = unique(as.IDate(BTd)),
+                      lat = lat)
+
+    #### solarAngles ####
+
+    ##Declination
+    sun[, decl := declination(Dates, method = method)]
+    ##Eccentricity
+    sun[, eo := eccentricity(Dates, method = method)]
+    ##Equation of time
+    sun[, EoT := eot(Dates)]
+    ##Solar time
+    sun[, ws := sunrise(Dates, lat, method = method,
+                        decl = decl)]
+    ##Extraterrestrial irradiance
+    sun[, Bo0d := bo0d(Dates, lat, method = method,
+                       decl = decl,
+                       eo = eo,
+                       ws = ws
+                       )]
+    setkey(sun, Dates)
+    return(sun)
+}
+\end{lstlisting}
+\subsection{fSolI}
+\label{sec:orgeeed9f3}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fSolI <- function(solD, sample = 'hour', BTi,
+                  EoT = TRUE, keep.night = TRUE, method = 'michalsky')
+{
+    #Solar constant
+    Bo <- 1367
+
+    if(missing(BTi)){
+        d <- solD$Dates
+        BTi <- fBTi(d, sample)
+    }
+    sun <- data.table(Dates = as.IDate(BTi),
+                      Times = as.ITime(BTi))
+    sun <- merge(solD, sun, by = 'Dates')
+    sun[, eqtime := EoT]
+    sun[, EoT := NULL]
+
+    #sun hour angle
+    sun[, w := sunHour(Dates, BTi, EoT = EoT, method = method, eqtime = eqtime)]
+
+    #classify night elements
+    sun[, night := abs(w) >= abs(ws)]
+
+    #zenith angle
+    sun[, cosThzS := zenith(Dates, lat, BTi,
+                            method = method,
+                            decl = decl,
+                            w = w
+                            )]
+
+    #solar altitude angle
+    sun[, AlS := asin(cosThzS)]
+
+    #azimuth
+    sun[, AzS := azimuth(Dates, lat, BTi, sample,
+                         method = method,
+                         decl = decl, 
+                         w = w,
+                         cosThzS = cosThzS)]
+
+    #Extraterrestrial irradiance
+    sun[, Bo0 := Bo * eo * cosThzS]
+
+    #When it is night there is no irradiance
+    sun[night == TRUE, Bo0 := 0]
+
+    #Erase columns that are in solD
+    sun[, decl := NULL]
+    sun[, eo := NULL]
+    sun[, eqtime := NULL]
+    sun[, ws := NULL]
+    sun[, Bo0d := NULL]
+
+    #Column Dates with Times
+    sun[, Dates := as.POSIXct(Dates, Times, tz = 'UTC')]
+    sun[, Times := NULL]
+
+    #keep night
+    if(!keep.night){
+        sun <- sun[night == FALSE]
+    }
+
+    return(sun)
+}
+\end{lstlisting}
+\subsection{fSombra}
+\label{sec:org93b1ddf}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fSombra<-function(angGen, distances, struct, modeTrk='fixed',prom=TRUE){
+
+    stopifnot(modeTrk %in% c('two','horiz','fixed'))
+    res=switch(modeTrk, 
+               two={fSombra6(angGen, distances, struct, prom)},
+               horiz={fSombraHoriz(angGen, distances, struct)},
+               fixed= {fSombraEst(angGen, distances, struct)}
+               )
+    return(res)
+}
+\end{lstlisting}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fSombra2X<-function(angGen,distances,struct)
+{
+    stopifnot(is.list(struct),is.data.frame(distances))
+    ##I prepare starting data	
+    P=with(struct,distances/W)
+    b=with(struct,L/W)
+    AzS=angGen$AzS
+    Beta=angGen$Beta
+    AlS=angGen$AlS
+
+    d1=abs(P$Lew*cos(AzS)-P$Lns*sin(AzS))
+    d2=abs(P$Lew*sin(AzS)+P$Lns*cos(AzS))
+    FC=sin(AlS)/sin(Beta+AlS)
+    s=b*cos(Beta)+(b*sin(Beta)+P$H)/tan(AlS)
+    FS1=1-d1
+    FS2=s-d2
+    SombraCond=(FS1>0)*(FS2>0)*(P$Lew*AzS>=0)
+    SombraCond[is.na(SombraCond)]<-FALSE #NAs are of no use to me in a logical vector. I replace them with FALSE
+    ## Result
+    FS=SombraCond*(FS1*FS2*FC)/b
+    FS[FS>1]<-1
+    return(FS)
+}	
+\end{lstlisting}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fSombra6<-function(angGen, distances, struct, prom=TRUE)
+{
+    stopifnot(is.list(struct),
+              is.data.frame(distances))
+    ##distances only has three distances, so I generate a grid
+    if (dim(distances)[1]==1){ 
+        Red <- distances[, .(Lew = c(-Lew, 0, Lew, -Lew, Lew),
+                             Lns = c(Lns, Lns, Lns, 0, 0),
+                             H=H)]
+    } else { #distances is an array, so there is no need to generate the grid
+        Red<-distances[1:5,]} #I only need the first 5 rows...necessary in case a wrong data.frame is delivered
+
+    ## I calculate the shadow due to each of the 5 followers
+    SombraGrupo<-matrix(ncol=5,nrow=dim(angGen)[1]) ###VECTORIZE
+    for (i in 1:5) {SombraGrupo[,i]<-fSombra2X(angGen,Red[i,],struct)}
+    ##To calculate the Average Shadow, I need the number of followers in each position (distrib)
+    distrib=with(struct,c(1,Ncol-2,1,Nrow-1,(Ncol-2)*(Nrow-1),Nrow-1)) 
+    vProm=c(sum(distrib[c(5,6)]),
+            sum(distrib[c(4,5,6)]),
+            sum(distrib[c(4,5)]),
+            sum(distrib[c(2,3,5,6)]),
+            sum(distrib[c(1,2,4,5)]))
+    Nseg=sum(distrib) ##Total number of followers
+    ##With the SWEEP function I multiply the Shadow Factor of each type (ShadowGroup columns) by the vProm result
+
+    if (prom==TRUE){
+        ## Average Shadow Factor in the group of SIX followers taking into account distribution
+        FS=rowSums(sweep(SombraGrupo,2,vProm,'*'))/Nseg
+        FS[FS>1]<-1
+    } else {		
+        ## Shadow factor on follower #5 due to the other 5 followers
+        FS=rowSums(SombraGrupo)
+        FS[FS>1]<-1}
+    return(FS)
+}
+\end{lstlisting}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fSombraEst<-function(angGen, distances, struct)
+{
+    stopifnot(is.list(struct),is.data.frame(distances))
+    ## I prepare starting data
+    dist <- with(struct, distances/L)
+    Alfa <- angGen$Alfa
+    Beta <- angGen$Beta
+    AlS <- angGen$AlS
+    AzS <- angGen$AzS
+    cosTheta <- angGen$cosTheta
+    h <- dist$H #It must be previously normalized
+    d <- dist$D                   
+    ## Calculations
+    s=cos(Beta)+cos(Alfa-AzS)*(sin(Beta)+h)/tan(AlS)
+    FC=sin(AlS)/sin(Beta+AlS)
+    SombraCond=(s-d>0)
+    FS=(s-d)*SombraCond*FC*(cosTheta>0)
+    ## Result
+    FS=FS*(FS>0)
+    FS[FS>1]<-1
+    return(FS)
+}
+\end{lstlisting}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fSombraHoriz<-function(angGen, distances, struct)
+{
+    stopifnot(is.list(struct),is.data.frame(distances))
+    ## I prepare starting data 	
+    d <- with(struct, distances/L)
+    AzS <- angGen$AzS
+    AlS <- angGen$AlS
+    Beta <- angGen$Beta
+    lew <- d$Lew #It must be previously normalized
+    ## Calculations
+    Beta0=atan(abs(sin(AzS)/tan(AlS)))
+    FS=1-lew*cos(Beta0)/cos(Beta-Beta0)
+    SombraCond=(FS>0)
+    ## Result
+    FS=FS*SombraCond
+    FS[FS>1]<-1
+    return(FS)
+}
+\end{lstlisting}
+\subsection{fTemp}
+\label{sec:orgaf174c4}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fTemp<-function(sol, BD)
+{
+    ##sol is an object with class='Sol'
+    ##BD is an object with class='Meteo', whose 'data' slot contains two columns called "TempMax" and "TempMin"
+
+    stopifnot(class(sol)=='Sol')
+    stopifnot(class(BD)=='Meteo')
+
+    checkIndexD(indexD(sol), indexD(BD))
+
+    Dates<-indexI(sol)	
+    ind.rep<-indexRep(sol)
+
+    TempMax <-  BD@data$TempMax[ind.rep]
+    TempMin <-  BD@data$TempMin[ind.rep]
+    ws <- sol@solD$ws[ind.rep]
+    w <- sol@solI$w
+
+    ##Generate temperature sequence from database Maxima and Minima
+
+    Tm=(TempMin+TempMax)/2
+    Tr=(TempMax-TempMin)/2
+
+    wp=pi/4
+
+    a1=pi*12*(ws-w)/(21*pi+12*ws)
+    a2=pi*(3*pi-12*w)/(3*pi-12*ws)
+    a3=pi*(24*pi+12*(ws-w))/(21*pi+12*ws)
+
+    T1=Tm-Tr*cos(a1)
+    T2=Tm+Tr*cos(a2)
+    T3=Tm-Tr*cos(a3)
+
+    Ta=T1*(w<=ws)+T2*(w>ws&w<=wp)+T3*(w>wp)
+
+    ##Result
+    result<-data.table(Dates, Ta)
+}
+\end{lstlisting}
+\subsection{fTheta}
+\label{sec:org514fcb4}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fTheta<-function(sol, beta, alfa=0, modeTrk='fixed', betaLim=90, 
+                 BT=FALSE, struct, dist)
+{
+    stopifnot(modeTrk %in% c('two','horiz','fixed'))
+    if (!missing(struct)) {stopifnot(is.list(struct))}
+    if (!missing(dist)) {stopifnot(is.data.frame(dist))}
+
+    betaLim=d2r(betaLim)
+    lat=getLat(sol, 'rad')
+    signLat=ifelse(sign(lat)==0, 1, sign(lat)) ##When lat=0, sign(lat)=0. I change it to sign(lat)=1
+
+    solI<-as.data.tableI(sol, complete=TRUE, day = TRUE)
+    AlS=solI$AlS
+    AzS=solI$AzS
+    decl=solI$decl
+    w<-solI$w
+
+    night<-solI$night
+
+    Beta<-switch(modeTrk,
+                 two = {Beta2x=pi/2-AlS	
+                     Beta=Beta2x+(betaLim-Beta2x)*(Beta2x>betaLim)},
+                 fixed = rep(d2r(beta), length(w)), 
+                 horiz={BetaHoriz0=atan(abs(sin(AzS)/tan(AlS)))
+                     if (BT){lew=dist$Lew/struct$L
+                         Longitud=lew*cos(BetaHoriz0)
+                         Cond=(Longitud>=1)
+                         Longitud[Cond]=1
+                         ## When Cond==TRUE Length=1
+                         ## and therefore asin(Length)=pi/2,
+                         ## so that BetaHoriz=BetaHoriz0
+                         BetaHoriz=BetaHoriz0+asin(Longitud)-pi/2                                     
+                     } else {
+                         BetaHoriz=BetaHoriz0
+                         rm(BetaHoriz0)}
+                     Beta=ifelse(BetaHoriz>betaLim,betaLim,BetaHoriz)}
+                 )
+    is.na(Beta) <- night
+
+    Alfa<-switch(modeTrk,
+                 two = AzS,
+                 fixed = rep(d2r(alfa), length(w)),
+                 horiz=pi/2*sign(AzS))
+    is.na(Alfa) <- night
+
+    cosTheta<-switch(modeTrk,
+                     two=cos(Beta-(pi/2-AlS)),
+                     horiz={
+                         t1=sin(decl)*sin(lat)*cos(Beta)      
+                         t2=cos(decl)*cos(w)*cos(lat)*cos(Beta)   
+                         t3=cos(decl)*abs(sin(w))*sin(Beta)   
+                         cosTheta=t1+t2+t3
+                         rm(t1,t2,t3)
+                         cosTheta
+                     },
+                     fixed={
+                         t1=sin(decl)*sin(lat)*cos(Beta)      
+                         t2=-signLat*sin(decl)*cos(lat)*sin(Beta)*cos(Alfa) 
+                         t3=cos(decl)*cos(w)*cos(lat)*cos(Beta)   
+                         t4=signLat*cos(decl)*cos(w)*sin(lat)*sin(Beta)*cos(Alfa) 
+                         t5=cos(decl)*sin(w)*sin(Alfa)*sin(Beta)   
+                         cosTheta=t1+t2+t3+t4+t5
+                         rm(t1,t2,t3,t4,t5)
+                         cosTheta
+                     }
+                     )
+    is.na(cosTheta) <- night
+    cosTheta=cosTheta*(cosTheta>0) #when cosTheta<0, Theta is greater than 90º, and therefore the Sun is behind the panel.
+
+    result <- data.table(Dates = indexI(sol),
+                         Beta, Alfa, cosTheta)
+    return(result)
+}
+\end{lstlisting}
+\subsection{HQCurve}
+\label{sec:org6e204d3}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+## HQCurve: no visible binding for global variable ‘fb’
+## HQCurve: no visible binding for global variable ‘Q’
+## HQCurve: no visible binding for global variable ‘x’
+## HQCurve: no visible binding for global variable ‘y’
+## HQCurve: no visible binding for global variable ‘group.value’
+
+if(getRversion() >= "2.15.1") globalVariables(c('fb', 'Q', 'x', 'y', 'group.value'))
+
+HQCurve<-function(pump){
+  w1=3000 #synchronous rpm frequency
+  wm=2870 #rpm frequency with slip when applying voltage at 50 Hz
+  s=(w1-wm)/w1
+  fen=50 #Nominal electrical frequency
+
+  f=seq(35,50,by=5)
+  Hn=with(pump,a*50^2+b*50*Qn+c*Qn^2) #height corresponding to flow rate and nominal frequency
+
+  kiso=Hn/pump$Qn^2 #To paint the isoyield curve I take into account the laws of similarity
+  Qiso=with(pump,seq(0.1*Qn,Qmax,l=10))
+  Hiso=kiso*Qiso^2 #Isoperformance curve
+
+  Curva<-expand.grid(fb=f,Q=Qiso)
+
+  Curva<-within(Curva,{
+    fe=fb/(1-s)
+    H=with(pump,a*fb^2+b*fb*Q+c*Q^2)
+
+    is.na(H) <- (H<0)
+    Q50=50*Q/fb
+    H50=H*(50/fb)^2
+    etab=with(pump,j*Q50^2+k*Q50+l)
+    Pb50=2.725*H50*Q50/etab
+    Pb=Pb50*(fb/50)^3
+
+    Pbc=Pb*50/fe
+    etam=with(pump,g*(Pbc/Pmn)^2+h*(Pbc/Pmn)+i)
+    Pmc=Pbc/etam
+    Pm=Pmc*fe/50
+
+    etac=0.95 #Variable frequency drive performance
+    cab=0.05  #Cable losses
+    Pdc=Pm/(etac*(1-cab))
+    rm(etac,cab,Pmc,Pbc,Pb50,Q50,H50)
+  })
+
+###H-Q curve at different frequencies
+  ##I check if I have the lattice package available, which should have been loaded in .First.lib
+  lattice.disp<-("lattice" %in% .packages())
+  latticeExtra.disp<-("latticeExtra" %in% .packages())
+  if (lattice.disp && latticeExtra.disp) {
+    p<-xyplot(H~Q,groups=factor(fb),data=Curva, type='l',
+              par.settings=custom.theme.2(),
+              panel=function(x,y,groups,...){
+                panel.superpose(x,y,groups,...)
+                panel.xyplot(Qiso,Hiso,col='black',...)
+                panel.text(Qiso[1], Hiso[1], 'ISO', pos=3)}
+              )
+    p=p+glayer(panel.text(x[1], y[1], group.value, pos=3))
+    print(p)
+    result<-list(result=Curva, plot=p)
+  } else {
+    warning('lattice and/or latticeExtra packages are not available. Thus, the plot could not be created')
+    result<-Curva}
+}
+\end{lstlisting}
+\subsection{local2Solar}
+\label{sec:orgcabad87}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+local2Solar <- function(x, lon=NULL){	
+  tz=attr(x, 'tzone')
+  if (tz=='' || is.null(tz)) {tz='UTC'}
+  ##Daylight savings time
+  AO=3600*dst(x)
+  AOneg=(AO<0)
+  if (any(AOneg)) {
+    AO[AOneg]=0
+    warning('Some Daylight Savings Time unknown. Set to zero.')
+  }
+  ##Difference between local longitude and time zone longitude LH
+  LH=lonHH(tz)
+  if (is.null(lon)) 
+    {deltaL=0
+   } else
+  {deltaL=d2r(lon)-LH
+ }
+  ##Local time corrected to UTC
+  tt <- format(x, tz=tz)
+  result <- as.POSIXct(tt, tz='UTC')-AO+r2sec(deltaL)
+  result
+}
+\end{lstlisting}
+\subsection{NmgPVPS}
+\label{sec:orgbba8156}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+## NmgPVPS: no visible binding for global variable ‘Pnom’
+## NmgPVPS: no visible binding for global variable ‘group.value’
+
+if(getRversion() >= "2.15.1") globalVariables(c('Pnom', 'group.value'))
+
+NmgPVPS <- function(pump, Pg, H, Gd, Ta=30,
+                    lambda=0.0045, TONC=47,
+                    eta=0.95, Gmax=1200, t0=6, Nm=6,
+                    title='', theme=custom.theme.2()){
+
+    ##I build the type day by IEC procedure
+    t=seq(-t0,t0,l=2*t0*Nm);
+    d=Gd/(Gmax*2*t0)
+    s=(d*pi/2-1)/(1-pi/4)
+    G=Gmax*cos(t/t0*pi/2)*(1+s*(1-cos(t/t0*pi/2)))
+    G[G<0]<-0
+    G=G/(sum(G,na.rm=1)/Nm)*Gd
+    Red<-expand.grid(G=G,Pnom=Pg,H=H,Ta=Ta)
+    Red<-within(Red,{Tcm<-Ta+G*(TONC-20)/800
+                     Pdc=Pnom*G/1000*(1-lambda*(Tcm-25)) #Available DC power
+                     Pac=Pdc*eta})                       #Inverter yield
+
+    res=data.table(Red,Q=0)
+
+    for (i in seq_along(H)){
+        fun=fPump(pump, H[i])
+        Cond=res$H==H[i]
+        x=res$Pac[Cond]
+        z=res$Pdc[Cond]
+        rango=with(fun,x>=lim[1] & x<=lim[2]) #I limit the power to the operating range of the pump.
+        x[!rango]<-0
+        z[!rango]<-0
+        y=res$Q[Cond]
+        y[rango]<-fun$fQ(x[rango])
+        res$Q[Cond]=y
+        res$Pac[Cond]=x
+        res$Pdc[Cond]=z
+    }
+
+    resumen <- res[, lapply(.SD, function(x)sum(x, na.rm = 1)/Nm),
+                   by = .(Pnom, H)]
+    param=list(pump=pump, Pg=Pg, H=H, Gd=Gd, Ta=Ta,
+               lambda=lambda, TONC=TONC, eta=eta,
+               Gmax=Gmax, t0=t0, Nm=Nm)
+
+
+###Abacus with common X-axes
+
+    ##I check if I have the lattice package available, which should have been loaded in .First.lib
+    lattice.disp<-("lattice" %in% .packages())
+    latticeExtra.disp<-("latticeExtra" %in% .packages())
+    if (lattice.disp && latticeExtra.disp){
+        tema<-theme
+        tema1 <- modifyList(tema, list(layout.width = list(panel=1,
+                                       ylab = 2, axis.left=1.0,
+                                       left.padding=1, ylab.axis.padding=1,
+                                       axis.panel=1)))
+        tema2 <- modifyList(tema, list(layout.width = list(panel=1,
+                                       ylab = 2, axis.left=1.0, left.padding=1,
+                                       ylab.axis.padding=1, axis.panel=1)))
+        temaT <- modifyList(tema, list(layout.heights = list(panel = c(1, 1))))
+        p1 <- xyplot(Q~Pdc, groups=H, data=resumen,
+                     ylab="Qd (m\u00b3/d)",type=c('l','g'),
+                     par.settings = tema1)
+
+        p1lab<-p1+glayer(panel.text(x[1], y[1], group.value, pos=2, cex=0.7))
+
+        ##I paint the linear regression because Pnom~Pdc depends on the height.
+        p2 <- xyplot(Pnom~Pdc, groups=H, data=resumen,
+                     ylab="Pg",type=c('l','g'), #type=c('smooth','g'),
+                     par.settings = tema2)
+        p2lab<-p2+glayer(panel.text(x[1], y[1], group.value, pos=2, cex=0.7))
+
+        p<-update(c(p1lab, p2lab, x.same = TRUE),
+                  main=paste(title, '\nSP', pump$Qn, 'A', pump$stages, ' ',
+                  'Gd ', Gd/1000," kWh/m\u00b2",sep=''),
+                  layout = c(1, 2),
+                  scales=list(x=list(draw=FALSE)),
+                  xlab='',              
+                  ylab = list(c("Qd (m\u00b3/d)","Pg (Wp)"), y = c(1/4, 3/4)),
+                  par.settings = temaT
+                  )
+        print(p)
+        result<-list(I=res,D=resumen, plot=p, param=param)
+    } else {
+        warning('lattice, latticeExtra packages are not all available. Thus, the plot could not be created')
+        result<-list(I=res,D=resumen, param=param)
+    }
+}
+\end{lstlisting}
+\subsection{utils-angle}
+\label{sec:orgf405f05}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+#degrees to radians
+d2r<-function(x){x*pi/180}
+
+#radians to degrees
+r2d<-function(x){x*180/pi}
+
+#hours to radians
+h2r<-function(x){x*pi/12}
+
+#hours to degrees
+h2d<-function(x){x*180/12}
+
+#radians to hours
+r2h<-function(x){x*12/pi}
+
+#degrees to hours
+d2h<-function(x){x*12/180}
+
+#radians to seconds
+r2sec<-function(x){x*12/pi*3600}
+
+#radians to minutes
+r2min<-function(x){x*12/pi*60}
+\end{lstlisting}
+\subsection{utils-time}
+\label{sec:orga88f99c}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+#complete time to hours
+t2h <- function(x)
+{
+    hour(x)+minute(x)/60+second(x)/3600
+}
+
+#hours minutes and seconds to hours
+hms <- function(x)
+{
+    hour(x)+minute(x)/60+second(x)/3600
+}
+
+#day of the year
+doy <- function(x){
+  as.numeric(format(x, '%j'))
+}
+
+#day of the month
+dom <- function(x){
+  as.numeric(format(x, '%d'))
+}
+
+#trunc days
+truncDay <- function(x){as.POSIXct(trunc(x, units='days'))}
+\end{lstlisting}
+\section{Métodos}
+\label{sec:orgb59ad5a}
+\subsection{as.data.tableI}
+\label{sec:org95cd0f0}
+\subsection{as.data.tableD}
+\label{sec:org7b11f62}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setGeneric('as.data.tableD', function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.tableD')})
+
+setMethod('as.data.tableD',
+          signature=(object='Sol'),
+          definition=function(object, complete=FALSE, day=FALSE){
+              sol <- copy(object)
+              solD <- sol@solD
+              data <- solD
+              if(day){
+                  ind <- indexD(object)
+                  data[, day := doy(ind)]
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
+          }
+          )
+
+setMethod('as.data.tableD',
+          signature = (object='G0'),
+          definition = function(object, complete=FALSE, day=FALSE){
+              g0 <- copy(object)
+              G0D <- g0@G0D
+              solD <- g0@solD
+              if(complete){
+                  data <- data.table(G0D, solD[, Dates := NULL])
+              } else {
+                  G0D[, Fd := NULL]
+                  G0D[, Kt := NULL]
+                  data <- G0D
+              }
+              if(day){
+                  ind <- indexD(object)
+                  data[, day := doy(ind)]
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
+          })
+
+setMethod('as.data.tableD',
+          signature = (object='Gef'),
+          definition = function(object, complete=FALSE, day=FALSE){
+              gef <- copy(object)
+              GefD <- gef@GefD
+              G0D <- gef@G0D
+              solD <- gef@solD
+              if(complete){
+                  data <- data.table(GefD,
+                                     G0D[, Dates := NULL],
+                                     solD[, Dates := NULL])
+              } else {data <- GefD[, c('Dates', 'Gefd',
+                                       'Defd', 'Befd')]}
+              if(day){
+                  ind <- indexD(object)
+                  data[, day := doy(ind)]
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]     
+              }
+              return(data)
+          }
+          )
+
+setMethod('as.data.tableD',
+          signature = (object='ProdGCPV'),
+          definition = function(object, complete=FALSE, day=FALSE){
+              prodgcpv <- copy(object)
+              prodD <- prodgcpv@prodD
+              GefD <- prodgcpv@GefD
+              G0D <- prodgcpv@G0D
+              solD <- prodgcpv@solD
+              if(complete){
+                  data <- data.table(prodD,
+                                     GefD[, Dates := NULL],
+                                     G0D[, Dates := NULL],
+                                     solD[, Dates := NULL]
+                                     )
+              } else { data <- prodD[, c('Dates', 'Eac',
+                                         'Edc', 'Yf')]}
+              if(day){
+                  ind <- indexD(object)
+                  data[, day := doy(ind)]
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
+          }
+          )
+
+setMethod('as.data.tableD',
+          signature = (object='ProdPVPS'),
+          definition = function(object, complete=FALSE, day=FALSE){
+              prodpvps <- copy(object)
+              prodD <- prodpvps@prodD
+              GefD <- prodpvps@GefD
+              G0D <- prodpvps@G0D
+              solD <- prodpvps@solD
+              if(complete){
+                  data <- data.table(prodD,
+                                     GefD[, Dates := NULL],
+                                     G0D[, Dates := NULL],
+                                     solD[, Dates := NULL]
+                                     )
+              } else { data <- prodD[, c('Dates', 'Eac',
+                                         'Qd', 'Yf')]}
+              if(day){
+                  ind <- indexD(object)
+                  data[, day := doy(ind)]
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
+          }
+          )
+\end{lstlisting}
+\subsection{as.data.tableM}
+\label{sec:org7ad47a7}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setGeneric('as.data.tableM', function(object, complete = FALSE, day=FALSE){standardGeneric('as.data.tableM')})
+
+setMethod('as.data.tableM',
+          signature=(object='G0'),
+          definition=function(object, complete=FALSE, day=FALSE){
+              g0 <- copy(object)
+              G0dm <- g0@G0dm
+              data <- G0dm
+              if(day){
+                  ind <- indexD(object)
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
+          }
+          )
+
+setMethod('as.data.tableM',
+          signature=(object='Gef'),
+          definition = function(object, complete=FALSE, day=FALSE){
+              gef <- copy(object)
+              Gefdm <- gef@Gefdm
+              G0dm <- gef@G0dm
+              if(complete){
+                  data <- data.table(Gefdm, G0dm[, Dates := NULL])
+              } else {data <- Gefdm}
+              if(day){
+                  ind <- indexD(object)
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
+          }
+          )
+
+setMethod('as.data.tableM',
+          signature = (object='ProdGCPV'),
+          definition = function(object, complete=FALSE, day=FALSE){
+              prodgcpv <- copy(object)
+              prodDm <- prodgcpv@prodDm
+              Gefdm <- prodgcpv@Gefdm
+              G0dm <- prodgcpv@G0dm
+              if(complete){
+                  data <- data.table(prodDm,
+                                     Gefdm[, Dates := NULL],
+                                     G0dm[, Dates := NULL])
+              } else {data <- prodDm}
+              if(day){
+                  ind <- indexD(object)
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
+          }
+          )
+
+setMethod('as.data.tableM',
+          signature = (object='ProdPVPS'),
+          definition = function(object, complete=FALSE, day=FALSE){
+              prodpvps <- copy(object)
+              prodDm <- prodpvps@prodDm
+              Gefdm <- prodpvps@Gefdm
+              G0dm <- prodpvps@G0dm
+              if(complete){
+                  data <- data.table(prodDm,
+                                     Gefdm[, Dates := NULL],
+                                     G0dm[, Dates := NULL])
+              } else {data <- prodDm}
+              if(day){
+                  ind <- indexD(object)
+                  data[, month := month(ind)]
+                  data[, year := year(ind)]
+              }
+              return(data)
+          }
+          )
+\end{lstlisting}
+\subsection{as.data.tableY}
+\label{sec:org4fd981e}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setGeneric('as.data.tableY', function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.tableY')})
+
+setMethod('as.data.tableY',
+          signature=(object='G0'),
+          definition=function(object, complete=FALSE, day=FALSE){
+              g0 <- copy(object)
+              G0y <- g0@G0y
+              data <- G0y
+              if(day){data[, year := Dates]}
+              return(data)
+          }
+          )
+
+setMethod('as.data.tableY',
+          signature = (object='Gef'),
+          definition = function(object, complete=FALSE, day=FALSE){
+              gef <- copy(object)
+              Gefy <- gef@Gefy
+              G0y <- gef@G0y
+              if(complete){
+                  data <- data.table(Gefy, G0y[, Dates := NULL])
+              } else {data <- Gefy}
+              if(day){data[, year := Dates]}
+              return(data)
+          }
+          )
+
+setMethod('as.data.tableY',
+          signature = (object='ProdGCPV'),
+          definition = function(object, complete=FALSE, day=FALSE){
+              prodgcpv <- copy(object)
+              prody <- prodgcpv@prody
+              Gefy <- prodgcpv@Gefy
+              G0y <- prodgcpv@G0y
+              if(complete){
+                  data <- data.table(prody,
+                                     Gefy[, Dates := NULL],
+                                     G0y[, Dates := NULL])       
+              } else {data <- prody}
+              if(day){data[, year := Dates]}
+              return(data)
+          }
+          )
+
+setMethod('as.data.tableY',
+          signature = (object='ProdPVPS'),
+          definition = function(object, complete=FALSE, day=FALSE){
+              prodpvps <- copy(object)
+              prody <- prodpvps@prody
+              Gefy <- prodpvps@Gefy
+              G0y <- prodpvps@G0y
+              if(complete){
+                  data <- data.table(prody,
+                                     Gefy[, Dates := NULL],
+                                     G0y[, Dates := NULL])       
+              } else {data <- prody}
+              if(day){data[, year := Dates]}
+              return(data)
+          }
+          )
+\end{lstlisting}
+\subsection{compare}
+\label{sec:orgea5275f}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+## compareFunction: no visible binding for global variable ‘name’
+## compareFunction: no visible binding for global variable ‘x’
+## compareFunction: no visible binding for global variable ‘y’
+## compareFunction: no visible binding for global variable ‘group.value’
+
+if(getRversion() >= "2.15.1") globalVariables(c('name', 'x', 'y', 'group.value'))
+
+setGeneric('compare', signature='...', function(...){standardGeneric('compare')})
+
+compareFunction <- function(..., vars){
+    dots <- list(...)
+    nms0 <- substitute(list(...))
+    if (!is.null(names(nms0))){ ##in do.call
+        nms <- names(nms0[-1])
+    } else {
+        nms <- as.character(nms0[-1])
+    }
+    foo <- function(object, label){
+        yY <- colMeans(as.data.tableY(object, complete = TRUE)[, ..vars])
+        yY <- cbind(stack(yY), name=label)
+        yY
+    }
+    cdata <- mapply(FUN=foo, dots, nms, SIMPLIFY=FALSE)
+    z <- do.call(rbind, cdata)
+    z$ind <- ordered(z$ind, levels=vars)
+    p <- dotplot(ind~values, groups=name, data=z, type='b',
+                 par.settings=solaR.theme)
+    print(p+glayer(panel.text(x[length(x)], y[length(x)],
+                              label=group.value, cex=0.7, pos=3, srt=45)))
+    return(z)
+}
+
+
+setMethod('compare',
+          signature='G0',
+          definition=function(...){
+            vars <- c('D0d', 'B0d', 'G0d')
+            res <- compareFunction(..., vars=vars)
+            return(res)
+          }
+          )
+
+setMethod('compare',
+          signature='Gef',
+          definition=function(...){
+            vars <- c('Defd', 'Befd', 'Gefd')
+            res <- compareFunction(..., vars=vars)
+            return(res)
+          }
+          )
+
+setMethod('compare',
+          signature='ProdGCPV',
+          definition=function(...){
+            vars <- c('G0d', 'Gefd', 'Yf')
+            res <- compareFunction(..., vars=vars)
+            return(res)
+          }
+          )
+\end{lstlisting}
+\subsection{getData}
+\label{sec:org438dc74}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+## extracts the data for class Meteo ##
+setGeneric('getData', function(object){standardGeneric('getData')})
+
+### getData ####
+setMethod('getData',
+          signature = (object = 'Meteo'),
+          definition = function(object){
+              result <- object@data
+              return(result)
+          })
+\end{lstlisting}
+\subsection{getG0}
+\label{sec:orgad698f7}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+## extracts the global irradiance for class Meteo ##
+setGeneric('getG0', function(object){standardGeneric('getG0')})
+
+### getG0 ###
+setMethod('getG0',
+          signature = (object = 'Meteo'),
+          definition = function(object){
+              result <- getData(object)
+              return(result$G0)
+          })
+\end{lstlisting}
+\subsection{getLat}
+\label{sec:orgea5be34}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+## extracts the latitude from the objects ##
+setGeneric('getLat', function(object, units = 'rad')
+{standardGeneric('getLat')})
+
+## extracts the latitude from the objects ##
+setGeneric('getLat', function(object, units = 'rad')
+{standardGeneric('getLat')})
+
+setMethod('getLat',
+          signature = (object = 'Meteo'),
+          definition = function(object, units = 'rad'){
+              stopifnot(units %in% c('deg', 'rad'))
+              result = switch(units,
+                              rad = d2r(object@latm),
+                              deg = object@latm)
+              return(result)
+          })
+\end{lstlisting}
+\subsection{indexD}
+\label{sec:orgd8802d2}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+## extract the index of the daily data ##
+setGeneric('indexD', function(object){standardGeneric('indexD')})
+### indexD ###
+setMethod('indexD',
+          signature = (object = 'Sol'),
+          definition = function(object){as.POSIXct(object@solD$Dates)
+          })
+
+setMethod('indexD',
+          signature = (object = 'Meteo'),
+          definition = function(object){as.POSIXct(getData(object)$Dates)})
+\end{lstlisting}
+\subsection{indexI}
+\label{sec:org5e26629}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+## extract the index of the intradaily data ##
+setGeneric('indexI', function(object){standardGeneric('indexI')})
+### indexI ###
+setMethod('indexI',
+          signature = (object = 'Sol'),
+          definition = function(object){as.POSIXct(object@solI$Dates)
+          })
 \end{lstlisting}
