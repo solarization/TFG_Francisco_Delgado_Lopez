@@ -119,13 +119,13 @@
 
 %configuración de verbatim
 \usepackage{fancyvrb}
+\usepackage{fvextra}
 \DefineVerbatimEnvironment{verbatim}{Verbatim}{
   fontsize=\fontsize{8}{8},
-  formatcom = {\color{black!70}}}
+  formatcom={\color{black}}  
+  }
 
 %bibliografia
-% \usepackage[citestyle=authoryear,bibstyle=authoryear,doi=true,url=true]{biblatex}
-% \let\cite\parencite
 \usepackage[backend=biber, style=alphabetic, sorting=ynt]{biblatex}
 \addbibresource{bibliografia/bibliografia.bib}
 
