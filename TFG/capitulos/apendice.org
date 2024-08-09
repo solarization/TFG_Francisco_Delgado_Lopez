@@ -200,6 +200,8 @@ local2Solar <- function(x, lon=NULL){
   result
 }
 #+end_src
+** markovG0
+#+INCLUDE: "d:/solaR2/R/markovG0.R" src R :results none
 ** NmgPVPS
 #+INCLUDE: "d:/solaR2/R/NmgSFB.R" src R :results none
 ** utils-angle
@@ -759,3 +761,44 @@ setMethod('indexI',
 #+INCLUDE: "d:/solaR2/R/mergeSolar.R" src R :results none
 ** shadeplot
 #+INCLUDE: "d:/solaR2/R/shadeplot.R" src R :results none
+** window
+#+INCLUDE: "d:/solaR2/R/window.R" src R :results none
+** writeSolar
+#+INCLUDE: "d:/solaR2/R/writeSolar.R" src R :results none
+** xyplot
+#+INCLUDE: "d:/solaR2/R/xyplot.R" src R :results none
+* Conjunto de datos
+** aguiar
+#+begin_src R :exports none :session *R*
+library(solaR2)
+#+end_src
+#+begin_src R :session *R* :results output
+data(MTM)
+Ktlim
+#+end_src
+#+begin_src R :session *R* :results output
+Ktmtm
+#+end_src
+#+begin_src R :session *R* :results output
+head(MTM)
+#+end_src
+** SIAR
+#+begin_src R :session *R* :results output
+data(SIAR)
+head(est_SIAR)
+#+end_src
+** helios
+#+begin_src R :session *R* :results output
+data(helios)
+head(helios)
+#+end_src
+** prodEx
+#+begin_src R :session *R* :results output
+data(prodEx)
+head(prodEx)
+#+end_src
+** pumpCoef
+#+begin_src R :session *R* :results output
+data(pumpCoef)
+head(pumpCoef)
+#+end_src

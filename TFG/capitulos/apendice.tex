@@ -3,9 +3,9 @@
 Todo el código que se muestra a continuación está disponible\ldots{}
 
 \section{Constructores}
-\label{sec:orgc396124}
+\label{sec:org1c3b462}
 \subsection{calcSol}
-\label{sec:org55f1d16}
+\label{sec:org4892ef4}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 calcSol <- function(lat, BTd,
                     sample = 'hour', BTi,
@@ -36,7 +36,7 @@ calcSol <- function(lat, BTd,
 }
 \end{lstlisting}
 \subsection{calcG0}
-\label{sec:orgb60d3e3}
+\label{sec:org72fd1f6}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 calcG0 <- function(lat,
                    modeRad='prom',
@@ -220,7 +220,7 @@ calcG0 <- function(lat,
 }
 \end{lstlisting}
 \subsection{calcGef}
-\label{sec:org5f92dfc}
+\label{sec:orgb242d17}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 calcGef<-function(lat,
                   modeTrk='fixed',      #c('two','horiz','fixed')
@@ -323,7 +323,7 @@ calcGef<-function(lat,
 }
 \end{lstlisting}
 \subsection{prodGCPV}
-\label{sec:org3f1038d}
+\label{sec:org4102f32}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 prodGCPV<-function(lat,
                    modeTrk='fixed', 
@@ -448,7 +448,7 @@ prodGCPV<-function(lat,
 }
 \end{lstlisting}
 \subsection{prodPVPS}
-\label{sec:org08c0b77}
+\label{sec:org106f353}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 prodPVPS<-function(lat, 
                    modeTrk='fixed', 
@@ -602,7 +602,7 @@ prodPVPS<-function(lat,
 }
 \end{lstlisting}
 \subsection{calcShd}
-\label{sec:org3e24759}
+\label{sec:org3ffcf63}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 calcShd<-function(radEf,##class='Gef'
                   modeTrk='fixed',     #c('two','horiz','fixed')
@@ -691,7 +691,7 @@ calcShd<-function(radEf,##class='Gef'
 }
 \end{lstlisting}
 \subsection{optimShd}
-\label{sec:org77b594c}
+\label{sec:orge6702e2}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 optimShd<-function(lat,
                    modeTrk='fixed', 
@@ -823,7 +823,7 @@ optimShd<-function(lat,
 }
 \end{lstlisting}
 \subsection{meteoReaders}
-\label{sec:orgbd2d198}
+\label{sec:org4df7303}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 #### monthly means of irradiation ####
 readG0dm <- function(G0dm, Ta = 25, lat = 0,
@@ -1328,9 +1328,9 @@ readSIAR <- function(Lon = 0, Lat = 0,
 \end{lstlisting}
 
 \section{Clases}
-\label{sec:org028b69f}
+\label{sec:orgbdd5d8b}
 \subsection{Sol}
-\label{sec:orge7c9d34}
+\label{sec:org8042f62}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
          Class='Sol', ##Solar angles
@@ -1345,7 +1345,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{Meteo}
-\label{sec:orgd687749}
+\label{sec:orge31062d}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
     Class = 'Meteo', ##radiation and temperature data
@@ -1359,7 +1359,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{G0}
-\label{sec:org1e3cdc7}
+\label{sec:orgfc89e75}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
     Class = 'G0',
@@ -1376,7 +1376,7 @@ setClass(
 
 \end{lstlisting}
 \subsection{Gef}
-\label{sec:org6373691}
+\label{sec:org28d92c0}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
          Class='Gef',
@@ -1399,7 +1399,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{ProdGCPV}
-\label{sec:org5849edd}
+\label{sec:org0a37b6f}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
          Class='ProdGCPV',
@@ -1418,7 +1418,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{ProdPVPS}
-\label{sec:org47582fb}
+\label{sec:org9adc48b}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
          Class='ProdPVPS',
@@ -1438,7 +1438,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{Shade}
-\label{sec:org6ee6c51}
+\label{sec:org234b371}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
          Class='Shade',
@@ -1458,9 +1458,9 @@ setClass(
 )
 \end{lstlisting}
 \section{Funciones}
-\label{sec:org05f1a9d}
+\label{sec:orgc1ff498}
 \subsection{corrFdKt}
-\label{sec:org0f21a17}
+\label{sec:orgfe41dbd}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 #### monthly Kt ####
 Ktm <- function(sol, G0dm){
@@ -1613,7 +1613,7 @@ persistence <- function(sol, Ktd){
 }
 \end{lstlisting}
 \subsection{fBTd}
-\label{sec:org1f85ce7}
+\label{sec:orgdbd8bc8}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fBTd<-function(mode='prom',
                year= as.POSIXlt(Sys.Date())$year+1900,
@@ -1633,7 +1633,7 @@ fBTd<-function(mode='prom',
 }
 \end{lstlisting}
 \subsection{fBTi}
-\label{sec:org2049ff8}
+\label{sec:orgc8fc69a}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 intervalo <- function(day, sample){
     intervalo <- seq.POSIXt(from = as.POSIXct(paste(day, '00:00:00'), tz = 'UTC'),
@@ -1649,7 +1649,7 @@ fBTi <- function(d, sample = 'hour'){
 }
 \end{lstlisting}
 \subsection{fCompD}
-\label{sec:org5704e05}
+\label{sec:org8fc1c85}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fCompD <- function(sol, G0d, corr = 'CPR', f)
 {
@@ -1708,7 +1708,7 @@ fCompD <- function(sol, G0d, corr = 'CPR', f)
 }
 \end{lstlisting}
 \subsection{fCompI}
-\label{sec:org99bd199}
+\label{sec:org1c50b28}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fCompI <- function(sol, compD, G0I,
                    corr = 'EKDh', f,
@@ -1792,7 +1792,7 @@ fCompI <- function(sol, compD, G0I,
 }
 \end{lstlisting}
 \subsection{fInclin}
-\label{sec:org137365b}
+\label{sec:orgabcdd6c}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fInclin <- function(compI, angGen, iS = 2, alb = 0.2, horizBright = TRUE, HCPV = FALSE){
     ##compI es class='G0'
@@ -1859,7 +1859,7 @@ fInclin <- function(compI, angGen, iS = 2, alb = 0.2, horizBright = TRUE, HCPV =
 }
 \end{lstlisting}
 \subsection{fProd}
-\label{sec:orgbb6cf48}
+\label{sec:org898e884}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## voc, isc, vmpp, impp : *cell* values
 ## Voc, Isc, Vmpp, Impp: *module/generator* values
@@ -2122,7 +2122,7 @@ fProd <- function(inclin,
 }
 \end{lstlisting}
 \subsection{fPump}
-\label{sec:org0bd1295}
+\label{sec:orgba067ba}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fPump <- function(pump, H){
 
@@ -2177,7 +2177,7 @@ fPump <- function(pump, H){
 }
 \end{lstlisting}
 \subsection{fSolD}
-\label{sec:org8553773}
+\label{sec:org46afd58}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fSolD <- function(lat, BTd, method = 'michalsky'){
     if (abs(lat) > 90){
@@ -2209,7 +2209,7 @@ fSolD <- function(lat, BTd, method = 'michalsky'){
 }
 \end{lstlisting}
 \subsection{fSolI}
-\label{sec:orga94b46a}
+\label{sec:orga82594c}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fSolI <- function(solD, sample = 'hour', BTi,
                   EoT = TRUE, keep.night = TRUE, method = 'michalsky')
@@ -2276,7 +2276,7 @@ fSolI <- function(solD, sample = 'hour', BTi,
 }
 \end{lstlisting}
 \subsection{fSombra}
-\label{sec:orgbfbdde0}
+\label{sec:orgf292971}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fSombra<-function(angGen, distances, struct, modeTrk='fixed',prom=TRUE){
 
@@ -2396,7 +2396,7 @@ fSombraHoriz<-function(angGen, distances, struct)
 }
 \end{lstlisting}
 \subsection{fTemp}
-\label{sec:org638a2e9}
+\label{sec:org1ea7847}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fTemp<-function(sol, BD)
 {
@@ -2439,7 +2439,7 @@ fTemp<-function(sol, BD)
 }
 \end{lstlisting}
 \subsection{fTheta}
-\label{sec:org72e4a3b}
+\label{sec:orgc0b1c4f}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fTheta<-function(sol, beta, alfa=0, modeTrk='fixed', betaLim=90, 
                  BT=FALSE, struct, dist)
@@ -2516,7 +2516,7 @@ fTheta<-function(sol, beta, alfa=0, modeTrk='fixed', betaLim=90,
 }
 \end{lstlisting}
 \subsection{HQCurve}
-\label{sec:org29be7cb}
+\label{sec:org7524b45}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## HQCurve: no visible binding for global variable ‘fb’
 ## HQCurve: no visible binding for global variable ‘Q’
@@ -2584,7 +2584,7 @@ HQCurve<-function(pump){
 }
 \end{lstlisting}
 \subsection{local2Solar}
-\label{sec:orgfa5fa20}
+\label{sec:org556f3f6}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 local2Solar <- function(x, lon=NULL){	
   tz=attr(x, 'tzone')
@@ -2609,8 +2609,50 @@ local2Solar <- function(x, lon=NULL){
   result
 }
 \end{lstlisting}
+\subsection{markovG0}
+\label{sec:org52f7498}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+## Objects loaded at startup from data/MTM.RData
+if(getRversion() >= "2.15.1") globalVariables(c(
+                  'MTM', ## Markov Transition Matrices
+                  'Ktmtm', ## Kt limits to choose a matrix from MTM
+                  'Ktlim' ## Daily kt range of each matrix.
+                  ))
+
+markovG0 <- function(G0dm, solD){
+    solD <- copy(solD)
+    timeIndex <- solD$Dates
+    Bo0d <- solD$Bo0d
+    Bo0dm <- solD[, mean(Bo0d), by = .(month(Dates), year(Dates))][[3]]
+    ktm <- G0dm/Bo0dm
+
+    ##Calculates which matrix to work with for each month
+    whichMatrix <- findInterval(ktm, Ktmtm, all.inside = TRUE)
+
+    ktd <- state <- numeric(length(timeIndex))
+    state[1] <- 1
+    ktd[1] <- ktm[state[1]]
+    for (i in 2:length(timeIndex)){
+        iMonth <- month(timeIndex[i])
+        colMonth <- whichMatrix[iMonth]
+        rng <- Ktlim[, colMonth]
+        classes <- seq(rng[1], rng[2], length=11)
+        matMonth <- MTM[(10*colMonth-9):(10*colMonth),]
+        ## http://www-rohan.sdsu.edu/~babailey/stat575/mcsim.r
+        state[i] <- sample(1:10, size=1, prob=matMonth[state[i-1],])
+        ktd[i] <- runif(1, min=classes[state[i]], max=classes[state[i]+1])
+    }
+    G0dmMarkov <- data.table(ktd, Bo0d)
+    G0dmMarkov <- G0dmMarkov[, mean(ktd*Bo0d), by = .(month(timeIndex), year(timeIndex))][[3]]
+    fix <- G0dm/G0dmMarkov
+    indRep <- month(timeIndex)
+    fix <- fix[indRep]
+    G0d <- data.table(Dates = timeIndex, G0d = ktd * Bo0d * fix)
+    G0d
+}
+\end{lstlisting}
 \subsection{NmgPVPS}
-\label{sec:orgabbcef1}
+\label{sec:org3b84132}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## NmgPVPS: no visible binding for global variable ‘Pnom’
 ## NmgPVPS: no visible binding for global variable ‘group.value’
@@ -2703,7 +2745,7 @@ NmgPVPS <- function(pump, Pg, H, Gd, Ta=30,
 }
 \end{lstlisting}
 \subsection{utils-angle}
-\label{sec:orga9b18d4}
+\label{sec:org72d81f0}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 #degrees to radians
 d2r<-function(x){x*pi/180}
@@ -2730,7 +2772,7 @@ r2sec<-function(x){x*12/pi*3600}
 r2min<-function(x){x*12/pi*60}
 \end{lstlisting}
 \subsection{utils-time}
-\label{sec:orgec4eef9}
+\label{sec:org6328a59}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 #complete time to hours
 t2h <- function(x)
@@ -2758,11 +2800,11 @@ dom <- function(x){
 truncDay <- function(x){as.POSIXct(trunc(x, units='days'))}
 \end{lstlisting}
 \section{Métodos}
-\label{sec:orgbc9e4af}
+\label{sec:org7a8b25e}
 \subsection{as.data.tableI}
-\label{sec:org9e4e50f}
+\label{sec:orgb13db01}
 \subsection{as.data.tableD}
-\label{sec:org22de437}
+\label{sec:orge352815}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setGeneric('as.data.tableD', function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.tableD')})
 
@@ -2880,7 +2922,7 @@ setMethod('as.data.tableD',
           )
 \end{lstlisting}
 \subsection{as.data.tableM}
-\label{sec:org211fdf7}
+\label{sec:org6d711ac}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setGeneric('as.data.tableM', function(object, complete = FALSE, day=FALSE){standardGeneric('as.data.tableM')})
 
@@ -2960,7 +3002,7 @@ setMethod('as.data.tableM',
           )
 \end{lstlisting}
 \subsection{as.data.tableY}
-\label{sec:org43c908d}
+\label{sec:org9c40530}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setGeneric('as.data.tableY', function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.tableY')})
 
@@ -3024,7 +3066,7 @@ setMethod('as.data.tableY',
           )
 \end{lstlisting}
 \subsection{compare}
-\label{sec:org6478739}
+\label{sec:org0c8bb23}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## compareFunction: no visible binding for global variable ‘name’
 ## compareFunction: no visible binding for global variable ‘x’
@@ -3087,7 +3129,7 @@ setMethod('compare',
           )
 \end{lstlisting}
 \subsection{getData}
-\label{sec:org0de9a26}
+\label{sec:org36348c0}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## extracts the data for class Meteo ##
 setGeneric('getData', function(object){standardGeneric('getData')})
@@ -3101,7 +3143,7 @@ setMethod('getData',
           })
 \end{lstlisting}
 \subsection{getG0}
-\label{sec:org0c8b4b9}
+\label{sec:orgbd0f1a9}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## extracts the global irradiance for class Meteo ##
 setGeneric('getG0', function(object){standardGeneric('getG0')})
@@ -3115,7 +3157,7 @@ setMethod('getG0',
           })
 \end{lstlisting}
 \subsection{getLat}
-\label{sec:orgda90380}
+\label{sec:org171bfde}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## extracts the latitude from the objects ##
 setGeneric('getLat', function(object, units = 'rad')
@@ -3136,7 +3178,7 @@ setMethod('getLat',
           })
 \end{lstlisting}
 \subsection{indexD}
-\label{sec:orga6dcc04}
+\label{sec:org3ed441d}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## extract the index of the daily data ##
 setGeneric('indexD', function(object){standardGeneric('indexD')})
@@ -3151,7 +3193,7 @@ setMethod('indexD',
           definition = function(object){as.POSIXct(getData(object)$Dates)})
 \end{lstlisting}
 \subsection{indexI}
-\label{sec:org405df9d}
+\label{sec:orgc4d86d1}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## extract the index of the intradaily data ##
 setGeneric('indexI', function(object){standardGeneric('indexI')})
@@ -3162,7 +3204,7 @@ setMethod('indexI',
           })
 \end{lstlisting}
 \subsection{levelplot}
-\label{sec:org1b27851}
+\label{sec:org077c55d}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setGeneric('levelplot')
 
@@ -3246,7 +3288,7 @@ setMethod('levelplot',
           )
 \end{lstlisting}
 \subsection{losses}
-\label{sec:org2ef65dd}
+\label{sec:org82867e5}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setGeneric('losses', function(object){standardGeneric('losses')})
 
@@ -3339,7 +3381,7 @@ setMethod('compareLosses', 'ProdGCPV',
           )
 \end{lstlisting}
 \subsection{mergeSolar}
-\label{sec:orgb99493b}
+\label{sec:org845261b}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setGeneric('mergesolaR', signature='...', function(...){standardGeneric('mergesolaR')})
 
@@ -3410,7 +3452,7 @@ setMethod('mergesolaR',
           )
 \end{lstlisting}
 \subsection{shadeplot}
-\label{sec:orgee6e426}
+\label{sec:org9039dee}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setGeneric('shadeplot', function(x, ...)standardGeneric('shadeplot'))
 
@@ -3477,3 +3519,549 @@ setMethod('shadeplot', signature(x='Shade'),
           }
           )
 \end{lstlisting}
+\subsection{window}
+\label{sec:org62583d0}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setMethod('[',
+          signature='Meteo',
+          definition=function(x, i, j,...){
+            if (!missing(i)) {
+              i <- truncDay(i)
+            } else {
+              i <- indexD(x)[1]
+            }
+            if (!missing(j)) {
+              j <- truncDay(j)+86400-1 ##The end is the last second of the day
+            } else {
+              nDays <- length(indexD(x))
+              j <- indexD(x)[nDays]+86400-1
+            }
+            stopifnot(j>i)
+            if (!is.null(i)) i <- truncDay(i)
+            if (!is.null(j)) j <- truncDay(j)+86400-1
+            d <- indexD(x)
+            x@data <- x@data[(d >= i & d <= j)]
+            x
+          }
+          )
+
+
+setMethod('[',
+          signature='Sol',
+          definition=function(x, i, j, ...){
+              if (!missing(i)) {
+                  i <- truncDay(i)
+              } else {
+                  i <- indexD(x)[1]
+              }
+              if (!missing(j)) {
+                  j <- truncDay(j)+86400-1##The end is the last second of the day
+              } else {
+                  nDays <- length(indexD(x))
+                  j <- indexD(x)[nDays]+86400-1
+              }
+              stopifnot(j>i)
+              if(!is.null(i)) i <- truncDay(i)
+              if(!is.null(j)) j <- truncDay(j)
+              d1 <- indexD(x)
+              d2 <- indexI(x)
+              x@solD <- x@solD[(d1 >= i & d1 <= j)]
+              x@solI <- x@solI[(d2 >= i & d2 <= j)]
+              x
+          }
+          )
+
+setMethod('[',
+          signature='G0',
+          definition=function(x, i, j, ...){
+              sol <- as(x, 'Sol')[i=i, j=j, ...] ##Sol method
+              meteo <- as(x, 'Meteo')[i=i, j=j, ...] ##Meteo method
+              i <- indexI(sol)[1]
+              j <- indexI(sol)[length(indexI(sol))]
+              d1 <- indexD(x)
+              d2 <- indexI(x)
+              G0Iw <- x@G0I[(d2 >= i & d2 <= j)]
+              Taw <- x@Ta[(d2 >= i & d2 <= j)]
+              G0dw <- x@G0D[(d1 >= truncDay(i) & d1 <= truncDay(j))]
+              G0dmw <- G0dw[, lapply(.SD/1000, mean, na.rm= TRUE),
+                            .SDcols = c('G0d', 'D0d', 'B0d'),
+                            by = .(month(Dates), year(Dates))]
+              if (x@type=='prom'){
+                  G0dmw[, DayOfMonth := DOM(G0dmw)]
+                  G0yw <- G0dmw[, lapply(.SD*DayOfMonth, sum, na.rm = TRUE),
+                                .SDcols = c('G0d', 'D0d', 'B0d'),
+                                by = .(Dates = year)]
+                  G0dmw[, DayOfMonth := NULL]
+              } else {
+                  G0yw <- G0dw[, lapply(.SD/1000, sum, na.rm = TRUE),
+                               .SDcols = c('G0d', 'D0d', 'B0d'),
+                               by = .(Dates = year(unique(truncDay(Dates))))]
+              }
+              G0dmw[, Dates := paste(month.abb[month], year, sep = '. ')]
+              G0dmw[, c('month', 'year') := NULL]
+              setcolorder(G0dmw, 'Dates')
+              result <- new('G0',
+                            meteo,
+                            sol,
+                            G0D=G0dw,
+                            G0dm=G0dmw,
+                            G0y=G0yw,
+                            G0I=G0Iw,
+                            Ta=Taw)
+              result
+          }
+          )
+
+
+setMethod('[',
+          signature='Gef',
+          definition=function(x, i, j, ...){
+              g0 <- as(x, 'G0')[i=i, j=j, ...] ##G0 method
+              i <- indexI(g0)[1]
+              j <- indexI(g0)[length(indexI(g0))]
+              d1 <- indexD(x)
+              d2 <- indexI(x)
+              GefIw <- x@GefI[(d2 >= i & d2 <= j)]
+              Thetaw <- x@Theta[(d2 >= i & d2 <= j)]
+              Gefdw <- x@GefD[(d1 >= truncDay(i) & d1 <= truncDay(j))]
+              nms <- c('Bod', 'Bnd', 'Gd', 'Dd',
+                       'Bd', 'Gefd', 'Defd', 'Befd')
+              Gefdmw <- Gefdw[, lapply(.SD/1000, mean, na.rm = TRUE),
+                              .SDcols = nms,
+                              by = .(month(Dates), year(Dates))]
+              if (x@type=='prom'){
+                  Gefdmw[, DayOfMonth:= DOM(Gefdmw)]
+                  Gefyw <- Gefdmw[, lapply(.SD*DayOfMonth, sum),
+                                  .SDcols = nms,
+                                  by = .(Dates = year)]
+                  Gefdmw[, DayOfMonth := NULL]
+              } else {
+                  Gefyw <- Gefdw[, lapply(.SD/1000, sum, na.rm = TRUE),
+                                 .SDcols = nms,
+                                 by = .(Dates = year)]
+              }
+              Gefdmw[, Dates := paste(month.abb[month], year, sep = '. ')]
+              Gefdmw[, c('month', 'year') := NULL]
+              setcolorder(Gefdmw, 'Dates')
+              result <- new('Gef',
+                            g0,
+                            GefD=Gefdw,
+                            Gefdm=Gefdmw,
+                            Gefy=Gefyw,
+                            GefI=GefIw,
+                            Theta=Thetaw,
+                            iS=x@iS,
+                            alb=x@alb,
+                            modeTrk=x@modeTrk,
+                            modeShd=x@modeShd,
+                            angGen=x@angGen,
+                            struct=x@struct,
+                            distances=x@distances
+                            )
+              result
+          }
+          )
+
+
+setMethod('[',
+          signature='ProdGCPV',
+          definition=function(x, i, j, ...){
+              gef <- as(x, 'Gef')[i=i, j=j, ...] ##Gef method
+              i <- indexI(gef)[1]
+              j <- indexI(gef)[length(indexI(gef))]
+              d1 <- indexD(x)
+              d2 <- indexI(x)
+              prodIw <- x@prodI[(d2 >= i & d2 <= j)]
+              prodDw <- x@prodD[(d1 >= truncDay(i) & d1 <= truncDay(j))]
+              prodDmw <- prodDw[, lapply(.SD/1000, mean, na.rm = TRUE),
+                                .SDcols = c('Eac', 'Edc'),
+                                by = .(month(Dates), year(Dates))]
+              prodDmw$Yf <- prodDw$Yf
+              if (x@type=='prom'){
+                  prodDmw[, DayOfMonth := DOM(prodDmw)]
+                  prodyw <- prodDmw[, lapply(.SD*DayOfMonth, sum, na.rm = TRUE),
+                                    .SDcols = c('Eac', 'Edc', 'Yf'),
+                                    by = .(Dates = year)]
+                  prodDmw[, DayOfMonth := NULL]
+              } else {
+                prodyw <- prodDw[, lapply(.SD/1000, sum, na.rm = TRUE),
+                                 .SDcols = c('Eac', 'Edc', 'Yf'),
+                                 by = .(Dates = year)]
+            }
+              prodDmw[, Dates := paste(month.abb[month], year, sep = '. ')]
+              prodDmw[, c('month', 'year') := NULL]
+              setcolorder(prodDmw, c('Dates', names(prodDmw)[-length(prodDmw)]))
+              result <- new('ProdGCPV',
+                            gef,
+                            prodD=prodDw,
+                            prodDm=prodDmw,
+                            prody=prodyw,
+                            prodI=prodIw,
+                            module=x@module,
+                            generator=x@generator,
+                            inverter=x@inverter,
+                            effSys=x@effSys
+                            )
+              result
+          }
+          )
+
+setMethod('[',
+          signature='ProdPVPS',
+          definition=function(x, i, j, ...){
+            gef <- as(x, 'Gef')[i=i, j=j, ...] ##Gef method
+            i <- indexI(gef)[1]
+            j <- indexI(gef)[length(indexI(gef))]
+            d1 <- indexD(x)
+            d2 <- indexI(x)
+            prodIw <- x@prodI[(d2 >= i & d2 <= j)]
+            prodDw <- x@prodD[(d1 >= truncDay(i) & d1 <= truncDay(j))]
+            prodDmw <- prodDw[, .(Eac = Eac/1000,
+                                  Qd = Qd,
+                                  Yf = Yf),
+                              by = .(month(Dates), year(Dates))]
+            if (x@type=='prom'){
+                prodDmw[, DayOfMonth := DOM(prodDmw)]
+                prodyw <- prodDmw[, lapply(.SD*DayOfMonth, sum, na.rm = TRUE),
+                                  .SDcols = c('Eac', 'Qd', 'Yf'),
+                                  by = .(Dates = year)]
+                prodDmw[, DayOfMonth := NULL]
+            } else {
+                prodyw <- prodDw[, .(Eac = sum(Eac, na.rm = TRUE)/1000,
+                                     Qd = sum(Qd, na.rm = TRUE),
+                                     Yf = sum(Yf, na.rm = TRUE)),
+                                 by = .(Dates = year)]
+            }
+            prodDmw[, Dates := paste(month.abb[month], year, sep = '. ')]
+            prodDmw[, c('month', 'year') := NULL]
+            setcolorder(prodDmw, c('Dates', names(prodDmw)[-length(prodDmw)]))
+            result <- new('ProdPVPS',
+                          gef,
+                          prodD=prodDw,
+                          prodDm=prodDmw,
+                          prody=prodyw,
+                          prodI=prodIw,
+                          pump=x@pump,
+                          H=x@H,
+                          Pg=x@Pg,
+                          converter=x@converter,
+                          effSys=x@effSys
+                          )
+            result
+          }
+          )
+\end{lstlisting}
+\subsection{writeSolar}
+\label{sec:org82d1a2c}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setGeneric('writeSolar', function(object, file,
+                                  complete=FALSE, day=FALSE,
+                                  timeScales=c('i', 'd', 'm', 'y'), sep=',',
+                                  ...){
+    standardGeneric('writeSolar')})
+
+setMethod('writeSolar', signature=(object='Sol'),
+          definition=function(object, file, complete=FALSE, day=FALSE,
+                              timeScales=c('i', 'd', 'm', 'y'), sep=',', ...){
+              name <- strsplit(file, '\\.')[[1]][1]
+              ext <- strsplit(file, '\\.')[[1]][2]
+              timeScales <- match.arg(timeScales, several.ok=TRUE)
+              if ('i' %in% timeScales) {
+                  zI <- as.data.tableI(object, complete=complete, day=day)
+                  write.table(zI,
+                              file=file, sep=sep, row.names = FALSE, ...)
+              }
+              if ('d' %in% timeScales) {
+                  zD <- as.data.tableD(object, complete=complete, day = day)
+                  write.table(zD,
+                            file=paste(name, 'D', ext, sep='.'),
+                            sep=sep, row.names = FALSE, ...)
+              }
+              if ('m' %in% timeScales) {
+                  zM <- as.data.tableM(object, complete=complete, day = day)
+                  write.table(zM,
+                            file=paste(name, 'M', ext, sep='.'),
+                            sep=sep, row.names = FALSE, ...)
+              }
+              if ('y' %in% timeScales) {
+                  zY <- as.data.tableY(object, complete=complete, day = day)
+                  write.table(zY,
+                            file=paste(name, 'Y', ext, sep='.'),
+                            sep=sep, row.names = FALSE, ...)
+              }
+          })
+\end{lstlisting}
+\subsection{xyplot}
+\label{sec:orgc632def}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+##################################################################
+## THEMES
+##################################################################
+xscale.solar <- function(...){ans <- xscale.components.default(...); ans$top=FALSE; ans}
+yscale.solar <- function(...){ans <- yscale.components.default(...); ans$right=FALSE; ans}
+
+solaR.theme <- function(pch=19, cex=0.7, region=rev(brewer.pal(9, 'YlOrRd')), ...) {
+  theme <- custom.theme.2(pch=pch, cex=cex, region=region, ...)
+  theme$strip.background$col='transparent'
+  theme$strip.shingle$col='transparent'
+  theme$strip.border$col='transparent'
+  theme
+}
+
+solaR.theme.2 <- function(pch=19, cex=0.7, region=rev(brewer.pal(9, 'YlOrRd')), ...) {
+  theme <- custom.theme.2(pch=pch, cex=cex, region=region, ...)
+  theme$strip.background$col='lightgray'
+  theme$strip.shingle$col='lightgray'
+  theme
+}
+
+##################################################################
+## XYPLOT
+##################################################################
+setGeneric('xyplot')
+
+setMethod('xyplot',
+          signature = c(x = 'data.frame', data = 'missing'),
+          definition = function(x, data,
+                                par.settings = solaR.theme.2,
+                                xscale.components=xscale.solar,
+                                yscale.components=yscale.solar,
+                                scales = list(y = 'free'),
+                                ...){
+              N <- length(x)-1
+              x0 <- x[, lapply(.SD, as.numeric), by = Dates]
+              x0 <- melt(x0, id.vars = 'Dates')
+              x0$variable <- factor(x0$variable,
+                                    levels = rev(levels(factor(x0$variable))))
+              xyplot(value ~ Dates | variable, x0,
+                     par.settings = par.settings,
+                     xscale.components = xscale.components,
+                     yscale.components = yscale.components,
+                     scales = scales,
+                     type = 'l', layout = c(1,N),
+                     ...)
+          })
+
+setMethod('xyplot',
+          signature=c(x='formula', data='Meteo'),
+          definition=function(x, data,
+                              par.settings=solaR.theme,
+                              xscale.components=xscale.solar,
+                              yscale.components=yscale.solar,
+                              ...){
+            data0=getData(data)
+            xyplot(x, data0,
+                   par.settings = par.settings,
+                   xscale.components = xscale.components,
+                   yscale.components = yscale.components,
+                   strip = strip.custom(strip.levels=c(TRUE, TRUE)), ...)
+          }
+          )
+
+setMethod('xyplot',
+          signature=c(x='formula', data='Sol'),
+          definition=function(x, data,
+                              par.settings=solaR.theme,
+                              xscale.components=xscale.solar,
+                              yscale.components=yscale.solar,
+                              ...){
+              data0=as.data.tableI(data, complete=TRUE, day=TRUE)
+              data0[, w := h2r(hms(Dates)-12)]
+              xyplot(x, data0,
+                     par.settings = par.settings,
+                     xscale.components = xscale.components,
+                     yscale.components = yscale.components,
+                     strip = strip.custom(strip.levels=c(TRUE, TRUE)), ...)
+          }
+          )
+
+setMethod('xyplot',
+          signature=c(x='formula', data='G0'),
+          definition=function(x, data,
+                              par.settings=solaR.theme,
+                              xscale.components=xscale.solar,
+                              yscale.components=yscale.solar,
+                              ...){
+            data0=as.data.tableI(data, complete=TRUE, day=TRUE)
+            xyplot(x, data0,
+                   par.settings = par.settings,
+                   xscale.components = xscale.components,
+                   yscale.components = yscale.components,
+                   strip = strip.custom(strip.levels=c(TRUE, TRUE)), ...)
+          }
+          )
+
+setMethod('xyplot',
+          signature=c(x='formula', data='Shade'),
+          definition=function(x, data,
+                              par.settings=solaR.theme,
+                              xscale.components=xscale.solar,
+                              yscale.components=yscale.solar,
+                              ...){
+            data0=as.data.table(data)
+            xyplot(x, data0,
+                   par.settings = par.settings,
+                   xscale.components = xscale.components,
+                   yscale.components = yscale.components,
+                   strip = strip.custom(strip.levels=c(TRUE, TRUE)), ...)
+          }
+          )
+
+setMethod('xyplot',
+          signature=c(x='Meteo', data='missing'),
+          definition=function(x, data,
+                              ...){
+              x0=getData(x)
+              xyplot(x0,
+                     scales=list(cex=0.6, rot=0, y='free'),
+                     strip=FALSE, strip.left=TRUE,
+                     par.strip.text=list(cex=0.6),
+                     ylab = '',
+                     ...)
+          }
+          )
+
+setMethod('xyplot',
+          signature=c(x='G0', data='missing'),
+          definition=function(x, data, ...){
+              x0 <- as.data.tableD(x, complete=FALSE)              
+              x0 <- melt(x0, id.vars = 'Dates')
+              xyplot(value~Dates, x0, groups = variable,
+                     par.settings=solaR.theme.2,
+                     xscale.components=xscale.solar,
+                     yscale.components=yscale.solar,
+                     superpose=TRUE,
+                     auto.key=list(space='right'),
+                     ylab='Wh/m\u00b2',
+                     type = 'l',
+                     ...)     
+          }
+          )
+
+setMethod('xyplot',
+          signature=c(x='ProdGCPV', data='missing'),
+          definition=function(x, data, ...){
+              x0 <- as.data.tableD(x, complete=FALSE)
+              xyplot(x0,
+                     strip = FALSE, strip.left = TRUE,
+                     ylab = '', ...)
+          }
+          )
+
+setMethod('xyplot',
+          signature=c(x='ProdPVPS', data='missing'),
+          definition=function(x, data, ...){
+              x0 <- as.data.tableD(x, complete=FALSE)
+              xyplot(x0,
+                     strip = FALSE, strip.left = TRUE,
+                     ylab = '', ...)
+          }
+          )
+\end{lstlisting}
+\section{Conjunto de datos}
+\label{sec:org1f17a14}
+\subsection{aguiar}
+\label{sec:orge035f34}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+data(MTM)
+Ktlim
+\end{lstlisting}
+
+\begin{verbatim}
+      [,1]  [,2]  [,3]  [,4]  [,5]  [,6]  [,7]  [,8]  [,9] [,10]
+[1,] 0.031 0.058 0.051 0.052 0.028 0.053 0.044 0.085 0.010 0.319
+[2,] 0.705 0.694 0.753 0.753 0.807 0.856 0.818 0.846 0.842 0.865
+\end{verbatim}
+
+
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+Ktmtm
+\end{lstlisting}
+
+\begin{verbatim}
+[1] 0.30 0.35 0.40 0.45 0.50 0.55 0.60 0.65 0.70 1.00
+\end{verbatim}
+
+
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+head(MTM)
+\end{lstlisting}
+
+\begin{verbatim}
+     V1    V2    V3    V4    V5    V6    V7    V8    V9 V10
+1 0.229 0.333 0.208 0.042 0.083 0.042 0.042 0.021 0.000   0
+2 0.167 0.319 0.194 0.139 0.097 0.028 0.042 0.000 0.014   0
+3 0.250 0.250 0.091 0.136 0.091 0.046 0.046 0.023 0.068   0
+4 0.158 0.237 0.158 0.263 0.026 0.053 0.079 0.026 0.000   0
+5 0.211 0.053 0.211 0.158 0.053 0.053 0.158 0.105 0.000   0
+6 0.125 0.125 0.250 0.188 0.063 0.125 0.000 0.125 0.000   0
+\end{verbatim}
+
+\subsection{SIAR}
+\label{sec:orge85bef0}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+data(SIAR)
+head(est_SIAR)
+\end{lstlisting}
+
+\begin{verbatim}
+        Estacion Codigo     Longitud  Latitud Altitud Fecha_Instalacion Fecha_Baja
+          <char> <char>        <num>    <num>   <int>            <Date>     <Date>
+1:       Villena    A01 -0.884444444 38.67639     519        1999-11-09 2000-03-19
+2: Camp de Mirra    A02 -0.772777778 38.67917     589        1999-11-09       <NA>
+3:   Vila Joiosa    A03 -0.256111111 38.52778      73        1999-11-10       <NA>
+4:        Ondara    A04  0.006388889 38.81833      38        1999-11-10       <NA>
+5:    Dénia Gata    A05  0.082500000 38.79250      86        1999-11-15       <NA>
+6:        Pinoso    A06 -1.060555556 38.42722     629        1999-11-14       <NA>
+\end{verbatim}
+
+\subsection{helios}
+\label{sec:org8c58dcb}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+data(helios)
+head(helios)
+\end{lstlisting}
+
+\begin{verbatim}
+  yyyy.mm.dd    G.0. TambMax TambMin
+1 2009/01/01  980.14   11.77    6.31
+2 2009/01/02 1671.80   15.08    7.27
+3 2009/01/03  671.02    9.33    6.36
+4 2009/01/04 2482.80   11.71    1.11
+5 2009/01/05 1178.19    7.33   -1.54
+6 2009/01/06 1722.31    7.77   -0.78
+\end{verbatim}
+
+\subsection{prodEx}
+\label{sec:orgff793e7}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+data(prodEx)
+head(prodEx)
+\end{lstlisting}
+
+\begin{verbatim}
+        Dates        1        2        3        4        5        6        7        8        9
+       <Date>    <num>    <num>    <num>    <num>    <num>    <num>    <num>    <num>    <num>
+1: 2007-07-02 8.874982 8.847533 7.173181 8.874982 8.920729 8.975626 8.948177 8.948177 8.948177
+2: 2007-07-03 8.710291 8.691992 8.655395 8.710291 8.737740 8.792637 8.774338 8.774338 8.746889
+3: 2007-07-04 8.746889 8.737740 8.865832 8.737740 8.765188 8.838384 8.810935 8.792637 8.801786
+4: 2007-07-05 8.280266 8.271117 8.408359 8.280266 8.344313 8.380911 8.353462 8.362612 8.316864
+5: 2007-07-06 8.399209 8.417508 8.509003 8.435807 8.490704 8.490704 8.499854 8.527302 8.472405
+6: 2007-07-07 8.197921 8.170473 8.335163 8.225370 8.243669 8.307715 8.298565 8.280266 8.243669
+         10       11       12       13       14       15       16       17       18       19       20
+      <num>    <num>    <num>    <num>    <num>    <num>    <num>    <num>    <num>    <num>    <num>
+1: 8.984775 8.783487 8.865832 8.966476 8.884131 8.774338 8.829234 8.627946 8.911580 8.807886 6.505270
+2: 8.801786 8.545601 8.682843 8.774338 8.691992 8.591348 8.646245 8.426658 8.710291 8.563900 3.952569
+3: 8.829234 8.545601 8.618797 8.829234 8.719441 8.618797 8.664544 8.426658 8.728590 8.612697 6.331430
+4: 8.380911 8.179622 8.271117 8.353462 8.280266 8.207071 8.261968 8.188772 7.950886 8.222320 5.498829
+5: 8.509003 8.316864 8.426658 8.490704 8.435807 8.344313 8.408359 8.371761 8.463256 8.332113 6.551017
+6: 8.326014 8.152174 8.161323 8.316864 8.234519 8.143024 8.179622 8.170473 8.243669 8.161323 6.669960
+         21       22
+      <num>    <num>
+1: 3.742131 3.980018
+2: 4.080662 3.238911
+3: 1.363270 1.043039
+4: 3.998316 2.461206
+5: 5.361587 4.959010
+6: 5.215195 4.922413
+\end{verbatim}
