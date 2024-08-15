@@ -1,2 +1,13 @@
 \chapter{Parte teórica y desarrollo del código}
-...
+El paquete =solaR2= toma como marco teórico el libro de Oscar Perpiñán, tutor de este trabajo, Energía Solar Fotovoltaica \cite{Perpinan2023} para cada una de las operaciones de cálculo que realizan cada una de las funciones.
+En la figura [[fig:prod-calculo]], se muestra un diagrama que resume los pasos que se siguen a la hora de calcular la producción de sistemas fotovoltaicos.
+#+ATTR_LATEX: :scale 0.6
+#+CAPTION: Procedimiento de cálculo
+#+NAME: fig:prod-calculo
+[[file:figuras/ProcedimientoCalculoRadiacionInclinada.pdf]]
+
+En la figura [[fig:prod-solar2]], se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico
+#+ATTR_LATEX: :scale 0.6
+#+CAPTION: Proceso de cálculo de las funciones de =solaR2=
+#+NAME: fig:prod-solar2
+[[file:figuras/procedure.pdf]]
