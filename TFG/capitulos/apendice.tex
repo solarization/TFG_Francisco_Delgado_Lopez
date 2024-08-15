@@ -3,9 +3,9 @@
 Todo el código que se muestra a continuación está disponible\ldots{}
 
 \section{Constructores}
-\label{sec:org1c3b462}
+\label{sec:orgba5aed2}
 \subsection{calcSol}
-\label{sec:org4892ef4}
+\label{sec:org8a53f7d}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 calcSol <- function(lat, BTd,
                     sample = 'hour', BTi,
@@ -36,7 +36,7 @@ calcSol <- function(lat, BTd,
 }
 \end{lstlisting}
 \subsection{calcG0}
-\label{sec:org72fd1f6}
+\label{sec:org8975e6a}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 calcG0 <- function(lat,
                    modeRad='prom',
@@ -220,7 +220,7 @@ calcG0 <- function(lat,
 }
 \end{lstlisting}
 \subsection{calcGef}
-\label{sec:orgb242d17}
+\label{sec:orgcdb31ec}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 calcGef<-function(lat,
                   modeTrk='fixed',      #c('two','horiz','fixed')
@@ -323,7 +323,7 @@ calcGef<-function(lat,
 }
 \end{lstlisting}
 \subsection{prodGCPV}
-\label{sec:org4102f32}
+\label{sec:orgb9933c9}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 prodGCPV<-function(lat,
                    modeTrk='fixed', 
@@ -448,7 +448,7 @@ prodGCPV<-function(lat,
 }
 \end{lstlisting}
 \subsection{prodPVPS}
-\label{sec:org106f353}
+\label{sec:orgc856590}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 prodPVPS<-function(lat, 
                    modeTrk='fixed', 
@@ -602,7 +602,7 @@ prodPVPS<-function(lat,
 }
 \end{lstlisting}
 \subsection{calcShd}
-\label{sec:org3ffcf63}
+\label{sec:orga8dbc6a}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 calcShd<-function(radEf,##class='Gef'
                   modeTrk='fixed',     #c('two','horiz','fixed')
@@ -691,7 +691,7 @@ calcShd<-function(radEf,##class='Gef'
 }
 \end{lstlisting}
 \subsection{optimShd}
-\label{sec:orge6702e2}
+\label{sec:orgc219643}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 optimShd<-function(lat,
                    modeTrk='fixed', 
@@ -823,7 +823,7 @@ optimShd<-function(lat,
 }
 \end{lstlisting}
 \subsection{meteoReaders}
-\label{sec:org4df7303}
+\label{sec:orgae408a7}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 #### monthly means of irradiation ####
 readG0dm <- function(G0dm, Ta = 25, lat = 0,
@@ -1050,7 +1050,9 @@ dt2Meteo <- function(file, lat, source = '', type){
 #### Liu and Jordan, Collares-Pereira and Rabl proposals ####
 collper <- function(sol, compD)
 {
-    ind.rep <- cumsum(c(1, as.Date(indexI(sol)) != 0))
+    Dates <- indexI(sol)
+    x <- as.Date(Dates)
+    ind.rep <- cumsum(c(1, diff(x) != 0))
     solI <- as.data.tableI(sol, complete = T)
     ws <- solI$ws
     w <- solI$w
@@ -1328,9 +1330,9 @@ readSIAR <- function(Lon = 0, Lat = 0,
 \end{lstlisting}
 
 \section{Clases}
-\label{sec:orgbdd5d8b}
+\label{sec:orga832598}
 \subsection{Sol}
-\label{sec:org8042f62}
+\label{sec:orga74baaa}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
          Class='Sol', ##Solar angles
@@ -1345,7 +1347,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{Meteo}
-\label{sec:orge31062d}
+\label{sec:orgf60a46e}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
     Class = 'Meteo', ##radiation and temperature data
@@ -1359,7 +1361,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{G0}
-\label{sec:orgfc89e75}
+\label{sec:org048f522}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
     Class = 'G0',
@@ -1376,7 +1378,7 @@ setClass(
 
 \end{lstlisting}
 \subsection{Gef}
-\label{sec:org28d92c0}
+\label{sec:org6b3b492}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
          Class='Gef',
@@ -1399,7 +1401,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{ProdGCPV}
-\label{sec:org0a37b6f}
+\label{sec:org44285be}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
          Class='ProdGCPV',
@@ -1418,7 +1420,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{ProdPVPS}
-\label{sec:org9adc48b}
+\label{sec:orga514a3c}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
          Class='ProdPVPS',
@@ -1438,7 +1440,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{Shade}
-\label{sec:org234b371}
+\label{sec:org2e5c1d1}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setClass(
          Class='Shade',
@@ -1458,9 +1460,9 @@ setClass(
 )
 \end{lstlisting}
 \section{Funciones}
-\label{sec:orgc1ff498}
+\label{sec:org97b482f}
 \subsection{corrFdKt}
-\label{sec:orgfe41dbd}
+\label{sec:orgf1bcda0}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 #### monthly Kt ####
 Ktm <- function(sol, G0dm){
@@ -1580,7 +1582,9 @@ FdKtBRL <- function(sol, G0i){
     pers <- persistence(sol, ktd)
 
     ##indexRep for ktd and pers
-    ind.rep <- cumsum(c(1, as.Date(indexI(sol)) != 0))
+    Dates <- indexI(sol)
+    x <- as.Date(Dates)
+    ind.rep <- cumsum(c(1, diff(x) != 0))
     ktd <- ktd[ind.rep]
     pers <- pers[ind.rep]
 
@@ -1613,7 +1617,7 @@ persistence <- function(sol, Ktd){
 }
 \end{lstlisting}
 \subsection{fBTd}
-\label{sec:orgdbd8bc8}
+\label{sec:org12b54b2}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fBTd<-function(mode='prom',
                year= as.POSIXlt(Sys.Date())$year+1900,
@@ -1633,7 +1637,7 @@ fBTd<-function(mode='prom',
 }
 \end{lstlisting}
 \subsection{fBTi}
-\label{sec:orgc8fc69a}
+\label{sec:orgf497541}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 intervalo <- function(day, sample){
     intervalo <- seq.POSIXt(from = as.POSIXct(paste(day, '00:00:00'), tz = 'UTC'),
@@ -1649,7 +1653,7 @@ fBTi <- function(d, sample = 'hour'){
 }
 \end{lstlisting}
 \subsection{fCompD}
-\label{sec:org8fc1c85}
+\label{sec:org45e6a68}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fCompD <- function(sol, G0d, corr = 'CPR', f)
 {
@@ -1708,7 +1712,7 @@ fCompD <- function(sol, G0d, corr = 'CPR', f)
 }
 \end{lstlisting}
 \subsection{fCompI}
-\label{sec:org1c50b28}
+\label{sec:org8e4ab4c}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fCompI <- function(sol, compD, G0I,
                    corr = 'EKDh', f,
@@ -1792,7 +1796,7 @@ fCompI <- function(sol, compD, G0I,
 }
 \end{lstlisting}
 \subsection{fInclin}
-\label{sec:orgabcdd6c}
+\label{sec:orgc0c34b4}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fInclin <- function(compI, angGen, iS = 2, alb = 0.2, horizBright = TRUE, HCPV = FALSE){
     ##compI es class='G0'
@@ -1859,7 +1863,7 @@ fInclin <- function(compI, angGen, iS = 2, alb = 0.2, horizBright = TRUE, HCPV =
 }
 \end{lstlisting}
 \subsection{fProd}
-\label{sec:org898e884}
+\label{sec:orga1f660d}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## voc, isc, vmpp, impp : *cell* values
 ## Voc, Isc, Vmpp, Impp: *module/generator* values
@@ -2122,7 +2126,7 @@ fProd <- function(inclin,
 }
 \end{lstlisting}
 \subsection{fPump}
-\label{sec:orgba067ba}
+\label{sec:org5aa048e}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fPump <- function(pump, H){
 
@@ -2177,7 +2181,7 @@ fPump <- function(pump, H){
 }
 \end{lstlisting}
 \subsection{fSolD}
-\label{sec:org46afd58}
+\label{sec:org8a4e0b8}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fSolD <- function(lat, BTd, method = 'michalsky'){
     if (abs(lat) > 90){
@@ -2209,7 +2213,7 @@ fSolD <- function(lat, BTd, method = 'michalsky'){
 }
 \end{lstlisting}
 \subsection{fSolI}
-\label{sec:orga82594c}
+\label{sec:orgce6d0a9}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fSolI <- function(solD, sample = 'hour', BTi,
                   EoT = TRUE, keep.night = TRUE, method = 'michalsky')
@@ -2276,7 +2280,7 @@ fSolI <- function(solD, sample = 'hour', BTi,
 }
 \end{lstlisting}
 \subsection{fSombra}
-\label{sec:orgf292971}
+\label{sec:orge39f7b2}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fSombra<-function(angGen, distances, struct, modeTrk='fixed',prom=TRUE){
 
@@ -2396,7 +2400,7 @@ fSombraHoriz<-function(angGen, distances, struct)
 }
 \end{lstlisting}
 \subsection{fTemp}
-\label{sec:org1ea7847}
+\label{sec:org6f13932}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fTemp<-function(sol, BD)
 {
@@ -2439,7 +2443,7 @@ fTemp<-function(sol, BD)
 }
 \end{lstlisting}
 \subsection{fTheta}
-\label{sec:orgc0b1c4f}
+\label{sec:orgcf9e9c3}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 fTheta<-function(sol, beta, alfa=0, modeTrk='fixed', betaLim=90, 
                  BT=FALSE, struct, dist)
@@ -2516,7 +2520,7 @@ fTheta<-function(sol, beta, alfa=0, modeTrk='fixed', betaLim=90,
 }
 \end{lstlisting}
 \subsection{HQCurve}
-\label{sec:org7524b45}
+\label{sec:orgec5e84e}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## HQCurve: no visible binding for global variable ‘fb’
 ## HQCurve: no visible binding for global variable ‘Q’
@@ -2584,7 +2588,7 @@ HQCurve<-function(pump){
 }
 \end{lstlisting}
 \subsection{local2Solar}
-\label{sec:org556f3f6}
+\label{sec:org846ccf2}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 local2Solar <- function(x, lon=NULL){	
   tz=attr(x, 'tzone')
@@ -2610,7 +2614,7 @@ local2Solar <- function(x, lon=NULL){
 }
 \end{lstlisting}
 \subsection{markovG0}
-\label{sec:org52f7498}
+\label{sec:orgbfdfd48}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## Objects loaded at startup from data/MTM.RData
 if(getRversion() >= "2.15.1") globalVariables(c(
@@ -2652,7 +2656,7 @@ markovG0 <- function(G0dm, solD){
 }
 \end{lstlisting}
 \subsection{NmgPVPS}
-\label{sec:org3b84132}
+\label{sec:org66ad161}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## NmgPVPS: no visible binding for global variable ‘Pnom’
 ## NmgPVPS: no visible binding for global variable ‘group.value’
@@ -2745,7 +2749,7 @@ NmgPVPS <- function(pump, Pg, H, Gd, Ta=30,
 }
 \end{lstlisting}
 \subsection{utils-angle}
-\label{sec:org72d81f0}
+\label{sec:org782e187}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 #degrees to radians
 d2r<-function(x){x*pi/180}
@@ -2772,7 +2776,7 @@ r2sec<-function(x){x*12/pi*3600}
 r2min<-function(x){x*12/pi*60}
 \end{lstlisting}
 \subsection{utils-time}
-\label{sec:org6328a59}
+\label{sec:orgdf7760a}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 #complete time to hours
 t2h <- function(x)
@@ -2800,11 +2804,11 @@ dom <- function(x){
 truncDay <- function(x){as.POSIXct(trunc(x, units='days'))}
 \end{lstlisting}
 \section{Métodos}
-\label{sec:org7a8b25e}
+\label{sec:org2a7e94a}
 \subsection{as.data.tableI}
-\label{sec:orgb13db01}
+\label{sec:org9d8de4a}
 \subsection{as.data.tableD}
-\label{sec:orge352815}
+\label{sec:org399e566}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setGeneric('as.data.tableD', function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.tableD')})
 
@@ -2922,7 +2926,7 @@ setMethod('as.data.tableD',
           )
 \end{lstlisting}
 \subsection{as.data.tableM}
-\label{sec:org6d711ac}
+\label{sec:org9df65f2}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setGeneric('as.data.tableM', function(object, complete = FALSE, day=FALSE){standardGeneric('as.data.tableM')})
 
@@ -3002,7 +3006,7 @@ setMethod('as.data.tableM',
           )
 \end{lstlisting}
 \subsection{as.data.tableY}
-\label{sec:org9c40530}
+\label{sec:orgb97aed3}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setGeneric('as.data.tableY', function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.tableY')})
 
@@ -3066,7 +3070,7 @@ setMethod('as.data.tableY',
           )
 \end{lstlisting}
 \subsection{compare}
-\label{sec:org0c8bb23}
+\label{sec:org6aeec3d}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## compareFunction: no visible binding for global variable ‘name’
 ## compareFunction: no visible binding for global variable ‘x’
@@ -3129,7 +3133,7 @@ setMethod('compare',
           )
 \end{lstlisting}
 \subsection{getData}
-\label{sec:org36348c0}
+\label{sec:org6687037}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## extracts the data for class Meteo ##
 setGeneric('getData', function(object){standardGeneric('getData')})
@@ -3143,7 +3147,7 @@ setMethod('getData',
           })
 \end{lstlisting}
 \subsection{getG0}
-\label{sec:orgbd0f1a9}
+\label{sec:org859837c}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## extracts the global irradiance for class Meteo ##
 setGeneric('getG0', function(object){standardGeneric('getG0')})
@@ -3157,7 +3161,7 @@ setMethod('getG0',
           })
 \end{lstlisting}
 \subsection{getLat}
-\label{sec:org171bfde}
+\label{sec:orgd1ef72b}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## extracts the latitude from the objects ##
 setGeneric('getLat', function(object, units = 'rad')
@@ -3178,7 +3182,7 @@ setMethod('getLat',
           })
 \end{lstlisting}
 \subsection{indexD}
-\label{sec:org3ed441d}
+\label{sec:org23a3e1a}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## extract the index of the daily data ##
 setGeneric('indexD', function(object){standardGeneric('indexD')})
@@ -3193,7 +3197,7 @@ setMethod('indexD',
           definition = function(object){as.POSIXct(getData(object)$Dates)})
 \end{lstlisting}
 \subsection{indexI}
-\label{sec:orgc4d86d1}
+\label{sec:orgce54731}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## extract the index of the intradaily data ##
 setGeneric('indexI', function(object){standardGeneric('indexI')})
@@ -3204,34 +3208,9 @@ setMethod('indexI',
           })
 \end{lstlisting}
 \subsection{levelplot}
-\label{sec:org077c55d}
+\label{sec:org5e02d73}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setGeneric('levelplot')
-
-## setMethod('levelplot',
-##           signature=c(x='formula', data='zoo'),
-##           definition=function(x, data,
-##             par.settings=solaR.theme,
-##             ##            panel=panel.levelplot.raster, interpolate=TRUE,...){
-##             xscale.components=xscale.solar,
-##             yscale.components=yscale.solar,
-##             ...){
-##             data0=as.data.frame(data)
-##             ind=index(data)
-##             data0$day=doy(ind) ##Incorporo dia, mes y año para facilitar la formula.
-##             data0$month=month(ind)
-##             data0$year=year(ind)
-##             if (!('w' %in% names(data0))){
-##               data0$w=h2r(hms(ind)-12) ##hora solar en radianes
-##             }
-##             levelplot(x, data0, par.settings=par.settings,
-##                       xscale.components=xscale.components,
-##                       yscale.components=yscale.components,
-##                       ##                     panel=panel, interpolate=interpolate,
-##                       ...)
-##           }
-##           )
-
 
 setMethod('levelplot',
           signature=c(x='formula', data='Meteo'),
@@ -3241,13 +3220,18 @@ setMethod('levelplot',
                               xscale.components = xscale.solar,
                               yscale.components = yscale.solar,
                               ...){
-            data0=getData(data)
-            levelplot(x, data0,
-                      par.settings = par.settings,
-                      xscale.components = xscale.components,
-                      yscale.components = yscale.components,
-                      panel = panel, interpolate = interpolate,
-                      ...)
+              data0=getData(data)
+              ind=data0$Dates
+              data0$day=doy(ind)
+              data0$month=month(ind)
+              data0$year=year(ind)
+              data0$w=h2r(hms(ind)-12)
+              levelplot(x, data0,
+                        par.settings = par.settings,
+                        xscale.components = xscale.components,
+                        yscale.components = yscale.components,
+                        panel = panel, interpolate = interpolate,
+                        ...)
           }
           )
 
@@ -3259,13 +3243,17 @@ setMethod('levelplot',
                               xscale.components = xscale.solar,
                               yscale.components = yscale.solar,
                               ...){
-            data0=as.data.tableI(data, complete=TRUE, day=TRUE)
-            levelplot(x, data0,
-                      par.settings = par.settings,
-                      xscale.components = xscale.components,
-                      yscale.components = yscale.components,
-                      panel = panel, interpolate = interpolate,
-                      ...)
+              data0=as.data.tableI(data, complete=TRUE, day=TRUE)
+              ind=data0$Dates
+              data0$day=doy(ind)
+              data0$month=month(ind)
+              data0$year=year(ind)
+              levelplot(x, data0,
+                        par.settings = par.settings,
+                        xscale.components = xscale.components,
+                        yscale.components = yscale.components,
+                        panel = panel, interpolate = interpolate,
+                        ...)
           }
           )
 
@@ -3277,18 +3265,22 @@ setMethod('levelplot',
                               xscale.components = xscale.solar,
                               yscale.components = yscale.solar,
                               ...){
-            data0=as.data.tableI(data, complete=TRUE, day=TRUE)
-            levelplot(x, data0, 
-                      par.settings = par.settings,
-                      xscale.components = xscale.components,
-                      yscale.components = yscale.components,
-                      panel = panel, interpolate = interpolate,
-                      ...)
+              data0=as.data.tableI(data, complete=TRUE, day=TRUE)
+              ind=data0$Dates
+              data0$day=doy(ind)
+              data0$month=month(ind)
+              data0$year=year(ind)
+              levelplot(x, data0, 
+                        par.settings = par.settings,
+                        xscale.components = xscale.components,
+                        yscale.components = yscale.components,
+                        panel = panel, interpolate = interpolate,
+                        ...)
           }
           )
 \end{lstlisting}
 \subsection{losses}
-\label{sec:org82867e5}
+\label{sec:org15134e2}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setGeneric('losses', function(object){standardGeneric('losses')})
 
@@ -3381,7 +3373,7 @@ setMethod('compareLosses', 'ProdGCPV',
           )
 \end{lstlisting}
 \subsection{mergeSolar}
-\label{sec:org845261b}
+\label{sec:org7aaae33}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setGeneric('mergesolaR', signature='...', function(...){standardGeneric('mergesolaR')})
 
@@ -3452,7 +3444,7 @@ setMethod('mergesolaR',
           )
 \end{lstlisting}
 \subsection{shadeplot}
-\label{sec:org9039dee}
+\label{sec:org4cc0ce7}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setGeneric('shadeplot', function(x, ...)standardGeneric('shadeplot'))
 
@@ -3520,7 +3512,7 @@ setMethod('shadeplot', signature(x='Shade'),
           )
 \end{lstlisting}
 \subsection{window}
-\label{sec:org62583d0}
+\label{sec:org4381585}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setMethod('[',
           signature='Meteo',
@@ -3752,7 +3744,7 @@ setMethod('[',
           )
 \end{lstlisting}
 \subsection{writeSolar}
-\label{sec:org82d1a2c}
+\label{sec:org7b23e56}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 setGeneric('writeSolar', function(object, file,
                                   complete=FALSE, day=FALSE,
@@ -3792,7 +3784,7 @@ setMethod('writeSolar', signature=(object='Sol'),
           })
 \end{lstlisting}
 \subsection{xyplot}
-\label{sec:orgc632def}
+\label{sec:orga212662}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ##################################################################
 ## THEMES
@@ -3959,9 +3951,9 @@ setMethod('xyplot',
           )
 \end{lstlisting}
 \section{Conjunto de datos}
-\label{sec:org1f17a14}
+\label{sec:org1adadee}
 \subsection{aguiar}
-\label{sec:orge035f34}
+\label{sec:org5318613}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 data(MTM)
 Ktlim
@@ -3998,7 +3990,7 @@ head(MTM)
 \end{verbatim}
 
 \subsection{SIAR}
-\label{sec:orge85bef0}
+\label{sec:orga84f1d4}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 data(SIAR)
 head(est_SIAR)
@@ -4016,7 +4008,7 @@ head(est_SIAR)
 \end{verbatim}
 
 \subsection{helios}
-\label{sec:org8c58dcb}
+\label{sec:orgf1b5e17}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 data(helios)
 head(helios)
@@ -4033,7 +4025,7 @@ head(helios)
 \end{verbatim}
 
 \subsection{prodEx}
-\label{sec:orgff793e7}
+\label{sec:orgc09e4d2}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 data(prodEx)
 head(prodEx)
@@ -4064,4 +4056,22 @@ head(prodEx)
 4: 3.998316 2.461206
 5: 5.361587 4.959010
 6: 5.215195 4.922413
+\end{verbatim}
+
+\subsection{pumpCoef}
+\label{sec:org2254739}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+data(pumpCoef)
+head(pumpCoef)
+\end{lstlisting}
+
+\begin{verbatim}
+      Qn stages  Qmax   Pmn          a        b        c     g     h     i       j      k      l
+   <int>  <int> <num> <int>      <num>    <num>    <num> <num> <num> <num>   <num>  <num>  <num>
+1:     2      6   2.6   370 0.01409736 0.018576  -3.6324 -0.32  0.74  0.22 -0.1614 0.5247 0.0694
+2:     2      9   2.6   370 0.02114604 0.027864  -5.4486 -0.32  0.74  0.22 -0.1614 0.5247 0.0694
+3:     2     13   2.6   550 0.03054428 0.040248  -7.8702 -0.12  0.49  0.27 -0.1614 0.5247 0.0694
+4:     2     18   2.6   750 0.04229208 0.055728 -10.8972 -0.16  0.42  0.47 -0.1614 0.5247 0.0694
+5:     2     23   2.6  1100 0.05403988 0.071208 -13.9242 -0.20  0.51  0.42 -0.1614 0.5247 0.0694
+6:     2     28   2.6  1500 0.06578768 0.086688 -16.9512 -0.24  0.50  0.49 -0.1614 0.5247 0.0694
 \end{verbatim}
