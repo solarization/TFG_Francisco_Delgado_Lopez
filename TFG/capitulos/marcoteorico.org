@@ -1,13 +1,40 @@
 \chapter{Parte teórica y desarrollo del código}
 El paquete =solaR2= toma como marco teórico el libro de Oscar Perpiñán, tutor de este trabajo, Energía Solar Fotovoltaica \cite{Perpinan2023} para cada una de las operaciones de cálculo que realizan cada una de las funciones.
 En la figura [[fig:prod-calculo]], se muestra un diagrama que resume los pasos que se siguen a la hora de calcular la producción de sistemas fotovoltaicos.
-#+ATTR_LATEX: :scale 0.6
+#+ATTR_LATEX: :height 0.5\textheight :width 0.9\textwidth :options keepaspectratio
 #+CAPTION: Procedimiento de cálculo
 #+NAME: fig:prod-calculo
 [[file:figuras/ProcedimientoCalculoRadiacionInclinada.pdf]]
-
-En la figura [[fig:prod-solar2]], se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico
-#+ATTR_LATEX: :scale 0.6
+Estos pasos son:
+1. Obtener la irradiación global diaria en el plano horizontal
+2. A partir de la irradiación global, obtener las componentes de difusa y directa.
+3. Se trasladan estos valores de irradición a valores de irradiancia.
+4. Con estos valores se pueden obtener los valores correspondientes en el plano del generador
+   1. Sin los efectos de la suciedad de los modulos y las sombras que se generan unos con otros.
+   2. Con estos efectos
+5. Integrando estos valores se pueden obtener las estimaciones irradiación diaria difusa, directa y global
+6. El generador fotovoltaico produce una potencia en corriente continua dependiente del rendimiento del mismo..
+7. Se transforma en potencia en corriente alterna mediante un inversor que tiene una eficiencia asociada.
+8. Integrando esta potencia se puede obtener la energía que produce el generador en un tiempo determinado.
+En la figura [[fig:prod-solar2]], se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
+#+ATTR_LATEX: :height 0.5\textheight :width 0.9\textwidth :options keepaspectratio
 #+CAPTION: Proceso de cálculo de las funciones de =solaR2=
 #+NAME: fig:prod-solar2
 [[file:figuras/procedure.pdf]]
+A la hora de estimar la producción, el programa sigue los siguientes procesos:
+1. Se calcula la geometría que definen la posición de la Tierra frente al Sol
+   1. Mediante la función fSolD, se calculan:
+      - El ángulo de declinación de la Tierra (\(\delta\)\nomenclature[delta]{\(\delta\)}{Declinación}).
+      - La corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol (\(\epsilon_0\)\nomenclature[epsilon0]{\(\epsilon_0\)}{Corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol}).
+      - La ecuación del tiempo (\(EoT\)\nomenclature{\(EoT\)}{Ecuación del tiempo}).
+      - El ángulo del amanecer (\(\omega_s\)\nomenclature[omegas]{\(\omega_s\)}{Ángulo del amanecer}).
+   2. Mediante la función fSolI, se calculan:
+      - La hora solar (\(\omega\)\nomenclature[omega]{\(\omega\)}{Hora solar o tiempo solar verdadero}).
+      - El momento del día en el que es de noche.
+      - El ángulo cenital solar (\(\theta_{zs}\)\nomenclature[thetazs]{\theta_{zs}\}{Ángulo cenital solar}).
+      - El ángulo de altura solar (\(\gamma_s\)\nomenclature[gammas]{\(\gamma_s\)}{Altura solar}).
+      - El ángulo azimutal solar (\(\psi_s\)\nomenclature[psis]{\(\psi_s\)}{Ángulo azimutal solar}).
+      - La irradiancia extra-terrestre en el plano horizontal (\(B_0(0)\)\nomenclature{\(B_0(0)\)}{Irradiancia extra-atmosférica o extra-terrestre en el plano horizontal}).
+   3. El resultado de ambas funciones se juntan en un solo objeto de clase =Sol=
+2. Se calcula la radiación en el plano horizontal
+   1. 
