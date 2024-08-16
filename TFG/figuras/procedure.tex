@@ -46,7 +46,7 @@ class/.style ={draw=Blue, thick, ellipse, fill=Blue!10,
   \matrix [matrix of nodes, rounded corners, fill=gray!10, draw=black, column
   sep=15mm,row sep=7mm, minimum width=4cm] (Horizontal) {
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \node [function] (readBD) {\texttt{readBD}}; &
+    \node [class] (Meteo) {\texttt{Meteo}}; &
     \node {}; &
     \node {}; \\
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -78,7 +78,7 @@ class/.style ={draw=Blue, thick, ellipse, fill=Blue!10,
   };
 \end{scope}
 
-\begin{scope}[yshift=-13.5cm]
+\begin{scope}[yshift=-14cm]
   \matrix [matrix of nodes, rounded corners, fill=gray!10, draw=black,column
   sep=15mm,row sep=7mm, minimum width=4cm] (System) {
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -98,7 +98,7 @@ class/.style ={draw=Blue, thick, ellipse, fill=Blue!10,
    \draw [->, BrickRed] (fSolI) .. controls ++(90:1.5) .. (calcSol);
    \draw [->, Blue] (calcSol) -- (Sol);
    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-   \draw [->, BrickRed] (readBD) .. controls ++(-45:1.5) .. (calcG0);
+   \draw [->, Blue] (Meteo) .. controls ++(-45:1.5) .. (calcG0);
    \draw [->, BrickRed] (fCompD) -- (calcG0);
    \draw [->, BrickRed] (fCompI) .. controls ++(45:1.5) .. (calcG0);
    \draw [->, Blue] (calcG0) -- (G0);
@@ -110,15 +110,15 @@ class/.style ={draw=Blue, thick, ellipse, fill=Blue!10,
    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
    \draw [->, BrickRed] (fProd) -- (prodGCPV);
    \draw [->, Blue] (prodGCPV) -- (ProdGCPV);
-%   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  \draw [->, black] (Sol) .. controls ++(-90:3) and ++ (90:5) .. (calcG0);
-  \draw [->, black] (G0) .. controls ++(-90:3) and ++ (90:5) .. (calcGef);
-  \draw [->, black] (Gef) .. controls ++(-90:2) and ++ (90:3) .. (prodGCPV);
-  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  \node [color=black!90, below left] at (Geometry.north east) {Geometría Solar};
-  \node [color=black!90, below left, align = right] at (Horizontal.north east) {Radiación \\en el plano horizontal};
-  \node [color=black!90, below left, align = right] at (Generator.north east) {Radiación \\en el plano del generador};
-  \node [color=black!90, below left] at (System.north east) {Producción eléctrica};
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+   \draw [->, black] (Sol) .. controls ++(-90:3) and ++ (90:5) .. (calcG0);
+   \draw [->, black] (G0) .. controls ++(-90:3) and ++ (90:5) .. (calcGef);
+   \draw [->, black] (Gef) .. controls ++(-90:2) and ++ (90:3) .. (prodGCPV);
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+   \node [color=black!90, below left] at (Geometry.north east) {Geometría Solar};
+   \node [color=black!90, below left, align = right] at (Horizontal.north east) {Radiación \\en el plano horizontal};
+   \node [color=black!90, below left, align = right] at (Generator.north east) {Radiación \\en el plano del generador};
+   \node [color=black!90, below left] at (System.north east) {Producción eléctrica};
 \end{scope}
 
 \end{tikzpicture}
