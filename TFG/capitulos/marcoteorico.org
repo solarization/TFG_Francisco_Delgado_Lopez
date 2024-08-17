@@ -22,20 +22,57 @@ En la figura [[fig:prod-solar2]], se muestra el proceso de cálculo que sigue el
 #+NAME: fig:prod-solar2
 [[file:figuras/procedure.pdf]]
 A la hora de estimar la producción, el programa sigue los siguientes procesos:
-1. Se calcula la geometría que definen la posición de la Tierra frente al Sol
-   1. Mediante la función fSolD[fn:1], se calculan:
+1. Se calcula la geometría que definen la posición de la Tierra frente al Sol.
+   1. Mediante la función fSolD[fn:1], se calcula:
       - El ángulo de declinación de la Tierra (\(\delta\)\nomenclature[delta]{\(\delta\)}{Declinación}).
       - La corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol (\(\epsilon_0\)\nomenclature[epsilon0]{\(\epsilon_0\)}{Corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol}).
-      - La ecuación del tiempo (\(EoT\)\nomenclature{\(EoT\)}{Ecuación del tiempo}).
+      - La ecuación del tiempo (\(EoT\)\nomenclature[EoT]{\(EoT\)}{Ecuación del tiempo}).
       - El ángulo del amanecer (\(\omega_s\)\nomenclature[omegas]{\(\omega_s\)}{Ángulo del amanecer}).
-   2. Mediante la función fSolI, se calculan:
+   2. Mediante la función fSolI, se calcula:
       - La hora solar (\(\omega\)\nomenclature[omega]{\(\omega\)}{Hora solar o tiempo solar verdadero}).
       - El momento del día en el que es de noche.
-      - El ángulo cenital solar (\(\theta_{zs}\)\nomenclature[thetazs]{\theta_{zs}\}{Ángulo cenital solar}).
+      - El ángulo cenital solar (\(\theta_{zs}\))\nomenclature[thetazs]{\(\theta_{zs}\)}{Ángulo cenital solar}.
       - El ángulo de altura solar (\(\gamma_s\)\nomenclature[gammas]{\(\gamma_s\)}{Altura solar}).
       - El ángulo azimutal solar (\(\psi_s\)\nomenclature[psis]{\(\psi_s\)}{Ángulo azimutal solar}).
-      - La irradiancia extra-terrestre en el plano horizontal (\(B_0(0)\)\nomenclature{\(B_0(0)\)}{Irradiancia extra-atmosférica o extra-terrestre en el plano horizontal}).
-   3. El resultado de ambas funciones se juntan en un solo objeto de clase =Sol= mediante la función calcSol
-2. Se calcula la radiación en el plano horizontal
-   1. 
+      - La irradiancia extra-terrestre en el plano horizontal (\(B_0(0)\)\nomenclature[B00]{\(B_0\)}{Irradiancia extra-atmosférica o extra-terrestre}).
+   3. El resultado de ambas funciones se juntan en un solo objeto de clase =Sol= mediante la función calcSol.
+2. Se estima la radiación en el plano horizontal.
+   1. La información de irradiación en el plano horizontal (en todos sus componentes o, en su defecto, solo la global(\(G_d(0)\))) y temperatura viene dada en un objeto de clase =Meteo=.
+   2. Mediante la función fCompD, se calcula:
+      - La fracción de radiación difusa diaria (\(F_{Dd}\)).
+      - El índice de claridad diario (\(K_{Td}\)).
+      - Si solo se tienen datos de la componente global de irradición:
+	- La irradiación directa en el plano horizontal (\(B_d(0)\)).
+	- La irradiación difusa en el plano horizontal (\(D_d(0)\)).
+   3. Mediante la función fCompI, se calcula:
+      - La fracción de radiación difusa (\(F_D\)\nomenclature[FD]{\(F_D\)}{Fracción de difusa}).
+      - El índice de claridad (\(K_T\)\nomenclature[KT]{\(K_T\)}{Índice de claridad}).
+      - Si solo se tienen datos de la componenete global de irradiancia (\(G(0)\)\nomenclature[G0]{\(G\)}{Irradiancia global}):
+	- La irradiancia directa en el plano horizontal (\(B(0)\)\nomenclature[B]{\(B\)}{Irradiancia directa}).
+	- La irradiancia difusa en el plano horizontal (\(D(0)\)\nomenclature[D]{\(D\)}{Irradiancia difusa}).
+   4. El resultado de ambas funciones junto a medias mensuales y valores anuales se consolidan en un solo objeto de clase =G0= (que incluye los objetos =Sol= y =Meteo= de los que parte) mediante la función calcG0.
+3. Se estima la radiación en el plano del generador.
+   1. La información de radiación puede venir dada en forma de un objeto de clase =Meteo= o un objeto de clase =G0= (ya que es este último el que se necesita para estimar la radiación en el plano del generador).
+   2. Mediante la función fTheta, se calcula:
+      - Ángulo de inclinación de la superficie del módulo (\(\beta\)\nomenclature[beta]{\(\beta\)}{Ángulo de inclinación de la superficie}).
+      - Ángulo azimutal de la superficie del módulo (\(\alpha\) \nomenclature[alpha]{\(\alpha\)}{Ángulo azimutal de la superficie}).
+      - Ángulo de incidencia de la irradiancia solar en la superficie del módulo (\(\theta_s\)\nomenclature[thetas]{\(\theta_s\)}{Ángulo de incidencia o ángulo entre el vector solar y el vector director de una superficie}).
+   3. Mediante la función fInclin, se calcula:
+      - La irradiancia extra-terrestre en la superficie inclinada (\(B_0(\beta, \alpha)\)).
+      - La irradiancia directa normal (\(B(n)\)).
+      - Las irradiancias global (\(G(\beta, \alpha)\)), directa (\(B(\beta, \alpha)\)), difusa (\(D(\beta, \alpha)\))(total, isotropica y anisotrópica) y de albedo (\(R(\beta, \alpha)\) \nomenclature[R]{\(R\)}{Irradiancia de albedo}) sobre una superficie inclinada.
+      - Las irradiancias efectivas global (\(G_{ef}(\beta, \alpha)\)), directa (\(B_{ef}(\beta, \alpha)\)), difusa (\(D_{ef}(\beta, \alpha)\))(total, isotropica y anisotrópica) y de albedo (\(R_{ef}(\beta, \alpha)\)) sobre una superficie inclinada.
+      - Los factores de pérdidas angulares para las componentes directa (\(FT\) \nomenclature[FT]{\(FT\)}{Factor de pérdidas angulares}), difusa (\(FT_D\)), y de albedo (\(FT_R\)).
+   4. Mediante la función calcShd, se puede calcular:
+      - La irradiancia e irradiación incluyendo sombras para seguidores a dos ejes y horizontales y paneles fijos mediante la función fSombra.  
+   5. El resultado de estas funciones junto a medias mensuales y valores anuales se consolidan en un solo objeto de clase =Gef= (que incluye el objeto =G0= del que parte) mediante la función calcGef.
+4. Se estima la producción eléctrica.
+   1. Mediante la función fProd, se calcula:
+      - La potencia en corriente continua (\(P_{DC}\)).
+      - La potencia en corriente alterna (\(P_{AC}\).
+   2. Estos resultados, llevados a valores diarios, mensuales y anuales, se pueden convertir en valores de energía (\(E_{DC}\) y \(E_{AC}\)) y de productividad del sistema (\(Y_f\)), los cuales se consolidan en un solo objeto de clase =ProdGCPV= (que incluye el objeto =Gef= del que parte) mediante la función prodGCPV.
+      
+
+
+
 [fn:1] Toda función mencionada en este cápitulo, está descrita en el anexo [[ref:sec:Código completo]]
