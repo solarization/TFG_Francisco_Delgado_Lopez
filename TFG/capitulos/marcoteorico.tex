@@ -1,10 +1,10 @@
 \chapter{Parte teórica y desarrollo del código}
 El paquete \texttt{solaR2} toma como marco teórico el libro de Oscar Perpiñán, tutor de este trabajo, Energía Solar Fotovoltaica \cite{Perpinan2023} para cada una de las operaciones de cálculo que realizan cada una de las funciones.
-En la figura \ref{fig:org4df8904}, se muestra un diagrama que resume los pasos que se siguen a la hora de calcular la producción de sistemas fotovoltaicos.
+En la figura \ref{fig:org1b09b93}, se muestra un diagrama que resume los pasos que se siguen a la hora de calcular la producción de sistemas fotovoltaicos.
 \begin{figure}[p]
 \centering
 \includegraphics[keepaspectratio,width=0.9\textwidth,height=0.5\textheight]{figuras/ProcedimientoCalculoRadiacionInclinada.pdf}
-\caption{\label{fig:org4df8904}Procedimiento de cálculo}
+\caption{\label{fig:org1b09b93}Procedimiento de cálculo}
 \end{figure}
 Estos pasos son:
 \begin{enumerate}
@@ -21,11 +21,52 @@ Estos pasos son:
 \item Se transforma en potencia en corriente alterna mediante un inversor que tiene una eficiencia asociada.
 \item Integrando esta potencia se puede obtener la energía que produce el generador en un tiempo determinado.
 \end{enumerate}
-En la figura \ref{fig:org117981e}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
+
+\section{Naturaleza de la radiación solar}
+\label{sec:org8962cea}
+Para el cáulculo de la radiación solar que incide en una superficie se deben distinguir tres componentes diferenciados:
+\begin{itemize}
+\item \textbf{Radiación Directa}, B\nomenclature[B]{\(B\)}{Radiación directa}: porción de radiación que procede en línea recta desde el Sol.
+\item \textbf{Radiación Difusa}, D\nomenclature[D]{\(D\)}{Radiación difusa}: fracción de radiación que procede de todo el cielo, excepto del Sol. Son todos aquellos rayos que dispersa la atmósfera.
+\item \textbf{Radiación del albedo}, R\nomenclature[R]{\(R\)}{Radiación del albedo}: parte de la radiación procedente de la reflexión con el suelo.
+\end{itemize}
+La suma de las tres componentes constituye la denominada radiación global:
+\begin{center}
+\[
+G = B + D + R
+\]
+\end{center}
+Tomando como base el libro antes mencionado \cite{Perpinan2023}, se describirá el proceso que se ha de seguir para obtener una estimación de las componenetes directa y difusa a partir del dato de radiación global, dado que es el que comúnmente se puede obtener de una localización determinada.
+
+\subsection{Radiación fuera de la atmósfera terrestre}
+\label{sec:org25f0941}
+Lo primero que se menciona en dicho proceso es la obtención de la irradiancia denominda extra-terrestre o extra-atmosférica, que es la radiación que llega a la atmósfera, directamente desde el Sol, que no sufre ninguna pérdida por interaccionar con algún medio. Como la relación entre el tamaño de nuesto plenta y la distancia entre el Sol y la Tierra es muy reducida, es posible asumir que el valor de dicha irradiancia es constante, siendo este valor \(B_0=1367\frac{W}{m^2}\), según varias mediciones.
+Como la órbita que describe la Tierra alrededor del Sol no es totalmente circular, sino que tiene forma de elipse, para calcular la irradiancia incidente en una superficie tangente a la atmosfera en ua latitud concreta, debemos aplicar un facot de correción de la excentricidad de la elipse:
+\begin{center}
+\[
+B_0(0)=B_0\epsilon_0cos\theta_{zs}
+\]
+\end{center}
+Siendo cada componente:
+\begin{itemize}
+\item Irradiancia extra-terrestre: \(B_0=1367\frac{W}{m^2}\) \nomenclature[B0]{\(B_0\)}{Irradiancia extra-atmosférica o extra-terrestre}
+\item Factor de corrección por excentricidad:\(\epsilon_0\)\nomenclature[epsilon0]{\(\epsilon_0\)}{Corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol}
+Se define la siguiente función:
+\item Ángulo zenital solar:\(\theta_{zs}\) \nomenclature[thetazs]\{\(\theta_{zs}\)\}\{Ángulo cenital solar\}
+Se define en la siguiente función:
+En esta función se incluyen los siguientes componentes:
+\begin{itemize}
+\item Declinación: \(\delta\) \nomenclature[delta]{\(\delta\)}{Declinación}
+\item Hora solar o tiempo solar verdadero: \(\omega\) \nomenclature[omega]{\(\omega\)}{Hora solar o tiempo solar verdadero}
+\end{itemize}
+\end{itemize}
+
+
+En la figura \ref{fig:org239b44c}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
 \begin{figure}[p]
 \centering
 \includegraphics[keepaspectratio,width=0.9\textwidth,height=0.5\textheight]{figuras/procedure.pdf}
-\caption{\label{fig:org117981e}Proceso de cálculo de las funciones de \texttt{solaR2}}
+\caption{\label{fig:org239b44c}Proceso de cálculo de las funciones de \texttt{solaR2}}
 \end{figure}
 A la hora de estimar la producción, el programa sigue los siguientes procesos:
 \begin{enumerate}
@@ -33,19 +74,19 @@ A la hora de estimar la producción, el programa sigue los siguientes procesos:
 \begin{enumerate}
 \item Mediante la función fSolD\footnote{Toda función mencionada en este cápitulo, está descrita en el anexo \ref{sec:Código completo}}, se calcula:
 \begin{itemize}
-\item El ángulo de declinación de la Tierra (\(\delta\)\nomenclature[delta]{\(\delta\)}{Declinación}).
-\item La corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol (\(\epsilon_0\)\nomenclature[epsilon0]{\(\epsilon_0\)}{Corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol}).
+\item El ángulo de declinación de la Tierra (\(\delta\)).
+\item La corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol (\(\epsilon_0\)).
 \item La ecuación del tiempo (\(EoT\)\nomenclature[EoT]{\(EoT\)}{Ecuación del tiempo}).
 \item El ángulo del amanecer (\(\omega_s\)\nomenclature[omegas]{\(\omega_s\)}{Ángulo del amanecer}).
 \end{itemize}
 \item Mediante la función fSolI, se calcula:
 \begin{itemize}
-\item La hora solar (\(\omega\)\nomenclature[omega]{\(\omega\)}{Hora solar o tiempo solar verdadero}).
+\item La hora solar (\(\omega\)).
 \item El momento del día en el que es de noche.
-\item El ángulo cenital solar (\(\theta_{zs}\))\nomenclature[thetazs]\{\(\theta_{zs}\)\}\{Ángulo cenital solar\}.
+\item El ángulo zenital solar (\(\theta_{zs}\)).
 \item El ángulo de altura solar (\(\gamma_s\)\nomenclature[gammas]{\(\gamma_s\)}{Altura solar}).
 \item El ángulo azimutal solar (\(\psi_s\)\nomenclature[psis]{\(\psi_s\)}{Ángulo azimutal solar}).
-\item La irradiancia extra-terrestre en el plano horizontal (\(B_0(0)\)\nomenclature[B00]{\(B_0\)}{Irradiancia extra-atmosférica o extra-terrestre}).
+\item La irradiancia extra-terrestre en el plano horizontal (\(B_0(0)\)).
 \end{itemize}
 \item El resultado de ambas funciones se juntan en un solo objeto de clase \texttt{Sol} mediante la función calcSol.
 \end{enumerate}
@@ -68,8 +109,8 @@ A la hora de estimar la producción, el programa sigue los siguientes procesos:
 \item El índice de claridad (\(K_T\)\nomenclature[KT]{\(K_T\)}{Índice de claridad}).
 \item Si solo se tienen datos de la componenete global de irradiancia (\(G(0)\)\nomenclature[G0]{\(G\)}{Irradiancia global}):
 \begin{itemize}
-\item La irradiancia directa en el plano horizontal (\(B(0)\)\nomenclature[B]{\(B\)}{Irradiancia directa}).
-\item La irradiancia difusa en el plano horizontal (\(D(0)\)\nomenclature[D]{\(D\)}{Irradiancia difusa}).
+\item La irradiancia directa en el plano horizontal (\(B(0)\)).
+\item La irradiancia difusa en el plano horizontal (\(D(0)\)).
 \end{itemize}
 \end{itemize}
 \item El resultado de ambas funciones junto a medias mensuales y valores anuales se consolidan en un solo objeto de clase \texttt{G0} (que incluye los objetos \texttt{Sol} y \texttt{Meteo} de los que parte) mediante la función calcG0.
@@ -87,9 +128,9 @@ A la hora de estimar la producción, el programa sigue los siguientes procesos:
 \begin{itemize}
 \item La irradiancia extra-terrestre en la superficie inclinada (\(B_0(\beta, \alpha)\)).
 \item La irradiancia directa normal (\(B(n)\)).
-\item Las irradiancias global (\(G(\beta, \alpha)\)), directa (\(B(\beta, \alpha)\)), difusa (\(D(\beta, \alpha)\))(total, isotropica y anisotrópica) y de albedo (\(R(\beta, \alpha)\) \nomenclature[R]{\(R\)}{Irradiancia de albedo}) sobre una superficie inclinada.
-\item Las irradiancias efectivas global (\(G_{ef}(\beta, \alpha)\)), directa (\(B_{ef}(\beta, \alpha)\)), difusa (\(D_{ef}(\beta, \alpha)\))(total, isotropica y anisotrópica) y de albedo (\(R_{ef}(\beta, \alpha)\)) sobre una superficie inclinada.
-\item Los factores de pérdidas angulares para las componentes directa (\(FT\) \nomenclature[FT]{\(FT\)}{Factor de pérdidas angulares}), difusa (\(FT_D\)), y de albedo (\(FT_R\)).
+\item Las irradiancias global (\(G(\beta, \alpha)\)), directa (\(B(\beta, \alpha)\)), difusa (\(D(\beta, \alpha)\))(total, isotropica y anisotrópica) y del albedo (\(R(\beta, \alpha)\)) sobre una superficie inclinada.
+\item Las irradiancias efectivas global (\(G_{ef}(\beta, \alpha)\)), directa (\(B_{ef}(\beta, \alpha)\)), difusa (\(D_{ef}(\beta, \alpha)\))(total, isotropica y anisotrópica) y del albedo (\(R_{ef}(\beta, \alpha)\)) sobre una superficie inclinada.
+\item Los factores de pérdidas angulares para las componentes directa (\(FT\) \nomenclature[FT]{\(FT\)}{Factor de pérdidas angulares}), difusa (\(FT_D\)), y del albedo (\(FT_R\)).
 \end{itemize}
 \item Mediante la función calcShd, se puede calcular:
 \begin{itemize}

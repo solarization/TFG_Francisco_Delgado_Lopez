@@ -16,6 +16,39 @@ Estos pasos son:
 6. El generador fotovoltaico produce una potencia en corriente continua dependiente del rendimiento del mismo..
 7. Se transforma en potencia en corriente alterna mediante un inversor que tiene una eficiencia asociada.
 8. Integrando esta potencia se puede obtener la energía que produce el generador en un tiempo determinado.
+
+* Naturaleza de la radiación solar
+Para el cáulculo de la radiación solar que incide en una superficie se deben distinguir tres componentes diferenciados:
+- *Radiación Directa*, B\nomenclature[B]{\(B\)}{Radiación directa}: porción de radiación que procede en línea recta desde el Sol.
+- *Radiación Difusa*, D\nomenclature[D]{\(D\)}{Radiación difusa}: fracción de radiación que procede de todo el cielo, excepto del Sol. Son todos aquellos rayos que dispersa la atmósfera.
+- *Radiación del albedo*, R\nomenclature[R]{\(R\)}{Radiación del albedo}: parte de la radiación procedente de la reflexión con el suelo.
+La suma de las tres componentes constituye la denominada radiación global:
+#+begin_center
+\[
+G = B + D + R
+\]
+#+end_center
+Tomando como base el libro antes mencionado \cite{Perpinan2023}, se describirá el proceso que se ha de seguir para obtener una estimación de las componenetes directa y difusa a partir del dato de radiación global, dado que es el que comúnmente se puede obtener de una localización determinada.
+
+** Radiación fuera de la atmósfera terrestre
+Lo primero que se menciona en dicho proceso es la obtención de la irradiancia denominda extra-terrestre o extra-atmosférica, que es la radiación que llega a la atmósfera, directamente desde el Sol, que no sufre ninguna pérdida por interaccionar con algún medio. Como la relación entre el tamaño de nuesto plenta y la distancia entre el Sol y la Tierra es muy reducida, es posible asumir que el valor de dicha irradiancia es constante, siendo este valor $B_0=1367\frac{W}{m^2}$, según varias mediciones.
+Como la órbita que describe la Tierra alrededor del Sol no es totalmente circular, sino que tiene forma de elipse, para calcular la irradiancia incidente en una superficie tangente a la atmosfera en ua latitud concreta, debemos aplicar un facot de correción de la excentricidad de la elipse:
+#+begin_center
+\[
+B_0(0)=B_0\epsilon_0cos\theta_{zs}
+\]
+#+end_center
+Siendo cada componente:
+- Irradiancia extra-terrestre: $B_0=1367\frac{W}{m^2}$ \nomenclature[B0]{\(B_0\)}{Irradiancia extra-atmosférica o extra-terrestre}
+- Factor de corrección por excentricidad:\(\epsilon_0\)\nomenclature[epsilon0]{\(\epsilon_0\)}{Corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol}
+  Se define la siguiente función:
+- Ángulo zenital solar:\(\theta_{zs}\) \nomenclature[thetazs]{\(\theta_{zs}\)}{Ángulo cenital solar}
+  Se define en la siguiente función:
+  En esta función se incluyen los siguientes componentes:
+  - Declinación: \(\delta\) \nomenclature[delta]{\(\delta\)}{Declinación}
+  - Hora solar o tiempo solar verdadero: \(\omega\) \nomenclature[omega]{\(\omega\)}{Hora solar o tiempo solar verdadero}
+    
+
 En la figura [[fig:prod-solar2]], se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
 #+ATTR_LATEX: :height 0.5\textheight :width 0.9\textwidth :options keepaspectratio
 #+CAPTION: Proceso de cálculo de las funciones de =solaR2=
@@ -24,17 +57,17 @@ En la figura [[fig:prod-solar2]], se muestra el proceso de cálculo que sigue el
 A la hora de estimar la producción, el programa sigue los siguientes procesos:
 1. Se calcula la geometría que definen la posición de la Tierra frente al Sol.
    1. Mediante la función fSolD[fn:1], se calcula:
-      - El ángulo de declinación de la Tierra (\(\delta\)\nomenclature[delta]{\(\delta\)}{Declinación}).
-      - La corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol (\(\epsilon_0\)\nomenclature[epsilon0]{\(\epsilon_0\)}{Corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol}).
+      - El ángulo de declinación de la Tierra (\(\delta\)).
+      - La corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol (\(\epsilon_0\)).
       - La ecuación del tiempo (\(EoT\)\nomenclature[EoT]{\(EoT\)}{Ecuación del tiempo}).
       - El ángulo del amanecer (\(\omega_s\)\nomenclature[omegas]{\(\omega_s\)}{Ángulo del amanecer}).
    2. Mediante la función fSolI, se calcula:
-      - La hora solar (\(\omega\)\nomenclature[omega]{\(\omega\)}{Hora solar o tiempo solar verdadero}).
+      - La hora solar (\(\omega\)).
       - El momento del día en el que es de noche.
-      - El ángulo cenital solar (\(\theta_{zs}\))\nomenclature[thetazs]{\(\theta_{zs}\)}{Ángulo cenital solar}.
+      - El ángulo zenital solar (\(\theta_{zs}\)).
       - El ángulo de altura solar (\(\gamma_s\)\nomenclature[gammas]{\(\gamma_s\)}{Altura solar}).
       - El ángulo azimutal solar (\(\psi_s\)\nomenclature[psis]{\(\psi_s\)}{Ángulo azimutal solar}).
-      - La irradiancia extra-terrestre en el plano horizontal (\(B_0(0)\)\nomenclature[B00]{\(B_0\)}{Irradiancia extra-atmosférica o extra-terrestre}).
+      - La irradiancia extra-terrestre en el plano horizontal (\(B_0(0)\)).
    3. El resultado de ambas funciones se juntan en un solo objeto de clase =Sol= mediante la función calcSol.
 2. Se estima la radiación en el plano horizontal.
    1. La información de irradiación en el plano horizontal (en todos sus componentes o, en su defecto, solo la global(\(G_d(0)\))) y temperatura viene dada en un objeto de clase =Meteo=.
@@ -48,8 +81,8 @@ A la hora de estimar la producción, el programa sigue los siguientes procesos:
       - La fracción de radiación difusa (\(F_D\)\nomenclature[FD]{\(F_D\)}{Fracción de difusa}).
       - El índice de claridad (\(K_T\)\nomenclature[KT]{\(K_T\)}{Índice de claridad}).
       - Si solo se tienen datos de la componenete global de irradiancia (\(G(0)\)\nomenclature[G0]{\(G\)}{Irradiancia global}):
-	- La irradiancia directa en el plano horizontal (\(B(0)\)\nomenclature[B]{\(B\)}{Irradiancia directa}).
-	- La irradiancia difusa en el plano horizontal (\(D(0)\)\nomenclature[D]{\(D\)}{Irradiancia difusa}).
+	- La irradiancia directa en el plano horizontal (\(B(0)\)).
+	- La irradiancia difusa en el plano horizontal (\(D(0)\)).
    4. El resultado de ambas funciones junto a medias mensuales y valores anuales se consolidan en un solo objeto de clase =G0= (que incluye los objetos =Sol= y =Meteo= de los que parte) mediante la función calcG0.
 3. Se estima la radiación en el plano del generador.
    1. La información de radiación puede venir dada en forma de un objeto de clase =Meteo= o un objeto de clase =G0= (ya que es este último el que se necesita para estimar la radiación en el plano del generador).
@@ -60,9 +93,9 @@ A la hora de estimar la producción, el programa sigue los siguientes procesos:
    3. Mediante la función fInclin, se calcula:
       - La irradiancia extra-terrestre en la superficie inclinada (\(B_0(\beta, \alpha)\)).
       - La irradiancia directa normal (\(B(n)\)).
-      - Las irradiancias global (\(G(\beta, \alpha)\)), directa (\(B(\beta, \alpha)\)), difusa (\(D(\beta, \alpha)\))(total, isotropica y anisotrópica) y de albedo (\(R(\beta, \alpha)\) \nomenclature[R]{\(R\)}{Irradiancia de albedo}) sobre una superficie inclinada.
-      - Las irradiancias efectivas global (\(G_{ef}(\beta, \alpha)\)), directa (\(B_{ef}(\beta, \alpha)\)), difusa (\(D_{ef}(\beta, \alpha)\))(total, isotropica y anisotrópica) y de albedo (\(R_{ef}(\beta, \alpha)\)) sobre una superficie inclinada.
-      - Los factores de pérdidas angulares para las componentes directa (\(FT\) \nomenclature[FT]{\(FT\)}{Factor de pérdidas angulares}), difusa (\(FT_D\)), y de albedo (\(FT_R\)).
+      - Las irradiancias global (\(G(\beta, \alpha)\)), directa (\(B(\beta, \alpha)\)), difusa (\(D(\beta, \alpha)\))(total, isotropica y anisotrópica) y del albedo (\(R(\beta, \alpha)\)) sobre una superficie inclinada.
+      - Las irradiancias efectivas global (\(G_{ef}(\beta, \alpha)\)), directa (\(B_{ef}(\beta, \alpha)\)), difusa (\(D_{ef}(\beta, \alpha)\))(total, isotropica y anisotrópica) y del albedo (\(R_{ef}(\beta, \alpha)\)) sobre una superficie inclinada.
+      - Los factores de pérdidas angulares para las componentes directa (\(FT\) \nomenclature[FT]{\(FT\)}{Factor de pérdidas angulares}), difusa (\(FT_D\)), y del albedo (\(FT_R\)).
    4. Mediante la función calcShd, se puede calcular:
       - La irradiancia e irradiación incluyendo sombras para seguidores a dos ejes y horizontales y paneles fijos mediante la función fSombra.  
    5. El resultado de estas funciones junto a medias mensuales y valores anuales se consolidan en un solo objeto de clase =Gef= (que incluye el objeto =G0= del que parte) mediante la función calcGef.
