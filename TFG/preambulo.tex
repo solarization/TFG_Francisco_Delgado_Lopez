@@ -6,6 +6,7 @@
 \usepackage[spanish]{babel}
 %\usepackage[latin1]{inputenc}
 \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 
 %algunos sÌmbolos matemáticos y paquetes para usar subimágenes
 \usepackage{amsmath}
@@ -13,6 +14,8 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{appendix}
+\usepackage{flafter}
+
 %Márgenes
 \usepackage[a4paper]{geometry}
 \geometry{verbose, tmargin=2.5cm, bmargin=2.5cm, rmargin=2.5cm}
@@ -115,9 +118,12 @@
   title=\lstname,
   upquote=true,  % requires textcomp
   literate={á}{{\'a}}1 {ñ}{{\~n}}1 {é}{{\'e}}1 {ó}{{\'o}}1 {º}{{\textordmasculine}}1
-           {’}{{\textquotesingle}}1{‘}{{\textquoteleft}}1 
+           {’}{{\textquotesingle}}1{‘}{{\textquoteleft}}1
+           {“}{{\textquotedbl}}1{”}{{\textquotedbl}}1
 }
 
+%captions de listings
+\renewcommand{\lstlistingname}{Extracto de código}
 
 %configuración de verbatim
 \usepackage{fancyvrb}
@@ -131,3 +137,9 @@
 \usepackage[backend=biber, style=alphabetic, sorting=ynt]{biblatex}
 \addbibresource{bibliografia/bibliografia.bib}
 
+% Configuración de numeración y tabla de contenidos
+\setsecnumdepth{paragraph}   % Permite numerar hasta subsecciones
+\settocdepth{section}      % Incluye hasta las subsecciones en la tabla de contenidos
+
+% Table of contents
+\usepackage{tocloft}
