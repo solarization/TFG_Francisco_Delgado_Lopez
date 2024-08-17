@@ -1,33 +1,33 @@
 
 \begin{thenomenclature} 
 \nomgroup{A}
-  \item [{\(\alpha\)}]\begingroup Ángulo azimutal de la superficie\nomeqref {3.0}\nompageref{9}
+  \item [{\(\alpha\)}]\begingroup Ángulo azimutal de la superficie\nomeqref {3.0}\nompageref{14}
 \nomgroup{B}
-  \item [{\(B_0\)}]\begingroup Irradiancia extra-atmosférica o extra-terrestre\nomeqref {3.0}\nompageref{9}
-  \item [{\(B\)}]\begingroup Irradiancia directa\nomeqref {3.0}\nompageref{9}
-  \item [{\(\beta\)}]\begingroup Ángulo de inclinación de la superficie\nomeqref {3.0}\nompageref{9}
+  \item [{\(B_0\)}]\begingroup Irradiancia extra-atmosférica o extra-terrestre\nomeqref {3.0}\nompageref{8}
+  \item [{\(B\)}]\begingroup Radiación directa\nomeqref {3.0}\nompageref{7}
+  \item [{\(\beta\)}]\begingroup Ángulo de inclinación de la superficie\nomeqref {3.0}\nompageref{13}
 \nomgroup{D}
-  \item [{\(D\)}]\begingroup Irradiancia difusa\nomeqref {3.0}\nompageref{9}
-  \item [{\(\delta\)}]\begingroup Declinación\nomeqref {3.0}\nompageref{7}
+  \item [{\(D\)}]\begingroup Radiación difusa\nomeqref {3.0}\nompageref{7}
+  \item [{\(\delta\)}]\begingroup Declinación\nomeqref {3.0}\nompageref{9}
 \nomgroup{E}
-  \item [{\(EoT\)}]\begingroup Ecuación del tiempo\nomeqref {3.0}\nompageref{9}
-  \item [{\(\epsilon_0\)}]\begingroup Corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol\nomeqref {3.0}\nompageref{7}
+  \item [{\(EoT\)}]\begingroup Ecuación del tiempo\nomeqref {3.0}\nompageref{13}
+  \item [{\(\epsilon_0\)}]\begingroup Corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol\nomeqref {3.0}\nompageref{8}
 \nomgroup{F}
-  \item [{\(F_D\)}]\begingroup Fracción de difusa\nomeqref {3.0}\nompageref{9}
-  \item [{\(FT\)}]\begingroup Factor de pérdidas angulares\nomeqref {3.0}\nompageref{10}
+  \item [{\(F_D\)}]\begingroup Fracción de difusa\nomeqref {3.0}\nompageref{13}
+  \item [{\(FT\)}]\begingroup Factor de pérdidas angulares\nomeqref {3.0}\nompageref{14}
 \nomgroup{G}
-  \item [{\(G\)}]\begingroup Irradiancia global\nomeqref {3.0}\nompageref{9}
-  \item [{\(\gamma_s\)}]\begingroup Altura solar\nomeqref {3.0}\nompageref{9}
+  \item [{\(G\)}]\begingroup Irradiancia global\nomeqref {3.0}\nompageref{13}
+  \item [{\(\gamma_s\)}]\begingroup Altura solar\nomeqref {3.0}\nompageref{13}
 \nomgroup{K}
-  \item [{\(K_T\)}]\begingroup Índice de claridad\nomeqref {3.0}\nompageref{9}
+  \item [{\(K_T\)}]\begingroup Índice de claridad\nomeqref {3.0}\nompageref{13}
 \nomgroup{O}
-  \item [{\(\omega\)}]\begingroup Hora solar o tiempo solar verdadero\nomeqref {3.0}\nompageref{9}
-  \item [{\(\omega_s\)}]\begingroup Ángulo del amanecer\nomeqref {3.0}\nompageref{9}
+  \item [{\(\omega\)}]\begingroup Hora solar o tiempo solar verdadero\nomeqref {3.0}\nompageref{10}
+  \item [{\(\omega_s\)}]\begingroup Ángulo del amanecer\nomeqref {3.0}\nompageref{13}
 \nomgroup{P}
-  \item [{\(\psi_s\)}]\begingroup Ángulo azimutal solar\nomeqref {3.0}\nompageref{9}
+  \item [{\(\psi_s\)}]\begingroup Ángulo azimutal solar\nomeqref {3.0}\nompageref{13}
 \nomgroup{R}
-  \item [{\(R\)}]\begingroup Irradiancia de albedo\nomeqref {3.0}\nompageref{9}
+  \item [{\(R\)}]\begingroup Radiación del albedo\nomeqref {3.0}\nompageref{7}
 \nomgroup{T}
-  \item [{\(\theta_s\)}]\begingroup Ángulo de incidencia o ángulo entre el vector solar y el vector director de una superficie\nomeqref {3.0}\nompageref{9}
+  \item [{\(\theta_s\)}]\begingroup Ángulo de incidencia o ángulo entre el vector solar y el vector director de una superficie\nomeqref {3.0}\nompageref{14}
 
 \end{thenomenclature}

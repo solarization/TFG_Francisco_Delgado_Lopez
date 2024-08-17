@@ -21,8 +21,8 @@
 \clearpage
 
 # Índice de tablas.
-\listoftables
-\clearpage
+# \listoftables
+# \clearpage
 
 # Lista de abreviaturas y símbolos
 \printnomenclature{}
