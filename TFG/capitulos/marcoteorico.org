@@ -23,7 +23,7 @@ En la figura [[fig:prod-solar2]], se muestra el proceso de cálculo que sigue el
 [[file:figuras/procedure.pdf]]
 A la hora de estimar la producción, el programa sigue los siguientes procesos:
 1. Se calcula la geometría que definen la posición de la Tierra frente al Sol
-   1. Mediante la función fSolD, se calculan:
+   1. Mediante la función fSolD[fn:1], se calculan:
       - El ángulo de declinación de la Tierra (\(\delta\)\nomenclature[delta]{\(\delta\)}{Declinación}).
       - La corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol (\(\epsilon_0\)\nomenclature[epsilon0]{\(\epsilon_0\)}{Corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol}).
       - La ecuación del tiempo (\(EoT\)\nomenclature{\(EoT\)}{Ecuación del tiempo}).
@@ -35,6 +35,7 @@ A la hora de estimar la producción, el programa sigue los siguientes procesos:
       - El ángulo de altura solar (\(\gamma_s\)\nomenclature[gammas]{\(\gamma_s\)}{Altura solar}).
       - El ángulo azimutal solar (\(\psi_s\)\nomenclature[psis]{\(\psi_s\)}{Ángulo azimutal solar}).
       - La irradiancia extra-terrestre en el plano horizontal (\(B_0(0)\)\nomenclature{\(B_0(0)\)}{Irradiancia extra-atmosférica o extra-terrestre en el plano horizontal}).
-   3. El resultado de ambas funciones se juntan en un solo objeto de clase =Sol=
+   3. El resultado de ambas funciones se juntan en un solo objeto de clase =Sol= mediante la función calcSol
 2. Se calcula la radiación en el plano horizontal
    1. 
+[fn:1] Toda función mencionada en este cápitulo, está descrita en el anexo [[ref:sec:Código completo]]

@@ -1,10 +1,10 @@
 \chapter{Parte teórica y desarrollo del código}
 El paquete \texttt{solaR2} toma como marco teórico el libro de Oscar Perpiñán, tutor de este trabajo, Energía Solar Fotovoltaica \cite{Perpinan2023} para cada una de las operaciones de cálculo que realizan cada una de las funciones.
-En la figura \ref{fig:orgbd45819}, se muestra un diagrama que resume los pasos que se siguen a la hora de calcular la producción de sistemas fotovoltaicos.
+En la figura \ref{fig:orgb083d1b}, se muestra un diagrama que resume los pasos que se siguen a la hora de calcular la producción de sistemas fotovoltaicos.
 \begin{figure}[p]
 \centering
 \includegraphics[keepaspectratio,width=0.9\textwidth,height=0.5\textheight]{figuras/ProcedimientoCalculoRadiacionInclinada.pdf}
-\caption{\label{fig:orgbd45819}Procedimiento de cálculo}
+\caption{\label{fig:orgb083d1b}Procedimiento de cálculo}
 \end{figure}
 Estos pasos son:
 \begin{enumerate}
@@ -21,17 +21,17 @@ Estos pasos son:
 \item Se transforma en potencia en corriente alterna mediante un inversor que tiene una eficiencia asociada.
 \item Integrando esta potencia se puede obtener la energía que produce el generador en un tiempo determinado.
 \end{enumerate}
-En la figura \ref{fig:orge3c8a79}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
+En la figura \ref{fig:org47056fc}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
 \begin{figure}[p]
 \centering
 \includegraphics[keepaspectratio,width=0.9\textwidth,height=0.5\textheight]{figuras/procedure.pdf}
-\caption{\label{fig:orge3c8a79}Proceso de cálculo de las funciones de \texttt{solaR2}}
+\caption{\label{fig:org47056fc}Proceso de cálculo de las funciones de \texttt{solaR2}}
 \end{figure}
 A la hora de estimar la producción, el programa sigue los siguientes procesos:
 \begin{enumerate}
 \item Se calcula la geometría que definen la posición de la Tierra frente al Sol
 \begin{enumerate}
-\item Mediante la función fSolD, se calculan:
+\item Mediante la función fSolD\footnote{Toda función mencionada en este cápitulo, está descrita en el anexo \ref{sec:Código completo}}, se calculan:
 \begin{itemize}
 \item El ángulo de declinación de la Tierra (\(\delta\)\nomenclature[delta]{\(\delta\)}{Declinación}).
 \item La corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol (\(\epsilon_0\)\nomenclature[epsilon0]{\(\epsilon_0\)}{Corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol}).
@@ -47,7 +47,7 @@ A la hora de estimar la producción, el programa sigue los siguientes procesos:
 \item El ángulo azimutal solar (\(\psi_s\)\nomenclature[psis]{\(\psi_s\)}{Ángulo azimutal solar}).
 \item La irradiancia extra-terrestre en el plano horizontal (\(B_0(0)\)\nomenclature{\(B_0(0)\)}{Irradiancia extra-atmosférica o extra-terrestre en el plano horizontal}).
 \end{itemize}
-\item El resultado de ambas funciones se juntan en un solo objeto de clase \texttt{Sol}
+\item El resultado de ambas funciones se juntan en un solo objeto de clase \texttt{Sol} mediante la función calcSol
 \end{enumerate}
 \item Se calcula la radiación en el plano horizontal
 \begin{enumerate}
