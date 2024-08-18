@@ -6,14 +6,16 @@
   \item [{\(B_0\)}]\begingroup Irradiancia extra-atmosférica o extra-terrestre\nomeqref {3.2}\nompageref{8}
   \item [{\(B\)}]\begingroup Radiación directa\nomeqref {3.0}\nompageref{7}
 \nomgroup{D}
-  \item [{\(D\)}]\begingroup Radiación difusa\nomeqref {3.0}\nompageref{8}
+  \item [{\(D\)}]\begingroup Radiación difusa\nomeqref {3.0}\nompageref{7}
+  \item [{\(D^C\)}]\begingroup Radiación difusa circunsolar\nomeqref {3.12}\nompageref{10}
   \item [{\(\delta\)}]\begingroup Declinación\nomeqref {3.2}\nompageref{8}
   \item [{\(\Delta \lambda\)}]\begingroup Diferencia entre la longitud local y la longitud del huso horario\nomeqref {3.2}\nompageref{8}
+  \item [{\(D^I\)}]\begingroup Radiación difusa isotrópica\nomeqref {3.12}\nompageref{10}
 \nomgroup{E}
-  \item [{\(EoT\)}]\begingroup Ecuación del tiempo\nomeqref {3.2}\nompageref{9}
+  \item [{\(EoT\)}]\begingroup Ecuación del tiempo\nomeqref {3.2}\nompageref{8}
   \item [{\(\epsilon_0\)}]\begingroup Corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol\nomeqref {3.2}\nompageref{8}
 \nomgroup{F}
-  \item [{\(F_D\)}]\begingroup Fracción de difusa\nomeqref {3.6}\nompageref{10}
+  \item [{\(F_D\)}]\begingroup Fracción de difusa\nomeqref {3.6}\nompageref{9}
 \nomgroup{G}
   \item [{\(G\)}]\begingroup Radiación global\nomeqref {3.0}\nompageref{8}
 \nomgroup{K}
@@ -25,6 +27,8 @@
   \item [{\(\phi\)}]\begingroup Latitud\nomeqref {3.2}\nompageref{8}
 \nomgroup{R}
   \item [{\(R\)}]\begingroup Radiación del albedo\nomeqref {3.0}\nompageref{8}
+  \item [{\(r_D\)}]\begingroup Relación entre la irradiancia y la irradiación difusa en el plano horizontal\nomeqref {3.9}\nompageref{10}
+  \item [{\(\rho\)}]\begingroup Coeficiente de reflexión del terreno para la irradiancia de albedo\nomeqref {3.15}\nompageref{12}
 \nomgroup{T}
   \item [{\(TO\)}]\begingroup Hora oficial\nomeqref {3.2}\nompageref{8}
 

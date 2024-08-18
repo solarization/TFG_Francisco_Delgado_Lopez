@@ -1,10 +1,10 @@
 \chapter{Parte teórica y desarrollo del código}
 El paquete \texttt{solaR2} toma como marco teórico el libro de Oscar Perpiñán, tutor de este trabajo, Energía Solar Fotovoltaica \cite{Perpinan2023} para cada una de las operaciones de cálculo que realizan cada una de las funciones.
-En la figura \ref{fig:orge0cb772}, se muestra un diagrama que resume los pasos que se siguen a la hora de calcular la producción de sistemas fotovoltaicos.
-\begin{figure}[p]
+En la figura \ref{fig:orge196888}, se muestra un diagrama que resume los pasos que se siguen a la hora de calcular la producción de sistemas fotovoltaicos.
+\begin{figure}[h]
 \centering
 \includegraphics[keepaspectratio,width=0.9\textwidth,height=0.5\textheight]{figuras/ProcedimientoCalculoRadiacionInclinada.pdf}
-\caption{\label{fig:orge0cb772}Procedimiento de cálculo}
+\caption{\label{fig:orge196888}Procedimiento de cálculo}
 \end{figure}
 Estos pasos son:
 \begin{enumerate}
@@ -23,7 +23,7 @@ Estos pasos son:
 \end{enumerate}
 
 \section{Naturaleza de la radiación solar}
-\label{sec:orgb9df69c}
+\label{sec:org2abfff2}
 Para el cálculo de la radiación solar que incide en una superficie se deben distinguir tres componentes diferenciados:
 \begin{itemize}
 \item \textbf{Radiación Directa}, B\nomenclature[B]{\(B\)}{Radiación directa}: porción de radiación que procede en línea recta desde el Sol.
@@ -38,7 +38,7 @@ G = B + D + R
 Tomando como base el libro antes mencionado \cite{Perpinan2023}, se describirá el proceso que se ha de seguir para obtener una estimación de las componenetes directa y difusa a partir del dato de radiación global, dado que es el que comúnmente se puede obtener de una localización determinada.
 
 \subsection{Radiación fuera de la atmósfera terrestre}
-\label{sec:org89250ce}
+\label{sec:org6112cd0}
 Lo primero que se menciona en dicho proceso es la obtención de la irradiancia denominda extra-terrestre o extra-atmosférica, que es la radiación que llega a la atmósfera, directamente desde el Sol, que no sufre ninguna pérdida por interaccionar con algún medio. Como la relación entre el tamaño de nuesto plenta y la distancia entre el Sol y la Tierra es muy reducida, es posible asumir que el valor de dicha irradiancia es constante, siendo este valor \(B_0=1367\frac{W}{m^2}\), según varias mediciones.
 Como la órbita que describe la Tierra alrededor del Sol no es totalmente circular, sino que tiene forma de elipse, para calcular la irradiancia incidente en una superficie tangente a la atmosfera en ua latitud concreta, debemos aplicar un facot de correción de la excentricidad de la elipse:
 \begin{equation}
@@ -102,7 +102,7 @@ $d_{n}$ & {\footnotesize 17} & {\footnotesize 45} & {\footnotesize 74} & {\footn
 \par\end{center}{\footnotesize \par}
 
 \subsection{Cálculo de componentes de radiación solar}
-\label{sec:org4603e3a}
+\label{sec:orge0c0310}
 Para caracterizar la radiación solar en un lugar, Liu y Jordan \cite{Liu.Jordan1960} propusieron el índice de claridad, \(K_T\). Este índice es la relación entre la radiación global y la radiación extra-atmosférica, ambas en el plano horizontal. El índice de claridad diario es la relación entre los valores diarios de irradiación: \nomenclature[KT]{\(K_T\)}{Índice de claridad} \nomenclature[KTd]\{\(K_{Td}\)\}\{Índice de claridad diario\}
 \begin{equation}
 K_{Td}=\frac{G_d(0)}{B_{0d}(0)}
@@ -130,16 +130,81 @@ D_d(0)=F_D\cdot G_d(0)
 \end{equation}
 \begin{equation}
 B_d(0)=G_d(0)-D_d(0)
-\label{dif-rad}
+\label{dir-rad}
 \end{equation}
 
+\section{Radiación en superficies inclinadas}
+\label{sec:org7ab4547}
+Dados los valores de irradiación diaria difusa, directa y global en el plano horizontal se puede realizar la transformación al plano inclinado. Para ello, es necesario estimar el perfil de irradiancia correspondiente a cada valor de irradiación. dado que la variación solar durante una hora es baja, podemos suponer que el valor medio de la irradiancia durante esa hora coincide numéricamente con la irradiación horaria. Por otra parte, el análisis de valores \emph{medios}  en \emph{largas} series temporales ha mostrado que la relación entre la irradiancia y la irradición extra-atmosférica \cite{Collares-Pereira.Rabl1979} (\ref{eq:rel-dif}):
+\begin{equation}
+r_D=\frac{D(0)}{D_d(0)}=\frac{B_0(0)}{B_{0d}(0)}
+\label{eq:rel-dif}
+\end{equation}
+Este factor \(r_D\)\nomenclature[rD]{\(r_D\)}{Relación entre la irradiancia y la irradiación difusa en el plano horizontal} es calculable directamente sabiendo que la relación entre irradiancia e irradiación extra-atmosférica es deducible teóricamente a partir de las ecuaciones \ref{eq:irrad_horiz} \ref{eq:irrad_dia}:
+\begin{equation}
+\frac{B_0(0)}{B_{0d}(0)}=\frac{\pi}{T}\cdot \frac{cos(\omega)-cos(\omega_s)}{\omega_s\cdot cos(\omega_s)-sin(\omega_s)}=r_D
+\label{eq:rel-dif2}
+\end{equation}
+el mismo análisis mostró una relación entre la irradiancia e irradiación global asimilable a una función dependiente de la hora solar (\ref{eq:rel-glo}):
+\begin{equation}
+r_G=\frac{G(0)}{G_d(0)}=r_D\cdot(a+b\cdot cos(w))
+\label{eq:rel-glo}
+\end{equation}
+Donde:
+\begin{itemize}
+\item \(a=0,409-0,5016\cdot sin(\omega_s+\frac{\pi}{3})\)
+\item \(b=0,6609+0,4767\cdot sin(\omega_s+\frac{\pi}{3})\)
+\end{itemize}
+
+Es importante resaltar que estos perfiles proceden de medias sobre largos períodos, y de ahí que, como es observable en la figura \ref{fig:org28b2399}, las fluctuaciones propias del movimiento de nubes a lo largo del día queden atenuadas y se obtenga una curva sin alteraciones.
+\begin{figure}[h]
+\centering
+\includegraphics[keepaspectratio,width=0.9\textwidth,height=0.5\textheight]{figuras/RgRd.pdf}
+\caption{\label{fig:org28b2399}Perfil de irradiancia difusa y global obtenido a partir del generador empírico de \cite{Collares-Pereira.Rabl1979} para valores de irradiancia tomadas cada 10 minutos}
+\end{figure}
+
+\subsection{Transformación al plano del generador}
+\label{sec:org2c746ed}
+Una vez otenidos los valores de irradiancia en el plano horizontal, se traspone al plano del generador:
+\begin{itemize}
+\item \textbf{Irradiancia Directa} \(B(\beta ,\alpha)\): Ecuación basada en geometríasolar (ángulo zenital) y del generador (ángulo de incidencia).
+\begin{equation}
+B(\beta ,\alpha)=B(0)\cdot \frac{max(0,cos(\theta_s))}{cos(\theta_{zs})}
+\label{eq:irradiancia-directa-plano-generador}
+\end{equation}
+\item \textbf{Irradiancia Difusa} \(D(\beta ,\alpha)\): Utilizando el modelo de cielo anisotrópico \cite{Perpinan2023}, se distinguen dos componentes de la irradiancia difusa, denominados \emph{circunsolar} e \emph{isotrópica}. \nomenclature[DI]{\(D^I\)}{Radiación difusa isotrópica} \nomenclature[DC]{\(D^C\)}{Radiación difusa circunsolar}
+\begin{equation}
+D(\beta ,\alpha)=D^I(\beta ,\alpha)+D^C(\beta ,\alpha)
+\end{equation}
+\begin{equation}
+D^I(\beta ,\alpha)=D(0)(1-k_1)\cdot \frac{1+cos(\beta)}{2}
+\end{equation}
+\begin{equation}
+D^C(\beta, \alpha)=D(0)\cdot k_1\cdot \frac{max(0,cos(\theta_s))}{cos(\theta_{zs})}
+\end{equation}
+Donde:
+\begin{itemize}
+\item \(k_1=\frac{B(n)}{B_0\cdot \epsilon_0}=\frac{B(0)}{B_0(0)}\)
+\end{itemize}
+\item \textbf{Irradiancia de albedo} \(R(\beta ,\alpha)\): Se considera isotrópica debido a su baja contribución a la radiación global. Se calcula a partir de la irradiancia global en el plano horizontal usando un coeficiente de reflexión, \(\rho\)\nomenclature[rho]{\(\rho\)}{Coeficiente de reflexión del terreno para la irradiancia de albedo}, que depende del terreno. En la ecuación \ref{eq:albedo-plano-generador}, se utiliza el factor \(\frac{1-cos(\beta)}{2}\), complemetario al factor de visión de la difusa isotrópica (figura \ref{fig:org26c0da0})
+\begin{equation}
+R(\beta ,\alpha)=\rho \cdot G(0)\cdot \frac{1 - cos(\beta)}{2}
+\label{eq:albedo-plano-generador}
+\end{equation}
+\begin{figure}[h]
+\centering
+\includegraphics[keepaspectratio,width=0.9\textwidth,height=0.5\textheight]{figuras/AnguloVisionCielo.pdf}
+\caption{\label{fig:org26c0da0}Ángulo de visión del cielo}
+\end{figure}
+\end{itemize}
+
 \section{Operaciones del paquete \texttt{solaR2}}
-\label{sec:org8e7bbac}
-En la figura \ref{fig:org2cb1708}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
-\begin{figure}[p]
+\label{sec:org4c08f52}
+En la figura \ref{fig:orgb4f90b6}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
+\begin{figure}[h]
 \centering
 \includegraphics[keepaspectratio,width=0.9\textwidth,height=0.5\textheight]{figuras/procedure.pdf}
-\caption{\label{fig:org2cb1708}Proceso de cálculo de las funciones de \texttt{solaR2}}
+\caption{\label{fig:orgb4f90b6}Proceso de cálculo de las funciones de \texttt{solaR2}}
 \end{figure}
 A la hora de estimar la producción, el programa sigue los siguientes procesos:
 \begin{enumerate}
