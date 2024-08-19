@@ -8,13 +8,14 @@
 \include{capitulos/agradecimientos}
 
 \include{capitulos/resumen}
+\cleardoublepage
 
 \tableofcontents
-\clearpage
+\cleardoublepage
 
 # Índice de figuras.
 \listoffigures
-\clearpage
+\cleardoublepage
 
 # Índice de tablas.
 # \listoftables
