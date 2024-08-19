@@ -1,7 +1,7 @@
 \chapter{Parte teórica y desarrollo del código}
 El paquete =solaR2= toma como marco teórico el libro de Oscar Perpiñán, tutor de este trabajo, Energía Solar Fotovoltaica \cite{Perpinan2023} para cada una de las operaciones de cálculo que realizan cada una de las funciones.
 En la figura [[fig:prod-calculo]], se muestra un diagrama que resume los pasos que se siguen a la hora de calcular la producción de sistemas fotovoltaicos.
-#+ATTR_LATEX: :height 0.5\textheight :width 0.9\textwidth :options keepaspectratio
+#+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio
 #+CAPTION: Procedimiento de cálculo
 #+NAME: fig:prod-calculo
 [[file:figuras/ProcedimientoCalculoRadiacionInclinada.pdf]]
@@ -91,7 +91,7 @@ $d_{n}$ & {\footnotesize 17} & {\footnotesize 45} & {\footnotesize 74} & {\footn
 
 \par\end{center}{\footnotesize \par}
 #+end_export
-
+ 
 ** Cálculo de componentes de radiación solar
 Para caracterizar la radiación solar en un lugar, Liu y Jordan [[cite:Liu.Jordan1960]] propusieron el índice de claridad, \(K_T\). Este índice es la relación entre la radiación global y la radiación extra-atmosférica, ambas en el plano horizontal. El índice de claridad diario es la relación entre los valores diarios de irradiación: \nomenclature[KT]{\(K_T\)}{Índice de claridad} \nomenclature[KTd]{\(K_{Td}\)}{Índice de claridad diario}
 #+begin_export latex
@@ -158,7 +158,7 @@ Donde:
 Es importante resaltar que estos perfiles proceden de medias sobre largos períodos, y de ahí que, como es observable en la figura [[fig:Perfil-de-irradiancia]], las fluctuaciones propias del movimiento de nubes a lo largo del día queden atenuadas y se obtenga una curva sin alteraciones.
 #+NAME: fig:Perfil-de-irradiancia
 #+CAPTION: Perfil de irradiancia difusa y global obtenido a partir del generador empírico de [[cite:Collares-Pereira.Rabl1979]] para valores de irradiancia tomadas cada 10 minutos
-#+ATTR_LATEX: :height 0.5\textheight :width 0.9\textwidth :options keepaspectratio
+#+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio
 [[file:figuras/RgRd.pdf]]
 
 ** Transformación al plano del generador
@@ -193,12 +193,114 @@ Una vez otenidos los valores de irradiancia en el plano horizontal, se traspone 
   #+end_export
   #+NAME: fig:AnguloVisionCielo
   #+CAPTION: Ángulo de visión del cielo
-  #+ATTR_LATEX: :height 0.5\textheight :width 0.9\textwidth :options keepaspectratio
+  #+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio
   [[file:figuras/AnguloVisionCielo.pdf]]
+
+** Ángulo de incidencia y suciedad
+En un módulo fotovoltaico, la radiación incidente generalmente no es perpendicular a la superficie del módulo, lo que provoca pérdidas por reflexión o pérdidas angulares, cuantificadas por el ángulo de incidencia \(\theta_s\)\nomenclature[thetas]{\(\theta_s\)}{Ángulo de incidencia o ángulo entre el vector solar y el vector director de una superficie}. La suciedad acumulada en la superficie del módulo también reduce la transmitancia del vidrio (representada por $T_{limpio}(0$)), disminuyendo la irradiancia efectiva, es decir, la radiación que realmente puede ser aprovechada por el módulo.
+La irradiancia efectiva para radiación directa se expresa en la ecuación [[ref:eq:dir-ef]]:
+#+begin_export latex
+\begin{equation}
+B_{ef}(\beta ,\alpha)=B(\beta ,\alpha)\cdot [\frac{T_{sucio}(0)}{T_{limpio}(0)}]\cdot (1-FTB(\theta_s))
+\label{eq:dir-ef}
+\end{equation}
+#+end_export
+donde $FTB(\theta_s)$ es el factor de pérdidas angulares, que se calcula con la ecuación [[ref:eq:factor-perdidas-directa]]: \nomenclature[FTB]{\(FT_B\)}{Factor de pérdidas angulares para irradiancia directa}\nomenclature[FTD]{\(FT_D\)}{Factor de pérdidas angulares para irradiancia difusa}\nomenclature[FTB]{\(FT_R\)}{Factor de pérdidas angulares para irradiancia de albedo}
+#+begin_export latex
+\begin{equation}
+FTB(\theta_s)=\frac{exp(-\frac{cos(\theta_s)}{a_r})-exp(-\frac{1}{a_r})}{1-exp(-\frac{1}{a_r})}
+\label{eq:factor-perdidas-directa}
+\end{equation}
+#+end_export
+Este factor depende el ángulo de incidencia \(theta_s\) y del coeficiente de pérdidas angulares \(a_r\). Cuando la radiación es perpendicular a la superficie ($\theta_s=0$), \(FTB\) es cero. En la figura [[fig:PerdidasAngulares]] se puede observar que las pérdidas angulares son más significativas cuando \(\theta_s\) supera los 60º, y se acentúan con mayor suciedad.
+#+NAME: fig:PerdidasAngulares
+#+CAPTION: Pérdidas angulares de un módulo fotovoltaico para diferentes grados de suciedad en función del ángulo de incidencia.
+#+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio 
+[[file:figuras/Suciedad.pdf]]
+
+Para calcular las componente de radiación difusa isotrópica y de albedo se utilizan las ecuaciones [[ref:eq:FTD]] y [[ref:eq:FTR]]:
+#+begin_export latex
+\begin{equation}
+\text{FTD}(\beta) \approx exp[-\frac{1}{a_r}\cdot (c_1\cdot (sin\beta +\frac{\pi -\beta - sin\beta}{1+cos\beta})+c_2\cdot (sin\beta +\frac{\pi -\beta -sin\beta}{1+cos\beta})^2)]
+\label{eq:FTD}
+\end{equation}
+#+end_export
+#+begin_export latex
+\begin{equation}
+\text{FTR}(\beta) \approx exp[-\frac{1}{a_r}\cdot (c_1\cdot (sin\beta +\frac{\beta - sin\beta}{1-cos\beta})+c_2\cdot (sin\beta +\frac{\beta -sin\beta}{1-cos\beta})^2)]
+\end{equation}
+\label{eq:FTR}
+#+end_export
+Donde:
+- Ángulo de inclinación del generador (en radianes): \(\beta\) \nomenclature[beta]{\(\beta\)}{Ángulo de inclinación de un sistema fotovoltaico}
+- Coeficiente de pérdidas angulares: \(a_r\)
+- Coeficientes de ajuste: \(c_1\) y \(c_2\) (en la tabla [REFERENCIAR TABLA] se recogen algunos valores característicos de un módulo de silicio monocristalino convencional para diferentes grados de suciedad)
+#+CAPTION: Valores del coeficiente de pérdidas angulares y transmitancia relativa en incidencia normal para diferentes tipos de suciedad.
+|-------------------+--------------------------------------+------+--------|
+| Grado de suciedad | $\frac{T_{sucio}(0)}{T_{limpio}(0)}$ |  a_r |    c_2 |
+|-------------------+--------------------------------------+------+--------|
+| Limpio            |                                    1 | 0.17 | -0.069 |
+|-------------------+--------------------------------------+------+--------|
+| Bajo              |                                 0.98 | 0.20 | -0.054 |
+|-------------------+--------------------------------------+------+--------|
+| Medio             |                                 0.97 | 0.21 | -0.049 |
+|-------------------+--------------------------------------+------+--------|
+| Alto              |                                 0.92 | 0.27 | -0.023 |
+|-------------------+--------------------------------------+------+--------|
+
+
+Para estas componenetes el cálculo de irradiancia efectiva es similar al de la irradiancia directa (ecuaciones [[ref:eq:dif-ef-iso]] y [[ref:eq:alb-ef]]). Para la componente difusa circunsolar emplearemos el factor de pérdidas angulares de la irradiancia efectiva(ecuacion [[ref:eq:dif-ef-cir]]):
+#+begin_export latex
+\begin{equation}
+D_{ef}^I(\beta ,\alpha)=D^I(\beta ,\alpha)\cdot[\frac{T_{sucio}(0)}{T_{limpio}(0)}]\cdot (1-FT_D(\beta))
+\label{eq:dif-ef-iso}
+\end{equation}
+\begin{equation}
+D_{ef}^C(\beta ,\alpha)=D^C(\beta ,\alpha)\cdot[\frac{T_{sucio}(0)}{T_{limpio}(0)}]\cdot (1-FT_B(\theta_s))
+\label{eq:dif-ef-cir}
+\end{equation}
+\begin{equation}
+R_{ef}(\beta ,\alpha)=R(\beta ,\alpha)\cdot[\frac{T_{sucio}(0)}{T_{limpio}(0)}]\cdot (1-FT_R(\beta))
+\label{eq:alb-ef}
+\end{equation}
+#+end_export
+Siguiendo el esquema de la figura [[fig:prod-calculo]], a partir de estas irradiancias efectivas se puede calcular la irradiación global efectiva diaria, mensual y anual. Comparando la irradiación global incidente con la irradición efectiva, se puede evaluar el impacto de la suciedad y el desajuste del ángulo en períoods prolongados.
+
+* Cálculo de la energía producida por el generador
+
+** Funcionamiento de una célula solar
+Para calcular la energía producida por un generador fotovoltaico, se deben tener en cuenta la influencia de factores tales como la radiación o la temperatura en una célula solar y en los valores de tensión y corriente que se alcanzan en dichas condiciones.
+
+Para definir una célula solar, se tomar 4 variables:
+- La corriente de cortocircuito: \(I_{SC}\)\nomenclature[ISC]{\(I_{SC}\)}{Corriente de cortocircuito de una célula}
+- La tensión de circuito abierto: \(V_{OC}\)\nomenclature[VOC]{\(V_{OC}\)}{Tensión de circuito abierto de una célula}
+- La corriente en el punto de máxima potencia: \(I_{mpp}\)\nomenclature[Impp]{I_{mpp}}{Corriente de una célula en el punto de máxima potencia}
+- La tensión en el punto de máxima potencia: \(V_{mpp}\)\nomenclature[Vmpp]{V_{mpp}}{Tensión de una célula en el punto de máxima potencia}
+
+*** Punto de máxima potencia
+El punto de máxima potencia es aquel situado en la curva de funcionamiento del generador donde, como su propio nombre indica, los valores de tensión y corriente son tales que la potencia que entrega es máxima (figura [[fig:iv-20-800]]).
+#+CAPTION: Curvas corriente-tensión(línea discontinua) y potencia-tensión(línea continua) de una célula solar ($T_a=20ºC$ y $G=800 w/m^2$)
+#+NAME: fig:iv-20-800
+#+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio 
+[[file:figuras/CurvaIV_Ta20_G800.pdf]]
+
+*** Factor de forma y eficiencia
+
+** Definición de un SFCR
+Un Sistema Fotovoltaico Conectado a Red (SFCR) es un sistema cuya función es producir energía eléctrica en unas condiciones específicas, de tal manera que ésta pueda ser inyectada en la red eléctrica convencional. Para ello, un SFCR se compone del propio generador fotovoltaico, un inversor DC/AC y un conjunto de protecciones eléctricas (figura [[fig:esquema-sfcr]]).
+#+NAME: fig:esquema-sfcr
+#+CAPTION: Esquema de un SFCR.
+#+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio 
+[[file:figuras/EsquemaSFCR.pdf]]
+
+La energía producida por el sistema es consumida total o parcialmente en las cercanías, y la energía sobrante será inyectada en la red para su distribución a otros puntos de consumo. Es común que existan mecanismos de retribución económica que compensan al propietario del sistema por la energía que sus sistema intercambia con la red.
+
+
+
 
 * Operaciones del paquete =solaR2=
 En la figura [[fig:prod-solar2]], se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
-#+ATTR_LATEX: :height 0.5\textheight :width 0.9\textwidth :options keepaspectratio
+#+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio
 #+CAPTION: Proceso de cálculo de las funciones de =solaR2=
 #+NAME: fig:prod-solar2
 [[file:figuras/procedure.pdf]]
