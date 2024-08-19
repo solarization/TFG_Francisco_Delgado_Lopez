@@ -1,9 +1,10 @@
 \chapter{Parte teórica y desarrollo del código}
+label:chap:marcoteorico
 El paquete =solaR2= toma como marco teórico el libro de Oscar Perpiñán, tutor de este trabajo, Energía Solar Fotovoltaica \cite{Perpinan2023} para cada una de las operaciones de cálculo que realizan cada una de las funciones.
 En la figura [[fig:prod-calculo]], se muestra un diagrama que resume los pasos que se siguen a la hora de calcular la producción de sistemas fotovoltaicos.
-#+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio
 #+CAPTION: Procedimiento de cálculo
 #+NAME: fig:prod-calculo
+#+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio
 [[file:figuras/ProcedimientoCalculoRadiacionInclinada.pdf]]
 Estos pasos son:
 1. Obtener la irradiación global diaria en el plano horizontal
@@ -18,6 +19,7 @@ Estos pasos son:
 8. Integrando esta potencia se puede obtener la energía que produce el generador en un tiempo determinado.
 
 * Naturaleza de la radiación solar
+label:sec:radiaciónsolar
 Para el cálculo de la radiación solar que incide en una superficie se deben distinguir tres componentes diferenciados:
 - *Radiación Directa*, B\nomenclature[B]{\(B\)}{Radiación directa}: porción de radiación que procede en línea recta desde el Sol.
 - *Radiación Difusa*, D\nomenclature[D]{\(D\)}{Radiación difusa}: fracción de radiación que procede de todo el cielo, excepto del Sol. Son todos aquellos rayos que dispersa la atmósfera.
@@ -43,7 +45,7 @@ B_0(0)=B_0\epsilon_0cos\theta_{zs}
 Siendo cada componente:
 - Irradiancia extra-terrestre: $B_0=1367\frac{W}{m^2}$ \nomenclature[B0]{\(B_0\)}{Irradiancia extra-atmosférica o extra-terrestre}
 - Factor de corrección por excentricidad: $\epsilon_0=(\frac{r_0}{r})^2=1+0.033\cdot cos(\frac{2\pi d_n}{365})$[fn:1] \nomenclature[epsilon0]{\(\epsilon_0\)}{Corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol}
-- Ángulo zenital solar: $cos(\theta_{zs})=cos(\delta)cos(\omega)cos(\phi)+sin(\delta)+sin(\phi)$[fn:2] \nomenclature[thetazs]{\(\theta_{zs}\)}{Ángulo cenital solar}
+- Ángulo zenital solar: $cos(\theta_{zs})=cos(\delta)cos(\omega)cos(\phi)+sin(\delta)+sin(\phi)$[fn:2] \nomenclature[thetazs]{\(\theta_{zs}\))}{Ángulo cenital solar}
 
   Donde:
   - Declinación: $\delta =23,45º\cdot sin(\frac{2\pi \cdot (d_n+284)}{365})$ \nomenclature[delta]{\(\delta\)}{Declinación}
@@ -130,6 +132,7 @@ B_d(0)=G_d(0)-D_d(0)
 #+end_export
 
 * Radiación en superficies inclinadas
+label:sec:radiacionsuperficiesinclinadas
 Dados los valores de irradiación diaria difusa, directa y global en el plano horizontal se puede realizar la transformación al plano inclinado. Para ello, es necesario estimar el perfil de irradiancia correspondiente a cada valor de irradiación. dado que la variación solar durante una hora es baja, podemos suponer que el valor medio de la irradiancia durante esa hora coincide numéricamente con la irradiación horaria. Por otra parte, el análisis de valores /medios/  en /largas/ series temporales ha mostrado que la relación entre la irradiancia y la irradición extra-atmosférica [[cite:Collares-Pereira.Rabl1979]] ([[ref:eq:rel-dif]]):
 #+begin_export latex
 \begin{equation}
@@ -234,8 +237,8 @@ Para calcular las componente de radiación difusa isotrópica y de albedo se uti
 Donde:
 - Ángulo de inclinación del generador (en radianes): \(\beta\) \nomenclature[beta]{\(\beta\)}{Ángulo de inclinación de un sistema fotovoltaico}
 - Coeficiente de pérdidas angulares: \(a_r\)
-- Coeficientes de ajuste: \(c_1\) y \(c_2\) (en la tabla [REFERENCIAR TABLA] se recogen algunos valores característicos de un módulo de silicio monocristalino convencional para diferentes grados de suciedad)
-#+CAPTION: Valores del coeficiente de pérdidas angulares y transmitancia relativa en incidencia normal para diferentes tipos de suciedad.
+- Coeficientes de ajuste: \(c_1\) y \(c_2\) (en la tabla [[ref:tab:coef-perd]] se recogen algunos valores característicos de un módulo de silicio monocristalino convencional para diferentes grados de suciedad)
+#+CAPTION: Valores del coeficiente de pérdidas angulares y transmitancia relativa en incidencia normal para diferentes tipos de suciedad. label:tab:coef-perd
 |-------------------+--------------------------------------+------+--------|
 | Grado de suciedad | $\frac{T_{sucio}(0)}{T_{limpio}(0)}$ |  a_r |    c_2 |
 |-------------------+--------------------------------------+------+--------|
@@ -272,8 +275,8 @@ Siguiendo el esquema de la figura [[fig:prod-calculo]], a partir de estas irradi
 Para calcular la energía producida por un generador fotovoltaico, se deben tener en cuenta la influencia de factores tales como la radiación o la temperatura en una célula solar y en los valores de tensión y corriente que se alcanzan en dichas condiciones.
 
 Para definir una célula solar, se tomar 4 variables:
-- La corriente de cortocircuito: \(I_{SC}\)\nomenclature[ISC]{\(I_{SC}\)}{Corriente de cortocircuito de una célula}
-- La tensión de circuito abierto: \(V_{OC}\)\nomenclature[VOC]{\(V_{OC}\)}{Tensión de circuito abierto de una célula}
+- La corriente de cortocircuito: \(I_{sc}\)\nomenclature[Isc]{\(I_{sc}\)}{Corriente de cortocircuito de una célula}
+- La tensión de circuito abierto: \(V_{oc}\)\nomenclature[VOC]{\(V_{oc}\)}{Tensión de circuito abierto de una célula}
 - La corriente en el punto de máxima potencia: \(I_{mpp}\)\nomenclature[Impp]{I_{mpp}}{Corriente de una célula en el punto de máxima potencia}
 - La tensión en el punto de máxima potencia: \(V_{mpp}\)\nomenclature[Vmpp]{V_{mpp}}{Tensión de una célula en el punto de máxima potencia}
 
@@ -285,6 +288,39 @@ El punto de máxima potencia es aquel situado en la curva de funcionamiento del 
 [[file:figuras/CurvaIV_Ta20_G800.pdf]]
 
 *** Factor de forma y eficiencia
+El área encerrada por el rectángulo definido por el producto $I_{mpp}\cdot V_{mpp}$ es, como e observable en la figura [[fig:iv-20-800]], inferiro a la respresentada por el producto $I_{sc}\cdot V_{oc}$. La relación entre estad dos superficies se cuantifica con el factor de forma:\nomenclature[MPP]{MPP}{Punto de máxima potencia de un dispositivo fotovoltaico}
+#+begin_export latex
+\begin{equation}
+FF=\frac{I_{mpp}\cdot V_{mpp}}{I_{sc}\cdot V_{oc}}
+\end{equation}
+#+end_export
+
+Conociendo los valores de $I_{sc}$ y $V_{oc}$ es posible calcular la potencia en el punto de máxima potencia, dado que $P_{mpp}=FF\cdot I_{sc}\cdot V_{oc}$.
+
+Por otra parte, la calidad de una célula se puede cuantificar con la eficiencia de conversión (ecuación ).
+#+begin_export latex
+\begin{equation}
+\eta =\frac{I_{mpp}\cdot V_{mpp}}{P_L}
+\label{eq:efi-cel}
+\end{equation}
+#+end_export
+donde $P_L=A_c\cdot G_{ef}$ representa la potencia luminosa que incide en la célula\nomenclature[Ac]{\(A_c\)}{Área de una célula}.Como es evidente de la ecuación [[ref:eq:efi-cel]], este valor de eficiencia se corresponde al caso en el que el acoplamiento entre la carga y la célula permite a ésta trabajar en el punto de máxima potencia. En la figura [[fig:nrel-cell]] se muestra la evolución temporal del valor de eficiencia de célula de laboratorio para diferentes tecnologías.
+
+#+CAPTION: Evolución de la eficiencia de células según la tecnología (según el National Renewable Energy Laboratory [[cite:nrel24]] (EEUU)).
+#+NAME: fig:nrel-cell
+#+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio
+[[file:figuras/cell-efficiencies.pdf]]
+
+*** Influencia de la temperatura y la radiación
+Es importante tener en cuenta, a la hora de entender el funcionamiento de una célula solar, la influencia de los dos principales facotres externos: la temperatura ambiente y la iluminación incidente o radiación.
+
+El aumento de la temperatura tiene una influencia notable en la tensión de circuito abierto de la célula según el valor $dV_{oc}/dT_c$. Donde $T_c$ es la temperatura de la célula\nomenclature[Tc]{\(T_c\)}{Temperatura de célula}, dependiente de la termperatura ambiente y la radiación incidente. La forma de calclar ésta temperatura depende de las características constructivas del módulo que encapsula a la célula. Si el fabricante no nos ofrece información sobre este valor, para células de silicio cristalino es común tomar el siguiente valor:
+#+begin_export latex
+\begin{equation}
+\frac{dV_{oc}}{dT_c}=-2,3\frac{mV}{ºC}
+\end{equation}
+#+end_export
+Sin embargo, el efecto que teien la irradiancia sobre la tensión de circuito abierto es mucho menos que el de la temperatura.
 
 ** Definición de un SFCR
 Un Sistema Fotovoltaico Conectado a Red (SFCR) es un sistema cuya función es producir energía eléctrica en unas condiciones específicas, de tal manera que ésta pueda ser inyectada en la red eléctrica convencional. Para ello, un SFCR se compone del propio generador fotovoltaico, un inversor DC/AC y un conjunto de protecciones eléctricas (figura [[fig:esquema-sfcr]]).
