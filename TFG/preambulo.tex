@@ -4,12 +4,14 @@
 
 %Idioma español y acentos
 \usepackage[spanish]{babel}
-%\usepackage[latin1]{inputenc}
+\addto\shorthandsspanish{\spanishdeactivate{~<>}}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 
 %Fuente
 \usepackage{mathpazo} %URW Palladio
+\usepackage{flafter}%obliga a que los flotantes aparezcan después de su referencia
+\usepackage{memhfixc}
 
 %algunos sÌmbolos matemáticos y paquetes para usar subimágenes
 \usepackage{amsmath}
@@ -21,7 +23,8 @@
 
 %Márgenes
 \usepackage[a4paper]{geometry}
-\geometry{tmargin=2.5cm, bmargin=2.5cm, rmargin=2.5cm}
+\geometry{tmargin=2.5cm, bmargin=2.5cm, rmargin=2.5cm, lmargin=2.5cm}
+\pagestyle{Ruled}
 
 %multi columnas
 \usepackage{multicol}
@@ -143,5 +146,48 @@
 \setsecnumdepth{paragraph}   % Permite numerar hasta subsecciones
 \settocdepth{section}      % Incluye hasta las subsecciones en la tabla de contenidos
 
-% Table of contents
-\usepackage{tocloft}
+\usepackage[caption=false]{subfig}
+%Configuración de los caption
+%\PassOptionsToPackage{caption=false}{subfig}%Evita que el paquete subfig lo descabale todo
+\captiontitlefont{\itshape}
+\captionnamefont{\scshape}
+%\captionstyle{\centering}
+\hangcaption
+
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.5}
+\renewcommand{\textfraction}{0.15}
+\renewcommand{\floatpagefraction}{0.7}
+
+%Centra las figuras en los flotantes y los enmarca
+\makeatletter
+\renewenvironment{figure}[1][]{%
+     	\@float{figure}%
+		%\begin{framed}    
+		\precaption{\rule{\linewidth}{0.4pt}\par}%En las figuras el caption va debajo
+		%\hrule\vspace{\onelineskip}
+		\centering
+		  }{%
+		%\end{framed}
+		%\postcaption{\rule{\linewidth}{0.4pt}}
+		%\vspace{\onelineskip}\hrule
+    	\end@float	
+}
+\makeatother
+
+\makeatletter
+\renewenvironment{table}[1][]{%
+      	\@float{table}%
+		%\begin{framed}    
+		\postcaption{\rule{\linewidth}{0.4pt}\par}%En las tablas el caption va encima
+		\centering
+		  }{%
+		%\end{framed}
+    	\end@float	
+}
+\makeatother
+
+\renewcommand{\textfloatsep}{10pt}%Espacio entre el flotante y el texto
+
+% footnotes
+\usepackage[bottom]{footmisc}
