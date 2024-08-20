@@ -512,7 +512,7 @@ En la figura [[fig:prod-solar2]], se muestra el proceso de cálculo que sigue el
 #+NAME: fig:prod-solar2
 [[file:figuras/procedure.pdf]]
 A la hora de estimar la producción, el programa sigue los siguientes procesos:
-1. Se calcula la geometría que definen la posición de la Tierra frente al Sol.
+** Geometría que definen la posición de la Tierra frente al Sol.
    1. Mediante la función fSolD, se calcula:
       - El ángulo de declinación de la Tierra (\(\delta\)).
       - La corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol (\(\epsilon_0\)).
@@ -522,11 +522,11 @@ A la hora de estimar la producción, el programa sigue los siguientes procesos:
       - La hora solar (\(\omega\)).
       - El momento del día en el que es de noche.
       - El ángulo zenital solar (\(\theta_{zs}\)).
-      - El ángulo de altura solar (\(\gamma_s\).
+      - El ángulo de altura solar (\(\gamma_s\)).
       - El ángulo azimutal solar (\(\psi_s\)).
       - La irradiancia extra-terrestre en el plano horizontal (\(B_0(0)\)).
    3. El resultado de ambas funciones se juntan en un solo objeto de clase =Sol= mediante la función calcSol.
-2. Se estima la radiación en el plano horizontal.
+** Radiación en el plano horizontal.
    1. La información de irradiación en el plano horizontal (en todos sus componentes o, en su defecto, solo la global(\(G_d(0)\))) y temperatura viene dada en un objeto de clase =Meteo=.
    2. Mediante la función fCompD, se calcula:
       - La fracción de radiación difusa diaria (\(F_{Dd}\)).
@@ -541,7 +541,7 @@ A la hora de estimar la producción, el programa sigue los siguientes procesos:
 	- La irradiancia directa en el plano horizontal (\(B(0)\)).
 	- La irradiancia difusa en el plano horizontal (\(D(0)\)).
    4. El resultado de ambas funciones junto a medias mensuales y valores anuales se consolidan en un solo objeto de clase =G0= (que incluye los objetos =Sol= y =Meteo= de los que parte) mediante la función calcG0.
-3. Se estima la radiación en el plano del generador.
+** Radiación en el plano del generador.
    1. La información de radiación puede venir dada en forma de un objeto de clase =Meteo= o un objeto de clase =G0= (ya que es este último el que se necesita para estimar la radiación en el plano del generador).
    2. Mediante la función fTheta, se calcula:
       - Ángulo de inclinación de la superficie del módulo (\(\beta\)).
@@ -556,10 +556,10 @@ A la hora de estimar la producción, el programa sigue los siguientes procesos:
    4. Mediante la función calcShd, se puede calcular:
       - La irradiancia e irradiación incluyendo sombras para seguidores a dos ejes y horizontales y paneles fijos mediante la función fSombra.  
    5. El resultado de estas funciones junto a medias mensuales y valores anuales se consolidan en un solo objeto de clase =Gef= (que incluye el objeto =G0= del que parte) mediante la función calcGef.
-4. Se estima la producción eléctrica.
+** Producción eléctrica.
    1. Mediante la función fProd, se calcula:
       - La potencia en corriente continua (\(P_{DC}\)).
-      - La potencia en corriente alterna (\(P_{AC}\).
+      - La potencia en corriente alterna (\(P_{AC}\)).
    2. Estos resultados, llevados a valores diarios, mensuales y anuales, se pueden convertir en valores de energía (\(E_{DC}\) y \(E_{AC}\)) y de productividad del sistema (\(Y_f\)), los cuales se consolidan en un solo objeto de clase =ProdGCPV= (que incluye el objeto =Gef= del que parte) mediante la función prodGCPV.
       
 
