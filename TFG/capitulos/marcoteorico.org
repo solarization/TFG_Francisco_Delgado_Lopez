@@ -453,7 +453,7 @@ P_g^*=N_s\cdot N_p\cdot P_m^*
 #+end_export
 Con este paso se obtiene la potencia horaria entregada por el generador fotovoltaico. El siguiente paso será pasar esa potencia a través del inversor y calcular la potencia a la salida de este.
 
-Primero, se esteblecen las expresiones de las potencias normalizadas. Siendo $P_inv$\nomenclature[Pinv]{\(P_{inv}\)}{Potencia nominal de un inversor} la potencia nominal del inversor:
+Primero, se esteblecen las expresiones de las potencias normalizadas. Siendo $P_{inv}$ \nomenclature[Pinv]{\(P_{inv}\)}{Potencia nominal de un inversor}la potencia nominal del inversor:
 #+begin_export latex
 \begin{equation}
 p_i=\frac{P_{DC}}{P_{inv}}
