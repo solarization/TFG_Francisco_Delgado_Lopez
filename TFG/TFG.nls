@@ -2,6 +2,7 @@
 \begin{thenomenclature} 
 \nomgroup{A}
   \item [{\(A_c\)}]\begingroup Área de una célula\nomeqref {3.25}\nompageref{15}
+  \item [{\(AM\)}]\begingroup Masa de aire\nomeqref {3.25}\nompageref{16}
   \item [{\(AO\)}]\begingroup Adelanto oficial durante el horario de verano\nomeqref {3.2}\nompageref{9}
 \nomgroup{B}
   \item [{\(B_0\)}]\begingroup Irradiancia extra-atmosférica o extra-terrestre\nomeqref {3.2}\nompageref{8}
@@ -36,9 +37,14 @@
   \item [{\(R\)}]\begingroup Radiación del albedo\nomeqref {3.0}\nompageref{8}
   \item [{\(r_D\)}]\begingroup Relación entre la irradiancia y la irradiación difusa en el plano horizontal\nomeqref {3.9}\nompageref{10}
   \item [{\(\rho\)}]\begingroup Coeficiente de reflexión del terreno para la irradiancia de albedo\nomeqref {3.15}\nompageref{12}
+\nomgroup{S}
+  \item [{\(SFCR\)}]\begingroup Sistema fotovoltaico de conexión a red\nomeqref {3.29}\nompageref{17}
+  \item [{STC}]\begingroup Condiciones estándar de medida de un dispositivo fotovoltaico\nomeqref {3.25}\nompageref{15}
 \nomgroup{T}
+  \item [{\(T_c^*\)}]\begingroup Temperatura de célula en condiciones estándar de medida\nomeqref {3.25}\nompageref{16}
   \item [{\(T_c\)}]\begingroup Temperatura de célula\nomeqref {3.25}\nompageref{15}
   \item [{\(\theta_s\)}]\begingroup Ángulo de incidencia o ángulo entre el vector solar y el vector director de una superficie\nomeqref {3.16}\nompageref{12}
   \item [{\(TO\)}]\begingroup Hora oficial\nomeqref {3.2}\nompageref{9}
+  \item [{\(TONC\)}]\begingroup Temperatura de operación nominal de célula\nomeqref {3.25}\nompageref{16}
 
 \end{thenomenclature}

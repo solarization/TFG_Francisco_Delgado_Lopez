@@ -1,8 +1,11 @@
-% Created 2024-08-19 lu. 18:44
+% Created 2024-08-20 ma. 12:50
 % Intended LaTeX compiler: pdflatex
-\documentclass[twoside, 11pt, a4paper]{memoir}
+\documentclass[twoside,a4paper,11pt]{memoir}
 \usepackage{color}
 \usepackage{listings}
+\makeatletter
+\newcommand{\citeprocitem}[2]{\hyper@linkstart{cite}{citeproc_bib_item_#1}#2\hyper@linkend}
+\makeatother
 \aliaspagestyle{title}{empty}
 \aliaspagestyle{part}{empty}
 \input{preambulo}
