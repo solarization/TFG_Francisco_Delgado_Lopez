@@ -53,7 +53,7 @@ Por otro lado, existen otras soluciones fuera de R:
    Aplicación web desarrolada por el *European Commission Joint Research Center* desde 2001.
 4. *System Advisor Model*\\
    Desarrollado por el *Laboratorio Nacional de Energías Renovables*, perteneciente al Departamento de energía del gobierno de EE.UU.
-En el apartado [ref:sec:ejemplos] se realizará un ejemplo práctico que compare los resultados entre *PVsyst*, =solaR= y =solaR2=
+En el capitulo [[ref:chap:ejemplo-practico-aplicacion]] se realizará un ejemplo práctico que compare los resultados entre *PVsyst*, =solaR= y =solaR2=
 * Aspectos técnicos
 Para elaborar un paquete en R se deben aportar una serie de ficheros:
 - *R*: Fichero que contiene todos los archivos .R que se van a ejecutar en la instalación del paquete. Esto incluye funciones, clases y métodos.
