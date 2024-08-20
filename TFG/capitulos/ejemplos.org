@@ -1,17 +1,18 @@
 \chapter{Ejemplo práctico de aplicación}
-\label{sec:ejemplos}
-
+label:chap:ejemplo-practico-aplicacion
 Como demostración se va a realizar un caso práctico...
-
-* =solaR2=
-
-...
 
 * =solaR=
 
 ...
 
+
 * =PVsyst=
+
+...
+
+
+* =solaR=
 
 ...
 
