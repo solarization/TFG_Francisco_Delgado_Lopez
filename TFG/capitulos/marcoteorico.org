@@ -287,7 +287,7 @@ Para definir una célula solar, se tomar 4 variables:
 
 *** Punto de máxima potencia
 El punto de máxima potencia es aquel situado en la curva de funcionamiento del generador donde, como su propio nombre indica, los valores de tensión y corriente son tales que la potencia que entrega es máxima (figura [[fig:iv-20-800]]).
-#+CAPTION: Curvas corriente-tensión(línea discontinua) y potencia-tensión(línea continua) de una célula solar ($T_a=20^\circ C$ y $G=800 w/m^2$)
+#+CAPTION: Curvas corriente-tensión(línea discontinua) y potencia-tensión(línea continua) de una célula solar ($T_a=20^\circ C$ y $G=800 W/m^2$)
 #+NAME: fig:iv-20-800
 #+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio 
 [[file:figuras/CurvaIV_Ta20_G800.pdf]]
