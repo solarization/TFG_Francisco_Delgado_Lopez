@@ -1,11 +1,11 @@
 \chapter{Parte teórica y desarrollo del código}
 \label{chap:parte-teorica-desarrollo-código}
 El paquete \texttt{solaR2} toma como marco teórico el libro de Oscar Perpiñán, tutor de este trabajo, Energía Solar Fotovoltaica \cite{Perpinan2023} para cada una de las operaciones de cálculo que realizan cada una de las funciones.
-En la figura \ref{fig:org453e1b3}, se muestra un diagrama que resume los pasos que se siguen a la hora de calcular la producción de sistemas fotovoltaicos.
+En la figura \ref{fig:org971f639}, se muestra un diagrama que resume los pasos que se siguen a la hora de calcular la producción de sistemas fotovoltaicos.
 \begin{figure}[]
 \centering
 \includegraphics[keepaspectratio,width=0.8\textwidth,height=0.5\textheight]{figuras/ProcedimientoCalculoRadiacionInclinada.pdf}
-\caption{\label{fig:org453e1b3}Procedimiento de cálculo}
+\caption{\label{fig:org971f639}Procedimiento de cálculo}
 \end{figure}
 Estos pasos son:
 \begin{enumerate}
@@ -24,7 +24,7 @@ Estos pasos son:
 \end{enumerate}
 
 \section{Naturaleza de la radiación solar}
-\label{sec:org7fa1cfe}
+\label{sec:org981cbb3}
 \label{sec:naturaleza-radiacion-solar}
 Para el cálculo de la radiación solar que incide en una superficie se deben distinguir tres componentes diferenciados:
 \begin{itemize}
@@ -40,7 +40,7 @@ G = B + D + R
 Tomando como base el libro antes mencionado \cite{Perpinan2023}, se describirá el proceso que se ha de seguir para obtener una estimación de las componenetes directa y difusa a partir del dato de radiación global, dado que es el que comúnmente se puede obtener de una localización determinada.
 
 \subsection{Radiación fuera de la atmósfera terrestre}
-\label{sec:org15b0c13}
+\label{sec:org6740ac7}
 \label{subsec:radiacion-fuera-atmosfera-terrestre}
 Lo primero que se menciona en dicho proceso es la obtención de la irradiancia denominda extra-terrestre o extra-atmosférica, que es la radiación que llega a la atmósfera, directamente desde el Sol, que no sufre ninguna pérdida por interaccionar con algún medio. Como la relación entre el tamaño de nuesto plenta y la distancia entre el Sol y la Tierra es muy reducida, es posible asumir que el valor de dicha irradiancia es constante, siendo este valor \(B_0=1367\frac{W}{m^2}\), según varias mediciones.
 Como la órbita que describe la Tierra alrededor del Sol no es totalmente circular, sino que tiene forma de elipse, para calcular la irradiancia incidente en una superficie tangente a la atmosfera en ua latitud concreta, debemos aplicar un facot de correción de la excentricidad de la elipse:
@@ -105,7 +105,7 @@ $d_{n}$ & {\footnotesize 17} & {\footnotesize 45} & {\footnotesize 74} & {\footn
 \par\end{center}{\footnotesize \par}
 
 \subsection{Cálculo de componentes de radiación solar}
-\label{sec:orge871525}
+\label{sec:org06e4e64}
 \label{subsec:calculo-componentes-radiacion-solar}
 Para caracterizar la radiación solar en un lugar, Liu y Jordan \cite{Liu.Jordan1960} propusieron el índice de claridad, \(K_T\). Este índice es la relación entre la radiación global y la radiación extra-atmosférica, ambas en el plano horizontal. El índice de claridad diario es la relación entre los valores diarios de irradiación: \nomenclature[KT]{\(K_T\)}{Índice de claridad} \nomenclature[KTd]\{\(K_{Td}\)\}\{Índice de claridad diario\}
 \begin{equation}
@@ -138,7 +138,7 @@ B_d(0)=G_d(0)-D_d(0)
 \end{equation}
 
 \section{Radiación en superficies inclinadas}
-\label{sec:org278dbaa}
+\label{sec:orgd49c5ea}
 \label{sec:radiacion-superficies-inclinadas}
 Dados los valores de irradiación diaria difusa, directa y global en el plano horizontal se puede realizar la transformación al plano inclinado. Para ello, es necesario estimar el perfil de irradiancia correspondiente a cada valor de irradiación. dado que la variación solar durante una hora es baja, podemos suponer que el valor medio de la irradiancia durante esa hora coincide numéricamente con la irradiación horaria. Por otra parte, el análisis de valores \emph{medios}  en \emph{largas} series temporales ha mostrado que la relación entre la irradiancia y la irradición extra-atmosférica \cite{Collares-Pereira.Rabl1979} (\ref{eq:rel-dif}):
 \begin{equation}
@@ -161,15 +161,15 @@ Donde:
 \item \(b=0,6609+0,4767\cdot sin(\omega_s+\frac{\pi}{3})\)
 \end{itemize}
 
-Es importante resaltar que estos perfiles proceden de medias sobre largos períodos, y de ahí que, como es observable en la figura \ref{fig:org3611446}, las fluctuaciones propias del movimiento de nubes a lo largo del día queden atenuadas y se obtenga una curva sin alteraciones.
+Es importante resaltar que estos perfiles proceden de medias sobre largos períodos, y de ahí que, como es observable en la figura \ref{fig:org0c373fa}, las fluctuaciones propias del movimiento de nubes a lo largo del día queden atenuadas y se obtenga una curva sin alteraciones.
 \begin{figure}[]
 \centering
 \includegraphics[keepaspectratio,width=0.8\textwidth,height=0.5\textheight]{figuras/RgRd.pdf}
-\caption{\label{fig:org3611446}Perfil de irradiancia difusa y global obtenido a partir del generador empírico de \cite{Collares-Pereira.Rabl1979} para valores de irradiancia tomadas cada 10 minutos}
+\caption{\label{fig:org0c373fa}Perfil de irradiancia difusa y global obtenido a partir del generador empírico de \cite{Collares-Pereira.Rabl1979} para valores de irradiancia tomadas cada 10 minutos}
 \end{figure}
 
 \subsection{Transformación al plano del generador}
-\label{sec:org4f3d6ee}
+\label{sec:org70c354d}
 \label{subsec:transformación-plano-generador}
 Una vez otenidos los valores de irradiancia en el plano horizontal, se traspone al plano del generador:
 \begin{itemize}
@@ -192,7 +192,7 @@ Donde:
 \begin{itemize}
 \item \(k_1=\frac{B(n)}{B_0\cdot \epsilon_0}=\frac{B(0)}{B_0(0)}\)
 \end{itemize}
-\item \textbf{Irradiancia de albedo} \(R(\beta ,\alpha)\): Se considera isotrópica debido a su baja contribución a la radiación global. Se calcula a partir de la irradiancia global en el plano horizontal usando un coeficiente de reflexión, \(\rho\)\nomenclature[rho]{\(\rho\)}{Coeficiente de reflexión del terreno para la irradiancia de albedo}, que depende del terreno. En la ecuación \ref{eq:albedo-plano-generador}, se utiliza el factor \(\frac{1-cos(\beta)}{2}\), complemetario al factor de visión de la difusa isotrópica (figura \ref{fig:org2e41118})
+\item \textbf{Irradiancia de albedo} \(R(\beta ,\alpha)\): Se considera isotrópica debido a su baja contribución a la radiación global. Se calcula a partir de la irradiancia global en el plano horizontal usando un coeficiente de reflexión, \(\rho\)\nomenclature[rho]{\(\rho\)}{Coeficiente de reflexión del terreno para la irradiancia de albedo}, que depende del terreno. En la ecuación \ref{eq:albedo-plano-generador}, se utiliza el factor \(\frac{1-cos(\beta)}{2}\), complemetario al factor de visión de la difusa isotrópica (figura \ref{fig:org1489d9a})
 \begin{equation}
 R(\beta ,\alpha)=\rho \cdot G(0)\cdot \frac{1 - cos(\beta)}{2}
 \label{eq:albedo-plano-generador}
@@ -200,12 +200,12 @@ R(\beta ,\alpha)=\rho \cdot G(0)\cdot \frac{1 - cos(\beta)}{2}
 \begin{figure}[]
 \centering
 \includegraphics[keepaspectratio,width=0.8\textwidth,height=0.5\textheight]{figuras/AnguloVisionCielo.pdf}
-\caption{\label{fig:org2e41118}Ángulo de visión del cielo}
+\caption{\label{fig:org1489d9a}Ángulo de visión del cielo}
 \end{figure}
 \end{itemize}
 
 \subsection{Ángulo de incidencia y suciedad}
-\label{sec:org690cf16}
+\label{sec:org9280d55}
 \label{subsec-angulo-incidencia-suciedad}
 En un módulo fotovoltaico, la radiación incidente generalmente no es perpendicular a la superficie del módulo, lo que provoca pérdidas por reflexión o pérdidas angulares, cuantificadas por el ángulo de incidencia \(\theta_s\)\nomenclature[thetas]{\(\theta_s\)}{Ángulo de incidencia o ángulo entre el vector solar y el vector director de una superficie}. La suciedad acumulada en la superficie del módulo también reduce la transmitancia del vidrio (representada por \(T_{limpio}(0\))), disminuyendo la irradiancia efectiva, es decir, la radiación que realmente puede ser aprovechada por el módulo.
 La irradiancia efectiva para radiación directa se expresa en la ecuación \ref{eq:dir-ef}:
@@ -218,11 +218,11 @@ donde \(FTB(\theta_s)\) es el factor de pérdidas angulares, que se calcula con 
 FTB(\theta_s)=\frac{exp(-\frac{cos(\theta_s)}{a_r})-exp(-\frac{1}{a_r})}{1-exp(-\frac{1}{a_r})}
 \label{eq:factor-perdidas-directa}
 \end{equation}
-Este factor depende el ángulo de incidencia \(theta_s\) y del coeficiente de pérdidas angulares \(a_r\). Cuando la radiación es perpendicular a la superficie (\(\theta_s=0\)), \(FTB\) es cero. En la figura \ref{fig:orgb002613} se puede observar que las pérdidas angulares son más significativas cuando \(\theta_s\) supera los 60º, y se acentúan con mayor suciedad.
+Este factor depende el ángulo de incidencia \(theta_s\) y del coeficiente de pérdidas angulares \(a_r\). Cuando la radiación es perpendicular a la superficie (\(\theta_s=0\)), \(FTB\) es cero. En la figura \ref{fig:orgc2cb01f} se puede observar que las pérdidas angulares son más significativas cuando \(\theta_s\) supera los 60º, y se acentúan con mayor suciedad.
 \begin{figure}[]
 \centering
 \includegraphics[keepaspectratio,width=0.8\textwidth,height=0.5\textheight]{figuras/Suciedad.pdf}
-\caption{\label{fig:orgb002613}Pérdidas angulares de un módulo fotovoltaico para diferentes grados de suciedad en función del ángulo de incidencia.}
+\caption{\label{fig:orgc2cb01f}Pérdidas angulares de un módulo fotovoltaico para diferentes grados de suciedad en función del ángulo de incidencia.}
 \end{figure}
 
 Para calcular las componente de radiación difusa isotrópica y de albedo se utilizan las ecuaciones \ref{eq:FTD} y \ref{eq:FTR}:
@@ -271,14 +271,14 @@ D_{ef}^C(\beta ,\alpha)=D^C(\beta ,\alpha)\cdot[\frac{T_{sucio}(0)}{T_{limpio}(0
 R_{ef}(\beta ,\alpha)=R(\beta ,\alpha)\cdot[\frac{T_{sucio}(0)}{T_{limpio}(0)}]\cdot (1-FT_R(\beta))
 \label{eq:alb-ef}
 \end{equation}
-Siguiendo el esquema de la figura \ref{fig:org453e1b3}, a partir de estas irradiancias efectivas se puede calcular la irradiación global efectiva diaria, mensual y anual. Comparando la irradiación global incidente con la irradición efectiva, se puede evaluar el impacto de la suciedad y el desajuste del ángulo en períoods prolongados.
+Siguiendo el esquema de la figura \ref{fig:org971f639}, a partir de estas irradiancias efectivas se puede calcular la irradiación global efectiva diaria, mensual y anual. Comparando la irradiación global incidente con la irradición efectiva, se puede evaluar el impacto de la suciedad y el desajuste del ángulo en períoods prolongados.
 
 \section{Cálculo de la energía producida por el generador}
-\label{sec:org4456f48}
+\label{sec:org66271db}
 \label{sec:calculo-energia-producida-generador}
 
 \subsection{Funcionamiento de una célula solar}
-\label{sec:orgf949e97}
+\label{sec:org47b3a05}
 \label{subsec:funcionamiento-celula-solar}
 Para calcular la energía producida por un generador fotovoltaico, se deben tener en cuenta la influencia de factores tales como la radiación o la temperatura en una célula solar y en los valores de tensión y corriente que se alcanzan en dichas condiciones.
 
@@ -291,19 +291,20 @@ Para definir una célula solar, se tomar 4 variables:
 \end{itemize}
 
 \subsubsection{Punto de máxima potencia}
-\label{sec:orgd95e0d9}
-El punto de máxima potencia es aquel situado en la curva de funcionamiento del generador donde, como su propio nombre indica, los valores de tensión y corriente son tales que la potencia que entrega es máxima (figura \ref{fig:org2c37003}).
+\label{sec:orge876577}
+El punto de máxima potencia es aquel situado en la curva de funcionamiento del generador donde, como su propio nombre indica, los valores de tensión y corriente son tales que la potencia que entrega es máxima (figura \ref{fig:org87743f3}).
 \begin{figure}[]
 \centering
 \includegraphics[keepaspectratio,width=0.8\textwidth,height=0.5\textheight]{figuras/CurvaIV_Ta20_G800.pdf}
-\caption{\label{fig:org2c37003}Curvas corriente-tensión(línea discontinua) y potencia-tensión(línea continua) de una célula solar (\(T_a=20^\circ C\) y \(G=800 w/m^2\))}
+\caption{\label{fig:org87743f3}Curvas corriente-tensión(línea discontinua) y potencia-tensión(línea continua) de una célula solar (\(T_a=20^\circ C\) y \(G=800 w/m^2\))}
 \end{figure}
 
 \subsubsection{Factor de forma y eficiencia}
-\label{sec:org5bc5e23}
-El área encerrada por el rectángulo definido por el producto \(I_{mpp}\cdot V_{mpp}\) es, como e observable en la figura \ref{fig:org2c37003}, inferiro a la respresentada por el producto \(I_{sc}\cdot V_{oc}\). La relación entre estad dos superficies se cuantifica con el factor de forma:\nomenclature[MPP]{MPP}{Punto de máxima potencia de un dispositivo fotovoltaico}
+\label{sec:org02f79a1}
+El área encerrada por el rectángulo definido por el producto \(I_{mpp}\cdot V_{mpp}\) es, como e observable en la figura \ref{fig:org87743f3}, inferiro a la respresentada por el producto \(I_{sc}\cdot V_{oc}\). La relación entre estad dos superficies se cuantifica con el factor de forma:\nomenclature[MPP]{MPP}{Punto de máxima potencia de un dispositivo fotovoltaico}
 \begin{equation}
 FF=\frac{I_{mpp}\cdot V_{mpp}}{I_{sc}\cdot V_{oc}}
+\label{eq:factor-forma}
 \end{equation}
 
 Conociendo los valores de \(I_{sc}\) y \(V_{oc}\) es posible calcular la potencia en el punto de máxima potencia, dado que \(P_{mpp}=FF\cdot I_{sc}\cdot V_{oc}\).
@@ -313,16 +314,16 @@ Por otra parte, la calidad de una célula se puede cuantificar con la eficiencia
 \eta =\frac{I_{mpp}\cdot V_{mpp}}{P_L}
 \label{eq:efi-cel}
 \end{equation}
-donde \(P_L=A_c\cdot G_{ef}\) representa la potencia luminosa que incide en la célula\nomenclature[Ac]{\(A_c\)}{Área de una célula}.Como es evidente de la ecuación \ref{eq:efi-cel}, este valor de eficiencia se corresponde al caso en el que el acoplamiento entre la carga y la célula permite a ésta trabajar en el punto de máxima potencia. En la figura \ref{fig:org025e249} se muestra la evolución temporal del valor de eficiencia de célula de laboratorio para diferentes tecnologías.
+donde \(P_L=A_c\cdot G_{ef}\) representa la potencia luminosa que incide en la célula\nomenclature[Ac]{\(A_c\)}{Área de una célula}.Como es evidente de la ecuación \ref{eq:efi-cel}, este valor de eficiencia se corresponde al caso en el que el acoplamiento entre la carga y la célula permite a ésta trabajar en el punto de máxima potencia. En la figura \ref{fig:org14785ca} se muestra la evolución temporal del valor de eficiencia de célula de laboratorio para diferentes tecnologías.
 
 \begin{figure}[]
 \centering
 \includegraphics[keepaspectratio,width=0.8\textwidth,height=0.5\textheight]{figuras/cell-efficiencies.pdf}
-\caption{\label{fig:org025e249}Evolución de la eficiencia de células según la tecnología (según el National Renewable Energy Laboratory \cite{nrel24} (EEUU)).}
+\caption{\label{fig:org14785ca}Evolución de la eficiencia de células según la tecnología (según el National Renewable Energy Laboratory \cite{nrel24} (EEUU)).}
 \end{figure}
 
 \subsubsection{Influencia de la temperatura y la radiación}
-\label{sec:org298646a}
+\label{sec:orgff07493}
 La temperatura y la radiación son factores cruciales en el funcionamiento de una célula solar. El aumento de la temperatura ambiente reduce la tensión de circuito abierto según la relación \(dV_{oc}/dT_c\), \nomenclature[Tc]{\(T_c\)}{Temperatura de célula}, que para células de silicio cristalino es de\(-2,3\frac{mV}{^\circ C}\). Además, disminuye la eficiencia de la célula solar con \(\frac{d\eta}{dT_c}=-0,4\%/^\circ C\).
 
 En cuanto a la iluminación, la fotocorriente y la tensíon de circuito abierto son proporcionales a la irradiancia incidente.
@@ -341,10 +342,10 @@ Frecuentemente los fabricantes informan de los valores de las tensiones \(V_{oc}
 \end{itemize}
 
 \subsection{Funcionamiento de un módulo fotovoltaico}
-\label{sec:orgd34683d}
+\label{sec:org5a1d8a5}
 \label{subsec:funcionamiento-modulo-fotovoltaico}
 \subsubsection{Comportamiento térmico de un módulo}
-\label{sec:org41f6820}
+\label{sec:org58b9cc7}
 La mayoría de las ecuaciones ue definen el comportamiento de un módulo fotovoltaico se establecen en lo que se conocen como condiciones estándar de funcionamiento. En estas condiciones, la temperatura de la célula es de \(25^\circ C\). Sin embargo, la temperatura de operación de la célula es diferente y depende directamente de la radiación que recibe el módulo en cada momento.
 
 El módulo recibe una cantidad de radiación dada, absorbiendo la fracción de ésta que no se refleja al exterior. De dicha fracción, parte de ella es transformada en energía eléctrica mientras que el resto se entrega en forma de calor al entorno.
@@ -367,7 +368,7 @@ T_c=T_a+G_{ef}\cdot \frac{NOCT-20}{800}
 \end{equation}
 Para la simulación del funcionmaiento de un módulo fotovoltaico en condiciones de operación real, es necesario contar con secuencias de valores de temperatura ambiente. Si no se dispone de información detallada, se puede asumir un valor constante de \(T_a=25^\circ C\) para simulaciones anuales. Sin embargo, si se conocen los valores máximos y mínimos diarios de la temperatura ambiente, se puede generar una secuencia intradiaria usando una combinación de funciones coseno.
 \subsubsection{Cálculo de \(V_{oc}\) y \(I_{sc}\)}
-\label{sec:orgd2fd534}
+\label{sec:orgce5d017}
 Conociendo ya los valores horarios de temperatura de la célula, se puede calcular \(V_{oc}\) utilizando la ecuación \ref{eq:ten-ca}. Y, por último, mediante la ecuación \ref{eq:int-cc} se puede calcular \(I_{sc}\).
 \begin{equation}
 V_{oc}(T_c)=V_{oc}^*+(T_c-T_c^*)\cdot \frac{dV_{oc}}{dT_c}\cdot N_{cs}
@@ -378,60 +379,118 @@ I_{sc}=G_{ef}\cdot \frac{I_{sc}^*}{G^*}
 \label{eq:int-cc}
 \end{equation}
 
-\subsection{Funcionamiento de un generador fotovoltaico}
-\label{sec:orgdc078c7}
-\label{subsec:funcionamiento-generador-fotovoltaico}
-Un generador fotovoltaico es un asociación eléctrica de módulo fotovoltaicos para adaptarse a las condiciones de funcionamiento de una aplicación determinada. Se compone de un total de \(N_p\cdot N_s=N_T\) módulos, siendo \(N_p\) el número de ramas (módulo en paralelo), y \(N_s\) el número de módulo en cada serie. El número de ramas define la corriente total del generador, \(I_{sc,g}=N_p\cdot I_{sc,m}\), y el número de módulos por serie define la tensión del generador, \(V_{oc,g}=N_s\cdot V_{oc,m}\). Por lo tanto, la potencia se puede calcular mediante la ecuación \ref{eq:pot-gen-fv}.
+\subsubsection{Factor de forma variable}
+\label{sec:org6d3a839}
+Una vez obtenidos los valores de \(V_{oc}\) y \(I_{sc}\), el siguiente paso ha de ser calcular los valores de tensión y corriente en el punto de máxima potencia, pues es donde el generador estará entregando su máxima potencia, como su propio nombre indica, y por tanto es un punto de interés para el cálculo.
+
+Existen dos metodologías de cálculo de dicho punto, uno de ellos significantemente más sencillo que el otro. Éste consiste en suponer que el Factor de Forma, definido en la expresión \ref{eq:factor-forma} es constante.
+
+Si suponemos que FF es constante, se podrían extraer los valores de tensión y corriente en el punto de máxima potencia ya que si
 \begin{equation}
-P_g=N_T\cdot P_m=(N_s\cdot V_{mpp,m})(N_p\cdot I_{mpp,m})
-\label{eq:pot-gen-fv}
+FF=FF^*
+\end{equation}
+entonces
+\begin{equation}
+\frac{I_{mpp}\cdot V_{vmpp}}{I_{sc}\cdot V_{oc}}=\frac{I_{mpp}^*\cdot V_{vmpp}^*}{I_{sc}^*\cdot V_{oc}^*}
+\end{equation}
+pudiendo así obtener los valores de \(I_{mpp}\) y \(V_{vmmp}\).
+
+Sin embargo, este suposición da resultados alejados a una estimación acertada. Por ello, se tendrá en cuenta la variación del factor de forma:
+\begin{itemize}
+\item \textbf{Cálculo de la tensión termica, \(V_t\), a temperatura de la célula}: Se calculará el valor de \(V_t\) a 25ºC con la expresión:
+\begin{equation}
+V_{tn}=\frac{V_t\cdot (273+25)}{300}
+\end{equation}
+\item \textbf{Cálculo de \(R_s^*\)}: El segundo paso consiste en calcular el valor de resistencia en serie con los valores STC:
+\begin{equation}
+R_s^*=\frac{\frac{V_{oc}^*}{N_{cs}}-\frac{V_{mpp}^*}{N_{cs}}+m\cdot V_{tn}\cdot ln(1-\frac{I_{mpp}^*}{I_{sc}^*})}{\frac{I_{mpp}^*}{N_{cp}}}
+\end{equation}
+\item \textbf{Cálculo de \(r_s\)}: Utilizando el valors de \(R_s^*\) calculado en el paso anterior junto con los valores de \(V_{oc}\) y \(I_{sc}\) podemos calcular \(r_s\) que se utilizará más adelante en el proceso.
+\begin{equation}
+r_s=R_s^*\cdot (\frac{N_{cs}}{N_{cp}}\cdot \frac{I_{sc}}{V_{oc}})
+\end{equation}
+\item \textbf{Cálculo de \(k_{oc}\)}: A continuación, utilizando los valores de temperatura ambiente obtenidos con anterioridad junto con la tensión de circuito abierto, se calcula \(k_{oc}\) mediante la expresión:
+\begin{equation}
+k_{oc}=\frac{V_{oc}/N_{cs}}{m\cdot V_t \cdot \frac{T_c+273}{300}}
+\end{equation}
+\end{itemize}
+
+Con éstos cálculos previos, éste método propone localizar el punto de máxima potencia de forma aprodimada mediante la ecuaciones:
+\begin{equation}
+i_{mpp}=1-\frac{D_M}{k_{oc}}
+\end{equation}
+\begin{equation}
+v_{mpp}=1-\frac{ln(k_{oc}/D_M)}{k_{oc}}-r_s\cdot i_{mpp}
+\end{equation}
+donde:
+\begin{equation}
+D_M=D_{M0}+2\cdot r_s\cdot D_{M0}^2
+\end{equation}
+\begin{equation}
+D_{M0}=\frac{k_{oc}-1}{k_{oc}-lnk_{oc}}
 \end{equation}
 
-\subsubsection{Pérdidas por dispersión}
-\label{sec:org22965bf}
-\label{perdidas-dispersion}
-Los parámetros eléctricos de los módulos fotovoltaicos que componene un generador nunca son exactamente iguales. La dispersión de estos parámetreos provoca que la potencia eléctrica total sea inferior a la suma de las individuales. Las pérdidas de dispersión por corriente aumentan con el número de módulos que se colocan en serie, mientras que, las pérdidas por tensión aumentan con el número de modulos en paralelo, sin embargo, estas últimas se pueden despreciar.
+Por último, multiplicando los valores de \(i_{mpp}\) y \(v_{mpp}\) por \(I_{sc}\) y \(V_{oc}\) respectivamente, se obtienen los valores de \(I_{mpp}\) y \(V_{mpp}\) que serán los que se utilicen para calcular la potencia entregada por el generador en el punto de máxima potencia.
 
-\subsection{Sistemas Fotovoltaicos de Conexión a Red}
-\label{sec:orgf2afc98}
-\label{subsec:sistemas-fotovoltaicos-conexion-red}
-Un Sistema Fotovoltaico Conectado a la Red (SFCR\nomenclature[SFCR]{\(SFCR\)}{Sistema fotovoltaico de conexión a red}) es un sistema cuya función es producir energía elétrica en condiciones adecuadas para poder inyectada en la red convencional. Como se muestra en la figura \ref{fig:sch-sfcr}, un SFCR se compone del generador fotovoltaico, un inversor DC/AC y un conjunto de protecciones eléctricas.
-\begin{figure}[]
-\centering
-\includegraphics[keepaspectratio,width=0.8\textwidth,height=0.5\textheight]{figuras/EsquemaSFCR.pdf}
-\caption{Esquema de un SFCR \label{fig:sch-sfcr}}
-\end{figure}
-
-\subsubsection{Orientación e inclinación del generador}
-\label{sec:orgd357f09}
-En los sistemas fotovoltaicos, la orientación del generador debe ser hacia el horizonte Sur en el hemisferio Norte y hacia el horizonte Norte en el hemisferio Sur. La inclinación óptima del generador para maximizar la producción anual se encuentra entre la inclinación que favorece la producción en invierno y la que maximiza en verano, aunque se pueden obtener valores más precisos con la ecuación \ref{eq:beta-opt}:\nomenclature[betaopt]\{\(\beta_{opt}\)\}\{Ángulo de inclinación que optimiza el funcionamiento de un sistema fotovoltaico\}
+Teniendo estos valores se puede obtener:
 \begin{equation}
-\beta_{opt}=3,7+0,69\cdot |\phi|
-\label{eq:beta-opt}
+P_{mpp}=I_{mpp}\cdot V_{mpp}
 \end{equation}
-Es importante que la inclinación no sea inferior a 15º para que la lluvia pueda limpiar la suciedad acumulada.Sin embargo, las pérdidas por reflexión sólo son importantes a partir de un ángulo en torno a 70º (figura).
-\begin{figure}[]
-\centering
-\includegraphics[keepaspectratio,width=0.8\textwidth,height=0.5\textheight]{figuras/PorcentajeProduccionEdificios.pdf}
-\caption{Energía producida por un SFCR con una orientación e inclinacióndeterminada respecto a la energía producida por el mismo SFCR con la orientación e inclinación óptimas.\label{fig:EnergiaorientacionInclinacion}}
-\end{figure}
 
-\subsubsection{Modulos en serie}
-\label{sec:org5facace}
-El inversor está diseñado para soportar una tensión máxima en la entrada. Superarla puede conllevar la avería del equipo. Con la ecuación \ref{eq:ten-max-inv} determinamos el máximo número de módulos en serie(\(N_{sMAX}\)):
+\subsection{Cálculo de potencias y energías}
+\label{sec:org6600b07}
+\label{subsec:calculo-potencias-energias}
+La potencia obtenida en el paso anterior es la de un solo módulo. Para conocer la potencia que va a ser capaz de entregar el generador, se debe tener en cuenta su configuración de módulos en serie y en paralelo.
 \begin{equation}
-V_{ocG}(G=200\frac{W}{m^2}, T_a=-10^\circ C)<V_{max, inv}
-\label{eq:ten-max-inv}
+P_g^*=N_s\cdot N_p\cdot P_m^*
+\end{equation}
+Con este paso se obtiene la potencia horaria entregada por el generador fotovoltaico. El siguiente paso será pasar esa potencia a través del inversor y calcular la potencia a la salida de este.
+
+Primero, se esteblecen las expresiones de las potencias normalizadas. Siendo \$P\textsubscript{inv}\$\nomenclature[Pinv]\{\(P_{inv}\)\}\{Potencia nominal de un inversor\} la potencia nominal del inversor:
+\begin{equation}
+p_i=\frac{P_{DC}}{P_{inv}}
+\end{equation}
+\begin{equation}
+p_o=\frac{P_{AC}}{P_{inv}}
+\end{equation}
+
+Por otro lado, el rendimiento de un inversor fotovoltaico se puede modelizar de la siguiente manera:
+\begin{equation}
+\eta_{inv}=\frac{p_o}{p_o+k_0+k_1p_o+k_2p_o^2}
+\end{equation}
+
+De las dos ecuaciones anteriores se puede deducir:
+\begin{equation}
+p_i=p_o+k_0+k_1p_o+k_2p_o^2
+\end{equation}
+
+Desarrollando esta ecuación, se puede obtener una ecuación de segundo grado con \(p_o\) como incógnita:
+\begin{equation}
+k_2p_o^2+(k_1+1)p_o+(k_0-p_i)=0
+\end{equation}
+
+Por último, volviendo a las primeras expresiones se puede obtener la potencia en corriente alterna:
+\begin{equation}
+P_{AC}=p_o\cdot P_{inv}
+\end{equation}
+
+Con esta potencia, integrando en función del tiempo se puede obtener la energía que genera el sistema
+\begin{equation}
+E_{AC}=\int_{T} P_{AC} \,dt
+\end{equation}
+y la productividad:
+\begin{equation}
+Y_f=\frac{E_{ac}}{P_g^*}
 \end{equation}
 
 \section{Operaciones del paquete \texttt{solaR2}}
-\label{sec:org515800b}
+\label{sec:org267a49b}
 \label{sec:operaciones-paquete}
-En la figura \ref{fig:org182dc84}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
+En la figura \ref{fig:orgdcb6cd2}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
 \begin{figure}[]
 \centering
 \includegraphics[keepaspectratio,width=0.8\textwidth,height=0.5\textheight]{figuras/procedure.pdf}
-\caption{\label{fig:org182dc84}Proceso de cálculo de las funciones de \texttt{solaR2}}
+\caption{\label{fig:orgdcb6cd2}Proceso de cálculo de las funciones de \texttt{solaR2}}
 \end{figure}
 A la hora de estimar la producción, el programa sigue los siguientes procesos:
 \begin{enumerate}

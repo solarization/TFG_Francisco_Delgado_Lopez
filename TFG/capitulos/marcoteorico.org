@@ -297,6 +297,7 @@ El área encerrada por el rectángulo definido por el producto $I_{mpp}\cdot V_{
 #+begin_export latex
 \begin{equation}
 FF=\frac{I_{mpp}\cdot V_{mpp}}{I_{sc}\cdot V_{oc}}
+\label{eq:factor-forma}
 \end{equation}
 #+end_export
 
@@ -369,46 +370,137 @@ I_{sc}=G_{ef}\cdot \frac{I_{sc}^*}{G^*}
 \end{equation}
 #+end_export
 
-** Funcionamiento de un generador fotovoltaico
-label:subsec:funcionamiento-generador-fotovoltaico
-Un generador fotovoltaico es un asociación eléctrica de módulo fotovoltaicos para adaptarse a las condiciones de funcionamiento de una aplicación determinada. Se compone de un total de $N_p\cdot N_s=N_T$ módulos, siendo $N_p$ el número de ramas (módulo en paralelo), y $N_s$ el número de módulo en cada serie. El número de ramas define la corriente total del generador, $I_{sc,g}=N_p\cdot I_{sc,m}$, y el número de módulos por serie define la tensión del generador, $V_{oc,g}=N_s\cdot V_{oc,m}$. Por lo tanto, la potencia se puede calcular mediante la ecuación [[ref:eq:pot-gen-fv]].
+*** Factor de forma variable
+Una vez obtenidos los valores de $V_{oc}$ y $I_{sc}$, el siguiente paso ha de ser calcular los valores de tensión y corriente en el punto de máxima potencia, pues es donde el generador estará entregando su máxima potencia, como su propio nombre indica, y por tanto es un punto de interés para el cálculo.
+
+Existen dos metodologías de cálculo de dicho punto, uno de ellos significantemente más sencillo que el otro. Éste consiste en suponer que el Factor de Forma, definido en la expresión [[ref:eq:factor-forma]] es constante.
+
+Si suponemos que FF es constante, se podrían extraer los valores de tensión y corriente en el punto de máxima potencia ya que si
 #+begin_export latex
 \begin{equation}
-P_g=N_T\cdot P_m=(N_s\cdot V_{mpp,m})(N_p\cdot I_{mpp,m})
-\label{eq:pot-gen-fv}
+FF=FF^*
+\end{equation}
+#+end_export
+entonces
+#+begin_export latex
+\begin{equation}
+\frac{I_{mpp}\cdot V_{vmpp}}{I_{sc}\cdot V_{oc}}=\frac{I_{mpp}^*\cdot V_{vmpp}^*}{I_{sc}^*\cdot V_{oc}^*}
+\end{equation}
+#+end_export
+pudiendo así obtener los valores de $I_{mpp}$ y $V_{vmmp}$.
+
+Sin embargo, este suposición da resultados alejados a una estimación acertada. Por ello, se tendrá en cuenta la variación del factor de forma:
+- *Cálculo de la tensión termica, $V_t$, a temperatura de la célula*: Se calculará el valor de $V_t$ a 25ºC con la expresión:
+  #+begin_export latex
+  \begin{equation}
+  V_{tn}=\frac{V_t\cdot (273+25)}{300}
+  \end{equation}
+  #+end_export
+- *Cálculo de $R_s^*$*: El segundo paso consiste en calcular el valor de resistencia en serie con los valores STC:
+  #+begin_export latex
+  \begin{equation}
+  R_s^*=\frac{\frac{V_{oc}^*}{N_{cs}}-\frac{V_{mpp}^*}{N_{cs}}+m\cdot V_{tn}\cdot ln(1-\frac{I_{mpp}^*}{I_{sc}^*})}{\frac{I_{mpp}^*}{N_{cp}}}
+  \end{equation}
+  #+end_export
+- *Cálculo de $r_s$*: Utilizando el valors de $R_s^*$ calculado en el paso anterior junto con los valores de $V_{oc}$ y $I_{sc}$ podemos calcular $r_s$ que se utilizará más adelante en el proceso.
+  #+begin_export latex
+  \begin{equation}
+  r_s=R_s^*\cdot (\frac{N_{cs}}{N_{cp}}\cdot \frac{I_{sc}}{V_{oc}})
+  \end{equation}
+  #+end_export
+- *Cálculo de $k_{oc}$*: A continuación, utilizando los valores de temperatura ambiente obtenidos con anterioridad junto con la tensión de circuito abierto, se calcula $k_{oc}$ mediante la expresión:
+  #+begin_export latex
+  \begin{equation}
+  k_{oc}=\frac{V_{oc}/N_{cs}}{m\cdot V_t \cdot \frac{T_c+273}{300}}
+  \end{equation}
+  #+end_export
+
+Con éstos cálculos previos, éste método propone localizar el punto de máxima potencia de forma aprodimada mediante la ecuaciones:
+#+begin_export latex
+\begin{equation}
+i_{mpp}=1-\frac{D_M}{k_{oc}}
+\end{equation}
+\begin{equation}
+v_{mpp}=1-\frac{ln(k_{oc}/D_M)}{k_{oc}}-r_s\cdot i_{mpp}
+\end{equation}
+#+end_export
+donde:
+#+begin_export latex
+\begin{equation}
+D_M=D_{M0}+2\cdot r_s\cdot D_{M0}^2
+\end{equation}
+\begin{equation}
+D_{M0}=\frac{k_{oc}-1}{k_{oc}-lnk_{oc}}
 \end{equation}
 #+end_export
 
-*** Pérdidas por dispersión
-label:perdidas-dispersion
-Los parámetros eléctricos de los módulos fotovoltaicos que componene un generador nunca son exactamente iguales. La dispersión de estos parámetreos provoca que la potencia eléctrica total sea inferior a la suma de las individuales. Las pérdidas de dispersión por corriente aumentan con el número de módulos que se colocan en serie, mientras que, las pérdidas por tensión aumentan con el número de modulos en paralelo, sin embargo, estas últimas se pueden despreciar.
+Por último, multiplicando los valores de $i_{mpp}$ y $v_{mpp}$ por $I_{sc}$ y $V_{oc}$ respectivamente, se obtienen los valores de $I_{mpp}$ y $V_{mpp}$ que serán los que se utilicen para calcular la potencia entregada por el generador en el punto de máxima potencia.
 
-** Sistemas Fotovoltaicos de Conexión a Red
-label:subsec:sistemas-fotovoltaicos-conexion-red
-Un Sistema Fotovoltaico Conectado a la Red (SFCR\nomenclature[SFCR]{\(SFCR\)}{Sistema fotovoltaico de conexión a red}) es un sistema cuya función es producir energía elétrica en condiciones adecuadas para poder inyectada en la red convencional. Como se muestra en la figura [[ref:fig:sch-sfcr]], un SFCR se compone del generador fotovoltaico, un inversor DC/AC y un conjunto de protecciones eléctricas.
-#+CAPTION: Esquema de un SFCR \label{fig:sch-sfcr}
-#+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio
-[[file:figuras/EsquemaSFCR.pdf]]
-
-*** Orientación e inclinación del generador
-En los sistemas fotovoltaicos, la orientación del generador debe ser hacia el horizonte Sur en el hemisferio Norte y hacia el horizonte Norte en el hemisferio Sur. La inclinación óptima del generador para maximizar la producción anual se encuentra entre la inclinación que favorece la producción en invierno y la que maximiza en verano, aunque se pueden obtener valores más precisos con la ecuación [[ref:eq:beta-opt]]:\nomenclature[betaopt]{\(\beta_{opt}\)}{Ángulo de inclinación que optimiza el funcionamiento de un sistema fotovoltaico}
+Teniendo estos valores se puede obtener:
 #+begin_export latex
 \begin{equation}
-\beta_{opt}=3,7+0,69\cdot |\phi|
-\label{eq:beta-opt}
+P_{mpp}=I_{mpp}\cdot V_{mpp}
 \end{equation}
 #+end_export
-Es importante que la inclinación no sea inferior a 15º para que la lluvia pueda limpiar la suciedad acumulada.Sin embargo, las pérdidas por reflexión sólo son importantes a partir de un ángulo en torno a 70º (figura).
-#+CAPTION: Energía producida por un SFCR con una orientación e inclinacióndeterminada respecto a la energía producida por el mismo SFCR con la orientación e inclinación óptimas.\label{fig:EnergiaorientacionInclinacion}
-#+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio
-[[file:figuras/PorcentajeProduccionEdificios.pdf]]
 
-*** Modulos en serie
-El inversor está diseñado para soportar una tensión máxima en la entrada. Superarla puede conllevar la avería del equipo. Con la ecuación [[ref:eq:ten-max-inv]] determinamos el máximo número de módulos en serie($N_{sMAX}$):
+** Cálculo de potencias y energías
+label:subsec:calculo-potencias-energias
+La potencia obtenida en el paso anterior es la de un solo módulo. Para conocer la potencia que va a ser capaz de entregar el generador, se debe tener en cuenta su configuración de módulos en serie y en paralelo.
 #+begin_export latex
 \begin{equation}
-V_{ocG}(G=200\frac{W}{m^2}, T_a=-10^\circ C)<V_{max, inv}
-\label{eq:ten-max-inv}
+P_g^*=N_s\cdot N_p\cdot P_m^*
+\end{equation}
+#+end_export
+Con este paso se obtiene la potencia horaria entregada por el generador fotovoltaico. El siguiente paso será pasar esa potencia a través del inversor y calcular la potencia a la salida de este.
+
+Primero, se esteblecen las expresiones de las potencias normalizadas. Siendo $P_inv$\nomenclature[Pinv]{\(P_{inv}\)}{Potencia nominal de un inversor} la potencia nominal del inversor:
+#+begin_export latex
+\begin{equation}
+p_i=\frac{P_{DC}}{P_{inv}}
+\end{equation}
+\begin{equation}
+p_o=\frac{P_{AC}}{P_{inv}}
+\end{equation}
+#+end_export
+
+Por otro lado, el rendimiento de un inversor fotovoltaico se puede modelizar de la siguiente manera:
+#+begin_export latex
+\begin{equation}
+\eta_{inv}=\frac{p_o}{p_o+k_0+k_1p_o+k_2p_o^2}
+\end{equation}
+#+end_export
+
+De las dos ecuaciones anteriores se puede deducir:
+#+begin_export latex
+\begin{equation}
+p_i=p_o+k_0+k_1p_o+k_2p_o^2
+\end{equation}
+#+end_export
+
+Desarrollando esta ecuación, se puede obtener una ecuación de segundo grado con $p_o$ como incógnita:
+#+begin_export latex
+\begin{equation}
+k_2p_o^2+(k_1+1)p_o+(k_0-p_i)=0
+\end{equation}
+#+end_export
+
+Por último, volviendo a las primeras expresiones se puede obtener la potencia en corriente alterna:
+#+begin_export latex
+\begin{equation}
+P_{AC}=p_o\cdot P_{inv}
+\end{equation}
+#+end_export
+
+Con esta potencia, integrando en función del tiempo se puede obtener la energía que genera el sistema
+#+begin_export latex
+\begin{equation}
+E_{AC}=\int_{T} P_{AC} \,dt
+\end{equation}
+#+end_export
+y la productividad:
+#+begin_export latex
+\begin{equation}
+Y_f=\frac{E_{ac}}{P_g^*}
 \end{equation}
 #+end_export
 
