@@ -1,34 +1,36 @@
 \chapter{Introducción}
+\label{chap:introduccion}
 
 \section{Objetivos}
-\label{sec:org68bf9d8}
-El objetivo principal de este proyecto es el desarrollo de un paquete en R\cite{rcoreteam23} con el cual poder realizar estimaciones y representaciones gráficas de la posible generación de una instalación fotovoltaica.
+\label{sec:org2c66929}
+\label{sec:objetivos}
+El objetivo principal de este proyecto es el desarrollo de un paquete en R \cite{rcoreteam23} con el cual poder realizar estimaciones y representaciones gráficas de la posible generación de una instalación fotovoltaica.
 
 Durante el resto del documento, si fuera necesario, se hará referencia al paquete desarrollado en este proyecto con el nombre solaR2 [CITAR SOLAR2].
 
 El usuario podrá colocar los datos que considere convenientes (desde una base de datos oficial, una base de datos propia\ldots{} etc.) en cada una de las funciones que ofrece el paquete pudiendo así obtener resultados de la geometría solar, de la radiación horizontal, de la eficaz y hasta de la producción de diferentes tipos de sistemas fotovoltaicos.
 
-El paquete también incluye una serie de funciones que permiten hacer representaciones gráficas de estas producciones con el fin de poder apreciar con más detalle las diferencias entre sistemas y contemplar cual es la mejor opción para el emplazamiento elegido.
+El paquete también incluye una serie de funciones que permiten hacer representaciones gráficas de estos resultados con el fin de poder apreciar con más detalle las diferencias entre sistemas y contemplar cual es la mejor opción para el emplazamiento elegido.
 
-Este proyecto toma su origen en el paquete ya existente \texttt{solaR}\cite{perpinan12} el cual desarrolló el tutor de este proyecto en 2012. Por la antigüedad del código se propuso la idea de renovarlo teniendo en cuenta el paquete en el que basa su funcionamiento. El paquete \texttt{solaR} basó su funcionamiento en el paquete \texttt{zoo}\cite{zeileis05} el cual proporciona una sólida base para trabajar con series temporales. Sin embargo, como base de \texttt{solaR2} se optó por el paquete \texttt{data.table}\cite{barrett24}. Este paquete ofrece una extensión de los clásicos \texttt{data.frame} de R en los \texttt{data.table}, los cuales pueden trabajar rápidamente con enormes cantidades de datos (por ejemplo, 100 GB de RAM).
+Este proyecto toma su origen en el paquete ya existente \texttt{solaR} \cite{perpinan12} el cual desarrolló el tutor de este proyecto en 2012. Por la antigüedad del código se propuso la idea de renovarlo teniendo en cuenta el paquete en el que basa su funcionamiento. El paquete \texttt{solaR} basó su funcionamiento en el paquete \texttt{zoo} \cite{zeileis05} el cual proporciona una sólida base para trabajar con series temporales. Sin embargo, como base de \texttt{solaR2} se optó por el paquete \texttt{data.table} \cite{barrett24}. Este paquete ofrece una extensión de los clásicos \texttt{data.frame} de R en los \texttt{data.table}, los cuales pueden trabajar rápidamente con enormes cantidades de datos (por ejemplo, 100 GB de RAM).
 
 La clave de ambos proyectos es que al estar alojados en R, cualquier usuario puede acceder a ellos de forma gratuita, tan solo necesitas tener instalado R en tu dispositivo.
 
 Para alojar este proyecto se toman dos vías:
 \begin{itemize}
-\item \texttt{Github}\cite{github}: Donde se aloja la versión de desarrollo del paquete.
+\item \texttt{Github} \cite{github}: Donde se aloja la versión de desarrollo del paquete.
 \item \texttt{CRAN}: Acrónimo de Comprehensive R Archive Network, es el repositorio donde se alojan las versiones definitivas de los paquetes y desde el cual se descargan a la sesión de R.
 \end{itemize}
 
 El paquete \texttt{solaR2} permite realizar las siguientes operaciones:
 \begin{itemize}
-\item Cálculo de toda la geometría que caracteriza a la radiación procedente del Sol [CITAR CÓDIGO]
-\item Tratamiento de datos meteorológicos (en especial de radiación), procedentes de datos ofrecidos del usuario y de la red de estaciones SIAR \cite{siar23} [CITAR CÓDIGO]
+\item Cálculo de toda la geometría que caracteriza a la radiación procedente del Sol (\ref{subsec:calcsol}).
+\item Tratamiento de datos meteorológicos (en especial de radiación), procedentes de datos ofrecidos del usuario y de la red de estaciones SIAR \cite{siar23} (\ref{subsec:meteoreaders}).
 \item Una vez calculado lo anterior, se pueden hacer estimaciones de:
 \begin{itemize}
-\item Los componentes de radiación horizontal [CITAR CALCG0].
-\item Los componentes de radiación eficaz en el plano inclinado [CITAR CALCGEF].
-\item La producción de sistemas fotovoltaicos conectados a red [CITAR PRODGCPV] y sistemas fotovoltaivos de bombeo [CITAR PRODPVPS].
+\item Los componentes de radiación horizontal (\ref{subsec:calcg0}).
+\item Los componentes de radiación eficaz en el plano inclinado (\ref{subsec:calcgef}).
+\item La producción de sistemas fotovoltaicos conectados a red (\ref{subsec:prodgcpv}) y sistemas fotovoltaivos de bombeo (\ref{subsec:prodpvps}).
 \end{itemize}
 \end{itemize}
 
@@ -37,15 +39,15 @@ Este proyecto ha tenido a su vez una serie de objetivos secundarios:
 \item Uso y manejo de GNU Emacs \cite{emacs85} en el que se realizaron todos los archivos que componen este documento (utilizando el modo Org \cite{dominik03}) y el paquete descrito (empleando ESS \cite{ess24})
 \item Dominio de diferentes paquetes de R:
 \begin{itemize}
-\item \texttt{zoo}\cite{zeileis05}: Paquete que proporciona un conjunto de clases y métodos en S3 para trabajar con series temporales regulares e irregulares.
+\item \texttt{zoo} \cite{zeileis05}: Paquete que proporciona un conjunto de clases y métodos en S3 para trabajar con series temporales regulares e irregulares.
 Usado en el paquete \texttt{solaR} como pilar central.
-\item \texttt{data.table}\cite{barrett24}: Otorga una extensión a los datos de tipo data.frame que permite una alta eficiencia especialmente con conjuntos de datos muy grandes.
+\item \texttt{data.table} \cite{barrett24}: Otorga una extensión a los datos de tipo data.frame que permite una alta eficiencia especialmente con conjuntos de datos muy grandes.
 Se ha utilizado en el paquete \texttt{solaR2} en sustitución del paquete \texttt{zoo} como tipo de dato principal en el cual se construyen las clases y métodos de este paquete.
-\item \texttt{microbenchmark}\cite{mersmann23}: Proporciona infraestructura para medir y comparar con precisión el tiempo de ejecución de expresiones en R.
+\item \texttt{microbenchmark} \cite{mersmann23}: Proporciona infraestructura para medir y comparar con precisión el tiempo de ejecución de expresiones en R.
 Usado para comparar los tiempos de ejecución de ambos paquetes.
-\item \texttt{profvis}\cite{wickham24}: Crea una interfaz gráfica donde explorar los datos de rendimiento de una expresión dada.
+\item \texttt{profvis} \cite{wickham24}: Crea una interfaz gráfica donde explorar los datos de rendimiento de una expresión dada.
 Aplicada junto con \texttt{microbenchmark} para detectar y corregir cuellos de botella en el paquete \texttt{solaR2}
-\item \texttt{lattice}\cite{sarkar08}: Proporciona diversas funciones con las que representar datos.
+\item \texttt{lattice} \cite{sarkar08}: Proporciona diversas funciones con las que representar datos.
 El paquete \texttt{solaR2} utiliza este paquete para representar de forma visual los datos obtenidos en las estimaciones.
 \end{itemize}
 \item Junto con el modo Org, se ha utilizado el prepador de textos \LaTeX (partiendo de un archivo .org, se puede exportar a un archivo .tex para posteriormente exportar un pdf).
@@ -53,7 +55,7 @@ El paquete \texttt{solaR2} utiliza este paquete para representar de forma visual
 Para ello se ha usado en mayor medida el libro ``Energía Solar Fotovoltaica'' \cite{Perpinan2023}.
 \end{itemize}
 \section{Análisis previo de soluciones}
-\label{sec:org908eb30}
+\label{sec:org8201672}
 Este proyecto, como ya se ha comentado, es el heredero del paquete \texttt{solaR} desarrollado por Oscar Perpiñán. La filosofía de ambos paquetes es la misma y los resultados que dan son muy similares. Sin embargo, lo que les diferencia es el paquete sobre el que construyen sus datos.
 Mientras que \texttt{solaR} basa sus clases y métodos en el paquete \texttt{zoo}, \texttt{solaR2} en el paquete \texttt{data.table}. Los dos paquetes pueden trabajar con series temporales, pero, mientras que \texttt{zoo} es más eficaz trabajando con series temporales, \texttt{data.table} es más eficiente a la hora de trabajar con una cantidad grande de datos, lo cual a la hora de realizar estimaciones muy precisas es beneficioso.
 Por otro lado, existen otras soluciones fuera de R:
@@ -69,16 +71,163 @@ Desarrollado por el \textbf{Laboratorio Nacional de Energías Renovables}, perte
 \end{enumerate}
 En el capitulo \ref{chap:ejemplo-practico-aplicacion} se realizará un ejemplo práctico que compare los resultados entre \textbf{PVsyst}, \texttt{solaR} y \texttt{solaR2}
 \section{Aspectos técnicos}
-\label{sec:org6e54692}
-Para elaborar un paquete en R se deben aportar una serie de ficheros:
+\label{sec:org17b0ed9}
+\label{sec:aspectos-tecnicos}
+Las fuentes de un paquete de \texttt{R} están contenidas en un directorio que contiene al menos:
 \begin{itemize}
-\item \textbf{R}: Fichero que contiene todos los archivos .R que se van a ejecutar en la instalación del paquete. Esto incluye funciones, clases y métodos.
-\item \textbf{data}: Aquí se incluyen los datos externos que el paquete necesita para funcionar.
-\item \textbf{DESCRIPTION}: Contiene metadatos sobre el paquete, como el nombre, la versión, el autor, etc.
-\item \textbf{NAMESPACE}: Especifica qué funciones y datos se exportan y se importan.
-\item \textbf{inst}: Se usa para almacenar archivos importantes pero que no se almacenan en el resto de ficheros.
-\item \textbf{tests}: Se utiliza para almacenar scripts de pruebas que aseguran que el código del paquete funcione correctamente.
-\item \textbf{man}: Donde se alojan los ficheros .Rd relacionados con el manual de uso del paquete. En estos se almacenan la información de funciones, métodos, clases y datos.
+\item Los ficheros \textbf{DESCRIPTION} y \textbf{NAMESPACE}
+\item Los subdirectorios:
+\begin{itemize}
+\item \texttt{R}: código en ficheros .R
+\item \texttt{man}: páginas de ayuda de las funciones, métodos y clases contenidas en el paquete.
+\end{itemize}
+\end{itemize}
+Esta estructura puede ser generada con \texttt{package.skeleton}
+
+\subsection{DESCRIPTION}
+\label{sec:orgcf334d5}
+\label{subsec:description}
+El fichero DESCRIPTION contiene la información básica:
+\begin{examplebox}
+\begin{verbatim}
+Package: pkgname
+Version: 0.5-1
+Date: 2004-01-01
+Title: My First Collection of Functions
+Authors@R: c(person("Joe", "Developer", role = c("aut", "cre"),
+                     email = "Joe.Developer@some.domain.net"),
+              person("Pat", "Developer", role = "aut"),
+              person("A.", "User", role = "ctb",
+     	        email = "A.User@whereever.net"))
+Author: Joe Developer and Pat Developer, with contributions from A. User
+Maintainer: Joe Developer <Joe.Developer@some.domain.net>
+Depends: R (>= 1.8.0), nlme
+Suggests: MASS
+Description: A short (one paragraph) description of what
+  the package does and why it may be useful.
+License: GPL (>= 2)
+URL: http://www.r-project.org, http://www.another.url
+\end{verbatim}
+\end{examplebox}
+\begin{itemize}
+\item Los campos \texttt{Package}, \texttt{Version}, \texttt{License}, \texttt{Title}, \texttt{Autor} y \texttt{Maintainer} son obligatorios.
+\item Si usa métodos \texttt{S4} debe incluir \texttt{Depends: methods}.
+\end{itemize}
+\subsection{NAMESPACE}
+\label{sec:orga249b97}
+\label{subsec:namespace}
+\texttt{R} usa un sistema de gestión de \textbf{espacio de nombres} que permite al autor del paquete especificar:
+\begin{itemize}
+\item Las \textbf{variables} del paquete que se \textbf{exportan} (y son, por tanto, accesibles a los usuarios).
+\item Las \textbf{variables} que se \textbf{importan} de otros paquetes.
+\item Las \textbf{clases y métodos} \texttt{S3} y \texttt{S4} que deben registrarse.
 \end{itemize}
 
-Una vez se tienen todos estos ficheros, el paquete se construye y se prueba.
+El \texttt{NAMESPACE} controla la estrategia de búsqueda de variables que utilizan las funciones del paquete:
+\begin{itemize}
+\item En primer lugar, busca entre las creadas localmente (por el código de la carpeta \texttt{R/}).
+\item En segundo lugar, busca entre las variables importadas explícitamente de otros paquetes.
+\item En tercer lugar, busca en el \texttt{NAMESPACE} del paquete \texttt{base}.
+\item Por último, busca siguiendo el camino habitual (usando \texttt{search()}).
+\end{itemize}
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
+search()
+\end{lstlisting}
+
+\begin{verbatim}
+[1] ".GlobalEnv"        "package:stats"     "package:graphics" 
+[4] "package:grDevices" "package:utils"     "package:datasets" 
+[7] "package:methods"   "Autoloads"         "package:base"     
+\end{verbatim}
+
+\subsubsection{Manejo de variables}
+\label{sec:orgb2d3edb}
+\begin{itemize}
+\item Exportar variables:
+\end{itemize}
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
+export(f, g)
+\end{lstlisting}
+\begin{itemize}
+\item Importar \textbf{todas} las variables de un paquete:
+\end{itemize}
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
+import(pkgExt)
+\end{lstlisting}
+\begin{itemize}
+\item Importar variables \textbf{concretas} de un paquete:
+\end{itemize}
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
+importFrom(pkgExt, var1, var2)
+\end{lstlisting}
+\subsubsection{Manejo de clases y métodos}
+\label{sec:org575aab4}
+\begin{itemize}
+\item Para registrar un \textbf{método} para una \textbf{clase} determinada:
+\end{itemize}
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
+S3method(print, myClass)
+\end{lstlisting}
+\begin{itemize}
+\item Para usar clases y métodos \texttt{S4}:
+\end{itemize}
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
+import("methods")
+\end{lstlisting}
+\begin{itemize}
+\item Para registrar clases \texttt{S4}:
+\end{itemize}
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
+exportClasses(class1, class2)
+\end{lstlisting}
+\begin{itemize}
+\item Para registrar métodos \texttt{S4}:
+\end{itemize}
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
+exportMethods(method1, method2)
+\end{lstlisting}
+\begin{itemize}
+\item Para importar métodos y clases \texttt{S4} de otro paquete:
+\end{itemize}
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
+importClassesFrom(package, ...)
+importMethodsFrom(package, ...)
+\end{lstlisting}
+\subsection{Documentación}
+\label{sec:org83d865c}
+\label{subsec:documentacion}
+Las páginas de ayuda de los objetos \texttt{R} se escriben usando el formato ``R documentation'' (Rd), un lenguaje similar a \LaTeX{}.
+\begin{examplebox}
+\begin{verbatim}
+\name{load}
+\alias{load}
+\title{Reload Saved Datasets}
+\description{
+  Reload the datasets written to a file with the function
+  \code{save}.
+}
+\usage{
+  load(file, envir = parent.frame())
+}
+\arguments{
+\item{file}{a connection or a character string giving the
+    name of the file to load.}
+\item{envir}{the environment where the data should be
+    loaded.}
+}
+\seealso{
+  \code{\link{save}}.
+}
+\examples{
+  ## save all data
+  save(list = ls(), file= "all.RData")
+
+  ## restore the saved values to the current environment
+  load("all.RData")
+
+  ## restore the saved values to the workspace
+  load("all.RData", .GlobalEnv)
+}
+\keyword{file}
+\end{verbatim}
+\end{examplebox}
