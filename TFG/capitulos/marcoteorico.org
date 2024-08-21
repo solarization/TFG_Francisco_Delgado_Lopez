@@ -1,5 +1,5 @@
-\chapter{Parte teórica y desarrollo del código}
-label:chap:parte-teorica-desarrollo-código
+\chapter{Marco teórico}
+label:chap:marco-teorico
 El paquete =solaR2= toma como marco teórico el libro de Oscar Perpiñán, tutor de este trabajo, Energía Solar Fotovoltaica \cite{Perpinan2023} para cada una de las operaciones de cálculo que realizan cada una de las funciones.
 En la figura [[fig:prod-calculo]], se muestra un diagrama que resume los pasos que se siguen a la hora de calcular la producción de sistemas fotovoltaicos.
 #+CAPTION: Procedimiento de cálculo
@@ -502,69 +502,7 @@ y la productividad:
 \begin{equation}
 Y_f=\frac{E_{ac}}{P_g^*}
 \end{equation}
-#+end_export
-
-* Operaciones del paquete =solaR2=
-label:sec:operaciones-paquete
-En la figura [[fig:prod-solar2]], se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
-#+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio
-#+CAPTION: Proceso de cálculo de las funciones de =solaR2=
-#+NAME: fig:prod-solar2
-[[file:figuras/procedure.pdf]]
-A la hora de estimar la producción, el programa sigue los siguientes procesos:
-** Geometría que definen la posición de la Tierra frente al Sol.
-   1. Mediante la función fSolD, se calcula:
-      - El ángulo de declinación de la Tierra (\(\delta\)).
-      - La corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol (\(\epsilon_0\)).
-      - La ecuación del tiempo (\(EoT\)).
-      - El ángulo del amanecer 
-   2. Mediante la función fSolI, se calcula:
-      - La hora solar (\(\omega\)).
-      - El momento del día en el que es de noche.
-      - El ángulo zenital solar (\(\theta_{zs}\)).
-      - El ángulo de altura solar (\(\gamma_s\)).
-      - El ángulo azimutal solar (\(\psi_s\)).
-      - La irradiancia extra-terrestre en el plano horizontal (\(B_0(0)\)).
-   3. El resultado de ambas funciones se juntan en un solo objeto de clase =Sol= mediante la función calcSol.
-** Radiación en el plano horizontal.
-   1. La información de irradiación en el plano horizontal (en todos sus componentes o, en su defecto, solo la global(\(G_d(0)\))) y temperatura viene dada en un objeto de clase =Meteo=.
-   2. Mediante la función fCompD, se calcula:
-      - La fracción de radiación difusa diaria (\(F_{Dd}\)).
-      - El índice de claridad diario (\(K_{Td}\)).
-      - Si solo se tienen datos de la componente global de irradición:
-	- La irradiación directa en el plano horizontal (\(B_d(0)\)).
-	- La irradiación difusa en el plano horizontal (\(D_d(0)\)).
-   3. Mediante la función fCompI, se calcula:
-      - La fracción de radiación difusa (\(F_D\)).
-      - El índice de claridad (\(K_T\)).
-      - Si solo se tienen datos de la componenete global de irradiancia (\(G(0)\)):
-	- La irradiancia directa en el plano horizontal (\(B(0)\)).
-	- La irradiancia difusa en el plano horizontal (\(D(0)\)).
-   4. El resultado de ambas funciones junto a medias mensuales y valores anuales se consolidan en un solo objeto de clase =G0= (que incluye los objetos =Sol= y =Meteo= de los que parte) mediante la función calcG0.
-** Radiación en el plano del generador.
-   1. La información de radiación puede venir dada en forma de un objeto de clase =Meteo= o un objeto de clase =G0= (ya que es este último el que se necesita para estimar la radiación en el plano del generador).
-   2. Mediante la función fTheta, se calcula:
-      - Ángulo de inclinación de la superficie del módulo (\(\beta\)).
-      - Ángulo azimutal de la superficie del módulo (\(\alpha\) ).
-      - Ángulo de incidencia de la irradiancia solar en la superficie del módulo (\(\theta_s\)).
-   3. Mediante la función fInclin, se calcula:
-      - La irradiancia extra-terrestre en la superficie inclinada (\(B_0(\beta, \alpha)\)).
-      - La irradiancia directa normal (\(B(n)\)).
-      - Las irradiancias global (\(G(\beta, \alpha)\)), directa (\(B(\beta, \alpha)\)), difusa (\(D(\beta, \alpha)\))(total, isotropica y anisotrópica) y del albedo (\(R(\beta, \alpha)\)) sobre una superficie inclinada.
-      - Las irradiancias efectivas global (\(G_{ef}(\beta, \alpha)\)), directa (\(B_{ef}(\beta, \alpha)\)), difusa (\(D_{ef}(\beta, \alpha)\))(total, isotropica y anisotrópica) y del albedo (\(R_{ef}(\beta, \alpha)\)) sobre una superficie inclinada.
-      - Los factores de pérdidas angulares para las componentes directa (\(FT\)), difusa (\(FT_D\)), y del albedo (\(FT_R\)).
-   4. Mediante la función calcShd, se puede calcular:
-      - La irradiancia e irradiación incluyendo sombras para seguidores a dos ejes y horizontales y paneles fijos mediante la función fSombra.  
-   5. El resultado de estas funciones junto a medias mensuales y valores anuales se consolidan en un solo objeto de clase =Gef= (que incluye el objeto =G0= del que parte) mediante la función calcGef.
-** Producción eléctrica.
-   1. Mediante la función fProd, se calcula:
-      - La potencia en corriente continua (\(P_{DC}\)).
-      - La potencia en corriente alterna (\(P_{AC}\)).
-   2. Estos resultados, llevados a valores diarios, mensuales y anuales, se pueden convertir en valores de energía (\(E_{DC}\) y \(E_{AC}\)) y de productividad del sistema (\(Y_f\)), los cuales se consolidan en un solo objeto de clase =ProdGCPV= (que incluye el objeto =Gef= del que parte) mediante la función prodGCPV.
-      
-
-
-
+#+end_export  
 
 
 * Footnotes
