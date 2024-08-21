@@ -40,7 +40,7 @@ Este proyecto ha tenido a su vez una serie de objetivos secundarios:
     Aplicada junto con =microbenchmark= para detectar y corregir cuellos de botella en el paquete =solaR2=
   * =lattice= cite:sarkar08: Proporciona diversas funciones con las que representar datos.
     El paquete =solaR2= utiliza este paquete para representar de forma visual los datos obtenidos en las estimaciones.
-- Junto con el modo Org, se ha utilizado el prepador de textos \LaTeX (partiendo de un archivo .org, se puede exportar a un archivo .tex para posteriormente exportar un pdf).
+- Junto con el modo Org, se ha utilizado el prepador de textos LaTeX (partiendo de un archivo .org, se puede exportar a un archivo .tex para posteriormente exportar un pdf).
 - Obtener conocimientos teóricos acerca de la radiación solar y de la producción de energía solar mediante sistemas fotovoltaicos y sus diversos tipos.
   Para ello se ha usado en mayor medida el libro "Energía Solar Fotovoltaica" cite:Perpinan2023.
 * Análisis previo de soluciones
