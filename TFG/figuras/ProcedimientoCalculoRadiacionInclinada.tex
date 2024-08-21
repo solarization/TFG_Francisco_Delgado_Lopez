@@ -24,26 +24,14 @@
       B(\beta,\alpha) \\
       G(\beta,\alpha)\\
     \end{array}$};
-  \node[draw](Inclind) at (10,2) {$
-    \begin{array}{c}
-      D_{d}(\beta,\alpha) \\
-      B_{d}(\beta,\alpha) \\
-      G_{d}(\beta,\alpha)
-    \end{array}$};
   \node[draw](Eff) at (5,-2){$
     \begin{array}{c}
       D_{ef}(\beta,\alpha) \\ B_{ef}(\beta,\alpha) \\
       G_{ef}(\beta,\alpha)
     \end{array}$};
-  \node[draw](Effd) at (10,-2){$
-    \begin{array}{c}
-      D_{efd}(\beta,\alpha) \\
-      B_{efd}(\beta,\alpha) \\
-      G_{efd}(\beta,\alpha)
-    \end{array}$};
-  \node[draw](Pdc) at (13, 0) {$P_{DC}$};
-  \node[draw](Pac) at (16, 0) {$P_{AC}$};
-  \node[draw](Eac) at (19, 0) {$E_{AC}$};
+  \node[draw](Pdc) at (10, -2) {$P_{DC}$};
+  \node[draw](Pac) at (10, 2) {$P_{AC}$};
+  \node[draw](Eac) at (10, 5) {$E_{AC}$};
 
   \draw[->] (Gd) -- (Dd) node[midway, right] {$
     \begin{array}{c}
@@ -62,18 +50,15 @@
       \cos(\theta_{zs})\\
       \cos(\theta_s)
     \end{array}$};
-  \draw[->] (Inclin) -- (Inclind) node[midway, below] {$\int$};
   \draw[->] (Inclin) -- (Eff) node[midway, right] {$
     \begin{array}{c}
       \frac{T_{\mathrm{sucio}}(0)}{T_{\mathrm{limpio}}(0)}\\
       FT_D\\
       FT_B
     \end{array}$};
-  \draw[->] (Eff) -- (Effd) node[midway, above] {$\int$};
-  \draw[->] (Inclind) .. controls (10,0) .. (Pdc) node[very near end, above] {$\eta_{FV}$};
-  \draw[->] (Effd).. controls (10,0) ..(Pdc);
-  \draw[->] (Pdc) -- (Pac) node[midway, above] {$\eta_{Inv}$};
-  \draw[->] (Pac) -- (Eac) node[midway, above] {$\int$};
+  \draw[->] (Eff) -- (Pdc) node[midway, below] {$\eta_{FV}$};
+  \draw[->] (Pdc) -- (Pac) node[midway, left] {$\eta_{Inv}$};
+  \draw[->] (Pac) -- (Eac) node[midway, left] {$\int$};
   
 \end{tikzpicture}
 
