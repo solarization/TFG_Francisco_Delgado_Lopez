@@ -35,9 +35,9 @@
 
 \include{capitulos/marcoteorico}
 
-\include{capitulos/ejemplos}
+\include{capitulos/codigo}
 
-\include{capitulos/programación}
+\include{capitulos/ejemplos}
 
 \appendix
 

@@ -1,49 +1,49 @@
 
 \begin{thenomenclature} 
 \nomgroup{A}
-  \item [{\(A_c\)}]\begingroup Área de una célula\nomeqref {3.25}\nompageref{15}
-  \item [{\(AM\)}]\begingroup Masa de aire\nomeqref {3.25}\nompageref{16}
-  \item [{\(AO\)}]\begingroup Adelanto oficial durante el horario de verano\nomeqref {3.2}\nompageref{9}
+  \item [{\(A_c\)}]\begingroup Área de una célula\nomeqref {3.25}\nompageref{16}
+  \item [{\(AM\)}]\begingroup Masa de aire\nomeqref {3.25}\nompageref{18}
+  \item [{\(AO\)}]\begingroup Adelanto oficial durante el horario de verano\nomeqref {3.2}\nompageref{11}
 \nomgroup{B}
-  \item [{\(B_0\)}]\begingroup Irradiancia extra-atmosférica o extra-terrestre\nomeqref {3.2}\nompageref{8}
-  \item [{\(B\)}]\begingroup Radiación directa\nomeqref {3.0}\nompageref{8}
-  \item [{\(\beta\)}]\begingroup Ángulo de inclinación de un sistema fotovoltaico\nomeqref {3.20}\nompageref{13}
+  \item [{\(B_0\)}]\begingroup Irradiancia extra-atmosférica o extra-terrestre\nomeqref {3.2}\nompageref{10}
+  \item [{\(B\)}]\begingroup Radiación directa\nomeqref {3.0}\nompageref{10}
+  \item [{\(\beta\)}]\begingroup Ángulo de inclinación de un sistema fotovoltaico\nomeqref {3.20}\nompageref{15}
 \nomgroup{D}
-  \item [{\(D\)}]\begingroup Radiación difusa\nomeqref {3.0}\nompageref{8}
-  \item [{\(D^C\)}]\begingroup Radiación difusa circunsolar\nomeqref {3.12}\nompageref{11}
-  \item [{\(\delta\)}]\begingroup Declinación\nomeqref {3.2}\nompageref{9}
-  \item [{\(\Delta \lambda\)}]\begingroup Diferencia entre la longitud local y la longitud del huso horario\nomeqref {3.2}\nompageref{9}
-  \item [{\(D^I\)}]\begingroup Radiación difusa isotrópica\nomeqref {3.12}\nompageref{11}
+  \item [{\(D\)}]\begingroup Radiación difusa\nomeqref {3.0}\nompageref{10}
+  \item [{\(D^C\)}]\begingroup Radiación difusa circunsolar\nomeqref {3.12}\nompageref{13}
+  \item [{\(\delta\)}]\begingroup Declinación\nomeqref {3.2}\nompageref{11}
+  \item [{\(\Delta \lambda\)}]\begingroup Diferencia entre la longitud local y la longitud del huso horario\nomeqref {3.2}\nompageref{11}
+  \item [{\(D^I\)}]\begingroup Radiación difusa isotrópica\nomeqref {3.12}\nompageref{13}
 \nomgroup{E}
-  \item [{\(EoT\)}]\begingroup Ecuación del tiempo\nomeqref {3.2}\nompageref{9}
-  \item [{\(\epsilon_0\)}]\begingroup Corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol\nomeqref {3.2}\nompageref{8}
+  \item [{\(EoT\)}]\begingroup Ecuación del tiempo\nomeqref {3.2}\nompageref{11}
+  \item [{\(\epsilon_0\)}]\begingroup Corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol\nomeqref {3.2}\nompageref{10}
 \nomgroup{F}
-  \item [{\(F_D\)}]\begingroup Fracción de difusa\nomeqref {3.6}\nompageref{10}
-  \item [{\(FT_B\)}]\begingroup Factor de pérdidas angulares para irradiancia directa\nomeqref {3.17}\nompageref{12}
-  \item [{\(FT_R\)}]\begingroup Factor de pérdidas angulares para irradiancia de albedo\nomeqref {3.17}\nompageref{12}
-  \item [{\(FT_D\)}]\begingroup Factor de pérdidas angulares para irradiancia difusa\nomeqref {3.17}\nompageref{12}
+  \item [{\(F_D\)}]\begingroup Fracción de difusa\nomeqref {3.6}\nompageref{12}
+  \item [{\(FT_B\)}]\begingroup Factor de pérdidas angulares para irradiancia directa\nomeqref {3.17}\nompageref{14}
+  \item [{\(FT_R\)}]\begingroup Factor de pérdidas angulares para irradiancia de albedo\nomeqref {3.17}\nompageref{14}
+  \item [{\(FT_D\)}]\begingroup Factor de pérdidas angulares para irradiancia difusa\nomeqref {3.17}\nompageref{14}
 \nomgroup{G}
-  \item [{\(G\)}]\begingroup Radiación global\nomeqref {3.0}\nompageref{8}
+  \item [{\(G\)}]\begingroup Radiación global\nomeqref {3.0}\nompageref{10}
 \nomgroup{K}
-  \item [{\(K_T\)}]\begingroup Índice de claridad\nomeqref {3.3}\nompageref{9}
+  \item [{\(K_T\)}]\begingroup Índice de claridad\nomeqref {3.3}\nompageref{11}
 \nomgroup{M}
-  \item [{MPP}]\begingroup Punto de máxima potencia de un dispositivo fotovoltaico\nomeqref {3.23}\nompageref{15}
+  \item [{MPP}]\begingroup Punto de máxima potencia de un dispositivo fotovoltaico\nomeqref {3.23}\nompageref{16}
 \nomgroup{O}
-  \item [{\(\omega\)}]\begingroup Hora solar o tiempo solar verdadero\nomeqref {3.2}\nompageref{9}
-  \item [{\(\omega_s\)}]\begingroup Ángulo del amanecer\nomeqref {3.3}\nompageref{9}
+  \item [{\(\omega\)}]\begingroup Hora solar o tiempo solar verdadero\nomeqref {3.2}\nompageref{11}
+  \item [{\(\omega_s\)}]\begingroup Ángulo del amanecer\nomeqref {3.3}\nompageref{11}
 \nomgroup{P}
-  \item [{\(\phi\)}]\begingroup Latitud\nomeqref {3.2}\nompageref{9}
+  \item [{\(\phi\)}]\begingroup Latitud\nomeqref {3.2}\nompageref{11}
 \nomgroup{R}
-  \item [{\(R\)}]\begingroup Radiación del albedo\nomeqref {3.0}\nompageref{8}
-  \item [{\(r_D\)}]\begingroup Relación entre la irradiancia y la irradiación difusa en el plano horizontal\nomeqref {3.9}\nompageref{10}
-  \item [{\(\rho\)}]\begingroup Coeficiente de reflexión del terreno para la irradiancia de albedo\nomeqref {3.15}\nompageref{12}
+  \item [{\(R\)}]\begingroup Radiación del albedo\nomeqref {3.0}\nompageref{10}
+  \item [{\(r_D\)}]\begingroup Relación entre la irradiancia y la irradiación difusa en el plano horizontal\nomeqref {3.9}\nompageref{12}
+  \item [{\(\rho\)}]\begingroup Coeficiente de reflexión del terreno para la irradiancia de albedo\nomeqref {3.15}\nompageref{14}
 \nomgroup{S}
-  \item [{STC}]\begingroup Condiciones estándar de medida de un dispositivo fotovoltaico\nomeqref {3.25}\nompageref{15}
+  \item [{STC}]\begingroup Condiciones estándar de medida de un dispositivo fotovoltaico\nomeqref {3.25}\nompageref{18}
 \nomgroup{T}
-  \item [{\(T_c^*\)}]\begingroup Temperatura de célula en condiciones estándar de medida\nomeqref {3.25}\nompageref{16}
-  \item [{\(T_c\)}]\begingroup Temperatura de célula\nomeqref {3.25}\nompageref{15}
-  \item [{\(\theta_s\)}]\begingroup Ángulo de incidencia o ángulo entre el vector solar y el vector director de una superficie\nomeqref {3.16}\nompageref{12}
-  \item [{\(TO\)}]\begingroup Hora oficial\nomeqref {3.2}\nompageref{9}
-  \item [{\(TONC\)}]\begingroup Temperatura de operación nominal de célula\nomeqref {3.25}\nompageref{16}
+  \item [{\(T_c^*\)}]\begingroup Temperatura de célula en condiciones estándar de medida\nomeqref {3.25}\nompageref{18}
+  \item [{\(T_c\)}]\begingroup Temperatura de célula\nomeqref {3.25}\nompageref{18}
+  \item [{\(\theta_s\)}]\begingroup Ángulo de incidencia o ángulo entre el vector solar y el vector director de una superficie\nomeqref {3.16}\nompageref{14}
+  \item [{\(TO\)}]\begingroup Hora oficial\nomeqref {3.2}\nompageref{11}
+  \item [{\(TONC\)}]\begingroup Temperatura de operación nominal de célula\nomeqref {3.25}\nompageref{19}
 
 \end{thenomenclature}
