@@ -1,38 +1,48 @@
+#+PROPERTY: header-args:R :session R :eval no
 \chapter{Código completo}
-\label{sec:Código completo}
+label:chap:codigo-completo
 
 Todo el código que se muestra a continuación está disponible...
 
 * Constructores
 ** calcSol
+label:subsec:calcsol
 #+CAPTION: calcSol
-#+INCLUDE: "d:/solaR2/R/calcSol.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/calcSol.R" src R
 ** calcG0
+label:subsec:calcg0
 #+CAPTION: calcG0
-#+INCLUDE: "d:/solaR2/R/calcG0.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/calcG0.R" src R
 ** calcGef
+label:subsec:calcgef
 #+CAPTION: calcGef
-#+INCLUDE: "d:/solar2/R/calcGef.R" src R :results none
+#+INCLUDE: "../../../solar2/R/calcGef.R" src R 
 ** prodGCPV
+label:subsec:prodgcpv
 #+CAPTION: prodGCPV
-#+INCLUDE: "d:/solaR2/R/prodGCPV.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/prodGCPV.R" src R 
 ** prodPVPS
+label:subsec:prodpvps
 #+CAPTION: prodGCPV
-#+INCLUDE: "d:/solaR2/R/prodPVPS.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/prodPVPS.R" src R 
 ** calcShd
+label:subsec:calcShd
 #+CAPTION: calcShd
-#+INCLUDE: "d:/solaR2/R/calcShd.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/calcShd.R" src R 
 ** optimShd
+label:subsec:optimShd
 #+CAPTION: optimShd
-#+INCLUDE: "d:/solaR2/R/optimShd.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/optimShd.R" src R 
 ** meteoReaders
+label:subsec:meteoreaders
 #+CAPTION: meteoReaders
-#+INCLUDE: "d:/solaR2/R/meteoReaders.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/meteoReaders.R" src R 
 
 * Clases
 ** Sol
+label:subsec:sol
 #+CAPTION: Clase =Sol=
-#+begin_src R :results none
+#+begin_src R 
 setClass(
          Class='Sol', ##Solar angles
          slots = c(
@@ -46,8 +56,9 @@ setClass(
 )
 #+end_src
 ** Meteo
+label:subsec:meteo
 #+CAPTION: Clase =Meteo=
-#+begin_src R :results none
+#+begin_src R
 setClass(
     Class = 'Meteo', ##radiation and temperature data
     slots = c(
@@ -60,8 +71,9 @@ setClass(
 )
 #+end_src
 ** G0
+label:subsec:g0
 #+CAPTION: Clase =G0=
-#+begin_src R :results none
+#+begin_src R
 setClass(
     Class = 'G0',
     slots = c(
@@ -77,8 +89,9 @@ setClass(
 
 #+end_src
 ** Gef
+label:subsec:gef
 #+CAPTION: Clase =Gef=
-#+begin_src R :results none
+#+begin_src R
 setClass(
          Class='Gef',
          slots = c(
@@ -100,8 +113,9 @@ setClass(
 )
 #+end_src
 ** ProdGCPV
+label:subsec:clase-prodgcpv
 #+CAPTION: Clase =ProdGCPV=
-#+begin_src R :results none
+#+begin_src R
 setClass(
          Class='ProdGCPV',
          slots = c(
@@ -119,8 +133,9 @@ setClass(
 )
 #+end_src
 ** ProdPVPS
+label:subsec:claseprodpvps
 #+CAPTION: Clase =ProdPVPS=
-#+begin_src R :results none
+#+begin_src R
 setClass(
          Class='ProdPVPS',
          slots = c(
@@ -139,8 +154,9 @@ setClass(
 )
 #+end_src
 ** Shade
+label:subsec:shade
 #+CAPTION: Clase =Shade=
-#+begin_src R :results none
+#+begin_src R
 setClass(
          Class='Shade',
          slots = c(
@@ -159,59 +175,75 @@ setClass(
 )
 #+end_src
 * Funciones
+label:sec:funciones
 ** corrFdKt
+label:subsec:corrfdkt
 #+CAPTION: corrFdKt
-#+INCLUDE: "d:/solaR2/R/corrFdKt.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/corrFdKt.R" src R 
 ** fBTd
+label:subsec:fbtd
 #+CAPTION: fBTd
-#+INCLUDE: "d:/solaR2/R/fBTd.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/fBTd.R" src R
 ** fBTi
+label:subsec:fbti
 #+CAPTION: fBTi
-#+INCLUDE: "d:/solaR2/R/fBTi.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/fBTi.R" src R
 ** fCompD
+label:subsec:fcompd
 #+CAPTION: fCompD
-#+INCLUDE: "d:/solaR2/R/fCompD.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/fCompD.R" src R
 ** fCompI
+label:subsec:fcompi
 #+CAPTION: fCompI
-#+INCLUDE: "d:/solaR2/R/fCompI.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/fCompI.R" src R
 ** fInclin
+label:subsec:finclin
 #+CAPTION: fInclin
-#+INCLUDE: "d:/solaR2/R/fInclin.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/fInclin.R" src R
 ** fProd
+label:subsec:fprod
 #+CAPTION: fProd
-#+INCLUDE: "d:/solaR2/R/fProd.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/fProd.R" src R
 ** fPump
+label:subsec:fpump
 #+CAPTION: fPump
-#+INCLUDE: "d:/solaR2/R/fPump.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/fPump.R" src R
 ** fSolD
+label:subsec:fsold
 #+CAPTION: fSolD
-#+INCLUDE: "d:/solaR2/R/fSolD.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/fSolD.R" src R
 ** fSolI
+label:subsec:fsoli
 #+CAPTION: fSolI
-#+INCLUDE: "d:/solaR2/R/fSolI.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/fSolI.R" src R
 ** fSombra
+label:subsec:fsombra
 #+CAPTION: fSombra
-#+INCLUDE: "d:/solaR2/R/fSombra.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/fSombra.R" src R
 #+CAPTION: fSombra2X
-#+INCLUDE: "d:/solaR2/R/fSombra2X.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/fSombra2X.R" src R
 #+CAPTION: fSombra6
-#+INCLUDE: "d:/solaR2/R/fSombra6.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/fSombra6.R" src R
 #+CAPTION: fSombraEst
-#+INCLUDE: "d:/solaR2/R/fSombraEst.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/fSombraEst.R" src R
 #+CAPTION: fSombraHoriz
-#+INCLUDE: "d:/solaR2/R/fSombraHoriz.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/fSombraHoriz.R" src R
 ** fTemp
+label:subsec:ftemp
 #+CAPTION: fTemp
-#+INCLUDE: "d:/solaR2/R/fTemp.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/fTemp.R" src R
 ** fTheta
+label:subsec:ftheta
 #+CAPTION: fTheta
-#+INCLUDE: "d:/solaR2/R/fTheta.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/fTheta.R" src R
 ** HQCurve
+label:subsec:hqcurve
 #+CAPTION: HQCurve
-#+INCLUDE: "d:/solaR2/R/HQCurve.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/HQCurve.R" src R
 ** local2Solar
+label:subsec:local2solar
 #+CAPTION: local2Solar
-#+begin_src R :results none
+#+begin_src R
 local2Solar <- function(x, lon=NULL){	
   tz=attr(x, 'tzone')
   if (tz=='' || is.null(tz)) {tz='UTC'}
@@ -236,17 +268,21 @@ local2Solar <- function(x, lon=NULL){
 }
 #+end_src
 ** markovG0
+label:subsec:markovg0
 #+CAPTION: markovG0
-#+INCLUDE: "d:/solaR2/R/markovG0.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/markovG0.R" src R 
 ** NmgPVPS
+label:subsec:nmgpvps
 #+CAPTION: NmgPVPS
-#+INCLUDE: "d:/solaR2/R/NmgSFB.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/NmgSFB.R" src R 
 ** solarAngles
+label:subsec:solarangles
 #+CAPTION: solarAngles
-#+INCLUDE: "d:/solaR2/R/solarAngles.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/solarAngles.R" src R
 ** utils-angles
+label:subsec:utils-angles
 #+CAPTION: utils-angles
-#+begin_src R :results none
+#+begin_src R
 #degrees to radians
 d2r<-function(x){x*pi/180}
 
@@ -272,8 +308,9 @@ r2sec<-function(x){x*12/pi*3600}
 r2min<-function(x){x*12/pi*60}
 #+end_src
 ** utils-time
+label:subsec:utils-time
 #+CAPTION: utils-time
-#+begin_src R :results none
+#+begin_src R
 #complete time to hours
 t2h <- function(x)
 {
@@ -300,9 +337,11 @@ dom <- function(x){
 truncDay <- function(x){as.POSIXct(trunc(x, units='days'))}
 #+end_src
 * Métodos
+label:sec:metodos
 ** as.data.tableI
+label:subsec:as.data.tablei
 #+CAPTION: as.data.tableI
-#+begin_src R :exports none
+#+begin_src R
 setGeneric('as.data.tableI',
            function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.tableI')})
 
@@ -466,8 +505,9 @@ setMethod('as.data.tableI',
           )
 #+end_src
 ** as.data.tableD
+label:subsec:as.data.tabled
 #+CAPTION: as.data.tableD
-#+begin_src R :results none
+#+begin_src R 
 setGeneric('as.data.tableD', function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.tableD')})
 
 setMethod('as.data.tableD',
@@ -584,8 +624,9 @@ setMethod('as.data.tableD',
           )
 #+end_src
 ** as.data.tableM
+label:subsec:as.data.tablem
 #+CAPTION: as.data.tableM
-#+begin_src R :results none
+#+begin_src R
 setGeneric('as.data.tableM', function(object, complete = FALSE, day=FALSE){standardGeneric('as.data.tableM')})
 
 setMethod('as.data.tableM',
@@ -664,8 +705,9 @@ setMethod('as.data.tableM',
           )
 #+end_src
 ** as.data.tableY
+label:subsec:as.data.tabley
 #+CAPTION: as.data.tableY
-#+begin_src R :results none
+#+begin_src R 
 setGeneric('as.data.tableY', function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.tableY')})
 
 setMethod('as.data.tableY',
@@ -728,11 +770,13 @@ setMethod('as.data.tableY',
           )
 #+end_src
 ** compare
+label:subsec:compare
 #+CAPTION: compare
-#+INCLUDE: "d:/solaR2/R/compare.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/compare.R" src R 
 ** getData
+label:subsec:getData
 #+CAPTION: getData
-#+begin_src R :results none
+#+begin_src R 
 ## extracts the data for class Meteo ##
 setGeneric('getData', function(object){standardGeneric('getData')})
 
@@ -745,8 +789,9 @@ setMethod('getData',
           })
 #+end_src
 ** getG0
+label:subsec:getg0
 #+CAPTION: getG0
-#+begin_src R :results none
+#+begin_src R
 ## extracts the global irradiance for class Meteo ##
 setGeneric('getG0', function(object){standardGeneric('getG0')})
 
@@ -759,8 +804,9 @@ setMethod('getG0',
           })
 #+end_src
 ** getLat
+label:subsec:getlat
 #+CAPTION: getLat
-#+begin_src R :results none
+#+begin_src R
 ## extracts the latitude from the objects ##
 setGeneric('getLat', function(object, units = 'rad')
 {standardGeneric('getLat')})
@@ -780,8 +826,9 @@ setMethod('getLat',
           })
 #+end_src
 ** indexD
+label:subsec:indexd
 #+CAPTION: indexD
-#+begin_src R :results none
+#+begin_src R
 ## extract the index of the daily data ##
 setGeneric('indexD', function(object){standardGeneric('indexD')})
 ### indexD ###
@@ -795,8 +842,9 @@ setMethod('indexD',
           definition = function(object){as.POSIXct(getData(object)$Dates)})
 #+end_src
 ** indexI
+label:subsec:indexi
 #+CAPTION: indexI
-#+begin_src R :results none
+#+begin_src R 
 ## extract the index of the intradaily data ##
 setGeneric('indexI', function(object){standardGeneric('indexI')})
 ### indexI ###
@@ -806,63 +854,79 @@ setMethod('indexI',
           })
 #+end_src
 ** levelplot
+label:subsec:levelplot
 #+CAPTION: levelplot
-#+INCLUDE: "d:/solaR2/R/levelplot.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/levelplot.R" src R
 ** losses
+label:subsec:losses
 #+CAPTION: losses
-#+INCLUDE: "d:/solaR2/R/losses.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/losses.R" src R
 ** mergeSolar
+label:subsec:mergesolar
 #+CAPTION: mergeSolaR
-#+INCLUDE: "d:/solaR2/R/mergeSolar.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/mergeSolar.R" src R
 ** shadeplot
+label:subsec:shadeplot
 #+CAPTION: shadeplot
-#+INCLUDE: "d:/solaR2/R/shadeplot.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/shadeplot.R" src R
 ** window
+label:subsec:window
 #+CAPTION: window
-#+INCLUDE: "d:/solaR2/R/window.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/window.R" src R
 ** writeSolar
+label:subsec:writesolar
 #+CAPTION: writeSolar
-#+INCLUDE: "d:/solaR2/R/writeSolar.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/writeSolar.R" src R
 ** xyplot
+label:subsec:xyplot
 #+CAPTION: xyplot
-#+INCLUDE: "d:/solaR2/R/xyplot.R" src R :results none
+#+INCLUDE: "../../../solaR2/R/xyplot.R" src R
 * Conjunto de datos
+label:sec:conjunto-datos
 ** aguiar
-#+begin_src R :exports none :session *R*
+label:subsec:aguiar
+#+begin_src R :exports none :session *R* :eval yes
 library(solaR2)
 #+end_src
-#+CAPTION: aguiar
-#+begin_src R :session *R* :results output
+#+CAPTION: aguiar_1
+#+begin_src R :session *R* :results output :eval yes :exports both
 data(MTM)
 Ktlim
 #+end_src
-#+begin_src R :session *R* :results output
+#+CAPTION: aguiar_2
+#+begin_src R :session *R* :results output :eval yes :exports both
 Ktmtm
 #+end_src
-#+begin_src R :session *R* :results output
+#+CAPTION: aguiar_3
+#+begin_src R :session *R* :results output :eval yes :exports both
 head(MTM)
 #+end_src
+
 ** SIAR
+label:subsec:siar
 #+CAPTION: SIAR
-#+begin_src R :session *R* :results output
+#+begin_src R :session *R* :results output :eval yes :exports both
 data(SIAR)
 head(est_SIAR)
 #+end_src
 ** helios
+label:subsec:helios
 #+CAPTION: helios
-#+begin_src R :session *R* :results output
+#+begin_src R :session *R* :results output :eval yes :exports both
 data(helios)
 head(helios)
 #+end_src
 ** prodEx
+label:subsec:prodex
 #+CAPTION: prodEx
-#+begin_src R :session *R* :results output
+#+begin_src R :session *R* :results output :eval yes :exports both
 data(prodEx)
 head(prodEx)
 #+end_src
 ** pumpCoef
+label:subsec:pumpcoef
 #+CAPTION: pumpCoef
-#+begin_src R :session *R* :results output
+#+begin_src R :session *R* :results output :eval yes :exports both
 data(pumpCoef)
 head(pumpCoef)
 #+end_src
