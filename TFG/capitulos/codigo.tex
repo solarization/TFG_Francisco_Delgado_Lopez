@@ -1,37 +1,35 @@
 \chapter{Desarrollo del código}
-\section{Operaciones del paquete \texttt{solaR2}}
-\label{sec:orgbcbd9be}
-\label{sec:operaciones-paquete}
-En la figura \ref{fig:org9123200}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
+\label{chap:desarrollo-codigo}
+En la figura \ref{fig:org9ba4490}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
 \begin{figure}[]
 \centering
 \includegraphics[keepaspectratio,width=0.8\textwidth,height=0.5\textheight]{figuras/procedure.pdf}
-\caption{\label{fig:org9123200}Proceso de cálculo de las funciones de \texttt{solaR2}}
+\caption{\label{fig:org9ba4490}Proceso de cálculo de las funciones de \texttt{solaR2}}
 \end{figure}
 A la hora de estimar la producción, el programa sigue los siguientes procesos:
-\subsection{Geometría que definen la posición de la Tierra frente al Sol.}
-\label{sec:orgbf15051}
-\begin{enumerate}
-\item Mediante la función fSolD, se calcula:
+\section{Geometría solar.}
+\label{sec:org3065f42}
+\label{sec:geometria-solar}
+Para calcular la geometría que definen las posiciones de la Tierra y el Sol, \texttt{solaR2} se vale de una función constructora, \texttt{calcSol} [\ref{subsec:calcsol}], la cual mediante las funciones \texttt{fSolD} [\ref{subsec:fsold}] y \texttt{fSolI} [\ref{subsec:fsoli}] cálcula todos los ángulos y componentes que caracterizan la geometría solar.
+
+Como se puede ver en la figura \ref{fig:calcSol}, \texttt{calcSol} funciona gracias a dos funciones:
 \begin{itemize}
-\item El ángulo de declinación de la Tierra (\(\delta\)).
-\item La corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol (\(\epsilon_0\)).
-\item La ecuación del tiempo (\(EoT\)).
-\item El ángulo del amanecer
-\end{itemize}
-\item Mediante la función fSolI, se calcula:
+\item \texttt{fSolD}: la cual computa la geometría a nivel diario, es decir, los ángulos y componentes que se pueden calcular en cada día independiente.
+estas son:
 \begin{itemize}
-\item La hora solar (\(\omega\)).
-\item El momento del día en el que es de noche.
-\item El ángulo zenital solar (\(\theta_{zs}\)).
-\item El ángulo de altura solar (\(\gamma_s\)).
-\item El ángulo azimutal solar (\(\psi_s\)).
-\item La irradiancia extra-terrestre en el plano horizontal (\(B_0(0)\)).
+\item Declinación (\(\delta\)): calculada a partir de la función \texttt{declination}\footnote{Todas las funciones mencionadas en este punto, se encuentran en el apartado \ref{subsec:utils-angles}.}.
+\item Excentricidad (\(\epsilon_o\))
 \end{itemize}
-\item El resultado de ambas funciones se juntan en un solo objeto de clase \texttt{Sol} mediante la función calcSol.
-\end{enumerate}
+\item \texttt{fSolI}: que calcula la geometría a nivel intradiario, es decir, aquella que se puede calcular en unidades infinitesimas de tiempo.
+\end{itemize}
+\begin{figure}[]
+\centering
+\includegraphics[keepaspectratio,width=0.8\textwidth,height=0.5\textheight]{figuras/calcSol.pdf}
+\caption{Cálculo de la geometría solar mediante la función \texttt{calcSol}, la cual unifica las funciones \texttt{fSolD} y \texttt{fSolI} resultando en un objeto clase \texttt{Sol} el cual contiene toda la información geométrica necesaria para realizar las siguientes estimaciones. \label{fig:calcSol}}
+\end{figure}
+
 \subsection{Radiación en el plano horizontal.}
-\label{sec:orgb8651e2}
+\label{sec:org7322672}
 \begin{enumerate}
 \item La información de irradiación en el plano horizontal (en todos sus componentes o, en su defecto, solo la global(\(G_d(0)\))) y temperatura viene dada en un objeto de clase \texttt{Meteo}.
 \item Mediante la función fCompD, se calcula:
@@ -57,7 +55,7 @@ A la hora de estimar la producción, el programa sigue los siguientes procesos:
 \item El resultado de ambas funciones junto a medias mensuales y valores anuales se consolidan en un solo objeto de clase \texttt{G0} (que incluye los objetos \texttt{Sol} y \texttt{Meteo} de los que parte) mediante la función calcG0.
 \end{enumerate}
 \subsection{Radiación en el plano del generador.}
-\label{sec:org32fd1d1}
+\label{sec:org2443e7d}
 \begin{enumerate}
 \item La información de radiación puede venir dada en forma de un objeto de clase \texttt{Meteo} o un objeto de clase \texttt{G0} (ya que es este último el que se necesita para estimar la radiación en el plano del generador).
 \item Mediante la función fTheta, se calcula:
@@ -81,7 +79,7 @@ A la hora de estimar la producción, el programa sigue los siguientes procesos:
 \item El resultado de estas funciones junto a medias mensuales y valores anuales se consolidan en un solo objeto de clase \texttt{Gef} (que incluye el objeto \texttt{G0} del que parte) mediante la función calcGef.
 \end{enumerate}
 \subsection{Producción eléctrica.}
-\label{sec:org4a176a8}
+\label{sec:org2f3c838}
 \begin{enumerate}
 \item Mediante la función fProd, se calcula:
 \begin{itemize}

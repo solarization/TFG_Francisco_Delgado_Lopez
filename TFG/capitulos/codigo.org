@@ -1,26 +1,36 @@
 \chapter{Desarrollo del código}
-* Operaciones del paquete =solaR2=
-label:sec:operaciones-paquete
+label:chap:desarrollo-codigo
 En la figura [[fig:prod-solar2]], se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
 #+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio
 #+CAPTION: Proceso de cálculo de las funciones de =solaR2=
 #+NAME: fig:prod-solar2
 [[file:figuras/procedure.pdf]]
 A la hora de estimar la producción, el programa sigue los siguientes procesos:
-** Geometría que definen la posición de la Tierra frente al Sol.
-   1. Mediante la función fSolD, se calcula:
-      - El ángulo de declinación de la Tierra (\(\delta\)).
-      - La corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol (\(\epsilon_0\)).
-      - La ecuación del tiempo (\(EoT\)).
-      - El ángulo del amanecer 
-   2. Mediante la función fSolI, se calcula:
-      - La hora solar (\(\omega\)).
-      - El momento del día en el que es de noche.
-      - El ángulo zenital solar (\(\theta_{zs}\)).
-      - El ángulo de altura solar (\(\gamma_s\)).
-      - El ángulo azimutal solar (\(\psi_s\)).
-      - La irradiancia extra-terrestre en el plano horizontal (\(B_0(0)\)).
-   3. El resultado de ambas funciones se juntan en un solo objeto de clase =Sol= mediante la función calcSol.
+* Geometría solar.
+label:sec:geometria-solar
+Para calcular la geometría que definen las posiciones de la Tierra y el Sol, =solaR2= se vale de una función constructora, =calcSol= [ref:subsec:calcsol], la cual mediante las funciones =fSolD= [ref:subsec:fsold] y =fSolI= [ref:subsec:fsoli] cálcula todos los ángulos y componentes que caracterizan la geometría solar.
+
+Como se puede ver en la figura ref:fig:calcSol, =calcSol= funciona gracias a dos funciones:
+- =fSolD=: la cual computa la geometría a nivel diario, es decir, los ángulos y componentes que se pueden calcular en cada día independiente.
+  estas son:
+  - Declinación (\(\delta\)): calculada a partir de la función =declination=[fn:1].
+  - Excentricidad (\(\epsilon_o\)): obtenida mediante la función =eccentricity=.
+  - Ecuación del tiempo (\(EoT\)): obtenida mediante la función =eot=.
+  - Ángulo del amanecer (\(\omega_s\)): calculada a partir de la función =sunrise=.
+  - Irradiancia diaria extra-atmosférica (\(B_{0d}(0)\)): obtenida a paritr de la función =bo0d=.
+#+begin_src R :exports none :session R
+  library(solaR2)
+#+end_src
+#+begin_src R :session R
+  lat <- 40
+  BTd <- fBTd()
+  fSolD()
+#+end_src
+- =fSolI=: que calcula la geometría a nivel intradiario, es decir, aquella que se puede calcular en unidades infinitesimas de tiempo.
+#+CAPTION: Cálculo de la geometría solar mediante la función =calcSol=, la cual unifica las funciones =fSolD= y =fSolI= resultando en un objeto clase =Sol= el cual contiene toda la información geométrica necesaria para realizar las siguientes estimaciones. label:fig:calcSol
+#+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio
+[[file:figuras/calcSol.pdf]]
+
 ** Radiación en el plano horizontal.
    1. La información de irradiación en el plano horizontal (en todos sus componentes o, en su defecto, solo la global(\(G_d(0)\))) y temperatura viene dada en un objeto de clase =Meteo=.
    2. Mediante la función fCompD, se calcula:
@@ -56,4 +66,7 @@ A la hora de estimar la producción, el programa sigue los siguientes procesos:
       - La potencia en corriente continua (\(P_{DC}\)).
       - La potencia en corriente alterna (\(P_{AC}\)).
    2. Estos resultados, llevados a valores diarios, mensuales y anuales, se pueden convertir en valores de energía (\(E_{DC}\) y \(E_{AC}\)) y de productividad del sistema (\(Y_f\)), los cuales se consolidan en un solo objeto de clase =ProdGCPV= (que incluye el objeto =Gef= del que parte) mediante la función prodGCPV.
-      
+
+* Footnotes
+
+[fn:1] Todas las funciones mencionadas en este punto, se encuentran en el apartado ref:subsec:utils-angles. 
