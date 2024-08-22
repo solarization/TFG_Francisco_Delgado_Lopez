@@ -9,27 +9,67 @@ A la hora de estimar la producción, el programa sigue los siguientes procesos:
 * Geometría solar.
 label:sec:geometria-solar
 Para calcular la geometría que definen las posiciones de la Tierra y el Sol, =solaR2= se vale de una función constructora, =calcSol= [ref:subsec:calcsol], la cual mediante las funciones =fSolD= [ref:subsec:fsold] y =fSolI= [ref:subsec:fsoli] cálcula todos los ángulos y componentes que caracterizan la geometría solar.
-
+#+CAPTION: Cálculo de la geometría solar mediante la función =calcSol=, la cual unifica las funciones =fSolD= y =fSolI= resultando en un objeto clase =Sol= el cual contiene toda la información geométrica necesaria para realizar las siguientes estimaciones. label:fig:calcSol
+#+ATTR_LATEX: :height 0.5\textheight :width \textwidth :options keepaspectratio
+[[file:figuras/calcSol.pdf]]
 Como se puede ver en la figura ref:fig:calcSol, =calcSol= funciona gracias a dos funciones:
-- =fSolD=: la cual computa la geometría a nivel diario, es decir, los ángulos y componentes que se pueden calcular en cada día independiente.
+- =fSolD=: la cual, a partir de la latitud (\(\phi\)), computa la geometría a nivel diario, es decir, los ángulos y componentes que se pueden calcular en cada día independiente.
+
   estas son:
   - Declinación (\(\delta\)): calculada a partir de la función =declination=[fn:1].
   - Excentricidad (\(\epsilon_o\)): obtenida mediante la función =eccentricity=.
   - Ecuación del tiempo (\(EoT\)): obtenida mediante la función =eot=.
   - Ángulo del amanecer (\(\omega_s\)): calculada a partir de la función =sunrise=.
   - Irradiancia diaria extra-atmosférica (\(B_{0d}(0)\)): obtenida a paritr de la función =bo0d=.
-#+begin_src R :exports none :session R
-  library(solaR2)
+#+begin_src R :exports none :session *R*
+library(solaR2)
 #+end_src
-#+begin_src R :session R
-  lat <- 40
-  BTd <- fBTd()
-  fSolD()
+#+begin_src R :session *R* :results output :exports both
+lat <- 40
+BTd <- fBTd(mode = 'prom')
+solD <- fSolD(lat = lat, BTd = BTd)
+show(solD)
 #+end_src
-- =fSolI=: que calcula la geometría a nivel intradiario, es decir, aquella que se puede calcular en unidades infinitesimas de tiempo.
-#+CAPTION: Cálculo de la geometría solar mediante la función =calcSol=, la cual unifica las funciones =fSolD= y =fSolI= resultando en un objeto clase =Sol= el cual contiene toda la información geométrica necesaria para realizar las siguientes estimaciones. label:fig:calcSol
-#+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio
-[[file:figuras/calcSol.pdf]]
+
+  Además, =fSolD= permite seleccionar el método de cáculo entre los propuestos por 4 autores diferentes (=cooper= cite:Cooper1969, =spencer= cite:Spencer1971, =strous= cite:Strous2011, =michalsky= cite:Michalsky1988)(el valor por defecto es =michalsky=):
+#+begin_src R :session *R* :results output :exports both
+solD_cooper <- fSolD(lat = lat, BTd = BTd, method = 'cooper')
+show(solD_cooper)
+#+end_src
+#+begin_src R :session *R* :results output :exports both
+solD_spencer <- fSolD(lat = lat, BTd = BTd, method = 'spencer')
+show(solD_spencer)
+#+end_src
+#+begin_src R :session *R* :results output :exports both
+solD_strous <- fSolD(lat = lat, BTd = BTd, method = 'cooper')
+show(solD_strous)
+#+end_src
+- =fSolI=: toma los resultados obtenidos en =fSolD= y calcula la geometría a nivel intradiario, es decir, aquella que se puede calcular en unidades de tiempo menores a los días.
+
+  estas son:
+  - La hora solar o tiempo solar verdadero (\(\omega\)): calculada a partir de la función =sunHour=.
+  - Los momentos del día en los que es de noche (\(night\)): calculada a partir del resultado anterior y de el ángulo del amanecer (cálculada en =fSolD=)[fn:2].
+  - El coseno del ángulo cenital solar (\(cos(\theta_{zs})\)): obtenida a partir de la función =zenith=.
+  - La altura solar (\(\gamma_s\)): obtenida a partir del resultado anterior[fn:3].
+  - El ángulo zenital solar (\(\theta_{zs}\)): calculada mediante la función =azimuth=.
+  - La irradiancia extra-atmosférica (\(B_0(0)\)): calculada mediante el coseno del ángulo cenital, la constante solar (\(B_0\)) y la excentridad (cálculada en =fSolD=) [ecuación ref:eq:irrad_horiz].
+#+begin_src R :session *R* :results output :exports both
+solI <- fSolI(solD = solD[1], sample = 'hour') #Computo solo un día a fin de poder de mejorar la visualización
+show(solI)
+#+end_src
+
+  Además, como los datos nocturnos aportan poco a los cálculos que atañen a este proyecto, =fSolI= presenta la posibilidad de eliminar estos datos con el argumento =keep.night=.
+#+begin_src R :session *R* :results output :exports both
+solI_nigth <- fSolI(solD = solD[1], sample = 'hour', keep.night = FALSE)
+show(solI_nigth)
+#+end_src
+
+Finalmente, estas dos funciones, como se muestra en la figura ref:fig:calcSol, convergen en la función =calcSol=, dando como resultado un objeto de clase =Sol=. Este objeto muestra un sumario de ambos elementos junto con la latitud de los cálculos.
+#+begin_src R :session *R* :results output :exports both
+sol <- calcSol(lat = lat, BTd = BTd, sample = 'hour')
+show(sol)
+#+end_src
+
 
 ** Radiación en el plano horizontal.
    1. La información de irradiación en el plano horizontal (en todos sus componentes o, en su defecto, solo la global(\(G_d(0)\))) y temperatura viene dada en un objeto de clase =Meteo=.
@@ -68,5 +108,6 @@ Como se puede ver en la figura ref:fig:calcSol, =calcSol= funciona gracias a dos
    2. Estos resultados, llevados a valores diarios, mensuales y anuales, se pueden convertir en valores de energía (\(E_{DC}\) y \(E_{AC}\)) y de productividad del sistema (\(Y_f\)), los cuales se consolidan en un solo objeto de clase =ProdGCPV= (que incluye el objeto =Gef= del que parte) mediante la función prodGCPV.
 
 * Footnotes
-
+[fn:3] $\gamma_s=asin(cos(\theta_s))$.
+[fn:2] Cuando la hora solar verdadera excede los ángulos en los que amanece y anochece ($|\omega|>=|\omega_s|$), el Sol queda por debajo de la línea del horizonte, por lo que es de noche. 
 [fn:1] Todas las funciones mencionadas en este punto, se encuentran en el apartado ref:subsec:utils-angles. 
