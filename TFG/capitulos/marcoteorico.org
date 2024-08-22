@@ -35,7 +35,7 @@ Tomando como base el libro antes mencionado [[cite:Perpinan2023]], se describir�
 
 ** Radiación fuera de la atmósfera terrestre
 label:subsec:radiacion-fuera-atmosfera-terrestre
-Lo primero que se menciona en dicho proceso es la obtención de la irradiancia denominda extra-terrestre o extra-atmosférica, que es la radiación que llega a la atmósfera, directamente desde el Sol, que no sufre ninguna pérdida por interaccionar con algún medio. Como la relación entre el tamaño de nuesto plenta y la distancia entre el Sol y la Tierra es muy reducida, es posible asumir que el valor de dicha irradiancia es constante, siendo este valor $B_0=1367\frac{W}{m^2}$, según varias mediciones.
+Lo primero que se menciona en dicho proceso es la obtención de la irradiancia denominda extra-terrestre o extra-atmosférica\nomenclature[B00]{\(B_0(0)\)}{irradiancia extra-atmósferica o extra-terrestre en el plano horizontal}, que es la radiación que llega a la atmósfera, directamente desde el Sol, que no sufre ninguna pérdida por interaccionar con algún medio. Como la relación entre el tamaño de nuesto plenta y la distancia entre el Sol y la Tierra es muy reducida, es posible asumir que el valor de dicha irradiancia es constante, siendo este valor $B_0=1367\frac{W}{m^2}$, según varias mediciones.
 Como la órbita que describe la Tierra alrededor del Sol no es totalmente circular, sino que tiene forma de elipse, para calcular la irradiancia incidente en una superficie tangente a la atmosfera en ua latitud concreta, debemos aplicar un facot de correción de la excentricidad de la elipse:
 #+begin_export latex
 \begin{equation}
@@ -44,7 +44,7 @@ B_0(0)=B_0\epsilon_0cos\theta_{zs}
 \end{equation}
 #+end_export
 Siendo cada componente:
-- Irradiancia extra-terrestre: $B_0=1367\frac{W}{m^2}$ \nomenclature[B0]{\(B_0\)}{Irradiancia extra-atmosférica o extra-terrestre}
+- Constante solar: $B_0=1367\frac{W}{m^2}$ \nomenclature[B0]{\(B_0\)}{Constante solar o irradiancia solar incidente en un plano normal al vector solar en el límite superior de la atmósfera terrestre}
 - Factor de corrección por excentricidad: $\epsilon_0=(\frac{r_0}{r})^2=1+0.033\cdot cos(\frac{2\pi d_n}{365})$[fn:1] \nomenclature[epsilon0]{\(\epsilon_0\)}{Corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol}
 - Ángulo zenital solar: $cos(\theta_{zs})=cos(\delta)cos(\omega)cos(\phi)+sin(\delta)+sin(\phi)$[fn:2] \nomenclature[thetazs]{\(\theta_{zs}\))}{Ángulo cenital solar}
 
