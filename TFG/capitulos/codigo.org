@@ -1,3 +1,4 @@
+#+PROPERTY: header-args:R :dir . :session *R* :exports both :results output
 \chapter{Desarrollo del código}
 label:chap:desarrollo-codigo
 En la figura [[fig:prod-solar2]], se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
@@ -21,10 +22,14 @@ Como se puede ver en la figura ref:fig:calcSol, =calcSol= funciona gracias a dos
   - Ecuación del tiempo (\(EoT\)): obtenida mediante la función =eot=.
   - Ángulo del amanecer (\(\omega_s\)): calculada a partir de la función =sunrise=.
   - Irradiancia diaria extra-atmosférica (\(B_{0d}(0)\)): obtenida a paritr de la función =bo0d=.
-#+begin_src R :exports none :session *R*
-library(solaR2)
+#+begin_src R :exports none
+  library(solaR2)
+  library(zoo)
+  library(httr2)
+  library(jsonlite)
+  setwd('TFG')
 #+end_src
-#+begin_src R :session *R* :results output :exports both
+#+begin_src R 
 lat <- 40
 BTd <- fBTd(mode = 'prom')
 solD <- fSolD(lat = lat, BTd = BTd)
@@ -32,15 +37,15 @@ show(solD)
 #+end_src
 
   Además, =fSolD= permite seleccionar el método de cáculo entre los propuestos por 4 autores diferentes (=cooper= cite:Cooper1969, =spencer= cite:Spencer1971, =strous= cite:Strous2011, =michalsky= cite:Michalsky1988)(el valor por defecto es =michalsky=):
-#+begin_src R :session *R* :results output :exports both
+#+begin_src R 
 solD_cooper <- fSolD(lat = lat, BTd = BTd, method = 'cooper')
-show(solD_cooper)
+print(solD_cooper)
 #+end_src
-#+begin_src R :session *R* :results output :exports both
+#+begin_src R
 solD_spencer <- fSolD(lat = lat, BTd = BTd, method = 'spencer')
 show(solD_spencer)
 #+end_src
-#+begin_src R :session *R* :results output :exports both
+#+begin_src R
 solD_strous <- fSolD(lat = lat, BTd = BTd, method = 'cooper')
 show(solD_strous)
 #+end_src
@@ -53,91 +58,96 @@ show(solD_strous)
   - La altura solar (\(\gamma_s\)): obtenida a partir del resultado anterior[fn:3].
   - El ángulo zenital solar (\(\theta_{zs}\)): calculada mediante la función =azimuth=.
   - La irradiancia extra-atmosférica (\(B_0(0)\)): calculada mediante el coseno del ángulo cenital, la constante solar (\(B_0\)) y la excentridad (cálculada en =fSolD=) [ecuación ref:eq:irrad_horiz].
-#+begin_src R :session *R* :results output :exports both
+#+begin_src R
 solI <- fSolI(solD = solD[1], sample = 'hour') #Computo solo un día a fin de poder de mejorar la visualización
 show(solI)
 #+end_src
 
   Además, como los datos nocturnos aportan poco a los cálculos que atañen a este proyecto, =fSolI= presenta la posibilidad de eliminar estos datos con el argumento =keep.night=.
-#+begin_src R :session *R* :results output :exports both
+#+begin_src R
 solI_nigth <- fSolI(solD = solD[1], sample = 'hour', keep.night = FALSE)
 show(solI_nigth)
 #+end_src
 
 Finalmente, estas dos funciones, como se muestra en la figura ref:fig:calcSol, convergen en la función =calcSol=, dando como resultado un objeto de clase =Sol=. Este objeto muestra un sumario de ambos elementos junto con la latitud de los cálculos.
-#+begin_src R :session *R* :results output :exports both
+#+begin_src R
 sol <- calcSol(lat = lat, BTd = BTd, sample = 'hour')
-show(sol)
+print(sol)
 #+end_src
 
 * Datos meteorológicos
 label:sec:datos-meteorologicos
-Para el procesamiento de datos meteorologicos, =solaR2= provee una serie de funciones ref:subsec:meteoreaders que son capaces de leer todo tipo de datos. Estos datos se procesan y se almacenan en un objeto de tipo =Meteo= tal y como se ve en la figura ref:fig:meteo. Estas funciones son:
+Para el procesamiento de datos meteorologicos, =solaR2= provee una serie de funciones[fn:4] que son capaces de leer todo tipo de datos. Estos datos se procesan y se almacenan en un objeto de tipo =Meteo= tal y como se ve en la figura ref:fig:meteo. Estas funciones son:
 #+CAPTION: Los datos meteorologicas se pueden leer mediante las funciones =readG0dm=, =readBD=, =dt2Meteo=, =zoo2Meteo= y =readSIAR= las cuales procesan estos datos y los almacenan en un objeto de clase =Meteo=. label:fig:meteo
 #+ATTR_LATEX: :height 0.5\textheight :width \textwidth :options keepaspectratio 
 file:figuras/meteo.pdf
 - =readG0dm=: Esta función construye un objeto =Meteo= a partir de 12 valores de medias mensuales de irradiación.
-#+begin_src R :session *R* :results output :exports both
-G0dm =
-  c(2.766,3.491,4.494,5.912,6.989,7.742,7.919,7.027,5.369,3.562,2.814,2.179) * 1000;
-Ta = c(10, 14.1, 15.6, 17.2, 19.3, 21.2, 28.4, 29.9, 24.3, 18.2, 17.2, 15.2)
-BD <- readG0dm(G0dm = G0dm, Ta = Ta, lat = 37.2)
-print(BD)
+#+begin_src R
+  G0dm =
+    c(2.766,3.491,4.494,5.912,6.989,7.742,7.919,7.027,5.369,3.562,2.814,2.179) * 1000;
+  Ta = c(10, 14.1, 15.6, 17.2, 19.3, 21.2, 28.4, 29.9, 24.3, 18.2, 17.2, 15.2)
+  BD <- readG0dm(G0dm = G0dm, Ta = Ta, lat = 37.2)
+  print(BD)
 #+end_src
 - =readBD=: Esta familia de funciones puede leer ficheros de datos y transformarlos en un objeto de clase =Meteo=. Se dividen en:
   - =readBDd=: Procesa datos meteorológicos de tipo diarios.
-  #+begin_src R :session *R* :results output : exports both
-  ## Se utiliza un archivo alojado en github
-  myURL <-"https://raw.githubusercontent.com/oscarperpinan/R/master/data/aranjuez.csv"
-  ## Se emplea un archivo temporal
-  temp_file <- tempfile(tmpdir = '') 
-  download.file(myURL, temp_file, quiet = TRUE)
-  BDd <- readBDd(file = temp_file, lat = lat, format = '%Y/%m/%d', header = TRUE,
-		 fill = TRUE, dec = '.', sep = ',', dates.col = '',
-		 ta.col = 'TempAvg', g0.col = 'Radiation', keep.cols = TRUE)
-  unlink(temp_file)
-  print(BDd)
+  #+begin_src R
+    ## Se utiliza un archivo alojado en el
+    ## github del tutor de este proyecto 
+    myURL <-"https://raw.githubusercontent.com/oscarperpinan/R/master/data/aranjuez.csv"
+    download.file(myURL, 'data/aranjuez.csv', quiet = TRUE)
+    BDd <- readBDd(file = 'data/aranjuez.csv', lat = lat, format = '%Y/%m/%d', header = TRUE,
+		   fill = TRUE, dec = '.', sep = ',', dates.col = '',
+		   ta.col = 'TempAvg', g0.col = 'Radiation', keep.cols = TRUE)
+    print(BDd)
   #+end_src
   - =readBDi=: Procesa datos meteorológicos de tipo intradiarios.
+  #+begin_src R
+    myURL <- "https://raw.githubusercontent.com/oscarperpinan/R/master/data/NREL-Hawaii.csv"
+    download.file(myURL, 'data/NREL-Hawaii.csv', quiet = TRUE)
+    BDi <- readBDi(file = 'data/NREL-Hawaii.csv', lat = 19,
+		   format = "%d/%m/%Y %H:%M", header = TRUE,
+		   fill = TRUE, dec = '.', sep = ',',
+		   dates.col = 'DATE', times.col = 'HST',
+		   ta.col = 'Air Temperature [deg C]',
+		   g0.col = 'Global Horizontal [W/m^2]',
+		   keep.cols = TRUE)
+    print(BDi)
+  #+end_src
 - =dt2Meteo=: Transforma un =data.table= o =data.frame= en un objeto de clase =Meteo=.
-- =zoo2Meteo=: Transforma un objeto de clase =zoo=[fn:4] en un objeto de clase =Meteo=.
+#+begin_src R
+  data(helios)
+  names(helios) <- c('Dates', 'G0d', 'TempMax', 'TempMin')
+  helios_meteo <- dt2Meteo(file = helios, lat = 40, type = 'bd')
+  print(helios_meteo)
+#+end_src  
+- =zoo2Meteo=: Transforma un objeto de clase =zoo=[fn:5] en un objeto de clase =Meteo=.
+#+begin_src R
+  library(zoo)
+  bd_zoo <- read.csv.zoo('data/aranjuez.csv')
+  BD_zoo <- zoo2Meteo(file = bd_zoo, lat = 40)
+  print(BD_zoo)
+#+end_src
 - =readSIAR=: Esta función es capaz de extraer información de la red SIAR y transformarlo en un objeto de clase =Meteo=.
-  
-** Radiación en el plano horizontal.
-   1. La información de irradiación en el plano horizontal (en todos sus componentes o, en su defecto, solo la global(\(G_d(0)\))) y temperatura viene dada en un objeto de clase =Meteo=.
-   2. Mediante la función fCompD, se calcula:
-      - La fracción de radiación difusa diaria (\(F_{Dd}\)).
-      - El índice de claridad diario (\(K_{Td}\)).
-      - Si solo se tienen datos de la componente global de irradición:
-	- La irradiación directa en el plano horizontal (\(B_d(0)\)).
-	- La irradiación difusa en el plano horizontal (\(D_d(0)\)).
-   3. Mediante la función fCompI, se calcula:
-      - La fracción de radiación difusa (\(F_D\)).
-      - El índice de claridad (\(K_T\)).
-      - Si solo se tienen datos de la componenete global de irradiancia (\(G(0)\)):
-	- La irradiancia directa en el plano horizontal (\(B(0)\)).
-	- La irradiancia difusa en el plano horizontal (\(D(0)\)).
-   4. El resultado de ambas funciones junto a medias mensuales y valores anuales se consolidan en un solo objeto de clase =G0= (que incluye los objetos =Sol= y =Meteo= de los que parte) mediante la función calcG0.
-** Radiación en el plano del generador.
-   1. La información de radiación puede venir dada en forma de un objeto de clase =Meteo= o un objeto de clase =G0= (ya que es este último el que se necesita para estimar la radiación en el plano del generador).
-   2. Mediante la función fTheta, se calcula:
-      - Ángulo de inclinación de la superficie del módulo (\(\beta\)).
-      - Ángulo azimutal de la superficie del módulo (\(\alpha\) ).
-      - Ángulo de incidencia de la irradiancia solar en la superficie del módulo (\(\theta_s\)).
-   3. Mediante la función fInclin, se calcula:
-      - La irradiancia extra-terrestre en la superficie inclinada (\(B_0(\beta, \alpha)\)).
-      - La irradiancia directa normal (\(B(n)\)).
-      - Las irradiancias global (\(G(\beta, \alpha)\)), directa (\(B(\beta, \alpha)\)), difusa (\(D(\beta, \alpha)\))(total, isotropica y anisotrópica) y del albedo (\(R(\beta, \alpha)\)) sobre una superficie inclinada.
-      - Las irradiancias efectivas global (\(G_{ef}(\beta, \alpha)\)), directa (\(B_{ef}(\beta, \alpha)\)), difusa (\(D_{ef}(\beta, \alpha)\))(total, isotropica y anisotrópica) y del albedo (\(R_{ef}(\beta, \alpha)\)) sobre una superficie inclinada.
-      - Los factores de pérdidas angulares para las componentes directa (\(FT\)), difusa (\(FT_D\)), y del albedo (\(FT_R\)).
-   4. Mediante la función calcShd, se puede calcular:
-      - La irradiancia e irradiación incluyendo sombras para seguidores a dos ejes y horizontales y paneles fijos mediante la función fSombra.  
-   5. El resultado de estas funciones junto a medias mensuales y valores anuales se consolidan en un solo objeto de clase =Gef= (que incluye el objeto =G0= del que parte) mediante la función calcGef.
-** Producción eléctrica.
-   1. Mediante la función fProd, se calcula:
-      - La potencia en corriente continua (\(P_{DC}\)).
-      - La potencia en corriente alterna (\(P_{AC}\)).
-   2. Estos resultados, llevados a valores diarios, mensuales y anuales, se pueden convertir en valores de energía (\(E_{DC}\) y \(E_{AC}\)) y de productividad del sistema (\(Y_f\)), los cuales se consolidan en un solo objeto de clase =ProdGCPV= (que incluye el objeto =Gef= del que parte) mediante la función prodGCPV.
+#+begin_src R
+  library(httr2)
+  library(jsonlite)
+  bd_SIAR <- readSIAR(Lat = 40.40596822621351, Lon = -3.70038308516172,
+		      ## Ubicación de la Escuela Técnica Superior
+		      ## de Ingeniería y Diseño Industrial (ETSIDI)
+		      inicio = '2023-08-22', final = '2024-08-22',
+		      tipo = 'Mensuales', n_est = 3)
+  print(bd_SIAR)
+#+end_src
+  Esta función tiene dos argumentos importantes:
+  - =tipo=: La API SIAR[fn:6] permite tener 4 tipos de registros: =Mensuales=, =Semanales=, =Diarios= y =Horarios=.
+  - =n_est=: Con este argumento, la función es capaz de localizar el número seleccionado de estaciones más proximas a la ubicación dada, y obtener los datos individuales de cada una de ellas. Una vez obtenidos estos datos realiza una interpolación de distancia inversa ponderada (IDW) y entrega un solo resultado. Es importante añadir que la API SIAR tiene una limitación a la solicitud de registros que se le hace cada minuto, por lo que esta función cuenta con un comprobante para impedir que el usuario exceda este límite.
+      
+* Radiación en el plano horizontal.
+Una vez se ha calculado la geometría solar (sección ref:sec:geometria-solar) y se han procesado los datos meteorológicos (sección ref:sec:datos-meteorologicos), es necesario calcular la radiación en el plano horizontal. Para ello, =solaR2= cuenta con la función =calcG0= ref:subsec:calg0
+#+CAPTION: :label:fig:calcg0
+#+ATTR_LATEX: :width \textwidth :height 0.5\textheight :options keepaspectratio
+file:figuras/calcg0.pdf
 
 * Footnotes
 
@@ -147,4 +157,8 @@ print(BD)
 
 [fn:3] $\gamma_s=asin(cos(\theta_s))$.
 
-[fn:4] Pese a que este proyecto trate de "desligarse" del paquete =zoo=, sigue siendo un paquete muy extendido. Por lo que es interesante tener una función así para que los usuarios tengan una mayor flexibilidad.
+[fn:4] Las funciones comentadas en este apartado, se recogen en la sección ref:subsec:meteoreaders
+
+[fn:5] Pese a que este proyecto trate de "desligarse" del paquete =zoo=, sigue siendo un paquete muy extendido. Por lo que es interesante tener una función así para que los usuarios tengan una mayor flexibilidad.
+
+[fn:6] La API (Interfaz de Programación de Aplicaciones) que se usa para la función =readSIAR= está proporcionada por la propia red SIAR cite:siar23.
