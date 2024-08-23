@@ -7,13 +7,14 @@ En la figura [[fig:prod-solar2]], se muestra el proceso de cálculo que sigue el
 #+NAME: fig:prod-solar2
 [[file:figuras/procedure.pdf]]
 A la hora de estimar la producción, el programa sigue los siguientes procesos:
-* Geometría solar.
+* Geometría solar
 label:sec:geometria-solar
 Para calcular la geometría que definen las posiciones de la Tierra y el Sol, =solaR2= se vale de una función constructora, =calcSol= [ref:subsec:calcsol], la cual mediante las funciones =fSolD= [ref:subsec:fsold] y =fSolI= [ref:subsec:fsoli] cálcula todos los ángulos y componentes que caracterizan la geometría solar.
 #+CAPTION: Cálculo de la geometría solar mediante la función =calcSol=, la cual unifica las funciones =fSolD= y =fSolI= resultando en un objeto clase =Sol= el cual contiene toda la información geométrica necesaria para realizar las siguientes estimaciones. label:fig:calcSol
 #+ATTR_LATEX: :height 0.5\textheight :width \textwidth :options keepaspectratio
 [[file:figuras/calcSol.pdf]]
-Como se puede ver en la figura ref:fig:calcSol, =calcSol= funciona gracias a dos funciones:
+
+Como se puede ver en la figura ref:fig:calcSol, =calcSol= funcia gracias a las siguientes funciones:
 - =fSolD=: la cual, a partir de la latitud (\(\phi\)), computa la geometría a nivel diario, es decir, los ángulos y componentes que se pueden calcular en cada día independiente.
 
   estas son:
@@ -32,14 +33,14 @@ Como se puede ver en la figura ref:fig:calcSol, =calcSol= funciona gracias a dos
 #+begin_src R 
 lat <- 40
 BTd <- fBTd(mode = 'prom')
-solD <- fSolD(lat = lat, BTd = BTd)
+fSolD(lat = lat, BTd = BTd)
 show(solD)
 #+end_src
 
   Además, =fSolD= permite seleccionar el método de cáculo entre los propuestos por 4 autores diferentes (=cooper= cite:Cooper1969, =spencer= cite:Spencer1971, =strous= cite:Strous2011, =michalsky= cite:Michalsky1988)(el valor por defecto es =michalsky=):
 #+begin_src R 
 solD_cooper <- fSolD(lat = lat, BTd = BTd, method = 'cooper')
-print(solD_cooper)
+show(solD_cooper)
 #+end_src
 #+begin_src R
 solD_spencer <- fSolD(lat = lat, BTd = BTd, method = 'spencer')
@@ -50,7 +51,6 @@ solD_strous <- fSolD(lat = lat, BTd = BTd, method = 'cooper')
 show(solD_strous)
 #+end_src
 - =fSolI=: toma los resultados obtenidos en =fSolD= y calcula la geometría a nivel intradiario, es decir, aquella que se puede calcular en unidades de tiempo menores a los días.
-
   estas son:
   - La hora solar o tiempo solar verdadero (\(\omega\)): calculada a partir de la función =sunHour=.
   - Los momentos del día en los que es de noche (\(night\)): calculada a partir del resultado anterior y de el ángulo del amanecer (cálculada en =fSolD=)[fn:2].
@@ -83,23 +83,25 @@ Para el procesamiento de datos meteorologicos, =solaR2= provee una serie de func
 file:figuras/meteo.pdf
 - =readG0dm=: Esta función construye un objeto =Meteo= a partir de 12 valores de medias mensuales de irradiación.
 #+begin_src R
-  G0dm =
-    c(2.766,3.491,4.494,5.912,6.989,7.742,7.919,7.027,5.369,3.562,2.814,2.179) * 1000;
-  Ta = c(10, 14.1, 15.6, 17.2, 19.3, 21.2, 28.4, 29.9, 24.3, 18.2, 17.2, 15.2)
-  BD <- readG0dm(G0dm = G0dm, Ta = Ta, lat = 37.2)
-  print(BD)
+G0dm = c(2.766,3.491,4.494,5.912,6.989,7.742,
+         7.919,7.027,5.369,3.562,2.814,2.179) * 1000;
+Ta = c(10, 14.1, 15.6, 17.2, 19.3, 21.2,
+       28.4, 29.9, 24.3, 18.2, 17.2, 15.2)
+BD <- readG0dm(G0dm = G0dm, Ta = Ta, lat = 37.2)
+print(BD)
 #+end_src
 - =readBD=: Esta familia de funciones puede leer ficheros de datos y transformarlos en un objeto de clase =Meteo=. Se dividen en:
   - =readBDd=: Procesa datos meteorológicos de tipo diarios.
   #+begin_src R
-    ## Se utiliza un archivo alojado en el
-    ## github del tutor de este proyecto 
-    myURL <-"https://raw.githubusercontent.com/oscarperpinan/R/master/data/aranjuez.csv"
-    download.file(myURL, 'data/aranjuez.csv', quiet = TRUE)
-    BDd <- readBDd(file = 'data/aranjuez.csv', lat = lat, format = '%Y/%m/%d', header = TRUE,
-		   fill = TRUE, dec = '.', sep = ',', dates.col = '',
-		   ta.col = 'TempAvg', g0.col = 'Radiation', keep.cols = TRUE)
-    print(BDd)
+  ## Se utiliza un archivo alojado en el
+  ## github del tutor de este proyecto 
+  myURL <-"https://raw.githubusercontent.com/oscarperpinan/R/master/data/aranjuez.csv"
+  download.file(myURL, 'data/aranjuez.csv', quiet = TRUE)
+  BDd <- readBDd(file = 'data/aranjuez.csv', lat = lat,
+		 format = '%Y-%m-%d', header = TRUE,
+		 fill = TRUE, dec = '.', sep = ',', dates.col = '',
+		 ta.col = 'TempAvg', g0.col = 'Radiation', keep.cols = TRUE)
+  print(BDd)
   #+end_src
   - =readBDi=: Procesa datos meteorológicos de tipo intradiarios.
   #+begin_src R
@@ -143,12 +145,64 @@ file:figuras/meteo.pdf
   - =tipo=: La API SIAR[fn:6] permite tener 4 tipos de registros: =Mensuales=, =Semanales=, =Diarios= y =Horarios=.
   - =n_est=: Con este argumento, la función es capaz de localizar el número seleccionado de estaciones más proximas a la ubicación dada, y obtener los datos individuales de cada una de ellas. Una vez obtenidos estos datos realiza una interpolación de distancia inversa ponderada (IDW) y entrega un solo resultado. Es importante añadir que la API SIAR tiene una limitación a la solicitud de registros que se le hace cada minuto, por lo que esta función cuenta con un comprobante para impedir que el usuario exceda este límite.
       
-* Radiación en el plano horizontal.
-Una vez se ha calculado la geometría solar (sección ref:sec:geometria-solar) y se han procesado los datos meteorológicos (sección ref:sec:datos-meteorologicos), es necesario calcular la radiación en el plano horizontal. Para ello, =solaR2= cuenta con la función =calcG0= ref:subsec:calg0
+* Radiación en el plano horizontal
+Una vez se ha calculado la geometría solar (sección ref:sec:geometria-solar) y se han procesado los datos meteorológicos (sección ref:sec:datos-meteorologicos), es necesario calcular la radiación en el plano horizontal. Para ello, =solaR2= cuenta con la función =calcG0= [ref:subsec:calcg0] la cual mediante las funciones =fCompD= [ref:subsec:fcompd] y =fCompI= [ref:subsec:fcompi] procesan los objetos de clase =Sol= y clase =Meteo= para dar un objeto de tipo =G0=.
+
+Como se puede ver en la figura ref:fig:calcg0, =calcG0= funciona gracias a las siguientes funciones:
 #+CAPTION: :label:fig:calcg0
 #+ATTR_LATEX: :width \textwidth :height 0.5\textheight :options keepaspectratio
 file:figuras/calcg0.pdf
-
+- =fCompD=: La cual computa todas las componentes de la irradiación diaria en una superficie horizontal mediante regresiones entre los parámetros del índice de claridad y la fracción difusa.
+  Para ello se pueden usar varias correlaciones dependiendo del tipo de datos:
+  - Mensuales:
+  #+begin_src R
+  lat <- 37.2
+  BTd <- fBTd(mode = 'prom')
+  solD <- fSolD(lat, BTd)
+  G0d <- c(2.766,3.491,4.494,5.912,6.989,7.742,7.919,7.027,5.369,3.562,2.814,2.179) * 1000
+  compD_page <- fCompD(sol = solD, G0d = G0d, corr = "Page")
+  compD_page
+  #+end_src
+  #+begin_src R
+  compD_lj <- fCompD(sol = solD, G0d = G0d, corr = "LJ")
+  compD_lj
+  #+end_src
+  - Diarios:
+  #+begin_src R
+  G0d <- readSIAR(Lat = 40.40596822621351, Lon =-3.70038308516172,
+		  inicio = '2024-07-15', final = '2024-08-01',
+		  tipo = 'Diarios', n_est = 3)
+  sol <- calcSol(lat, BTd = indexD(G0d))
+  compD_cpr <- fCompD(sol = sol, G0d = G0d, corr = "CPR")
+  compD_cpr
+  #+end_src
+  #+begin_src R
+  compD_ekdd <- fCompD(sol = sol, G0d = G0d, corr = 'EKDd')
+  compD_ekdd
+  #+end_src
+  #+begin_src R
+  compD_climedd <- fCompD(sol = sol, G0d = G0d, corr = 'CLIMEDd')
+  compD_climedd
+  #+end_src
+  También, se puede aportar una función de corrección propia.
+  #+begin_src R
+  f_corr <- function(sol, G0d){
+      Kt <- Ktd(sol, G0d)
+      Fd=(Kt<=0.13)*(0.952)+
+      (Kt>0.13 & Kt<=0.8)*(0.868+1.335*Kt-5.782*Kt^2+3.721*Kt^3)+
+	(Kt>0.8)*0.141
+    return(data.table(Fd, Kt))
+  }
+  compD_user <- fCompD(sol = sol, G0d = G0d, corr = 'user', f = f_corr)
+  compD_user
+  #+end_src
+  Por último, si =G0d= ya contiene todos los componentes, se puede hacer que no haga la corrección.
+  #+begin_src R
+  compD_none <- fCompD(sol = sol, G0d = compD_user, corr = 'none')
+  compD_none
+  #+end_src
+- =fCompI=: calcula, en base a los valores de irradiación diaria, todas las componentes de irradiancia
+  
 * Footnotes
 
 [fn:1] Todas las funciones mencionadas en este punto, se encuentran en el apartado ref:subsec:utils-angles.
