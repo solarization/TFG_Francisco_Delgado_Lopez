@@ -33,9 +33,9 @@
   sep=15mm,row sep=7mm, minimum width=4cm] (Geometry) {
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
     \node {}; &
+    \node [class] (sol) {\texttt{Sol}}; &
     \node {}; &
-    \node {}; &
-    \node {}; &    
+    \node [class] (meteo) {\texttt{Meteo}}; &
     \node [utils] (corrFdKti) {\texttt{corrFdKt}}; \\
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \node [utils] (corrFdKtd) {\texttt{corrFdKt}}; &
@@ -53,25 +53,8 @@
 \end{scope}
 
 \begin{scope}
-  % \draw [->, BrickRed] (fSolD) -- (calcSol);
-  % \draw [->, BrickRed] (fSolI) -- (calcSol);
-  % \draw [->, Blue] (calcSol) -- (Sol);
-  % \draw [->, Green] (decl) .. controls ++(0:4) .. (fSolD)
-  % node [midway, above, simple] {$\delta$};
-  % \draw [->, Green] (eo) .. controls ++(0:4) .. (fSolD)
-  % node [midway, above, simple] {$\epsilon_o$};
-  % \draw [->, Green] (EoT) -- (fSolD)
-  % node [midway, above, simple] {$EoT$};
-  % \draw [->, Green] (ws) .. controls ++(0:4) .. (fSolD)
-  % node [midway, above, simple] {$\omega_s$};
-  % \draw [->, Green] (Bo0d) .. controls ++(0:4) .. (fSolD)
-  % node [midway, above, simple] {$B_{0d}(0)$};
-  % \draw [->, Green] (w) .. controls ++(0:-4) .. (fSolI)
-  % node [midway, above, simple] {$\omega$};
-  % \draw [->, Green] (cosThzS) -- (fSolI)
-  % node [midway, above, simple] {$cos(\theta_{zs})$};
-  % \draw [->, Green] (AzS) .. controls ++(0:-4) .. (fSolI)
-  % node [midway, above, simple] {$\psi_s$};
+  \draw [->, Blue] (sol) .. controls ++(0:5) .. (calcG0);
+  \draw [->, Blue] (meteo) .. controls ++(0:-5) .. (calcG0);
   \draw [->, BrickRed] (fCompD) -- (calcG0);
   \draw [->, BrickRed] (fCompI) -- (calcG0);
   \draw [->, Blue] (calcG0) -- (G0);
