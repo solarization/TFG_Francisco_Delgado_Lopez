@@ -146,10 +146,11 @@ print(BD)
   - =n_est=: Con este argumento, la función es capaz de localizar el número seleccionado de estaciones más proximas a la ubicación dada, y obtener los datos individuales de cada una de ellas. Una vez obtenidos estos datos realiza una interpolación de distancia inversa ponderada (IDW) y entrega un solo resultado. Es importante añadir que la API SIAR tiene una limitación a la solicitud de registros que se le hace cada minuto, por lo que esta función cuenta con un comprobante para impedir que el usuario exceda este límite.
       
 * Radiación en el plano horizontal
+label:sec:radiacion-plano-horizontal
 Una vez se ha calculado la geometría solar (sección ref:sec:geometria-solar) y se han procesado los datos meteorológicos (sección ref:sec:datos-meteorologicos), es necesario calcular la radiación en el plano horizontal. Para ello, =solaR2= cuenta con la función =calcG0= [ref:subsec:calcg0] la cual mediante las funciones =fCompD= [ref:subsec:fcompd] y =fCompI= [ref:subsec:fcompi] procesan los objetos de clase =Sol= y clase =Meteo= para dar un objeto de tipo =G0=.
 
 Como se puede ver en la figura ref:fig:calcg0, =calcG0= funciona gracias a las siguientes funciones:
-#+CAPTION: :label:fig:calcg0
+#+CAPTION: Cálculo de la radiación incidente en el plano horizontal mediante la función =calcG0=, la cual procesa un objeto clase =Sol= y otro clase =Meteo= mediante las funciones =fCompD= y =fCompI= resultando en un objeto clase =G0=. :label:fig:calcg0
 #+ATTR_LATEX: :width \textwidth :height 0.5\textheight :options keepaspectratio
 file:figuras/calcg0.pdf
 - =fCompD=: La cual computa todas las componentes de la irradiación diaria en una superficie horizontal mediante regresiones entre los parámetros del índice de claridad y la fracción difusa.
@@ -279,7 +280,57 @@ Como argumento más importante está =modeRad=, el cual selecciona el tipo de da
   show(g0_bdI)
   #+end_src
 
-* Radiación efectiva en el plano del generador 
+* Radiación efectiva en el plano del generador
+label:sec:radiacion-efectiva-plano-generador
+Teniendo la radiación incidente en plano horizontal (sección ref:sec:radiacion-plano-horizontal), se puede calcular la radiación efectiva incidente en el plano del generador. Para ello, =solaR2= cuenta con la función =calcGef= [ref:subsec:calcgef] la cual mediante las funciones =fInclin= y =calcShd= procesa un objeto de clase =G0= para obtener un objeto =Gef=.
+
+Como se puede ver en la figura ref:fig:calcgef, =calcG0= funciona gracias a las siguientes funciones:
+#+CAPTION: Cálculo de la radiación efectiva incidente en el plano del generador mediante la función =calcGef=, la cual emplea la función =fInclin= para el computo de las componentes efectivas, la función =fTheta= que provee a la función anterior los ángulos necesarios para su computo y la función =calcShd= que reprocesa el objeto de clase =Gef= resultante, añadiendole el efecto de las sombras producidas entres módulos. label:fig:calcgef
+#+ATTR_LATEX: :width \textwidth :height 0.5\textheight :options keepaspectratio
+file:figuras/calcgef.pdf
+- =fTheta=: la cual, partiendo del ángulo de inclinación (\(\beta\)) y la orientación (\(\alpha\)), computa el ángulo de inclinación en cada instante (\(\beta\)), el ángulo azimutal (\(\psi_s\)) y el coseno del ángulo de incidencia  de la radiación solar en la superficie (\(cos(\theta_s)\)).
+  Como principal argumento tiene =modeTrk=, el cual determina el sistema de seguimiento que tiene el sistema:
+  - =fixed=: para sistemas estáticos.
+  #+begin_src R
+  BTd <- fBTd(mode = 'prom')[6] 
+  sol <- calcSol(lat, BTd = BTd, keep.night = FALSE)
+  beta <- lat - 10
+  alfa <- 0
+  angGen_fixed <- fTheta(sol = sol, beta = beta, alfa = alfa,
+		   modeTrk = 'fixed')
+  show(angGen_fixed)
+  #+end_src
+  - =two=: para sistemas de seguimiento de doble eje.
+  #+begin_src R
+  angGen_two <- fTheta(sol = sol, beta = beta, alfa = alfa,
+		       modeTrk = 'two')
+  show(angGen_two)
+  #+end_src
+  - =horiz=: para sistemas de seguimiento horizontal Norte-Sur.
+  #+begin_src R
+  angGen_horiz <- fTheta(sol = sol, beta = beta, alfa = alfa,
+			 modeTrk = 'horiz')
+  show(angGen_horiz)
+  #+end_src
+  También, tiene un argumento =BT= que indica cuando se usa la técnica de backtracking para un sistema horizontal Norte-Sur. Para funcionar, necesita de los argumentos =struct=, el cual presenta una lista con la altura de los módulos, y =dist=, el cual presenta un =data.frame= (o =data.table=) con la distancia que separa los módulos en la dirección Este-Oeste.
+  #+begin_src R
+  struct <- list(L = 1)
+  dist <- data.table(Lew = 2)
+  angGen_BT <- fTheta(sol = sol, beta = beta, alfa = alfa,
+		      modeTrk = 'horiz', BT = TRUE,
+		      struct = struct, dist = dist)
+  show(angGen_BT)
+  #+end_src
+- =fInclin=: la cual, partiendo del resultado de =fTheta= y de un objeto de clase =G0=, cálcula la irradiancia solar incidente en una superficie inclinada junto con los efectos del ángulo de incidencia y la suciedad para obtener la irradiancia efectiva.
+  Como argumentos principales están:
+  - =iS=: permite seleccionar entre 4 valores del 1 al 4 correspondientes a la suciedad del módulo. Siendo 1 limpio y 4 alto y basandose en los valores de la tabla ref:tab:coef-perd computa la irradiancia efectiva.
+  #+begin_src R
+  compI <- calcG0(lat, dataRad = prom, keep.night = FALSE)
+  sol <- calcSol(lat, BTi = indexI(compI))
+  angGen <- fTheta(sol = sol, beta = beta, alfa = alfa)
+  inclin_limpio <- fInclin(compI = compI, angGen = angGen, iS = 1)
+  show(inclin_limpio)
+  #+end_src   
 * Footnotes
 
 [fn:1] Todas las funciones mencionadas en este punto, se encuentran en el apartado ref:subsec:utils-angles.
