@@ -1,14 +1,14 @@
 \chapter{Desarrollo del código}
 \label{chap:desarrollo-codigo}
-En la figura \ref{fig:org94b5b6e}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
+En la figura \ref{fig:orgf0c0e1f}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
 \begin{figure}[]
 \centering
 \includegraphics[keepaspectratio,width=0.8\textwidth,height=0.5\textheight]{figuras/procedure.pdf}
-\caption{\label{fig:org94b5b6e}Proceso de cálculo de las funciones de \texttt{solaR2}}
+\caption{\label{fig:orgf0c0e1f}Proceso de cálculo de las funciones de \texttt{solaR2}}
 \end{figure}
 A la hora de estimar la producción, el programa sigue los siguientes procesos:
 \section{Geometría solar}
-\label{sec:orge3d2c46}
+\label{sec:orgfe888fc}
 \label{sec:geometria-solar}
 Para calcular la geometría que definen las posiciones de la Tierra y el Sol, \texttt{solaR2} se vale de una función constructora, \texttt{calcSol} [\ref{subsec:calcsol}], la cual mediante las funciones \texttt{fSolD} [\ref{subsec:fsold}] y \texttt{fSolI} [\ref{subsec:fsoli}] cálcula todos los ángulos y componentes que caracterizan la geometría solar.
 \begin{figure}[]
@@ -38,22 +38,10 @@ show(solD)
 \end{lstlisting}
 
 \begin{verbatim}
-Key: <Dates>
-         Dates   lat        decl        eo           EoT        ws      Bo0d
-        <IDat> <num>       <num>     <num>         <num>     <num>     <num>
- 1: 2024-01-17  37.2 -0.36271754 1.0340422 -0.0455346238 -1.278593  4738.993
- 2: 2024-02-14  37.2 -0.22850166 1.0259717 -0.0614793356 -1.393341  6137.388
- 3: 2024-03-15  37.2 -0.03191616 1.0107943 -0.0368674274 -1.546560  8086.323
- 4: 2024-04-15  37.2  0.17531794 0.9926547  0.0017482721 -1.705659  9921.357
- 5: 2024-05-15  37.2  0.33246485 0.9775162  0.0143055938 -1.835976 11115.619
- 6: 2024-06-10  37.2  0.40257826 0.9691480 -0.0007378952 -1.899934 11573.907
- 7: 2024-07-18  37.2  0.36439367 0.9675489 -0.0263454380 -1.864521 11257.133
- 8: 2024-08-18  37.2  0.22407398 0.9758022 -0.0111761118 -1.744657 10183.208
- 9: 2024-09-18  37.2  0.02730595 0.9907919  0.0342189964 -1.591529  8508.642
-10: 2024-10-19  37.2 -0.17900474 1.0088406  0.0689613044 -1.433019  6554.218
-11: 2024-11-18  37.2 -0.33862399 1.0245012  0.0575423573 -1.300179  4951.750
-12: 2024-12-13  37.2 -0.40478283 1.0328516  0.0158622941 -1.239567  4284.472
+Error en h(simpleError(msg, call)): 
+  error in evaluating the argument 'object' in selecting a method for function 'show': objeto 'solD' no encontrado
 \end{verbatim}
+
 
 Además, \texttt{fSolD} permite seleccionar el método de cáculo entre los propuestos por 4 autores diferentes (\texttt{cooper} \cite{Cooper1969}, \texttt{spencer} \cite{Spencer1971}, \texttt{strous} \cite{Strous2011}, \texttt{michalsky} \cite{Michalsky1988})(el valor por defecto es \texttt{michalsky}):
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -138,40 +126,16 @@ estas son:
 \end{itemize}
 \end{itemize}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-solI <- fSolI(solD = solD[1], sample = 'hour') #Computo solo un día a fin de poder de mejorar la visualización
+solI <- fSolI(solD = solD[1], sample = 'hour') #Computo solo un día a fin mejorar la visualización
 show(solI)
 \end{lstlisting}
 
 \begin{verbatim}
-Index: <night>
-                  Dates   lat           w  night      cosThzS          AlS         AzS       Bo0
-                 <POSc> <num>       <num> <lgcl>        <num>        <num>       <num>     <num>
- 1: 2024-01-17 00:00:00  37.2  3.09905026   TRUE -0.958552332 -1.281876984  3.00157749   0.00000
- 2: 2024-01-17 01:00:00  37.2 -2.92239722   TRUE -0.941407376 -1.226779122 -2.49462689   0.00000
- 3: 2024-01-17 02:00:00  37.2 -2.66065932   TRUE -0.874749489 -1.064918604 -2.03862388   0.00000
- 4: 2024-01-17 03:00:00  37.2 -2.39892132   TRUE -0.763119126 -0.868125900 -1.77932134   0.00000
- 5: 2024-01-17 04:00:00  37.2 -2.13718324   TRUE -0.614120126 -0.661270606 -1.59701536   0.00000
- 6: 2024-01-17 05:00:00  37.2 -1.87544507   TRUE -0.437901763 -0.453263434 -1.44469585   0.00000
- 7: 2024-01-17 06:00:00  37.2 -1.61370681   TRUE -0.246467423 -0.249033534 -1.30093496   0.00000
- 8: 2024-01-17 07:00:00  37.2 -1.35196846   TRUE -0.052856976 -0.052881619 -1.15283370   0.00000
- 9: 2024-01-17 08:00:00  37.2 -1.09023003  FALSE  0.129741461  0.130108233 -0.99014548 183.39419
-10: 2024-01-17 09:00:00  37.2 -0.82849151  FALSE  0.288889848  0.293067041 -0.80329847 408.35612
-11: 2024-01-17 10:00:00  37.2 -0.56675290  FALSE  0.413747472  0.426566560 -0.58400587 584.84684
-12: 2024-01-17 11:00:00  37.2 -0.30501420  FALSE  0.495809380  0.518766586 -0.32921922 700.84427
-13: 2024-01-17 12:00:00  37.2 -0.04327541  FALSE  0.529485721  0.557994217 -0.04769723 748.44699
-14: 2024-01-17 13:00:00  37.2  0.21846346  FALSE  0.512482515  0.538073327  0.23821864 724.41235
-15: 2024-01-17 14:00:00  37.2  0.48020243  FALSE  0.445957919  0.462244212  0.50355560 630.37745
-16: 2024-01-17 15:00:00  37.2  0.74194148  FALSE  0.334443348  0.341014503  0.73469016 472.74762
-17: 2024-01-17 16:00:00  37.2  1.00368062  FALSE  0.185534810  0.186616094  0.93148844 262.26008
-18: 2024-01-17 17:00:00  37.2  1.26541985  FALSE  0.009375501  0.009375638  1.10112996  13.25261
-19: 2024-01-17 18:00:00  37.2  1.52715917   TRUE -0.182035120 -0.183055757  1.25297092   0.00000
-20: 2024-01-17 19:00:00  37.2  1.78889857   TRUE -0.375658695 -0.385107424  1.39694027   0.00000
-21: 2024-01-17 20:00:00  37.2  2.05063807   TRUE -0.558306105 -0.592342658  1.54466726   0.00000
-22: 2024-01-17 21:00:00  37.2  2.31237766   TRUE -0.717535874 -0.800258081  1.71368519   0.00000
-23: 2024-01-17 22:00:00  37.2  2.57411733   TRUE -0.842501657 -1.001910427  1.93928567   0.00000
-24: 2024-01-17 23:00:00  37.2  2.83585709   TRUE -0.924691065 -1.180223341  2.30977400   0.00000
-                  Dates   lat           w  night      cosThzS          AlS         AzS       Bo0
+Error: objeto 'solD' no encontrado
+Error en h(simpleError(msg, call)): 
+  error in evaluating the argument 'object' in selecting a method for function 'show': objeto 'solI' no encontrado
 \end{verbatim}
+
 
 Además, como los datos nocturnos aportan poco a los cálculos que atañen a este proyecto, \texttt{fSolI} presenta la posibilidad de eliminar estos datos con el argumento \texttt{keep.night}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -180,19 +144,11 @@ show(solI_nigth)
 \end{lstlisting}
 
 \begin{verbatim}
-                  Dates   lat           w  night     cosThzS         AlS         AzS       Bo0
-                 <POSc> <num>       <num> <lgcl>       <num>       <num>       <num>     <num>
- 1: 2024-01-17 08:00:00  37.2 -1.09023003  FALSE 0.129741461 0.130108233 -0.99014548 183.39419
- 2: 2024-01-17 09:00:00  37.2 -0.82849151  FALSE 0.288889848 0.293067041 -0.80329847 408.35612
- 3: 2024-01-17 10:00:00  37.2 -0.56675290  FALSE 0.413747472 0.426566560 -0.58400587 584.84684
- 4: 2024-01-17 11:00:00  37.2 -0.30501420  FALSE 0.495809380 0.518766586 -0.32921922 700.84427
- 5: 2024-01-17 12:00:00  37.2 -0.04327541  FALSE 0.529485721 0.557994217 -0.04769723 748.44699
- 6: 2024-01-17 13:00:00  37.2  0.21846346  FALSE 0.512482515 0.538073327  0.23821864 724.41235
- 7: 2024-01-17 14:00:00  37.2  0.48020243  FALSE 0.445957919 0.462244212  0.50355560 630.37745
- 8: 2024-01-17 15:00:00  37.2  0.74194148  FALSE 0.334443348 0.341014503  0.73469016 472.74762
- 9: 2024-01-17 16:00:00  37.2  1.00368062  FALSE 0.185534810 0.186616094  0.93148844 262.26008
-10: 2024-01-17 17:00:00  37.2  1.26541985  FALSE 0.009375501 0.009375638  1.10112996  13.25261
+Error: objeto 'solD' no encontrado
+Error en h(simpleError(msg, call)): 
+  error in evaluating the argument 'object' in selecting a method for function 'show': objeto 'solI_nigth' no encontrado
 \end{verbatim}
+
 
 Finalmente, estas dos funciones, como se muestra en la figura \ref{fig:calcSol}, convergen en la función \texttt{calcSol}, dando como resultado un objeto de clase \texttt{Sol}. Este objeto muestra un sumario de ambos elementos junto con la latitud de los cálculos.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -239,7 +195,7 @@ Intradaily values:
 \end{verbatim}
 
 \section{Datos meteorológicos}
-\label{sec:org55dd01b}
+\label{sec:org8d3a474}
 \label{sec:datos-meteorologicos}
 Para el procesamiento de datos meteorologicos, \texttt{solaR2} provee una serie de funciones\footnote{Las funciones comentadas en este apartado, se recogen en la sección \ref{subsec:meteoreaders}} que son capaces de leer todo tipo de datos. Estos datos se procesan y se almacenan en un objeto de tipo \texttt{Meteo} tal y como se ve en la figura \ref{fig:meteo}. Estas funciones son:
 \begin{figure}[]
@@ -369,7 +325,7 @@ print(helios_meteo)
 \begin{verbatim}
 Object of class  Meteo 
 
-Source of meteorological information: bd-data.frame-helios 
+Source of meteorological information: bd-data.frame 
 Latitude of source:  40 degrees
 
 Meteorological Data:
@@ -433,7 +389,7 @@ library(jsonlite)
 bd_SIAR <- readSIAR(Lat = 40.40596822621351, Lon = -3.70038308516172,
                     ## Ubicación de la Escuela Técnica Superior
                     ## de Ingeniería y Diseño Industrial (ETSIDI)
-                    inicio = '2023-08-22', final = '2024-08-22',
+                    inicio = '2023-09-01', final = '2024-08-01',
                     tipo = 'Mensuales', n_est = 3)
 print(bd_SIAR)
 \end{lstlisting}
@@ -446,13 +402,13 @@ Source of meteorological information: prom-https://servicio.mapama.gob.es
 Latitude of source:  40.4 degrees
 
 Meteorological Data:
-     Dates                             G0d             Ta            TempMin          TempMax     
- Min.   :2023-08-18 00:00:00.00   Min.   :1860   Min.   : 5.318   Min.   :-4.651   Min.   :15.34  
- 1st Qu.:2023-11-18 00:00:00.00   1st Qu.:2961   1st Qu.:10.246   1st Qu.:-2.013   1st Qu.:21.17  
- Median :2024-02-14 00:00:00.00   Median :4385   Median :16.438   Median : 1.171   Median :33.07  
- Mean   :2024-02-15 01:50:46.15   Mean   :4708   Mean   :16.188   Mean   : 2.966   Mean   :30.28  
- 3rd Qu.:2024-05-15 00:00:00.00   3rd Qu.:6797   3rd Qu.:21.755   3rd Qu.: 8.940   3rd Qu.:36.66  
- Max.   :2024-08-18 00:00:00.00   Max.   :7608   Max.   :27.651   Max.   :12.608   Max.   :40.75
+     Dates                          G0d             Ta            TempMin           TempMax     
+ Min.   :2023-09-18 00:00:00   Min.   :1860   Min.   : 5.318   Min.   :-4.6513   Min.   :15.34  
+ 1st Qu.:2023-12-06 18:00:00   1st Qu.:2744   1st Qu.: 9.857   1st Qu.:-2.1466   1st Qu.:21.12  
+ Median :2024-02-29 00:00:00   Median :4052   Median :14.890   Median : 0.3663   Median :31.01  
+ Mean   :2024-03-01 04:00:00   Mean   :4532   Mean   :15.351   Mean   : 2.4225   Mean   :29.41  
+ 3rd Qu.:2024-05-21 12:00:00   3rd Qu.:6616   3rd Qu.:20.047   3rd Qu.: 7.1506   3rd Qu.:35.47  
+ Max.   :2024-08-18 00:00:00   Max.   :7608   Max.   :27.600   Max.   :12.6082   Max.   :40.70
 \end{verbatim}
 
 Esta función tiene dos argumentos importantes:
@@ -462,7 +418,7 @@ Esta función tiene dos argumentos importantes:
 \end{itemize}
 
 \section{Radiación en el plano horizontal}
-\label{sec:org3fa948b}
+\label{sec:org5a0ed9f}
 Una vez se ha calculado la geometría solar (sección \ref{sec:geometria-solar}) y se han procesado los datos meteorológicos (sección \ref{sec:datos-meteorologicos}), es necesario calcular la radiación en el plano horizontal. Para ello, \texttt{solaR2} cuenta con la función \texttt{calcG0} [\ref{subsec:calcg0}] la cual mediante las funciones \texttt{fCompD} [\ref{subsec:fcompd}] y \texttt{fCompI} [\ref{subsec:fcompi}] procesan los objetos de clase \texttt{Sol} y clase \texttt{Meteo} para dar un objeto de tipo \texttt{G0}.
 
 Como se puede ver en la figura \ref{fig:calcg0}, \texttt{calcG0} funciona gracias a las siguientes funciones:
@@ -570,9 +526,27 @@ compD_ekdd
 
 \begin{verbatim}
 Key: <Dates>
-Empty data.table (0 rows and 4 cols): Dates,G0d,D0d,B0d
+	 Dates    Fd        Kt      G0d      D0d   B0d
+	<POSc> <num>     <num>    <num>    <num> <num>
+ 1: 2024-07-15     1 0.6798139 7697.945 7697.945     0
+ 2: 2024-07-16     1 0.7000272 7911.858 7911.858     0
+ 3: 2024-07-17     1 0.6812283 7684.293 7684.293     0
+ 4: 2024-07-18     1 0.4674993 5262.702 5262.702     0
+ 5: 2024-07-19     1 0.7001561 7865.166 7865.166     0
+ 6: 2024-07-20     1 0.7003266 7849.961 7849.961     0
+ 7: 2024-07-21     1 0.7365959 8237.938 8237.938     0
+ 8: 2024-07-22     1 0.7493438 8361.056 8361.056     0
+ 9: 2024-07-23     1 0.7156288 7965.753 7965.753     0
+10: 2024-07-24     1 0.6978638 7748.845 7748.845     0
+11: 2024-07-25     1 0.6867564 7606.140 7606.140     0
+12: 2024-07-26     1 0.6462270 7138.548 7138.548     0
+13: 2024-07-27     1 0.6547900 7213.697 7213.697     0
+14: 2024-07-28     1 0.6850625 7526.355 7526.355     0
+15: 2024-07-29     1 0.4709412 5159.260 5159.260     0
+16: 2024-07-30     1 0.6548709 7153.359 7153.359     0
+17: 2024-07-31     1 0.7096003 7728.034 7728.034     0
+18: 2024-08-01     1 0.7185406 7801.435 7801.435     0
 \end{verbatim}
-
 
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 compD_climedd <- fCompD(sol = sol, G0d = G0d, corr = 'CLIMEDd')
@@ -605,14 +579,15 @@ Key: <Dates>
 
 También, se puede aportar una función de corrección propia.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-f_corr <- function(sol, G0d){
+f_corrd <- function(sol, G0d){
+  ## Función CLIMEDd
     Kt <- Ktd(sol, G0d)
     Fd=(Kt<=0.13)*(0.952)+
     (Kt>0.13 & Kt<=0.8)*(0.868+1.335*Kt-5.782*Kt^2+3.721*Kt^3)+
       (Kt>0.8)*0.141
   return(data.table(Fd, Kt))
 }
-compD_user <- fCompD(sol = sol, G0d = G0d, corr = 'user', f = f_corr)
+compD_user <- fCompD(sol = sol, G0d = G0d, corr = 'user', f = f_corrd)
 compD_user
 \end{lstlisting}
 
@@ -640,7 +615,7 @@ Key: <Dates>
 18: 2024-08-01 0.2224291 0.7185406 7801.435 1735.266 6066.168
 \end{verbatim}
 
-Por último, si \texttt{G0d} ya contiene todos los componentes, se puede hacer que no haga la corrección.
+Por último, si \texttt{G0d} ya contiene todos los componentes, se puede especifica que no haga ninguna corrección.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 compD_none <- fCompD(sol = sol, G0d = compD_user, corr = 'none')
 compD_none
@@ -670,5 +645,323 @@ Key: <Dates>
 18: 2024-08-01 0.2224291 0.7185406 7801.435 1735.266 6066.168
 \end{verbatim}
 
-\item \texttt{fCompI}: calcula, en base a los valores de irradiación diaria, todas las componentes de irradiancia
+\item \texttt{fCompI}: calcula, en base a los valores de irradiación diaria, todas las componentes de irradiancia. Se vale de dos procedimientos en base al tipo de argumentos que toma:
+\begin{itemize}
+\item \texttt{compD}: Si recibe un \texttt{data.table} resultado de \texttt{fCompD}, computa las relaciones entre las componentes de irradiancia e irradiación de las componentes de difusa y global, obteniendo con ellas un perfil de irradiancias [\ref{sec:radiacion-superficies-inclinadas}] (las irradiancias global y difusa salen de estas relaciones, mientras que la directa surge por diferencia entre las dos).
 \end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+sol <- calcSol(lat = 37.2, BTd = fBTd(mode = 'prom'),
+               sample = 'hour', keep.night = FALSE)
+G0d <- c(2.766,3.491,4.494,5.912,6.989,7.742,7.919,
+          7.027,5.369,3.562,2.814,2.179) * 1000
+compD <- fCompD(sol = sol, G0d = G0d, corr = 'CPR')
+compI <- fCompI(sol = sol, compD = compD)
+show(compI)
+\end{lstlisting}
+
+\begin{verbatim}
+Key: <Dates>
+		   Dates        Fd        Kt        G0        D0        B0
+		  <POSc>     <num>     <num>     <num>     <num>     <num>
+  1: 2024-01-17 08:00:00 0.5656199 0.4583592  84.06042  47.54625  36.40399
+  2: 2024-01-17 09:00:00 0.4912826 0.5277148 215.49558 105.86922 109.51548
+  3: 2024-01-17 10:00:00 0.4453619 0.5821268 340.45500 151.62569 188.82159
+  4: 2024-01-17 11:00:00 0.4195854 0.6178887 433.04376 181.69885 251.45464
+  5: 2024-01-17 12:00:00 0.4098508 0.6325646 473.44106 194.04019 279.57020
+ ---                                                                      
+141: 2024-12-13 12:00:00 0.5437347 0.5488870 382.71443 208.09513 174.85828
+142: 2024-12-13 13:00:00 0.5556284 0.5371376 352.10710 195.64071 156.62669
+143: 2024-12-13 14:00:00 0.5893861 0.5063725 276.60890 163.02945 113.57257
+144: 2024-12-13 15:00:00 0.6506594 0.4586869 172.87432 112.48231  60.23704
+145: 2024-12-13 16:00:00 0.7511394 0.3973283  63.15968  47.44173  15.57107
+\end{verbatim}
+
+\begin{itemize}
+\item \texttt{G0I}: Este argumento recibe datos de irradiancia, para después, poder aplicar las correcciones indicadas en el argumento \texttt{corr}.
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+G0I <- compI$G0
+compI_ekdh <- fCompI(sol = sol, G0I = G0I, corr = 'EKDh')
+show(compI_ekdh)
+\end{lstlisting}
+
+\begin{verbatim}
+Key: <Dates>
+		   Dates        Fd        Kt        G0        D0        B0
+		  <POSc>     <num>     <num>     <num>     <num>     <num>
+  1: 2024-01-17 08:00:00 0.7417600 0.4583592  84.06042  62.35265  21.70776
+  2: 2024-01-17 09:00:00 0.6000150 0.5277148 215.49558 129.30057  86.19500
+  3: 2024-01-17 10:00:00 0.4791716 0.5821268 340.45500 163.13636 177.31865
+  4: 2024-01-17 11:00:00 0.4004462 0.6178887 433.04376 173.41074 259.63302
+  5: 2024-01-17 12:00:00 0.3692679 0.6325646 473.44106 174.82659 298.61447
+ ---                                                                      
+141: 2024-12-13 12:00:00 0.5533972 0.5488870 382.71443 211.79307 170.92135
+142: 2024-12-13 13:00:00 0.5793829 0.5371376 352.10710 204.00484 148.10226
+143: 2024-12-13 14:00:00 0.6457949 0.5063725 276.60890 178.63262  97.97628
+144: 2024-12-13 15:00:00 0.7411461 0.4586869 172.87432 128.12512  44.74920
+145: 2024-12-13 16:00:00 0.8439123 0.3973283  63.15968  53.30123   9.85845
+\end{verbatim}
+
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+compI_brl <- fCompI(sol = sol, G0I = G0I, corr = 'BRL')
+show(compI_brl)
+\end{lstlisting}
+
+\begin{verbatim}
+Key: <Dates>
+		   Dates        Fd        Kt        G0        D0        B0
+		  <POSc>     <num>     <num>     <num>     <num>     <num>
+  1: 2024-01-17 08:00:00 0.6573908 0.4583592  84.06042  55.26054  28.79987
+  2: 2024-01-17 09:00:00 0.5624767 0.5277148 215.49558 121.21125  94.28433
+  3: 2024-01-17 10:00:00 0.4845081 0.5821268 340.45500 164.95322 175.50179
+  4: 2024-01-17 11:00:00 0.4333714 0.6178887 433.04376 187.66880 245.37496
+  5: 2024-01-17 12:00:00 0.4120068 0.6325646 473.44106 195.06094 278.38012
+ ---                                                                      
+141: 2024-12-13 12:00:00 0.5776181 0.5488870 382.71443 221.06278 161.65164
+142: 2024-12-13 13:00:00 0.5917966 0.5371376 352.10710 208.37580 143.73130
+143: 2024-12-13 14:00:00 0.6306611 0.5063725 276.60890 174.44649 102.16241
+144: 2024-12-13 15:00:00 0.6887448 0.4586869 172.87432 119.06629  53.80803
+145: 2024-12-13 16:00:00 0.7561974 0.3973283  63.15968  47.76119  15.39849
+\end{verbatim}
+
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+compI_climedh <- fCompI(sol = sol, G0I = G0I, corr = 'CLIMEDh')
+show(compI_climedh)
+\end{lstlisting}
+
+\begin{verbatim}
+Key: <Dates>
+		   Dates        Fd        Kt        G0        D0        B0
+		  <POSc>     <num>     <num>     <num>     <num>     <num>
+  1: 2024-01-17 08:00:00 0.7093252 0.4583592  84.06042  59.62617  24.43424
+  2: 2024-01-17 09:00:00 0.5818534 0.5277148 215.49558 125.38683  90.10875
+  3: 2024-01-17 10:00:00 0.4782729 0.5821268 340.45500 162.83039 177.62462
+  4: 2024-01-17 11:00:00 0.4110389 0.6178887 433.04376 177.99784 255.04592
+  5: 2024-01-17 12:00:00 0.3840268 0.6325646 473.44106 181.81406 291.62701
+ ---                                                                      
+141: 2024-12-13 12:00:00 0.5416063 0.5488870 382.71443 207.28055 175.43387
+142: 2024-12-13 13:00:00 0.5639749 0.5371376 352.10710 198.57956 153.52754
+143: 2024-12-13 14:00:00 0.6220088 0.5063725 276.60890 172.05317 104.55573
+144: 2024-12-13 15:00:00 0.7087489 0.4586869 172.87432 122.52448  50.34984
+145: 2024-12-13 16:00:00 0.8099691 0.3973283  63.15968  51.15739  12.00229
+\end{verbatim}
+
+Como con \texttt{fCompD}, se puede añadir una función correctora propia.
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+f_corri <- function(sol, G0i){
+  ## Función CLIMEDh
+  Kt <- Kti(sol, G0i)
+  Fd=(Kt<=0.21)*(0.995-0.081*Kt)+
+    (Kt>0.21 & Kt<=0.76)*(0.724+2.738*Kt-8.32*Kt^2+4.967*Kt^3)+
+    (Kt>0.76)*0.180
+  return(data.table(Fd, Kt))
+}
+compI_user <- fCompI(sol = sol, G0I = G0I, corr = 'user', f = f_corri)
+show(compI_user)
+\end{lstlisting}
+
+\begin{verbatim}
+Key: <Dates>
+		   Dates        Fd        Kt        G0        D0        B0
+		  <POSc>     <num>     <num>     <num>     <num>     <num>
+  1: 2024-01-17 08:00:00 0.7093252 0.4583592  84.06042  59.62617  24.43424
+  2: 2024-01-17 09:00:00 0.5818534 0.5277148 215.49558 125.38683  90.10875
+  3: 2024-01-17 10:00:00 0.4782729 0.5821268 340.45500 162.83039 177.62462
+  4: 2024-01-17 11:00:00 0.4110389 0.6178887 433.04376 177.99784 255.04592
+  5: 2024-01-17 12:00:00 0.3840268 0.6325646 473.44106 181.81406 291.62701
+ ---                                                                      
+141: 2024-12-13 12:00:00 0.5416063 0.5488870 382.71443 207.28055 175.43387
+142: 2024-12-13 13:00:00 0.5639749 0.5371376 352.10710 198.57956 153.52754
+143: 2024-12-13 14:00:00 0.6220088 0.5063725 276.60890 172.05317 104.55573
+144: 2024-12-13 15:00:00 0.7087489 0.4586869 172.87432 122.52448  50.34984
+145: 2024-12-13 16:00:00 0.8099691 0.3973283  63.15968  51.15739  12.00229
+\end{verbatim}
+
+Y además, se puede no añadir corrección.
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+G0I <- compI_user
+compI_none <- fCompI(sol = sol, G0I = G0I, corr = 'none')
+show(compI_none)
+\end{lstlisting}
+
+\begin{verbatim}
+Key: <Dates>
+		   Dates        Fd        Kt        G0        D0        B0
+		  <POSc>     <num>     <num>     <num>     <num>     <num>
+  1: 2024-01-17 08:00:00 0.7093252 0.4583592  84.06042  59.62617  24.43424
+  2: 2024-01-17 09:00:00 0.5818534 0.5277148 215.49558 125.38683  90.10875
+  3: 2024-01-17 10:00:00 0.4782729 0.5821268 340.45500 162.83039 177.62462
+  4: 2024-01-17 11:00:00 0.4110389 0.6178887 433.04376 177.99784 255.04592
+  5: 2024-01-17 12:00:00 0.3840268 0.6325646 473.44106 181.81406 291.62701
+ ---                                                                      
+141: 2024-12-13 12:00:00 0.5416063 0.5488870 382.71443 207.28055 175.43387
+142: 2024-12-13 13:00:00 0.5639749 0.5371376 352.10710 198.57956 153.52754
+143: 2024-12-13 14:00:00 0.6220088 0.5063725 276.60890 172.05317 104.55573
+144: 2024-12-13 15:00:00 0.7087489 0.4586869 172.87432 122.52448  50.34984
+145: 2024-12-13 16:00:00 0.8099691 0.3973283  63.15968  51.15739  12.00229
+\end{verbatim}
+
+Por útlimo, esta función incluye un argumento extra, \texttt{filterG0} que cuando su valor es \texttt{TRUE}, elimina todos aquellos valores de irradiancia que son mayores que la irradiancia extra-atmosfércia (ya que es incoherente que la irradiancia terrestre sea mayor que la extra-terrestre)
+\end{itemize}
+
+Estas dos funciones, como se muestra en la figura \ref{fig:calcg0}, convergen en la función constructora \texttt{calcG0}, dando como resultado un objeto de clase \texttt{G0}. Este objeto muestra la media mensual de la irradiación diaria y la irradiación anual. A parte incluye los resultados de \texttt{fCompD} y \texttt{fCompI} y los objetos \texttt{Sol} y \texttt{Meteo} de los que parte.
+
+Como argumento más importante está \texttt{modeRad}, el cual selecciona el tipo de datos que introduce el usuario en el argumento \texttt{dataRad}. Estos son:
+\begin{itemize}
+\item Medias mensuales.
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+G0dm <- c(2.766, 3.491, 4.494, 5.912, 6.989, 7.742, 7.919,
+          7.027, 5.369, 3.562, 2.814, 2.179) * 1000
+Ta <- c(10, 14.1, 15.6, 17.2, 19.3, 21.2,
+       28.4, 29.9, 24.3, 18.2, 17.2, 15.2)
+prom <- data.table(G0dm, Ta) 
+g0_prom <- calcG0(lat, modeRad = 'prom', dataRad = prom)
+show(g0_prom)
+\end{lstlisting}
+
+\begin{verbatim}
+Object of class  G0 
+
+Source of meteorological information: prom- 
+
+Latitude of source:  37.2 degrees
+Latitude for calculations:  37.2 degrees
+
+Monthly avarages:
+	Dates   G0d      D0d      B0d
+       <char> <num>    <num>    <num>
+ 1: Jan. 2024 2.766 0.941698 1.824302
+ 2: Feb. 2024 3.491 1.247146 2.243854
+ 3: Mar. 2024 4.494 1.671763 2.822237
+ 4: Apr. 2024 5.912 1.931146 3.980854
+ 5: May. 2024 6.989 2.023364 4.965636
+ 6: Jun. 2024 7.742 1.889994 5.852006
+ 7: Jul. 2024 7.919 1.624064 6.294936
+ 8: Aug. 2024 7.027 1.547591 5.479409
+ 9: Sep. 2024 5.369 1.540708 3.828292
+10: Oct. 2024 3.562 1.374513 2.187487
+11: Nov. 2024 2.814 1.006959 1.807041
+12: Dec. 2024 2.179 0.926737 1.252263
+
+Yearly values:
+   Dates      G0d      D0d      B0d
+   <int>    <num>    <num>    <num>
+1:  2024 1839.365 540.6331 1298.732
+\end{verbatim}
+
+\item Generación de secuencias diarias mediante matrices de transición de Markov.
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+g0_aguiar <- calcG0(lat, modeRad = 'aguiar', dataRad = prom)
+show(g0_aguiar)
+\end{lstlisting}
+
+\begin{verbatim}
+Object of class  G0 
+
+Source of meteorological information: bd-aguiar 
+
+Latitude of source:  37.2 degrees
+Latitude for calculations:  37.2 degrees
+
+Monthly avarages:
+	Dates      G0d       D0d      B0d
+       <char>    <num>     <num>    <num>
+ 1: Jan. 2024 2.695050 1.1019722 1.593078
+ 2: Feb. 2024 3.491000 1.4774607 2.013539
+ 3: Mar. 2024 4.494000 2.0703024 2.423698
+ 4: Apr. 2024 5.912000 2.3366574 3.575343
+ 5: May. 2024 6.989000 2.5027865 4.486213
+ 6: Jun. 2024 7.742000 2.3700030 5.371997
+ 7: Jul. 2024 7.919000 2.1706352 5.748365
+ 8: Aug. 2024 7.027000 2.0274273 4.999573
+ 9: Sep. 2024 5.369000 1.8700023 3.498998
+10: Oct. 2024 3.562000 1.6747125 1.887287
+11: Nov. 2024 2.814000 1.2650494 1.548951
+12: Dec. 2024 2.100986 0.9442528 1.156733
+
+Yearly values:
+Key: <Dates>
+   Dates      G0d      D0d      B0d
+   <int>    <num>    <num>    <num>
+1:  2024 1829.951 663.3063 1166.645
+\end{verbatim}
+
+\item Diarios.
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+bd <- g0_aguiar@G0D
+g0_bd <- calcG0(lat, modeRad = 'bd', dataRad = bd)
+show(g0_bd)
+\end{lstlisting}
+
+\begin{verbatim}
+Object of class  G0 
+
+Source of meteorological information: bd-data.table 
+
+Latitude of source:  37.2 degrees
+Latitude for calculations:  37.2 degrees
+
+Monthly avarages:
+	Dates      G0d       D0d      B0d
+       <char>    <num>     <num>    <num>
+ 1: Jan. 2024 2.695050 1.1019722 1.593078
+ 2: Feb. 2024 3.491000 1.4774607 2.013539
+ 3: Mar. 2024 4.494000 2.0703024 2.423698
+ 4: Apr. 2024 5.912000 2.3366574 3.575343
+ 5: May. 2024 6.989000 2.5027865 4.486213
+ 6: Jun. 2024 7.742000 2.3700030 5.371997
+ 7: Jul. 2024 7.919000 2.1706352 5.748365
+ 8: Aug. 2024 7.027000 2.0274273 4.999573
+ 9: Sep. 2024 5.369000 1.8700023 3.498998
+10: Oct. 2024 3.562000 1.6747125 1.887287
+11: Nov. 2024 2.814000 1.2650494 1.548951
+12: Dec. 2024 2.100986 0.9442528 1.156733
+
+Yearly values:
+Key: <Dates>
+   Dates      G0d      D0d      B0d
+   <int>    <num>    <num>    <num>
+1:  2024 1829.951 663.3063 1166.645
+\end{verbatim}
+
+\item Intradiarios
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+bdI <- g0_aguiar@G0I
+g0_bdI <- calcG0(lat, modeRad = 'bdI', dataRad = bdI)
+show(g0_bdI)
+\end{lstlisting}
+
+\begin{verbatim}
+Object of class  G0 
+
+Source of meteorological information: bdI-data.table 
+
+Latitude of source:  37.2 degrees
+Latitude for calculations:  37.2 degrees
+
+Monthly avarages:
+	Dates      G0d       D0d      B0d
+       <char>    <num>     <num>    <num>
+ 1: Jan. 2024 2.608113 1.0149231 1.593190
+ 2: Feb. 2024 3.491000 1.5556932 1.935307
+ 3: Mar. 2024 4.494000 2.1967792 2.297221
+ 4: Apr. 2024 5.912000 2.5170086 3.394991
+ 5: May. 2024 6.989000 2.7320098 4.256990
+ 6: Jun. 2024 7.742000 2.1353808 5.606619
+ 7: Jul. 2024 7.919000 2.0287698 5.890230
+ 8: Aug. 2024 7.027000 1.5532454 5.473755
+ 9: Sep. 2024 5.369000 1.8724492 3.496551
+10: Oct. 2024 3.562000 1.8132623 1.748738
+11: Nov. 2024 2.814000 1.3061615 1.507838
+12: Dec. 2024 2.033212 0.7936489 1.078607
+
+Yearly values:
+Key: <Dates>
+   Dates      G0d      D0d      B0d
+   <int>    <num>    <num>    <num>
+1:  2024 1829.951 656.1569 1168.805
+\end{verbatim}
+\end{itemize}
+
+\section{Radiación efectiva en el plano del generador}
+\label{sec:org7075610}

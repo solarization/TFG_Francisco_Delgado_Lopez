@@ -59,7 +59,7 @@ show(solD_strous)
   - El ángulo zenital solar (\(\theta_{zs}\)): calculada mediante la función =azimuth=.
   - La irradiancia extra-atmosférica (\(B_0(0)\)): calculada mediante el coseno del ángulo cenital, la constante solar (\(B_0\)) y la excentridad (cálculada en =fSolD=) [ecuación ref:eq:irrad_horiz].
 #+begin_src R
-solI <- fSolI(solD = solD[1], sample = 'hour') #Computo solo un día a fin de poder de mejorar la visualización
+solI <- fSolI(solD = solD[1], sample = 'hour') #Computo solo un día a fin mejorar la visualización
 show(solI)
 #+end_src
 
@@ -137,7 +137,7 @@ print(BD)
   bd_SIAR <- readSIAR(Lat = 40.40596822621351, Lon = -3.70038308516172,
 		      ## Ubicación de la Escuela Técnica Superior
 		      ## de Ingeniería y Diseño Industrial (ETSIDI)
-		      inicio = '2023-08-22', final = '2024-08-22',
+		      inicio = '2023-09-01', final = '2024-08-01',
 		      tipo = 'Mensuales', n_est = 3)
   print(bd_SIAR)
 #+end_src
@@ -186,23 +186,100 @@ file:figuras/calcg0.pdf
   #+end_src
   También, se puede aportar una función de corrección propia.
   #+begin_src R
-  f_corr <- function(sol, G0d){
+  f_corrd <- function(sol, G0d){
+    ## Función CLIMEDd
       Kt <- Ktd(sol, G0d)
       Fd=(Kt<=0.13)*(0.952)+
       (Kt>0.13 & Kt<=0.8)*(0.868+1.335*Kt-5.782*Kt^2+3.721*Kt^3)+
 	(Kt>0.8)*0.141
     return(data.table(Fd, Kt))
   }
-  compD_user <- fCompD(sol = sol, G0d = G0d, corr = 'user', f = f_corr)
+  compD_user <- fCompD(sol = sol, G0d = G0d, corr = 'user', f = f_corrd)
   compD_user
   #+end_src
-  Por último, si =G0d= ya contiene todos los componentes, se puede hacer que no haga la corrección.
+  Por último, si =G0d= ya contiene todos los componentes, se puede especifica que no haga ninguna corrección.
   #+begin_src R
   compD_none <- fCompD(sol = sol, G0d = compD_user, corr = 'none')
   compD_none
   #+end_src
-- =fCompI=: calcula, en base a los valores de irradiación diaria, todas las componentes de irradiancia
-  
+- =fCompI=: calcula, en base a los valores de irradiación diaria, todas las componentes de irradiancia. Se vale de dos procedimientos en base al tipo de argumentos que toma:
+  - =compD=: Si recibe un =data.table= resultado de =fCompD=, computa las relaciones entre las componentes de irradiancia e irradiación de las componentes de difusa y global, obteniendo con ellas un perfil de irradiancias [ref:sec:radiacion-superficies-inclinadas] (las irradiancias global y difusa salen de estas relaciones, mientras que la directa surge por diferencia entre las dos).
+  #+begin_src R
+  sol <- calcSol(lat = 37.2, BTd = fBTd(mode = 'prom'),
+		 sample = 'hour', keep.night = FALSE)
+  G0d <- c(2.766,3.491,4.494,5.912,6.989,7.742,7.919,
+	    7.027,5.369,3.562,2.814,2.179) * 1000
+  compD <- fCompD(sol = sol, G0d = G0d, corr = 'CPR')
+  compI <- fCompI(sol = sol, compD = compD)
+  show(compI)
+  #+end_src
+  - =G0I=: Este argumento recibe datos de irradiancia, para después, poder aplicar las correcciones indicadas en el argumento =corr=.
+  #+begin_src R
+  G0I <- compI$G0
+  compI_ekdh <- fCompI(sol = sol, G0I = G0I, corr = 'EKDh')
+  show(compI_ekdh)
+  #+end_src
+  #+begin_src R
+  compI_brl <- fCompI(sol = sol, G0I = G0I, corr = 'BRL')
+  show(compI_brl)
+  #+end_src
+  #+begin_src R
+  compI_climedh <- fCompI(sol = sol, G0I = G0I, corr = 'CLIMEDh')
+  show(compI_climedh)
+  #+end_src
+  Como con =fCompD=, se puede añadir una función correctora propia.
+  #+begin_src R
+  f_corri <- function(sol, G0i){
+    ## Función CLIMEDh
+    Kt <- Kti(sol, G0i)
+    Fd=(Kt<=0.21)*(0.995-0.081*Kt)+
+      (Kt>0.21 & Kt<=0.76)*(0.724+2.738*Kt-8.32*Kt^2+4.967*Kt^3)+
+      (Kt>0.76)*0.180
+    return(data.table(Fd, Kt))
+  }
+  compI_user <- fCompI(sol = sol, G0I = G0I, corr = 'user', f = f_corri)
+  show(compI_user)
+  #+end_src
+  Y además, se puede no añadir corrección.
+  #+begin_src R
+  G0I <- compI_user
+  compI_none <- fCompI(sol = sol, G0I = G0I, corr = 'none')
+  show(compI_none)
+  #+end_src
+  Por útlimo, esta función incluye un argumento extra, =filterG0= que cuando su valor es =TRUE=, elimina todos aquellos valores de irradiancia que son mayores que la irradiancia extra-atmosfércia (ya que es incoherente que la irradiancia terrestre sea mayor que la extra-terrestre)
+
+Estas dos funciones, como se muestra en la figura ref:fig:calcg0, convergen en la función constructora =calcG0=, dando como resultado un objeto de clase =G0=. Este objeto muestra la media mensual de la irradiación diaria y la irradiación anual. A parte incluye los resultados de =fCompD= y =fCompI= y los objetos =Sol= y =Meteo= de los que parte.
+
+Como argumento más importante está =modeRad=, el cual selecciona el tipo de datos que introduce el usuario en el argumento =dataRad=. Estos son:
+- Medias mensuales.
+  #+begin_src R
+  G0dm <- c(2.766, 3.491, 4.494, 5.912, 6.989, 7.742, 7.919,
+	    7.027, 5.369, 3.562, 2.814, 2.179) * 1000
+  Ta <- c(10, 14.1, 15.6, 17.2, 19.3, 21.2,
+	 28.4, 29.9, 24.3, 18.2, 17.2, 15.2)
+  prom <- data.table(G0dm, Ta) 
+  g0_prom <- calcG0(lat, modeRad = 'prom', dataRad = prom)
+  show(g0_prom)
+  #+end_src
+- Generación de secuencias diarias mediante matrices de transición de Markov.
+  #+begin_src R
+  g0_aguiar <- calcG0(lat, modeRad = 'aguiar', dataRad = prom)
+  show(g0_aguiar)
+  #+end_src
+- Diarios.
+  #+begin_src R
+  bd <- g0_aguiar@G0D
+  g0_bd <- calcG0(lat, modeRad = 'bd', dataRad = bd)
+  show(g0_bd)
+  #+end_src
+- Intradiarios
+  #+begin_src R
+  bdI <- g0_aguiar@G0I
+  g0_bdI <- calcG0(lat, modeRad = 'bdI', dataRad = bdI)
+  show(g0_bdI)
+  #+end_src
+
+* Radiación efectiva en el plano del generador 
 * Footnotes
 
 [fn:1] Todas las funciones mencionadas en este punto, se encuentran en el apartado ref:subsec:utils-angles.
