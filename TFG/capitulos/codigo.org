@@ -33,7 +33,7 @@ Como se puede ver en la figura ref:fig:calcSol, =calcSol= funcia gracias a las s
 #+begin_src R 
 lat <- 40
 BTd <- fBTd(mode = 'prom')
-fSolD(lat = lat, BTd = BTd)
+solD <- fSolD(lat = lat, BTd = BTd)
 show(solD)
 #+end_src
 
@@ -68,11 +68,22 @@ show(solI)
 solI_nigth <- fSolI(solD = solD[1], sample = 'hour', keep.night = FALSE)
 show(solI_nigth)
 #+end_src
+  A parte, en vez de identificar el intervalo intradiario (con el argumento =sample=), se puede dar directamente la base temporal intradiaria.
+#+begin_src R
+BTi <- fBTi(BTd, sample = 'hour')
+solI_BTi <- fSolI(solD, BTi = BTi)
+show(solI_BTi)
+#+end_src
+  También, se puede indicar que no realice las correcciones de la ecuación del tiempo.
+#+begin_src R
+solI_EoT <- fSolI(solD = solD, BTi = BTi, EoT = FALSE)
+show(solI_EoT)
+#+end_src
 
 Finalmente, estas dos funciones, como se muestra en la figura ref:fig:calcSol, convergen en la función =calcSol=, dando como resultado un objeto de clase =Sol=. Este objeto muestra un sumario de ambos elementos junto con la latitud de los cálculos.
 #+begin_src R
 sol <- calcSol(lat = lat, BTd = BTd, sample = 'hour')
-print(sol)
+show(sol)
 #+end_src
 
 * Datos meteorológicos
@@ -88,7 +99,7 @@ G0dm = c(2.766,3.491,4.494,5.912,6.989,7.742,
 Ta = c(10, 14.1, 15.6, 17.2, 19.3, 21.2,
        28.4, 29.9, 24.3, 18.2, 17.2, 15.2)
 BD <- readG0dm(G0dm = G0dm, Ta = Ta, lat = 37.2)
-print(BD)
+show(BD)
 #+end_src
 - =readBD=: Esta familia de funciones puede leer ficheros de datos y transformarlos en un objeto de clase =Meteo=. Se dividen en:
   - =readBDd=: Procesa datos meteorológicos de tipo diarios.
@@ -101,7 +112,7 @@ print(BD)
 		 format = '%Y-%m-%d', header = TRUE,
 		 fill = TRUE, dec = '.', sep = ',', dates.col = '',
 		 ta.col = 'TempAvg', g0.col = 'Radiation', keep.cols = TRUE)
-  print(BDd)
+  show(BDd)
   #+end_src
   - =readBDi=: Procesa datos meteorológicos de tipo intradiarios.
   #+begin_src R
@@ -114,21 +125,21 @@ print(BD)
 		   ta.col = 'Air Temperature [deg C]',
 		   g0.col = 'Global Horizontal [W/m^2]',
 		   keep.cols = TRUE)
-    print(BDi)
+    show(BDi)
   #+end_src
 - =dt2Meteo=: Transforma un =data.table= o =data.frame= en un objeto de clase =Meteo=.
 #+begin_src R
   data(helios)
   names(helios) <- c('Dates', 'G0d', 'TempMax', 'TempMin')
   helios_meteo <- dt2Meteo(file = helios, lat = 40, type = 'bd')
-  print(helios_meteo)
+  show(helios_meteo)
 #+end_src  
 - =zoo2Meteo=: Transforma un objeto de clase =zoo=[fn:5] en un objeto de clase =Meteo=.
 #+begin_src R
   library(zoo)
   bd_zoo <- read.csv.zoo('data/aranjuez.csv')
   BD_zoo <- zoo2Meteo(file = bd_zoo, lat = 40)
-  print(BD_zoo)
+  show(BD_zoo)
 #+end_src
 - =readSIAR=: Esta función es capaz de extraer información de la red SIAR y transformarlo en un objeto de clase =Meteo=.
 #+begin_src R
@@ -139,7 +150,7 @@ print(BD)
 		      ## de Ingeniería y Diseño Industrial (ETSIDI)
 		      inicio = '2023-09-01', final = '2024-08-01',
 		      tipo = 'Mensuales', n_est = 3)
-  print(bd_SIAR)
+  show(bd_SIAR)
 #+end_src
   Esta función tiene dos argumentos importantes:
   - =tipo=: La API SIAR[fn:6] permite tener 4 tipos de registros: =Mensuales=, =Semanales=, =Diarios= y =Horarios=.
@@ -284,7 +295,7 @@ Como argumento más importante está =modeRad=, el cual selecciona el tipo de da
 label:sec:radiacion-efectiva-plano-generador
 Teniendo la radiación incidente en plano horizontal (sección ref:sec:radiacion-plano-horizontal), se puede calcular la radiación efectiva incidente en el plano del generador. Para ello, =solaR2= cuenta con la función =calcGef= [ref:subsec:calcgef] la cual mediante las funciones =fInclin= y =calcShd= procesa un objeto de clase =G0= para obtener un objeto =Gef=.
 
-Como se puede ver en la figura ref:fig:calcgef, =calcG0= funciona gracias a las siguientes funciones:
+Como se puede ver en la figura ref:fig:calcgef, =calcGef= funciona gracias a las siguientes funciones:
 #+CAPTION: Cálculo de la radiación efectiva incidente en el plano del generador mediante la función =calcGef=, la cual emplea la función =fInclin= para el computo de las componentes efectivas, la función =fTheta= que provee a la función anterior los ángulos necesarios para su computo y la función =calcShd= que reprocesa el objeto de clase =Gef= resultante, añadiendole el efecto de las sombras producidas entres módulos. label:fig:calcgef
 #+ATTR_LATEX: :width \textwidth :height 0.5\textheight :options keepaspectratio
 file:figuras/calcgef.pdf
@@ -315,22 +326,108 @@ file:figuras/calcgef.pdf
   También, tiene un argumento =BT= que indica cuando se usa la técnica de backtracking para un sistema horizontal Norte-Sur. Para funcionar, necesita de los argumentos =struct=, el cual presenta una lista con la altura de los módulos, y =dist=, el cual presenta un =data.frame= (o =data.table=) con la distancia que separa los módulos en la dirección Este-Oeste.
   #+begin_src R
   struct <- list(L = 1)
-  dist <- data.table(Lew = 2)
+  distances <- data.table(Lew = 2)
   angGen_BT <- fTheta(sol = sol, beta = beta, alfa = alfa,
 		      modeTrk = 'horiz', BT = TRUE,
-		      struct = struct, dist = dist)
+		      struct = struct, dist = distances)
   show(angGen_BT)
   #+end_src
 - =fInclin=: la cual, partiendo del resultado de =fTheta= y de un objeto de clase =G0=, cálcula la irradiancia solar incidente en una superficie inclinada junto con los efectos del ángulo de incidencia y la suciedad para obtener la irradiancia efectiva.
   Como argumentos principales están:
-  - =iS=: permite seleccionar entre 4 valores del 1 al 4 correspondientes a la suciedad del módulo. Siendo 1 limpio y 4 alto y basandose en los valores de la tabla ref:tab:coef-perd computa la irradiancia efectiva.
+  - =iS=: permite seleccionar entre 4 valores del 1 al 4 correspondientes al grado de suciedad del módulo. Siendo 1 limpio y 4 alto y basandose en los valores de la tabla ref:tab:coef-perd computa la irradiancia efectiva. Por defecto tiene valor 2 (grado de suciedad bajo).
   #+begin_src R
   compI <- calcG0(lat, dataRad = prom, keep.night = FALSE)
   sol <- calcSol(lat, BTi = indexI(compI))
   angGen <- fTheta(sol = sol, beta = beta, alfa = alfa)
   inclin_limpio <- fInclin(compI = compI, angGen = angGen, iS = 1)
   show(inclin_limpio)
-  #+end_src   
+  #+end_src
+  #+begin_src R
+  inclin_sucio <- fInclin(compI = compI, angGen = angGen, iS = 4)
+  show(inclin_sucio)
+  #+end_src
+  - =alb= Correspondiente al coeficiente de reflexión del terreno para la irradiancia de albedo. Por defecto tiene un valor de 0,2 (valor aceptable para un terreno normal).
+  #+begin_src R
+  inclin_alb0 <- fInclin(compI = compI, angGen = angGen, alb = 0)
+  show(inclin_alb0)
+  #+end_src
+  #+begin_src R
+  inclin_alb1 <- fInclin(compI = compI, angGen = angGen, alb = 1)
+  show(inclin_alb1)
+  #+end_src
+  Además, cuenta con dos argumentos adicionales, =horizBright=, el cual, cuando su valor es =TRUE= (el que tiene por defecto), realiza una corrección de la radiación difusa cite:REINDL19909, y =HCPV=, es el acrónimo de *High Concentration PV system*[fn:7] (sistema fotovoltaico de alta concentración) que cuando su valor es =TRUE= (por defecto está puesto en =FALSE=), anula los valores de radiación difusa y de albedo.
+  #+begin_src R
+  inclin_horizBright <- fInclin(compI = compI, angGen = angGen,
+				horizBright = FALSE)
+  show(inclin_horizBright)
+  #+end_src
+  #+begin_src R
+  inclin_HCPV <- fInclin(compI = compI, angGen = angGen,
+			 HCPV = TRUE)
+  show(inclin_HCPV)
+  #+end_src
+
+Finalmente, esta función le otorga estos datos a la función =calcGef= para que produzca un objeto de clase =Gef= como resultado. Esta función tiene como argumentos principales los mismos que los que tiene =calcG0= ref:sec:radiacion-plano-horizontal, es decir, =modeRad= y =dataRad=. Y además, como es lógico, con todos los argumentos mencionados con anterioridad en =fTheta= y =fInclin=.
+#+begin_src R
+gef_prom <- calcGef(lat = lat, modeTrk = 'two', modeRad = 'prom',
+                    dataRad = prom,
+                    beta = lat-10, alfa = 0,
+                    iS = 2, alb = 0.2,
+                    horizBright = TRUE, HCPV = FALSE)
+show(gef_prom)
+#+end_src
+Sin embargo, como argumento importante está =modeShd=, el cual permite incluir el efecto de las sombras entre módulos al objeto =Gef= mediante el uso de la función =calcShd=. Esta opción añade las variables =Gef0=, =Def0= y =Bef0= las cuales son las componentes de radiación efectiva previas a aplicar el efecto de las sombras con el fin de poder comparar.
+#+begin_src R
+struct <- list(W=23.11, L=9.8, Nrow=2, Ncol=8)
+distances <- data.table(Lew=40, Lns=30, H=0)
+gef_shd <- calcShd(radEf = gef_prom, modeShd = 'prom',
+                   struct = struct, distances = distances)
+show(gef_shd)
+#+end_src
+#+begin_src R
+gef_shd2 <- calcGef(lat = lat, modeTrk = 'two', dataRad = prom,
+                    modeShd = 'prom', struct = struct, distances = distances)
+show(gef_shd2)
+#+end_src
+El argumento =modeShd= puede ser de distintas maneras:
+- =area=: el efecto de las sombras se calcula como una reducción proporcional de las irradiancias difusa circunsolar y directa.
+#+begin_src R
+gef_shdarea <- calcGef(lat, modeTrk = 'two', dataRad = prom,
+                       modeShd = 'area',
+                       struct = struct, distances = distances)
+show(gef_shdarea)
+#+end_src
+- =prom=: cuando =modeTrk= es =two=, se puede calcular el efecto de las sombras de un seguidor promedio.
+#+begin_src R
+gef_shdprom <- calcGef(lat, modeTrk = 'two', dataRad = prom,
+                       modeShd = c('area', 'prom'),
+                       struct = struct, distances = distances)
+show(gef_shdprom)
+#+end_src
+- =bt=: cuando =modeTrk= es =horiz=, se puede calcular el efecto del /backtracking/ en las sombras.
+#+begin_src R
+gef_shdhoriz <- calcGef(lat, modeTrk = 'horiz', dataRad = prom,
+                        modeShd = 'area',
+                        struct = struct, distances = distances)
+show(gef_shdhoriz)
+#+end_src
+#+begin_src R
+gef_shdbt <- calcGef(lat, modeTrk = 'horiz', dataRad = prom,
+                        modeShd = c('area', 'bt'),
+                        struct = struct, distances = distances)
+show(gef_shdbt)
+#+end_src
+
+* Producción eléctrica de un SFCR
+label:produccion-electrica-sfcr
+Con la radiación efectiva, se puede estimar la producción eléctrica que va a tener un sistema fotovoltaico conectado a red. Esta estimación, se puede calcular mediante la función =prodGCPV= [ref:subsec:prodgcpv] la cual mediante la función =fProd= [ref:subsec:fprod] procesa un objeto de clase =Gef= y obtiene un objeto =ProdGCPV=.
+
+Como se puede ver en la figura ref:fig:prodgcpv, =prodGCPV= funciona gracias a la siguiente función:
+#+CAPTION: Estimación de la producción electrica de un SFCR mediante la función =prodGCPV=, la cual emplea la función =fProd= para el computo de la potencia a la entrada (\(P_{DC}\)), a la salida (\(P_{AC}\)) y el rendimiento (\(\eta_{inv}\)) del inversor. label:fig:prodgcpv
+#+ATTR_LATEX: :width \textwidth :height \textheight :options keepaspectratio
+file:figuras/prodgcpv.pdf
+
+
 * Footnotes
 
 [fn:1] Todas las funciones mencionadas en este punto, se encuentran en el apartado ref:subsec:utils-angles.
@@ -344,3 +441,5 @@ file:figuras/calcgef.pdf
 [fn:5] Pese a que este proyecto trate de "desligarse" del paquete =zoo=, sigue siendo un paquete muy extendido. Por lo que es interesante tener una función así para que los usuarios tengan una mayor flexibilidad.
 
 [fn:6] La API (Interfaz de Programación de Aplicaciones) que se usa para la función =readSIAR= está proporcionada por la propia red SIAR cite:siar23.
+
+[fn:7] la tencología de concentración fotovoltaica funciona gracias a unos dispositivos ópticos que permiten concentrar la radiación solar sobre una célula fotovoltaica de tamaño reducido pero con una eficiencia muy superior alas células tradicionales. Con ello se consigue emplear menor cantidad de semiconductores reduciendo los costes.

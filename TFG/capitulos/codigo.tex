@@ -1,14 +1,14 @@
 \chapter{Desarrollo del código}
 \label{chap:desarrollo-codigo}
-En la figura \ref{fig:org2aac9fc}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
+En la figura \ref{fig:orgdc75f4c}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
 \begin{figure}[]
 \centering
 \includegraphics[keepaspectratio,width=0.8\textwidth,height=0.5\textheight]{figuras/procedure.pdf}
-\caption{\label{fig:org2aac9fc}Proceso de cálculo de las funciones de \texttt{solaR2}}
+\caption{\label{fig:orgdc75f4c}Proceso de cálculo de las funciones de \texttt{solaR2}}
 \end{figure}
 A la hora de estimar la producción, el programa sigue los siguientes procesos:
 \section{Geometría solar}
-\label{sec:org8696c04}
+\label{sec:org3179019}
 \label{sec:geometria-solar}
 Para calcular la geometría que definen las posiciones de la Tierra y el Sol, \texttt{solaR2} se vale de una función constructora, \texttt{calcSol} [\ref{subsec:calcsol}], la cual mediante las funciones \texttt{fSolD} [\ref{subsec:fsold}] y \texttt{fSolI} [\ref{subsec:fsoli}] cálcula todos los ángulos y componentes que caracterizan la geometría solar.
 \begin{figure}[]
@@ -33,7 +33,7 @@ estas son:
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 lat <- 40
 BTd <- fBTd(mode = 'prom')
-fSolD(lat = lat, BTd = BTd)
+solD <- fSolD(lat = lat, BTd = BTd)
 show(solD)
 \end{lstlisting}
 
@@ -41,18 +41,18 @@ show(solD)
 Key: <Dates>
          Dates   lat        decl        eo           EoT        ws      Bo0d
         <IDat> <num>       <num>     <num>         <num>     <num>     <num>
- 1: 2024-01-17  37.2 -0.36271754 1.0340422 -0.0455346238 -1.278593  4738.993
- 2: 2024-02-14  37.2 -0.22850166 1.0259717 -0.0614793356 -1.393341  6137.388
- 3: 2024-03-15  37.2 -0.03191616 1.0107943 -0.0368674274 -1.546560  8086.323
- 4: 2024-04-15  37.2  0.17531794 0.9926547  0.0017482721 -1.705659  9921.357
- 5: 2024-05-15  37.2  0.33246485 0.9775162  0.0143055938 -1.835976 11115.619
- 6: 2024-06-10  37.2  0.40257826 0.9691480 -0.0007378952 -1.899934 11573.907
- 7: 2024-07-18  37.2  0.36439367 0.9675489 -0.0263454380 -1.864521 11257.133
- 8: 2024-08-18  37.2  0.22407398 0.9758022 -0.0111761118 -1.744657 10183.208
- 9: 2024-09-18  37.2  0.02730595 0.9907919  0.0342189964 -1.591529  8508.642
-10: 2024-10-19  37.2 -0.17900474 1.0088406  0.0689613044 -1.433019  6554.218
-11: 2024-11-18  37.2 -0.33862399 1.0245012  0.0575423573 -1.300179  4951.750
-12: 2024-12-13  37.2 -0.40478283 1.0328516  0.0158622941 -1.239567  4284.472
+ 1: 2024-01-17    40 -0.36271754 1.0340422 -0.0455346238 -1.246707  4260.913
+ 2: 2024-02-14    40 -0.22850166 1.0259717 -0.0614793356 -1.374392  5696.512
+ 3: 2024-03-15    40 -0.03191616 1.0107943 -0.0368674274 -1.544003  7744.914
+ 4: 2024-04-15    40  0.17531794 0.9926547  0.0017482721 -1.719984  9731.571
+ 5: 2024-05-15    40  0.33246485 0.9775162  0.0143055938 -1.864736 11068.270
+ 6: 2024-06-10    40  0.40257826 0.9691480 -0.0007378952 -1.936192 11597.374
+ 7: 2024-07-18    40  0.36439367 0.9675489 -0.0263454380 -1.896584 11241.588
+ 8: 2024-08-18    40  0.22407398 0.9758022 -0.0111761118 -1.763213 10037.033
+ 9: 2024-09-18    40  0.02730595 0.9907919  0.0342189964 -1.593716  8210.584
+10: 2024-10-19    40 -0.17900474 1.0088406  0.0689613044 -1.418379  6139.354
+11: 2024-11-18    40 -0.33862399 1.0245012  0.0575423573 -1.270794  4482.035
+12: 2024-12-13    40 -0.40478283 1.0328516  0.0158622941 -1.203058  3802.318
 \end{verbatim}
 
 Además, \texttt{fSolD} permite seleccionar el método de cáculo entre los propuestos por 4 autores diferentes (\texttt{cooper} \cite{Cooper1969}, \texttt{spencer} \cite{Spencer1971}, \texttt{strous} \cite{Strous2011}, \texttt{michalsky} \cite{Michalsky1988})(el valor por defecto es \texttt{michalsky}):
@@ -144,33 +144,33 @@ show(solI)
 
 \begin{verbatim}
 Index: <night>
-                  Dates   lat           w  night      cosThzS          AlS         AzS       Bo0
-                 <POSc> <num>       <num> <lgcl>        <num>        <num>       <num>     <num>
- 1: 2024-01-17 00:00:00  37.2  3.09905026   TRUE -0.958552332 -1.281876984  3.00157749   0.00000
- 2: 2024-01-17 01:00:00  37.2 -2.92239722   TRUE -0.941407376 -1.226779122 -2.49462689   0.00000
- 3: 2024-01-17 02:00:00  37.2 -2.66065932   TRUE -0.874749489 -1.064918604 -2.03862388   0.00000
- 4: 2024-01-17 03:00:00  37.2 -2.39892132   TRUE -0.763119126 -0.868125900 -1.77932134   0.00000
- 5: 2024-01-17 04:00:00  37.2 -2.13718324   TRUE -0.614120126 -0.661270606 -1.59701536   0.00000
- 6: 2024-01-17 05:00:00  37.2 -1.87544507   TRUE -0.437901763 -0.453263434 -1.44469585   0.00000
- 7: 2024-01-17 06:00:00  37.2 -1.61370681   TRUE -0.246467423 -0.249033534 -1.30093496   0.00000
- 8: 2024-01-17 07:00:00  37.2 -1.35196846   TRUE -0.052856976 -0.052881619 -1.15283370   0.00000
- 9: 2024-01-17 08:00:00  37.2 -1.09023003  FALSE  0.129741461  0.130108233 -0.99014548 183.39419
-10: 2024-01-17 09:00:00  37.2 -0.82849151  FALSE  0.288889848  0.293067041 -0.80329847 408.35612
-11: 2024-01-17 10:00:00  37.2 -0.56675290  FALSE  0.413747472  0.426566560 -0.58400587 584.84684
-12: 2024-01-17 11:00:00  37.2 -0.30501420  FALSE  0.495809380  0.518766586 -0.32921922 700.84427
-13: 2024-01-17 12:00:00  37.2 -0.04327541  FALSE  0.529485721  0.557994217 -0.04769723 748.44699
-14: 2024-01-17 13:00:00  37.2  0.21846346  FALSE  0.512482515  0.538073327  0.23821864 724.41235
-15: 2024-01-17 14:00:00  37.2  0.48020243  FALSE  0.445957919  0.462244212  0.50355560 630.37745
-16: 2024-01-17 15:00:00  37.2  0.74194148  FALSE  0.334443348  0.341014503  0.73469016 472.74762
-17: 2024-01-17 16:00:00  37.2  1.00368062  FALSE  0.185534810  0.186616094  0.93148844 262.26008
-18: 2024-01-17 17:00:00  37.2  1.26541985  FALSE  0.009375501  0.009375638  1.10112996  13.25261
-19: 2024-01-17 18:00:00  37.2  1.52715917   TRUE -0.182035120 -0.183055757  1.25297092   0.00000
-20: 2024-01-17 19:00:00  37.2  1.78889857   TRUE -0.375658695 -0.385107424  1.39694027   0.00000
-21: 2024-01-17 20:00:00  37.2  2.05063807   TRUE -0.558306105 -0.592342658  1.54466726   0.00000
-22: 2024-01-17 21:00:00  37.2  2.31237766   TRUE -0.717535874 -0.800258081  1.71368519   0.00000
-23: 2024-01-17 22:00:00  37.2  2.57411733   TRUE -0.842501657 -1.001910427  1.93928567   0.00000
-24: 2024-01-17 23:00:00  37.2  2.83585709   TRUE -0.924691065 -1.180223341  2.30977400   0.00000
-                  Dates   lat           w  night      cosThzS          AlS         AzS       Bo0
+                  Dates   lat           w  night     cosThzS         AlS         AzS      Bo0
+                 <POSc> <num>       <num> <lgcl>       <num>       <num>       <num>    <num>
+ 1: 2024-01-17 00:00:00    40  3.09905026   TRUE -0.94362605 -1.23341900  3.02117859   0.0000
+ 2: 2024-01-17 01:00:00    40 -2.92239722   TRUE -0.92713728 -1.18669958 -2.56815069   0.0000
+ 3: 2024-01-17 02:00:00    40 -2.66065932   TRUE -0.86303058 -1.04123862 -2.11373529   0.0000
+ 4: 2024-01-17 03:00:00    40 -2.39892132   TRUE -0.75567263 -0.85668051 -1.83479587   0.0000
+ 5: 2024-01-17 04:00:00    40 -2.13718324   TRUE -0.61237625 -0.65906286 -1.63492717   0.0000
+ 6: 2024-01-17 05:00:00    40 -1.87544507   TRUE -0.44290226 -0.45883317 -1.46851718   0.0000
+ 7: 2024-01-17 06:00:00    40 -1.61370681   TRUE -0.25879466 -0.26177415 -1.31325645   0.0000
+ 8: 2024-01-17 07:00:00    40 -1.35196846   TRUE -0.07259424 -0.07265815 -1.15564315   0.0000
+ 9: 2024-01-17 08:00:00    40 -1.09023003  FALSE  0.10301563  0.10319871 -0.98536387 145.6163
+10: 2024-01-17 09:00:00    40 -0.82849151  FALSE  0.25607296  0.25895750 -0.79338297 361.9683
+11: 2024-01-17 10:00:00    40 -0.56675290  FALSE  0.37615192  0.38563969 -0.57251788 531.7042
+12: 2024-01-17 11:00:00    40 -0.30501420  FALSE  0.45507309  0.47245429 -0.32078152 643.2621
+13: 2024-01-17 12:00:00    40 -0.04327541  FALSE  0.48746054  0.50917897 -0.04634006 689.0429
+14: 2024-01-17 13:00:00    40  0.21846346  FALSE  0.47110809  0.49054659  0.23178786 665.9281
+15: 2024-01-17 14:00:00    40  0.48020243  FALSE  0.40712958  0.41930919  0.49254063 575.4922
+16: 2024-01-17 15:00:00    40  0.74194148  FALSE  0.29988299  0.30457000  0.72379629 423.8953
+17: 2024-01-17 16:00:00    40  1.00368062  FALSE  0.15667361  0.15732176  0.92469276 221.4637
+18: 2024-01-17 17:00:00    40  1.26541985   TRUE -0.01274358 -0.01274392  1.10120336   0.0000
+19: 2024-01-17 18:00:00    40  1.52715917   TRUE -0.19682837 -0.19812195  1.26194203   0.0000
+20: 2024-01-17 19:00:00    40  1.78889857   TRUE -0.38304142 -0.39308659  1.41671214   0.0000
+21: 2024-01-17 20:00:00    40  2.05063807   TRUE -0.55869839 -0.59281557  1.57757727   0.0000
+22: 2024-01-17 21:00:00    40  2.31237766   TRUE -0.71183398 -0.79210598  1.76293575   0.0000
+23: 2024-01-17 22:00:00    40  2.57411733   TRUE -0.83201697 -0.98273364  2.00815884   0.0000
+24: 2024-01-17 23:00:00    40  2.83585709   TRUE -0.91106075 -1.14584973  2.39029855   0.0000
+                  Dates   lat           w  night     cosThzS         AlS         AzS      Bo0
 \end{verbatim}
 
 Además, como los datos nocturnos aportan poco a los cálculos que atañen a este proyecto, \texttt{fSolI} presenta la posibilidad de eliminar estos datos con el argumento \texttt{keep.night}.
@@ -180,24 +180,70 @@ show(solI_nigth)
 \end{lstlisting}
 
 \begin{verbatim}
-                  Dates   lat           w  night     cosThzS         AlS         AzS       Bo0
-                 <POSc> <num>       <num> <lgcl>       <num>       <num>       <num>     <num>
- 1: 2024-01-17 08:00:00  37.2 -1.09023003  FALSE 0.129741461 0.130108233 -0.99014548 183.39419
- 2: 2024-01-17 09:00:00  37.2 -0.82849151  FALSE 0.288889848 0.293067041 -0.80329847 408.35612
- 3: 2024-01-17 10:00:00  37.2 -0.56675290  FALSE 0.413747472 0.426566560 -0.58400587 584.84684
- 4: 2024-01-17 11:00:00  37.2 -0.30501420  FALSE 0.495809380 0.518766586 -0.32921922 700.84427
- 5: 2024-01-17 12:00:00  37.2 -0.04327541  FALSE 0.529485721 0.557994217 -0.04769723 748.44699
- 6: 2024-01-17 13:00:00  37.2  0.21846346  FALSE 0.512482515 0.538073327  0.23821864 724.41235
- 7: 2024-01-17 14:00:00  37.2  0.48020243  FALSE 0.445957919 0.462244212  0.50355560 630.37745
- 8: 2024-01-17 15:00:00  37.2  0.74194148  FALSE 0.334443348 0.341014503  0.73469016 472.74762
- 9: 2024-01-17 16:00:00  37.2  1.00368062  FALSE 0.185534810 0.186616094  0.93148844 262.26008
-10: 2024-01-17 17:00:00  37.2  1.26541985  FALSE 0.009375501 0.009375638  1.10112996  13.25261
+                 Dates   lat           w  night   cosThzS       AlS         AzS      Bo0
+                <POSc> <num>       <num> <lgcl>     <num>     <num>       <num>    <num>
+1: 2024-01-17 08:00:00    40 -1.09023003  FALSE 0.1030156 0.1031987 -0.98536387 145.6163
+2: 2024-01-17 09:00:00    40 -0.82849151  FALSE 0.2560730 0.2589575 -0.79338297 361.9683
+3: 2024-01-17 10:00:00    40 -0.56675290  FALSE 0.3761519 0.3856397 -0.57251788 531.7042
+4: 2024-01-17 11:00:00    40 -0.30501420  FALSE 0.4550731 0.4724543 -0.32078152 643.2621
+5: 2024-01-17 12:00:00    40 -0.04327541  FALSE 0.4874605 0.5091790 -0.04634006 689.0429
+6: 2024-01-17 13:00:00    40  0.21846346  FALSE 0.4711081 0.4905466  0.23178786 665.9281
+7: 2024-01-17 14:00:00    40  0.48020243  FALSE 0.4071296 0.4193092  0.49254063 575.4922
+8: 2024-01-17 15:00:00    40  0.74194148  FALSE 0.2998830 0.3045700  0.72379629 423.8953
+9: 2024-01-17 16:00:00    40  1.00368062  FALSE 0.1566736 0.1573218  0.92469276 221.4637
+\end{verbatim}
+
+A parte, en vez de identificar el intervalo intradiario (con el argumento \texttt{sample}), se puede dar directamente la base temporal intradiaria.
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+BTi <- fBTi(BTd, sample = 'hour')
+solI_BTi <- fSolI(solD, BTi = BTi)
+show(solI_BTi)
+\end{lstlisting}
+
+\begin{verbatim}
+Index: <night>
+                   Dates   lat         w  night    cosThzS        AlS       AzS   Bo0
+                  <POSc> <num>     <num> <lgcl>      <num>      <num>     <num> <num>
+  1: 2024-01-17 00:00:00    40  3.099050   TRUE -0.9436261 -1.2334190  3.021179     0
+  2: 2024-01-17 01:00:00    40 -2.922397   TRUE -0.9271373 -1.1866996 -2.568151     0
+  3: 2024-01-17 02:00:00    40 -2.660659   TRUE -0.8630306 -1.0412386 -2.113735     0
+  4: 2024-01-17 03:00:00    40 -2.398921   TRUE -0.7556726 -0.8566805 -1.834796     0
+  5: 2024-01-17 04:00:00    40 -2.137183   TRUE -0.6123762 -0.6590629 -1.634927     0
+ ---                                                                                 
+284: 2024-12-13 19:00:00    40  1.856445   TRUE -0.4515543 -0.4685066  1.418688     0
+285: 2024-12-13 20:00:00    40  2.118158   TRUE -0.6196013 -0.6682347  1.578202     0
+286: 2024-12-13 21:00:00    40  2.379871   TRUE -0.7626912 -0.8674639  1.766677     0
+287: 2024-12-13 22:00:00    40  2.641583   TRUE -0.8710789 -1.0573947  2.028039     0
+288: 2024-12-13 23:00:00    40  2.903296   TRUE -0.9373830 -1.2150389  2.469090     0
+\end{verbatim}
+
+También, se puede indicar que no realice las correcciones de la ecuación del tiempo.
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+solI_EoT <- fSolI(solD = solD, BTi = BTi, EoT = FALSE)
+show(solI_EoT)
+\end{lstlisting}
+
+\begin{verbatim}
+Index: <night>
+                   Dates   lat         w  night    cosThzS        AlS       AzS   Bo0
+                  <POSc> <num>     <num> <lgcl>      <num>      <num>     <num> <num>
+  1: 2024-01-17 00:00:00    40  3.099050   TRUE -0.9436261 -1.2334190  3.021179     0
+  2: 2024-01-17 01:00:00    40 -2.922397   TRUE -0.9271373 -1.1866996 -2.568151     0
+  3: 2024-01-17 02:00:00    40 -2.660659   TRUE -0.8630306 -1.0412386 -2.113735     0
+  4: 2024-01-17 03:00:00    40 -2.398921   TRUE -0.7556726 -0.8566805 -1.834796     0
+  5: 2024-01-17 04:00:00    40 -2.137183   TRUE -0.6123762 -0.6590629 -1.634927     0
+ ---                                                                                 
+284: 2024-12-13 19:00:00    40  1.856445   TRUE -0.4515543 -0.4685066  1.418688     0
+285: 2024-12-13 20:00:00    40  2.118158   TRUE -0.6196013 -0.6682347  1.578202     0
+286: 2024-12-13 21:00:00    40  2.379871   TRUE -0.7626912 -0.8674639  1.766677     0
+287: 2024-12-13 22:00:00    40  2.641583   TRUE -0.8710789 -1.0573947  2.028039     0
+288: 2024-12-13 23:00:00    40  2.903296   TRUE -0.9373830 -1.2150389  2.469090     0
 \end{verbatim}
 
 Finalmente, estas dos funciones, como se muestra en la figura \ref{fig:calcSol}, convergen en la función \texttt{calcSol}, dando como resultado un objeto de clase \texttt{Sol}. Este objeto muestra un sumario de ambos elementos junto con la latitud de los cálculos.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 sol <- calcSol(lat = lat, BTd = BTd, sample = 'hour')
-print(sol)
+show(sol)
 \end{lstlisting}
 
 \begin{verbatim}
@@ -239,7 +285,7 @@ Intradaily values:
 \end{verbatim}
 
 \section{Datos meteorológicos}
-\label{sec:org6aa4dc1}
+\label{sec:orgc7ce97c}
 \label{sec:datos-meteorologicos}
 Para el procesamiento de datos meteorologicos, \texttt{solaR2} provee una serie de funciones\footnote{Las funciones comentadas en este apartado, se recogen en la sección \ref{subsec:meteoreaders}} que son capaces de leer todo tipo de datos. Estos datos se procesan y se almacenan en un objeto de tipo \texttt{Meteo} tal y como se ve en la figura \ref{fig:meteo}. Estas funciones son:
 \begin{figure}[]
@@ -256,7 +302,7 @@ G0dm = c(2.766,3.491,4.494,5.912,6.989,7.742,
 Ta = c(10, 14.1, 15.6, 17.2, 19.3, 21.2,
        28.4, 29.9, 24.3, 18.2, 17.2, 15.2)
 BD <- readG0dm(G0dm = G0dm, Ta = Ta, lat = 37.2)
-print(BD)
+show(BD)
 \end{lstlisting}
 
 \begin{verbatim}
@@ -289,7 +335,7 @@ BDd <- readBDd(file = 'data/aranjuez.csv', lat = lat,
                format = '%Y-%m-%d', header = TRUE,
                fill = TRUE, dec = '.', sep = ',', dates.col = '',
                ta.col = 'TempAvg', g0.col = 'Radiation', keep.cols = TRUE)
-print(BDd)
+show(BDd)
 \end{lstlisting}
 
 \begin{verbatim}
@@ -330,7 +376,7 @@ BDi <- readBDi(file = 'data/NREL-Hawaii.csv', lat = 19,
                ta.col = 'Air Temperature [deg C]',
                g0.col = 'Global Horizontal [W/m^2]',
                keep.cols = TRUE)
-print(BDi)
+show(BDi)
 \end{lstlisting}
 
 \begin{verbatim}
@@ -363,7 +409,7 @@ Meteorological Data:
 data(helios)
 names(helios) <- c('Dates', 'G0d', 'TempMax', 'TempMin')
 helios_meteo <- dt2Meteo(file = helios, lat = 40, type = 'bd')
-print(helios_meteo)
+show(helios_meteo)
 \end{lstlisting}
 
 \begin{verbatim}
@@ -396,7 +442,7 @@ Meteorological Data:
 library(zoo)
 bd_zoo <- read.csv.zoo('data/aranjuez.csv')
 BD_zoo <- zoo2Meteo(file = bd_zoo, lat = 40)
-print(BD_zoo)
+show(BD_zoo)
 \end{lstlisting}
 
 \begin{verbatim}
@@ -435,7 +481,7 @@ bd_SIAR <- readSIAR(Lat = 40.40596822621351, Lon = -3.70038308516172,
                     ## de Ingeniería y Diseño Industrial (ETSIDI)
                     inicio = '2023-09-01', final = '2024-08-01',
                     tipo = 'Mensuales', n_est = 3)
-print(bd_SIAR)
+show(bd_SIAR)
 \end{lstlisting}
 
 \begin{verbatim}
@@ -450,9 +496,9 @@ Meteorological Data:
  Min.   :2023-09-18 00:00:00   Min.   :1860   Min.   : 5.318   Min.   :-4.6513   Min.   :15.34  
  1st Qu.:2023-12-06 18:00:00   1st Qu.:2744   1st Qu.: 9.857   1st Qu.:-2.1466   1st Qu.:21.12  
  Median :2024-02-29 00:00:00   Median :4052   Median :14.890   Median : 0.3663   Median :31.01  
- Mean   :2024-03-01 04:00:00   Mean   :4532   Mean   :15.351   Mean   : 2.4225   Mean   :29.41  
+ Mean   :2024-03-01 04:00:00   Mean   :4531   Mean   :15.350   Mean   : 2.4225   Mean   :29.41  
  3rd Qu.:2024-05-21 12:00:00   3rd Qu.:6616   3rd Qu.:20.047   3rd Qu.: 7.1506   3rd Qu.:35.47  
- Max.   :2024-08-18 00:00:00   Max.   :7608   Max.   :27.600   Max.   :12.6082   Max.   :40.70
+ Max.   :2024-08-18 00:00:00   Max.   :7608   Max.   :27.587   Max.   :12.6082   Max.   :40.70
 \end{verbatim}
 
 Esta función tiene dos argumentos importantes:
@@ -462,7 +508,7 @@ Esta función tiene dos argumentos importantes:
 \end{itemize}
 
 \section{Radiación en el plano horizontal}
-\label{sec:orgb6c82a6}
+\label{sec:org54c052c}
 \label{sec:radiacion-plano-horizontal}
 Una vez se ha calculado la geometría solar (sección \ref{sec:geometria-solar}) y se han procesado los datos meteorológicos (sección \ref{sec:datos-meteorologicos}), es necesario calcular la radiación en el plano horizontal. Para ello, \texttt{solaR2} cuenta con la función \texttt{calcG0} [\ref{subsec:calcg0}] la cual mediante las funciones \texttt{fCompD} [\ref{subsec:fcompd}] y \texttt{fCompI} [\ref{subsec:fcompi}] procesan los objetos de clase \texttt{Sol} y clase \texttt{Meteo} para dar un objeto de tipo \texttt{G0}.
 
@@ -909,26 +955,26 @@ Latitude of source:  37.2 degrees
 Latitude for calculations:  37.2 degrees
 
 Monthly avarages:
-	Dates   G0d      D0d      B0d
-       <char> <num>    <num>    <num>
- 1: Jan. 2024 2.766 1.101143 1.664857
- 2: Feb. 2024 3.491 1.519465 1.971535
- 3: Mar. 2024 4.494 1.896690 2.597310
- 4: Apr. 2024 5.912 2.353760 3.558240
- 5: May. 2024 6.989 2.445564 4.543436
- 6: Jun. 2024 7.742 2.442996 5.299004
- 7: Jul. 2024 7.919 2.238474 5.680526
- 8: Aug. 2024 7.027 2.066795 4.960205
- 9: Sep. 2024 5.369 2.016564 3.352436
-10: Oct. 2024 3.562 1.659453 1.902547
-11: Nov. 2024 2.814 1.223016 1.590984
-12: Dec. 2024 2.179 1.086253 1.092747
+	Dates   G0d       D0d      B0d
+       <char> <num>     <num>    <num>
+ 1: Jan. 2024 2.766 1.1406361 1.625364
+ 2: Feb. 2024 3.491 1.5085281 1.982472
+ 3: Mar. 2024 4.494 2.1071752 2.386825
+ 4: Apr. 2024 5.912 2.1957760 3.716224
+ 5: May. 2024 6.989 2.5111968 4.477803
+ 6: Jun. 2024 7.742 2.3410331 5.400967
+ 7: Jul. 2024 7.919 2.3059928 5.613007
+ 8: Aug. 2024 7.027 2.1420629 4.884937
+ 9: Sep. 2024 5.369 1.8574256 3.511574
+10: Oct. 2024 3.562 1.5800364 1.981964
+11: Nov. 2024 2.814 1.2017544 1.612246
+12: Dec. 2024 2.179 0.9779708 1.201029
 
 Yearly values:
 Key: <Dates>
    Dates      G0d      D0d      B0d
    <int>    <num>    <num>    <num>
-1:  2024 1839.365 672.4801 1166.885
+1:  2024 1839.365 667.3442 1172.021
 \end{verbatim}
 
 \item Diarios.
@@ -947,26 +993,26 @@ Latitude of source:  37.2 degrees
 Latitude for calculations:  37.2 degrees
 
 Monthly avarages:
-	Dates   G0d      D0d      B0d
-       <char> <num>    <num>    <num>
- 1: Jan. 2024 2.766 1.101143 1.664857
- 2: Feb. 2024 3.491 1.519465 1.971535
- 3: Mar. 2024 4.494 1.896690 2.597310
- 4: Apr. 2024 5.912 2.353760 3.558240
- 5: May. 2024 6.989 2.445564 4.543436
- 6: Jun. 2024 7.742 2.442996 5.299004
- 7: Jul. 2024 7.919 2.238474 5.680526
- 8: Aug. 2024 7.027 2.066795 4.960205
- 9: Sep. 2024 5.369 2.016564 3.352436
-10: Oct. 2024 3.562 1.659453 1.902547
-11: Nov. 2024 2.814 1.223016 1.590984
-12: Dec. 2024 2.179 1.086253 1.092747
+	Dates   G0d       D0d      B0d
+       <char> <num>     <num>    <num>
+ 1: Jan. 2024 2.766 1.1406361 1.625364
+ 2: Feb. 2024 3.491 1.5085281 1.982472
+ 3: Mar. 2024 4.494 2.1071752 2.386825
+ 4: Apr. 2024 5.912 2.1957760 3.716224
+ 5: May. 2024 6.989 2.5111968 4.477803
+ 6: Jun. 2024 7.742 2.3410331 5.400967
+ 7: Jul. 2024 7.919 2.3059928 5.613007
+ 8: Aug. 2024 7.027 2.1420629 4.884937
+ 9: Sep. 2024 5.369 1.8574256 3.511574
+10: Oct. 2024 3.562 1.5800364 1.981964
+11: Nov. 2024 2.814 1.2017544 1.612246
+12: Dec. 2024 2.179 0.9779708 1.201029
 
 Yearly values:
 Key: <Dates>
    Dates      G0d      D0d      B0d
    <int>    <num>    <num>    <num>
-1:  2024 1839.365 672.4801 1166.885
+1:  2024 1839.365 667.3442 1172.021
 \end{verbatim}
 
 \item Intradiarios
@@ -985,35 +1031,35 @@ Latitude of source:  37.2 degrees
 Latitude for calculations:  37.2 degrees
 
 Monthly avarages:
-	Dates   G0d      D0d      B0d
-       <char> <num>    <num>    <num>
- 1: Jan. 2024 2.766 1.118008 1.647992
- 2: Feb. 2024 3.491 1.560352 1.930648
- 3: Mar. 2024 4.494 2.016896 2.477104
- 4: Apr. 2024 5.912 2.445615 3.466385
- 5: May. 2024 6.989 2.500928 4.488072
- 6: Jun. 2024 7.742 2.374257 5.367743
- 7: Jul. 2024 7.919 1.923060 5.995940
- 8: Aug. 2024 7.027 1.826466 5.200534
- 9: Sep. 2024 5.369 1.853025 3.515975
-10: Oct. 2024 3.562 1.670767 1.891233
-11: Nov. 2024 2.814 1.265921 1.548079
-12: Dec. 2024 2.179 1.122945 1.056055
+	Dates   G0d       D0d      B0d
+       <char> <num>     <num>    <num>
+ 1: Jan. 2024 2.766 1.1724601 1.593540
+ 2: Feb. 2024 3.491 1.5366807 1.954319
+ 3: Mar. 2024 4.494 2.2941650 2.199835
+ 4: Apr. 2024 5.912 1.8880767 4.023923
+ 5: May. 2024 6.989 2.5717132 4.417287
+ 6: Jun. 2024 7.742 2.1841867 5.557813
+ 7: Jul. 2024 7.919 1.9577483 5.961252
+ 8: Aug. 2024 7.027 1.9859536 5.041046
+ 9: Sep. 2024 5.369 1.8181782 3.550822
+10: Oct. 2024 3.562 1.4506689 2.111331
+11: Nov. 2024 2.814 1.2396958 1.574304
+12: Dec. 2024 2.179 0.9265141 1.252486
 
 Yearly values:
 Key: <Dates>
    Dates      G0d      D0d      B0d
    <int>    <num>    <num>    <num>
-1:  2024 1839.365 660.9659 1178.399
+1:  2024 1839.365 641.6038 1197.761
 \end{verbatim}
 \end{itemize}
 
 \section{Radiación efectiva en el plano del generador}
-\label{sec:org4839347}
+\label{sec:org910ab9f}
 \label{sec:radiacion-efectiva-plano-generador}
 Teniendo la radiación incidente en plano horizontal (sección \ref{sec:radiacion-plano-horizontal}), se puede calcular la radiación efectiva incidente en el plano del generador. Para ello, \texttt{solaR2} cuenta con la función \texttt{calcGef} [\ref{subsec:calcgef}] la cual mediante las funciones \texttt{fInclin} y \texttt{calcShd} procesa un objeto de clase \texttt{G0} para obtener un objeto \texttt{Gef}.
 
-Como se puede ver en la figura \ref{fig:calcgef}, \texttt{calcG0} funciona gracias a las siguientes funciones:
+Como se puede ver en la figura \ref{fig:calcgef}, \texttt{calcGef} funciona gracias a las siguientes funciones:
 \begin{figure}[]
 \centering
 \includegraphics[keepaspectratio,width=\textwidth,height=0.5\textheight]{figuras/calcgef.pdf}
@@ -1116,10 +1162,10 @@ show(angGen_horiz)
 También, tiene un argumento \texttt{BT} que indica cuando se usa la técnica de backtracking para un sistema horizontal Norte-Sur. Para funcionar, necesita de los argumentos \texttt{struct}, el cual presenta una lista con la altura de los módulos, y \texttt{dist}, el cual presenta un \texttt{data.frame} (o \texttt{data.table}) con la distancia que separa los módulos en la dirección Este-Oeste.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 struct <- list(L = 1)
-dist <- data.table(Lew = 2)
+distances <- data.table(Lew = 2)
 angGen_BT <- fTheta(sol = sol, beta = beta, alfa = alfa,
                     modeTrk = 'horiz', BT = TRUE,
-                    struct = struct, dist = dist)
+                    struct = struct, dist = distances)
 show(angGen_BT)
 \end{lstlisting}
 
@@ -1146,7 +1192,7 @@ show(angGen_BT)
 \item \texttt{fInclin}: la cual, partiendo del resultado de \texttt{fTheta} y de un objeto de clase \texttt{G0}, cálcula la irradiancia solar incidente en una superficie inclinada junto con los efectos del ángulo de incidencia y la suciedad para obtener la irradiancia efectiva.
 Como argumentos principales están:
 \begin{itemize}
-\item \texttt{iS}: permite seleccionar entre 4 valores del 1 al 4 correspondientes a la suciedad del módulo. Siendo 1 limpio y 4 alto y basandose en los valores de la tabla \ref{tab:coef-perd} computa la irradiancia efectiva.
+\item \texttt{iS}: permite seleccionar entre 4 valores del 1 al 4 correspondientes al grado de suciedad del módulo. Siendo 1 limpio y 4 alto y basandose en los valores de la tabla \ref{tab:coef-perd} computa la irradiancia efectiva. Por defecto tiene valor 2 (grado de suciedad bajo).
 \end{itemize}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 compI <- calcG0(lat, dataRad = prom, keep.night = FALSE)
@@ -1184,4 +1230,486 @@ show(inclin_limpio)
 144: 0.035287438 0.05043622 0.2503398 55.84476  39.66642 280.5821  95.51118 183.63782 1.4331306
 145: 0.114223038 0.05043622 0.2503398 25.45254  17.84137 126.4151  43.29391  82.59758 0.5235947
 \end{verbatim}
+
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+inclin_sucio <- fInclin(compI = compI, angGen = angGen, iS = 4)
+show(inclin_sucio)
+\end{lstlisting}
+
+\begin{verbatim}
+		   Dates        Bo       Bn        G         D       Di        Dc         B         R
+		  <POSc>     <num>    <num>    <num>     <num>    <num>     <num>     <num>     <num>
+  1: 2024-01-17 08:00:00  514.5612 365.8727 186.4590  52.34286 25.82073  26.52212 133.18653 0.9295706
+  2: 2024-01-17 09:00:00  792.6980 464.2106 366.6704 103.96230 52.12242  51.83988 260.32510 2.3830282
+  3: 2024-01-17 10:00:00 1010.9063 541.3602 536.6247 145.69981 68.60264  77.09717 387.15997 3.7648749
+  4: 2024-01-17 11:00:00 1154.3223 592.0663 662.0048 173.72247 77.44190  96.28057 483.49354 4.7887550
+  5: 2024-01-17 12:00:00 1213.1770 612.8750 716.5974 185.35767 80.61172 104.74595 526.00427 5.2354830
+ ---                                                                                                 
+141: 2024-12-13 12:00:00 1181.1554 470.2512 578.4583 180.82966 95.85462  84.97504 393.39650 4.2321949
+142: 2024-12-13 13:00:00 1129.5610 453.5904 536.8668 170.08970 91.70559  78.38411 362.88341 3.8937280
+143: 2024-12-13 14:00:00  994.4636 409.9651 434.0673 142.25355 79.88147  62.37208 288.75488 3.0588416
+144: 2024-12-13 15:00:00  785.0640 342.3463 292.1950  99.92831 58.81096  41.11735 190.35496 1.9117069
+145: 2024-12-13 16:00:00  515.6229 255.3390 140.8937  46.94651 26.80445  20.14206  93.24874 0.6984426
+	    FTb        FTd       FTr     Dief     Dcef      Gef       Def       Bef       Ref
+	  <num>      <num>     <num>    <num>    <num>    <num>     <num>     <num>     <num>
+  1: 0.24100175 0.09714708 0.3918962 21.44734 18.51982 133.4885  39.96716  93.00127 0.5200533
+  2: 0.10321543 0.09714708 0.3918962 43.29416 42.77007 302.1765  86.06424 214.77909 1.3331982
+  3: 0.04727214 0.09714708 0.3918962 56.98305 67.57641 466.0152 124.55946 339.34944 2.1062799
+  4: 0.02455379 0.09714708 0.3918962 64.32515 86.40320 587.2996 150.72835 433.89218 2.6790952
+  5: 0.01743586 0.09714708 0.3918962 66.95809 94.68605 640.0594 161.64413 475.48630 2.9290196
+ ---                                                                                         
+141: 0.02100686 0.09714708 0.3918962 79.61921 76.53478 512.8436 156.15400 354.32187 2.3677246
+142: 0.02771140 0.09714708 0.3918962 76.17293 70.11502 473.0675 146.28795 324.60121 2.1783674
+143: 0.05023795 0.09714708 0.3918962 66.35152 54.49955 374.8709 120.85106 252.30856 1.7112857
+144: 0.10550059 0.09714708 0.3918962 48.84983 33.83709 240.4070  82.68692 156.65061 1.0695149
+145: 0.23984890 0.09714708 0.3918962 22.26444 14.08613 101.9538  36.35057  65.21248 0.3907476
+\end{verbatim}
+
+\begin{itemize}
+\item \texttt{alb} Correspondiente al coeficiente de reflexión del terreno para la irradiancia de albedo. Por defecto tiene un valor de 0,2 (valor aceptable para un terreno normal).
 \end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+inclin_alb0 <- fInclin(compI = compI, angGen = angGen, alb = 0)
+show(inclin_alb0)
+\end{lstlisting}
+
+\begin{verbatim}
+		   Dates        Bo       Bn        G         D       Di        Dc         B     R
+		  <POSc>     <num>    <num>    <num>     <num>    <num>     <num>     <num> <num>
+  1: 2024-01-17 08:00:00  514.5612 365.8727 185.5294  52.34286 25.82073  26.52212 133.18653     0
+  2: 2024-01-17 09:00:00  792.6980 464.2106 364.2874 103.96230 52.12242  51.83988 260.32510     0
+  3: 2024-01-17 10:00:00 1010.9063 541.3602 532.8598 145.69981 68.60264  77.09717 387.15997     0
+  4: 2024-01-17 11:00:00 1154.3223 592.0663 657.2160 173.72247 77.44190  96.28057 483.49354     0
+  5: 2024-01-17 12:00:00 1213.1770 612.8750 711.3619 185.35767 80.61172 104.74595 526.00427     0
+ ---                                                                                             
+141: 2024-12-13 12:00:00 1181.1554 470.2512 574.2262 180.82966 95.85462  84.97504 393.39650     0
+142: 2024-12-13 13:00:00 1129.5610 453.5904 532.9731 170.08970 91.70559  78.38411 362.88341     0
+143: 2024-12-13 14:00:00  994.4636 409.9651 431.0084 142.25355 79.88147  62.37208 288.75488     0
+144: 2024-12-13 15:00:00  785.0640 342.3463 290.2833  99.92831 58.81096  41.11735 190.35496     0
+145: 2024-12-13 16:00:00  515.6229 255.3390 140.1953  46.94651 26.80445  20.14206  93.24874     0
+	     FTb        FTd       FTr     Dief      Dcef      Gef       Def       Bef   Ref
+	   <num>      <num>     <num>    <num>     <num>    <num>     <num>     <num> <num>
+  1: 0.156321477 0.06473603 0.2994808 23.66622  21.92862 155.7141  45.59484 110.11928     0
+  2: 0.054197292 0.06473603 0.2994808 47.77325  48.04970 337.1148  95.82295 241.29186     0
+  3: 0.021399057 0.06473603 0.2994808 62.87835  73.93841 508.1144 136.81676 371.29761     0
+  4: 0.010185772 0.06473603 0.2994808 70.98005  93.39388 633.3713 164.37393 468.99741     0
+  5: 0.006996517 0.06473603 0.2994808 73.88537 101.93283 687.6958 175.81821 511.87759     0
+ ---                                                                                       
+141: 0.008575046 0.06473603 0.2994808 87.85638  82.56145 552.6405 170.41783 382.22264     0
+142: 0.011653979 0.06473603 0.2994808 84.05356  75.92121 511.4560 159.97477 351.48128     0
+143: 0.022965930 0.06473603 0.2994808 73.21605  59.72086 409.4178 132.93691 276.48089     0
+144: 0.055666181 0.06473603 0.2994808 53.90370  38.05193 268.1191  91.95563 176.16345     0
+145: 0.155368802 0.06473603 0.2994808 24.56786  16.67236 118.4258  41.24021  77.18558     0
+\end{verbatim}
+
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+inclin_alb1 <- fInclin(compI = compI, angGen = angGen, alb = 1)
+show(inclin_alb1)
+\end{lstlisting}
+
+\begin{verbatim}
+		   Dates        Bo       Bn        G         D       Di        Dc         B         R
+		  <POSc>     <num>    <num>    <num>     <num>    <num>     <num>     <num>     <num>
+  1: 2024-01-17 08:00:00  514.5612 365.8727 190.1772  52.34286 25.82073  26.52212 133.18653  4.647853
+  2: 2024-01-17 09:00:00  792.6980 464.2106 376.2025 103.96230 52.12242  51.83988 260.32510 11.915141
+  3: 2024-01-17 10:00:00 1010.9063 541.3602 551.6842 145.69981 68.60264  77.09717 387.15997 18.824375
+  4: 2024-01-17 11:00:00 1154.3223 592.0663 681.1598 173.72247 77.44190  96.28057 483.49354 23.943775
+  5: 2024-01-17 12:00:00 1213.1770 612.8750 737.5394 185.35767 80.61172 104.74595 526.00427 26.177415
+ ---                                                                                                 
+141: 2024-12-13 12:00:00 1181.1554 470.2512 595.3871 180.82966 95.85462  84.97504 393.39650 21.160975
+142: 2024-12-13 13:00:00 1129.5610 453.5904 552.4417 170.08970 91.70559  78.38411 362.88341 19.468640
+143: 2024-12-13 14:00:00  994.4636 409.9651 446.3026 142.25355 79.88147  62.37208 288.75488 15.294208
+144: 2024-12-13 15:00:00  785.0640 342.3463 299.8418  99.92831 58.81096  41.11735 190.35496  9.558535
+145: 2024-12-13 16:00:00  515.6229 255.3390 143.6875  46.94651 26.80445  20.14206  93.24874  3.492213
+	     FTb        FTd       FTr     Dief      Dcef      Gef       Def       Bef       Ref
+	   <num>      <num>     <num>    <num>     <num>    <num>     <num>     <num>     <num>
+  1: 0.156321477 0.06473603 0.2994808 23.66622  21.92862 158.9049  45.59484 110.11928  3.190792
+  2: 0.054197292 0.06473603 0.2994808 47.77325  48.04970 345.2947  95.82295 241.29186  8.179849
+  3: 0.021399057 0.06473603 0.2994808 62.87835  73.93841 521.0375 136.81676 371.29761 12.923098
+  4: 0.010185772 0.06473603 0.2994808 70.98005  93.39388 649.8089 164.37393 468.99741 16.437612
+  5: 0.006996517 0.06473603 0.2994808 73.88537 101.93283 705.6668 175.81821 511.87759 17.971025
+ ---                                                                                           
+141: 0.008575046 0.06473603 0.2994808 87.85638  82.56145 567.1677 170.41783 382.22264 14.527195
+142: 0.011653979 0.06473603 0.2994808 84.05356  75.92121 524.8214 159.97477 351.48128 13.365392
+143: 0.022965930 0.06473603 0.2994808 73.21605  59.72086 419.9174 132.93691 276.48089 10.499608
+144: 0.055666181 0.06473603 0.2994808 53.90370  38.05193 274.6811  91.95563 176.16345  6.562018
+145: 0.155368802 0.06473603 0.2994808 24.56786  16.67236 120.8232  41.24021  77.18558  2.397435
+\end{verbatim}
+
+Además, cuenta con dos argumentos adicionales, \texttt{horizBright}, el cual, cuando su valor es \texttt{TRUE} (el que tiene por defecto), realiza una corrección de la radiación difusa \cite{REINDL19909}, y \texttt{HCPV}, es el acrónimo de \textbf{High Concentration PV system}\footnote{la tencología de concentración fotovoltaica funciona gracias a unos dispositivos ópticos que permiten concentrar la radiación solar sobre una célula fotovoltaica de tamaño reducido pero con una eficiencia muy superior alas células tradicionales. Con ello se consigue emplear menor cantidad de semiconductores reduciendo los costes.} (sistema fotovoltaico de alta concentración) que cuando su valor es \texttt{TRUE} (por defecto está puesto en \texttt{FALSE}), anula los valores de radiación difusa y de albedo.
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+inclin_horizBright <- fInclin(compI = compI, angGen = angGen,
+                              horizBright = FALSE)
+show(inclin_horizBright)
+\end{lstlisting}
+
+\begin{verbatim}
+		   Dates        Bo       Bn        G         D       Di        Dc         B         R
+		  <POSc>     <num>    <num>    <num>     <num>    <num>     <num>     <num>     <num>
+  1: 2024-01-17 08:00:00  514.5612 365.8727 186.2091  52.09303 25.57090  26.52212 133.18653 0.9295706
+  2: 2024-01-17 09:00:00  792.6980 464.2106 366.1413 103.43314 51.59325  51.83988 260.32510 2.3830282
+  3: 2024-01-17 10:00:00 1010.9063 541.3602 535.9087 144.98390 67.88673  77.09717 387.15997 3.7648749
+  4: 2024-01-17 11:00:00 1154.3223 592.0663 661.1846 172.90227 76.62170  96.28057 483.49354 4.7887550
+  5: 2024-01-17 12:00:00 1213.1770 612.8750 715.7390 184.49921 79.75326 104.74595 526.00427 5.2354830
+ ---                                                                                                 
+141: 2024-12-13 12:00:00 1181.1554 470.2512 577.4973 179.86860 94.89356  84.97504 393.39650 4.2321949
+142: 2024-12-13 13:00:00 1129.5610 453.5904 535.9539 169.17679 90.79268  78.38411 362.88341 3.8937280
+143: 2024-12-13 14:00:00  994.4636 409.9651 433.2885 141.47476 79.10268  62.37208 288.75488 3.0588416
+144: 2024-12-13 15:00:00  785.0640 342.3463 291.6442  99.37758 58.26023  41.11735 190.35496 1.9117069
+145: 2024-12-13 16:00:00  515.6229 255.3390 140.6606  46.71344 26.57138  20.14206  93.24874 0.6984426
+	     FTb        FTd       FTr     Dief      Dcef      Gef       Def       Bef       Ref
+	   <num>      <num>     <num>    <num>     <num>    <num>     <num>     <num>     <num>
+  1: 0.156321477 0.06473603 0.2994808 23.43723  21.92862 156.1233  45.36586 110.11928 0.6381583
+  2: 0.054197292 0.06473603 0.2994808 47.28824  48.04970 338.2658  95.33794 241.29186 1.6359698
+  3: 0.021399057 0.06473603 0.2994808 62.22217  73.93841 510.0428 136.16059 371.29761 2.5846197
+  4: 0.010185772 0.06473603 0.2994808 70.22829  93.39388 635.9071 163.62217 468.99741 3.2875223
+  5: 0.006996517 0.06473603 0.2994808 73.09855 101.93283 690.5032 175.03138 511.87759 3.5942050
+ ---                                                                                           
+141: 0.008575046 0.06473603 0.2994808 86.97552  82.56145 554.6650 169.53697 382.22264 2.9054390
+142: 0.011653979 0.06473603 0.2994808 83.21682  75.92121 513.2924 159.13803 351.48128 2.6730784
+143: 0.022965930 0.06473603 0.2994808 72.50225  59.72086 410.8039 132.22311 276.48089 2.0999216
+144: 0.055666181 0.06473603 0.2994808 53.39892  38.05193 268.9267  91.45086 176.16345 1.3124036
+145: 0.155368802 0.06473603 0.2994808 24.35423  16.67236 118.6917  41.02659  77.18558 0.4794870
+\end{verbatim}
+
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+inclin_HCPV <- fInclin(compI = compI, angGen = angGen,
+                       HCPV = TRUE)
+show(inclin_HCPV)
+\end{lstlisting}
+
+\begin{verbatim}
+		   Dates        Bo       Bn        G         D       Di        Dc         B         R
+		  <POSc>     <num>    <num>    <num>     <num>    <num>     <num>     <num>     <num>
+  1: 2024-01-17 08:00:00  514.5612 365.8727 186.4590  52.34286 25.82073  26.52212 133.18653 0.9295706
+  2: 2024-01-17 09:00:00  792.6980 464.2106 366.6704 103.96230 52.12242  51.83988 260.32510 2.3830282
+  3: 2024-01-17 10:00:00 1010.9063 541.3602 536.6247 145.69981 68.60264  77.09717 387.15997 3.7648749
+  4: 2024-01-17 11:00:00 1154.3223 592.0663 662.0048 173.72247 77.44190  96.28057 483.49354 4.7887550
+  5: 2024-01-17 12:00:00 1213.1770 612.8750 716.5974 185.35767 80.61172 104.74595 526.00427 5.2354830
+ ---                                                                                                 
+141: 2024-12-13 12:00:00 1181.1554 470.2512 578.4583 180.82966 95.85462  84.97504 393.39650 4.2321949
+142: 2024-12-13 13:00:00 1129.5610 453.5904 536.8668 170.08970 91.70559  78.38411 362.88341 3.8937280
+143: 2024-12-13 14:00:00  994.4636 409.9651 434.0673 142.25355 79.88147  62.37208 288.75488 3.0588416
+144: 2024-12-13 15:00:00  785.0640 342.3463 292.1950  99.92831 58.81096  41.11735 190.35496 1.9117069
+145: 2024-12-13 16:00:00  515.6229 255.3390 140.8937  46.94651 26.80445  20.14206  93.24874 0.6984426
+	     FTb        FTd       FTr  Dief  Dcef       Gef   Def       Bef   Ref
+	   <num>      <num>     <num> <num> <num>     <num> <num>     <num> <num>
+  1: 0.156321477 0.06473603 0.2994808     0     0 110.11928     0 110.11928     0
+  2: 0.054197292 0.06473603 0.2994808     0     0 241.29186     0 241.29186     0
+  3: 0.021399057 0.06473603 0.2994808     0     0 371.29761     0 371.29761     0
+  4: 0.010185772 0.06473603 0.2994808     0     0 468.99741     0 468.99741     0
+  5: 0.006996517 0.06473603 0.2994808     0     0 511.87759     0 511.87759     0
+ ---                                                                             
+141: 0.008575046 0.06473603 0.2994808     0     0 382.22264     0 382.22264     0
+142: 0.011653979 0.06473603 0.2994808     0     0 351.48128     0 351.48128     0
+143: 0.022965930 0.06473603 0.2994808     0     0 276.48089     0 276.48089     0
+144: 0.055666181 0.06473603 0.2994808     0     0 176.16345     0 176.16345     0
+145: 0.155368802 0.06473603 0.2994808     0     0  77.18558     0  77.18558     0
+\end{verbatim}
+\end{itemize}
+
+Finalmente, esta función le otorga estos datos a la función \texttt{calcGef} para que produzca un objeto de clase \texttt{Gef} como resultado. Esta función tiene como argumentos principales los mismos que los que tiene \texttt{calcG0} \ref{sec:radiacion-plano-horizontal}, es decir, \texttt{modeRad} y \texttt{dataRad}. Y además, como es lógico, con todos los argumentos mencionados con anterioridad en \texttt{fTheta} y \texttt{fInclin}.
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+gef_prom <- calcGef(lat = lat, modeTrk = 'two', modeRad = 'prom',
+                    dataRad = prom,
+                    beta = lat-10, alfa = 0,
+                    iS = 2, alb = 0.2,
+                    horizBright = TRUE, HCPV = FALSE)
+show(gef_prom)
+\end{lstlisting}
+
+\begin{verbatim}
+Object of class  Gef 
+
+Source of meteorological information: prom- 
+
+Latitude of source:  37.2 degrees
+Latitude for calculations:  37.2 degrees
+
+Monthly avarages:
+        Dates      Bod       Bnd        Gd       Dd       Bd      Gefd     Defd     Befd
+       <char>    <num>     <num>     <num>    <num>    <num>     <num>    <num>    <num>
+ 1: Jan. 2024 14.13536  4.924221  6.522313 1.440413 4.924221  6.348801 1.384087 4.825736
+ 2: Feb. 2024 15.42754  5.034287  6.875052 1.672079 5.034287  6.680139 1.599929 4.933601
+ 3: Mar. 2024 16.58107  5.163713  7.329138 1.998110 5.163713  7.104641 1.902356 5.060439
+ 4: Apr. 2024 17.64047  6.408617  8.843422 2.265896 6.408617  8.578222 2.158071 6.280444
+ 5: May. 2024 18.70771  7.617499 10.178196 2.394606 7.617499  9.885240 2.284334 7.465149
+ 6: Jun. 2024 19.87238  9.102430 11.606533 2.329653 9.102430 11.293417 2.230338 8.920381
+ 7: Jul. 2024 18.51695 10.037233 11.801533 2.029150 9.589205 11.495648 1.948530 9.397421
+ 8: Aug. 2024 17.34098  8.640959 10.777404 1.947410 8.640959 10.493150 1.869393 8.468140
+ 9: Sep. 2024 16.25295  6.698488  8.831006 1.948075 6.698488  8.584604 1.864962 6.564518
+10: Oct. 2024 15.16994  4.546024  6.418653 1.711039 4.546024  6.226290 1.631551 4.455104
+11: Nov. 2024 14.00493  4.638289  6.247341 1.452953 4.638289  6.076159 1.393353 4.545523
+12: Dec. 2024 12.70717  3.439788  4.825181 1.254616 3.439788  4.685547 1.198824 3.370992
+
+Yearly values:
+   Dates      Bod      Bnd       Gd       Dd       Bd     Gefd    Defd     Befd
+   <int>    <num>    <num>    <num>    <num>    <num>    <num>   <num>    <num>
+1:  2024 5988.455 2326.882 3058.651 684.4232 2312.993 2973.115 654.591 2266.733
+-----------------
+Mode of tracking:  two 
+    Inclination limit: 90
+\end{verbatim}
+
+Sin embargo, como argumento importante está \texttt{modeShd}, el cual permite incluir el efecto de las sombras entre módulos al objeto \texttt{Gef} mediante el uso de la función \texttt{calcShd}. Esta opción añade las variables \texttt{Gef0}, \texttt{Def0} y \texttt{Bef0} las cuales son las componentes de radiación efectiva previas a aplicar el efecto de las sombras con el fin de poder comparar.
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+struct <- list(W=23.11, L=9.8, Nrow=2, Ncol=8)
+distances <- data.table(Lew=40, Lns=30, H=0)
+gef_shd <- calcShd(radEf = gef_prom, modeShd = 'prom',
+                   struct = struct, distances = distances)
+show(gef_shd)
+\end{lstlisting}
+
+\begin{verbatim}
+Object of class  Gef 
+
+Source of meteorological information: prom- 
+
+Latitude of source:  37.2 degrees
+Latitude for calculations:  37.2 degrees
+
+Monthly avarages:
+        Dates     Gef0d    Def0d    Bef0d        Gd       Dd       Bd      Gefd     Defd     Befd
+       <char>     <num>    <num>    <num>     <num>    <num>    <num>     <num>    <num>    <num>
+ 1: Jan. 2024  6.348801 1.384087 4.825736  6.522313 1.440413 4.924221  6.104126 1.343455 4.621693
+ 2: Feb. 2024  6.680139 1.599929 4.933601  6.875052 1.672079 5.034287  6.406274 1.553670 4.705996
+ 3: Mar. 2024  7.104641 1.902356 5.060439  7.329138 1.998110 5.163713  6.788630 1.848127 4.798657
+ 4: Apr. 2024  8.578222 2.158071 6.280444  8.843422 2.265896 6.408617  8.295340 2.112064 6.043569
+ 5: May. 2024  9.885240 2.284334 7.465149 10.178196 2.394606 7.617499  9.688308 2.253942 7.298609
+ 6: Jun. 2024 11.293417 2.230338 8.920381 11.606533 2.329653 9.102430 11.115054 2.205314 8.767042
+ 7: Jul. 2024 11.495648 1.948530 9.397421 11.801533 2.029150 9.589205 11.308971 1.924962 9.234312
+ 8: Aug. 2024 10.493150 1.869393 8.468140 10.777404 1.947410 8.640959 10.196758 1.830334 8.210807
+ 9: Sep. 2024  8.584604 1.864962 6.564518  8.831006 1.948075 6.698488  8.228309 1.810198 6.262986
+10: Oct. 2024  6.226290 1.631551 4.455104  6.418653 1.711039 4.546024  6.018374 1.595528 4.283212
+11: Nov. 2024  6.076159 1.393353 4.545523  6.247341 1.452953 4.638289  5.875732 1.359514 4.378935
+12: Dec. 2024  4.685547 1.198824 3.370992  4.825181 1.254616 3.439788  4.575893 1.179346 3.280817
+
+Yearly values:
+   Dates    Gef0d   Def0d    Bef0d       Gd       Dd       Bd     Gefd     Defd     Befd
+   <int>    <num>   <num>    <num>    <num>    <num>    <num>    <num>    <num>    <num>
+1:  2024 2973.115 654.591 2266.733 3058.651 684.4232 2312.993 2886.328 640.9157 2193.621
+-----------------
+Mode of tracking:  two 
+    Inclination limit: 90
+\end{verbatim}
+
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+gef_shd2 <- calcGef(lat = lat, modeTrk = 'two', dataRad = prom,
+                    modeShd = 'prom', struct = struct, distances = distances)
+show(gef_shd2)
+\end{lstlisting}
+
+\begin{verbatim}
+Object of class  Gef 
+
+Source of meteorological information: prom- 
+
+Latitude of source:  37.2 degrees
+Latitude for calculations:  37.2 degrees
+
+Monthly avarages:
+        Dates     Gef0d    Def0d    Bef0d        Gd       Dd       Bd      Gefd     Defd     Befd
+       <char>     <num>    <num>    <num>     <num>    <num>    <num>     <num>    <num>    <num>
+ 1: Jan. 2024  6.348801 1.384087 4.825736  6.522313 1.440413 4.924221  6.104126 1.343455 4.621693
+ 2: Feb. 2024  6.680139 1.599929 4.933601  6.875052 1.672079 5.034287  6.406274 1.553670 4.705996
+ 3: Mar. 2024  7.104641 1.902356 5.060439  7.329138 1.998110 5.163713  6.788630 1.848127 4.798657
+ 4: Apr. 2024  8.578222 2.158071 6.280444  8.843422 2.265896 6.408617  8.295340 2.112064 6.043569
+ 5: May. 2024  9.885240 2.284334 7.465149 10.178196 2.394606 7.617499  9.688308 2.253942 7.298609
+ 6: Jun. 2024 11.293417 2.230338 8.920381 11.606533 2.329653 9.102430 11.115054 2.205314 8.767042
+ 7: Jul. 2024 11.495648 1.948530 9.397421 11.801533 2.029150 9.589205 11.308971 1.924962 9.234312
+ 8: Aug. 2024 10.493150 1.869393 8.468140 10.777404 1.947410 8.640959 10.196758 1.830334 8.210807
+ 9: Sep. 2024  8.584604 1.864962 6.564518  8.831006 1.948075 6.698488  8.228309 1.810198 6.262986
+10: Oct. 2024  6.226290 1.631551 4.455104  6.418653 1.711039 4.546024  6.018374 1.595528 4.283212
+11: Nov. 2024  6.076159 1.393353 4.545523  6.247341 1.452953 4.638289  5.875732 1.359514 4.378935
+12: Dec. 2024  4.685547 1.198824 3.370992  4.825181 1.254616 3.439788  4.575893 1.179346 3.280817
+
+Yearly values:
+   Dates    Gef0d   Def0d    Bef0d       Gd       Dd       Bd     Gefd     Defd     Befd
+   <int>    <num>   <num>    <num>    <num>    <num>    <num>    <num>    <num>    <num>
+1:  2024 2973.115 654.591 2266.733 3058.651 684.4232 2312.993 2886.328 640.9157 2193.621
+-----------------
+Mode of tracking:  two 
+    Inclination limit: 90
+\end{verbatim}
+
+El argumento \texttt{modeShd} puede ser de distintas maneras:
+\begin{itemize}
+\item \texttt{area}: el efecto de las sombras se calcula como una reducción proporcional de las irradiancias difusa circunsolar y directa.
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+gef_shdarea <- calcGef(lat, modeTrk = 'two', dataRad = prom,
+                       modeShd = 'area',
+                       struct = struct, distances = distances)
+show(gef_shdarea)
+\end{lstlisting}
+
+\begin{verbatim}
+Object of class  Gef 
+
+Source of meteorological information: prom- 
+
+Latitude of source:  37.2 degrees
+Latitude for calculations:  37.2 degrees
+
+Monthly avarages:
+        Dates     Gef0d    Def0d    Bef0d        Gd       Dd       Bd      Gefd     Defd     Befd
+       <char>     <num>    <num>    <num>     <num>    <num>    <num>     <num>    <num>    <num>
+ 1: Jan. 2024  6.348801 1.384087 4.825736  6.522313 1.440413 4.924221  5.877879 1.305883 4.433019
+ 2: Feb. 2024  6.680139 1.599929 4.933601  6.875052 1.672079 5.034287  6.291348 1.534257 4.610483
+ 3: Mar. 2024  7.104641 1.902356 5.060439  7.329138 1.998110 5.163713  6.743478 1.840379 4.761253
+ 4: Apr. 2024  8.578222 2.158071 6.280444  8.843422 2.265896 6.408617  8.254928 2.105491 6.009730
+ 5: May. 2024  9.885240 2.284334 7.465149 10.178196 2.394606 7.617499  9.660175 2.249601 7.274817
+ 6: Jun. 2024 11.293417 2.230338 8.920381 11.606533 2.329653 9.102430 11.089573 2.201739 8.745137
+ 7: Jul. 2024 11.495648 1.948530 9.397421 11.801533 2.029150 9.589205 11.282303 1.921596 9.211011
+ 8: Aug. 2024 10.493150 1.869393 8.468140 10.777404 1.947410 8.640959 10.154416 1.824754 8.174045
+ 9: Sep. 2024  8.584604 1.864962 6.564518  8.831006 1.948075 6.698488  8.177410 1.802375 6.219910
+10: Oct. 2024  6.226290 1.631551 4.455104  6.418653 1.711039 4.546024  5.950189 1.583714 4.226840
+11: Nov. 2024  6.076159 1.393353 4.545523  6.247341 1.452953 4.638289  5.705306 1.330740 4.237284
+12: Dec. 2024  4.685547 1.198824 3.370992  4.825181 1.254616 3.439788  4.440179 1.155239 3.169210
+
+Yearly values:
+   Dates    Gef0d   Def0d    Bef0d       Gd       Dd       Bd     Gefd     Defd     Befd
+   <int>    <num>   <num>    <num>    <num>    <num>    <num>    <num>    <num>    <num>
+1:  2024 2973.115 654.591 2266.733 3058.651 684.4232 2312.993 2856.633 636.0199 2168.822
+-----------------
+Mode of tracking:  two 
+    Inclination limit: 90
+\end{verbatim}
+
+\begin{itemize}
+\item \texttt{prom}: cuando \texttt{modeTrk} es \texttt{two}, se puede calcular el efecto de las sombras de un seguidor promedio.
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+gef_shdprom <- calcGef(lat, modeTrk = 'two', dataRad = prom,
+                       modeShd = c('area', 'prom'),
+                       struct = struct, distances = distances)
+show(gef_shdprom)
+\end{lstlisting}
+
+\begin{verbatim}
+Object of class  Gef 
+
+Source of meteorological information: prom- 
+
+Latitude of source:  37.2 degrees
+Latitude for calculations:  37.2 degrees
+
+Monthly avarages:
+        Dates     Gef0d    Def0d    Bef0d        Gd       Dd       Bd      Gefd     Defd     Befd
+       <char>     <num>    <num>    <num>     <num>    <num>    <num>     <num>    <num>    <num>
+ 1: Jan. 2024  6.348801 1.384087 4.825736  6.522313 1.440413 4.924221  6.104126 1.343455 4.621693
+ 2: Feb. 2024  6.680139 1.599929 4.933601  6.875052 1.672079 5.034287  6.406274 1.553670 4.705996
+ 3: Mar. 2024  7.104641 1.902356 5.060439  7.329138 1.998110 5.163713  6.788630 1.848127 4.798657
+ 4: Apr. 2024  8.578222 2.158071 6.280444  8.843422 2.265896 6.408617  8.295340 2.112064 6.043569
+ 5: May. 2024  9.885240 2.284334 7.465149 10.178196 2.394606 7.617499  9.688308 2.253942 7.298609
+ 6: Jun. 2024 11.293417 2.230338 8.920381 11.606533 2.329653 9.102430 11.115054 2.205314 8.767042
+ 7: Jul. 2024 11.495648 1.948530 9.397421 11.801533 2.029150 9.589205 11.308971 1.924962 9.234312
+ 8: Aug. 2024 10.493150 1.869393 8.468140 10.777404 1.947410 8.640959 10.196758 1.830334 8.210807
+ 9: Sep. 2024  8.584604 1.864962 6.564518  8.831006 1.948075 6.698488  8.228309 1.810198 6.262986
+10: Oct. 2024  6.226290 1.631551 4.455104  6.418653 1.711039 4.546024  6.018374 1.595528 4.283212
+11: Nov. 2024  6.076159 1.393353 4.545523  6.247341 1.452953 4.638289  5.875732 1.359514 4.378935
+12: Dec. 2024  4.685547 1.198824 3.370992  4.825181 1.254616 3.439788  4.575893 1.179346 3.280817
+
+Yearly values:
+   Dates    Gef0d   Def0d    Bef0d       Gd       Dd       Bd     Gefd     Defd     Befd
+   <int>    <num>   <num>    <num>    <num>    <num>    <num>    <num>    <num>    <num>
+1:  2024 2973.115 654.591 2266.733 3058.651 684.4232 2312.993 2886.328 640.9157 2193.621
+-----------------
+Mode of tracking:  two 
+    Inclination limit: 90
+\end{verbatim}
+
+\begin{itemize}
+\item \texttt{bt}: cuando \texttt{modeTrk} es \texttt{horiz}, se puede calcular el efecto del \emph{backtracking} en las sombras.
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+gef_shdhoriz <- calcGef(lat, modeTrk = 'horiz', dataRad = prom,
+                        modeShd = 'area',
+                        struct = struct, distances = distances)
+show(gef_shdhoriz)
+\end{lstlisting}
+
+\begin{verbatim}
+Object of class  Gef 
+
+Source of meteorological information: prom- 
+
+Latitude of source:  37.2 degrees
+Latitude for calculations:  37.2 degrees
+
+Monthly avarages:
+        Dates     Gef0d     Def0d    Bef0d        Gd       Dd       Bd      Gefd      Defd     Befd
+       <char>     <num>     <num>    <num>     <num>    <num>    <num>     <num>     <num>    <num>
+ 1: Jan. 2024  4.274445 1.0909303 3.118987  4.528022 1.166334 3.285391  3.826940 1.0166151 2.745797
+ 2: Feb. 2024  5.173537 1.3974587 3.699745  5.414413 1.484046 3.839622  4.709780 1.3191237 3.314324
+ 3: Mar. 2024  6.270377 1.8008592 4.379272  6.512568 1.906181 4.498391  5.856407 1.7298195 4.036342
+ 4: Apr. 2024  8.160354 2.1103041 5.938446  8.429640 2.222836 6.072611  7.744288 2.0426359 5.590049
+ 5: May. 2024  9.639011 2.2544315 7.260788  9.932830 2.366831 7.416258  9.158384 2.1802588 6.854334
+ 6: Jun. 2024 11.005388 2.1942042 8.675874 11.320680 2.294944 8.861907 10.355140 2.1029750 8.116855
+ 7: Jul. 2024 11.220872 1.9183453 9.163290 11.527430 2.000253 9.358648 10.747413 1.8585724 8.749603
+ 8: Aug. 2024 10.066277 1.8239013 8.112148 10.352216 1.904515 8.290847  9.601132 1.7626031 7.708301
+ 9: Sep. 2024  7.732062 1.7621525 5.864625  7.991813 1.852070 6.013507  7.317424 1.6984219 5.513717
+10: Oct. 2024  5.023316 1.4757157 3.471271  5.250215 1.568278 3.591050  4.691499 1.4182254 3.196944
+11: Nov. 2024  4.211801 1.1318865 3.014748  4.452659 1.209397 3.166130  3.846165 1.0701542 2.710845
+12: Dec. 2024  3.024846 0.9640813 2.008270  3.237139 1.039367 2.135901  2.849995 0.9330218 1.864479
+
+Yearly values:
+   Dates    Gef0d    Def0d    Bef0d       Gd       Dd       Bd     Gefd     Defd     Befd
+   <int>    <num>    <num>    <num>    <num>    <num>    <num>    <num>    <num>    <num>
+1:  2024 2618.414 607.6589 1975.038 2714.415 640.9193 2030.645 2463.159 583.5528 1843.889
+-----------------
+Mode of tracking:  horiz 
+    Inclination limit: 90
+\end{verbatim}
+
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+gef_shdbt <- calcGef(lat, modeTrk = 'horiz', dataRad = prom,
+                        modeShd = c('area', 'bt'),
+                        struct = struct, distances = distances)
+show(gef_shdbt)
+\end{lstlisting}
+
+\begin{verbatim}
+Object of class  Gef 
+
+Source of meteorological information: prom- 
+
+Latitude of source:  37.2 degrees
+Latitude for calculations:  37.2 degrees
+
+Monthly avarages:
+        Dates       Bod       Bnd        Gd       Dd       Bd      Gefd      Defd     Befd
+       <char>     <num>     <num>     <num>    <num>    <num>     <num>     <num>    <num>
+ 1: Jan. 2024  8.071623  4.924221  4.069604 1.101792 2.902196  3.802336 1.0232875 2.724604
+ 2: Feb. 2024 10.170791  5.034287  4.943127 1.417056 3.445443  4.680459 1.3258434 3.287780
+ 3: Mar. 2024 12.816149  5.163713  6.094523 1.850253 4.148386  5.841685 1.7419635 4.020914
+ 4: Apr. 2024 15.326568  6.408617  8.007438 2.166491 5.716983  7.711198 2.0485357 5.560571
+ 5: May. 2024 16.624320  7.617499  9.439815 2.303156 7.000336  9.132906 2.1878882 6.833933
+ 6: Jun. 2024 17.408383  9.102430 10.652929 2.206022 8.288629 10.286974 2.0977541 8.059004
+ 7: Jul. 2024 16.861601 10.037233 11.038213 1.944739 8.935057 10.701158 1.8585291 8.712900
+ 8: Aug. 2024 15.551202  8.640959  9.872463 1.850828 7.878525  9.562356 1.7662720 7.678732
+ 9: Sep. 2024 13.422796  6.698488  7.568105 1.795358 5.655421  7.285297 1.7012821 5.487114
+10: Oct. 2024 10.764846  4.546024  4.915408 1.521915 3.310678  4.666904 1.4246602 3.173452
+11: Nov. 2024  8.434950  4.638289  4.079866 1.156410 2.854293  3.813241 1.0737415 2.681776
+12: Dec. 2024  7.370928  3.439788  3.062505 1.023011 1.987550  2.836653 0.9441838 1.849321
+
+Yearly values:
+   Dates      Bod      Bnd       Gd       Dd       Bd     Gefd     Defd     Befd
+   <int>    <num>    <num>    <num>    <num>    <num>    <num>    <num>    <num>
+1:  2024 4662.615 2326.882 2555.869 620.2896 1896.422 2451.499 585.4392 1833.809
+-----------------
+Mode of tracking:  horiz 
+    Inclination limit: 90
+\end{verbatim}
+
+\section{Producción eléctrica de un SFCR}
+\label{sec:orgcdad7ca}
+\label{produccion-electrica-sfcr}
+Con la radiación efectiva, se puede estimar la producción eléctrica que va a tener un sistema fotovoltaico conectado a red. Esta estimación, se puede calcular mediante la función \texttt{prodGCPV} [\ref{subsec:prodgcpv}] la cual mediante la función \texttt{fProd} [\ref{subsec:fprod}] procesa un objeto de clase \texttt{Gef} y obtiene un objeto \texttt{ProdGCPV}.
+
+Como se puede ver en la figura \ref{fig:prodgcpv}, \texttt{prodGCPV} funciona gracias a la siguiente función:
+\begin{figure}[]
+\centering
+\includegraphics[keepaspectratio,width=\textwidth,height=\textheight]{figuras/prodgcpv.pdf}
+\caption{Estimación de la producción electrica de un SFCR mediante la función \texttt{prodGCPV}, la cual emplea la función \texttt{fProd} para el computo de la potencia a la entrada (\(P_{DC}\)), a la salida (\(P_{AC}\)) y el rendimiento (\(\eta_{inv}\)) del inversor. \label{fig:prodgcpv}}
+\end{figure}
