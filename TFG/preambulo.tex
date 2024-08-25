@@ -135,11 +135,13 @@
 \usepackage{fancyvrb}
 \usepackage{fvextra}
 \DefineVerbatimEnvironment{verbatim}{Verbatim}{
-  fontsize=\fontsize{8}{8},
+  fontsize=\footnotesize,
   formatcom={\color{black!80}},
   frame = single,
   framerule = 0.5pt,
   framesep = 2mm,
+  xleftmargin = -4mm,
+  xrightmargin = -4mm
   }
 
 %bibliografia
@@ -199,14 +201,28 @@
 % example
 \usepackage{tcolorbox}
 \tcbset{
-colback=gray!10,
-colframe=black,
-width=\textwidth,
-enlarge left by=0mm,
-boxrule=0.5mm,
-arc=3mm,
-auto outer arc}
-\newtcolorbox{examplebox}[1][]{}
+  colback=gray!10,
+  colframe=black,
+  width=\textwidth,
+  enlarge left by=0mm,
+  boxrule=0.5mm,
+  arc=3mm,
+  auto outer arc
+}
+% Definición de un nuevo tcolorbox para ejemplos
+\newtcolorbox{examplebox}[1][]{%
+  before upper={%
+    % Redefinir el entorno Verbatim para desactivar el marco
+    \DefineVerbatimEnvironment{verbatim}{Verbatim}{%
+      fontsize=\small,
+      formatcom={\color{black!80}},
+      frame=none, % Desactivar el marco
+      framesep=2mm,
+      xleftmargin=-2mm,
+      xrightmargin=-2mm
+    }},
+  #1
+}
 
 % Espacio entre parrafos
 \setlength{\parskip}{1em}
