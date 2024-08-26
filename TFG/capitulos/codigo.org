@@ -437,7 +437,6 @@ gef_shdbt <- calcGef(lat, modeTrk = 'horiz', dataRad = prom,
                         struct = struct, distances = distances)
 show(gef_shdbt)
 #+end_src
-
 * Producción eléctrica de un SFCR
 label:produccion-electrica-sfcr
 Con la radiación efectiva, se puede estimar la producción eléctrica que va a tener un sistema fotovoltaico conectado a red. Esta estimación, se puede calcular mediante la función =prodGCPV= [ref:subsec:prodgcpv] la cual mediante la función =fProd= [ref:subsec:fprod] procesa un objeto de clase =Gef= y obtiene un objeto =ProdGCPV=.
@@ -446,47 +445,63 @@ Como se puede ver en la figura ref:fig:prodgcpv, =prodGCPV= funciona gracias a l
 #+CAPTION: Estimación de la producción eléctrica de un SFCR mediante la función =prodGCPV=, la cual emplea la función =fProd= para el computo de la potencia a la entrada (\(P_{DC}\)), a la salida (\(P_{AC}\)) y el rendimiento (\(\eta_{inv}\)) del inversor. label:fig:prodgcpv
 #+ATTR_LATEX: :width \textwidth :height \textheight :options keepaspectratio
 file:figuras/prodgcpv.pdf
-- =fProd=: simula el comportamiento de un sistema fotovoltaico bajo diferentes condiciones de irradiancia y temperatura. Tiene los siguientes argumentos:
-  - =inclin=: puede ser un objeto de clase =Gef= o un =data.frame= (o =data.table=). En el segundo caso deberá contener columnas llamadas =Gef= y =Ta=.
-  - =module=: lista de valores numéricos con la información sobre el módulo fovoltaico.
-  - =generator=: lista de valores numéricos con la información sobre el generador.
-  - =inverter=: lista de valores numéricos con la información sobre el inversor DC/AC.
-  - =effSys=: lista de valores numéricos con la información sobre las pérdidas del sistema.
-    #+begin_src R
-      inclin <- calcGef(lat, dataRad = prom, keep.night = FALSE)
-      ## valores por defecto
-      module <- list(Vocn = 57.6,     #tension de circuito abierto en STC
-		     Iscn = 4.7,      #corriente de cortocircuito en STC
-		     Vmn = 46.08,     #tension en el MPP en STC
-		     Imn = 4.35,      #corriente en el MPP en STC
-		     Ncs = 96,        #numero de celulas en serie
-		     Ncp = 1,         #numero de celulas en paralelo
-		     CoefVT = 0.0023, #coeficiente de disminución de la tension con la temperatura
-		     TONC = 47)       #temperatura de operación nominal de celula
-      generator <- list(Nms = 12, #numero de modulos en serie
-			Nmp = 11) #numero de modulos en paralelo
-      inverter <- list(Ki = c(0.01, 0.025, 0.05), #coeficientes de la eficiencia de la curva del inversor
-		       Pinv = 25000,              #potencia nominal del inversor
-		       Vmin = 420,                #tension minima del rango de MPP del inversor
-		       Vmax = 750,                #tension maxima del rango de MPP del inversor
-		       Gumb = 20)                 #irradiancia umbral para el arranque del inversor
-      effSys <- list(ModQual = 3, #tolerancia de los modulos
-		     ModDisp = 2, #perdidas por dispersión
-		     OhmDc = 1.5, #perdidas por efecto Joule antes del inversor
-		     OhmAC = 1.5, #perdidas por efecto Joule después del inversor
-		     MPP = 1,     #error promedio del algoritmo de MPP
-		     TrafoMT = 1, #perdidas por el tranformador MT
-		     Disp = 0.5)  #perdidas por las paradas del sistema
-      prod <- fProd(inclin, module = module, generator = generator,
-		    inverter = inverter, effSys = effSys)
-      show(prod)
-    #+end_src
-
-La función =prodGCPV= toma el resultado de =fProd= para obtener un objeto de clase =ProdGCPV=.
+- =fProd=: simula el comportamiento de un sistema fotovoltaico conectado a red bajo diferentes condiciones de temperatura e irradiancia. Tiene los siguientes argumentos:
+  - =inclin=: puede ser tanto un objeto de clase =Gef= como un =data.frame= (o =data.table=). Sin embargo, si es un =data.frame=, debe contener como mínimo una columna para =Gef= y otra para =Ta=
+  - =module=: una lista de valores numéricos con la información sobre el módulo fotovoltaico:
+    - =Vocn=: tensión de circuito abierto en STC (\(V_{oc}^*\))(condiciones estandar de médida). Por defecto, tiene un valor de \(57.2V\).
+    - =Iscn=: corriente de cortocircuito en STC (\(I_{sc}^*\)). Por defecto, tiene un valor de \(4.7A\).
+    - =Vmn=: tensión en el punto de máxima potencia en STC (\(I_{MPP}^*\)). Por defecto, tiene un valor de \(46.08V\).
+    - =Imn=: corriente de cortocircuito en STC (\(I_{MPP}^*\)). Por defecto, tiene un valor de \(4.35A\)).
+    - =Ncs=: número de células en serie dentro del módulo. Por defecto, tiene un valor de 96.
+    - =Ncp=: número de células en paralelo dentro del módulo. Por defecto, tiene un valor de 1.
+    - =CoefVT=: coeficiente de disminución de la tensión  de cada célula con la temperatura (\(dV_{oc}/dT_c\)). Por defecto, tiene un valor de \(-0.0023 V/^\circ C\).
+    - =TONC=: temperatura de operación nominal de célula (\(TONC\)). Por defecto, tiene un valor de \(47^\circ C\).
+  - =generatos=: lista de valores numéricos con la información sobre el generador:
+    - =Nms=: número de módulos en serie. Por defecto, tiene un valor de 12.
+    - =Nmp=: número de módulos en paralelo. Por defecto, tiene un valor de 11.
+  - =inverter=: lista de valores númericos con la información del inversor DC/AC.
+    - =Ki=: coeficientes de la curva de eficiencia del inversor. Se puede presentar en un vector de 3 valores (por defecto, =c(0.01, 0.025, 0.05)=) o una matriz de 9 valores (si tiene dependencia del voltage).
+    - =Pinv=: potencia nominal del inversor. Por defecto, tiene un valor de \(25000 W\).
+    - =Vmin=: mínima tensión del rango MPP del inversor. Por defecto, tiene un valor de \(420V\).
+    - =Vmax=: máxima tensión del rango MPP del inversor. Por defecto, tiene un valor de \(750V\).
+    - =Gumb=: irradiancia umbral de funcionamienot del inversor. Por defecto, tiene un valor de \(20W/m^2\).
+  - =effSys=: una lista de valores numéricos con la información sobre las pérdidas del sistema.
+    - =ModQual=: tolerancia media del set de módulos (\(\%\)). Por defecto, tiene un valor de 3.
+    - =ModDisp=: pérdidas por dispersión en los módulos (\(\%\)). Por defecto, tiene un valor de 2.
+    - =OhmDC=: pérdidas por efecto Joule en el cableado de DC (\(\%\)). Por defecto, tiene un valor de 1.5.
+    - =OhmAC=: pérdidas por efecto Joule en el cableado de AC (\(\%\)). Por defecto, tiene un valor de 1.5.
+    - =MPP=: error promedio del algoritmo de búsqueda del MPP del inversor (\(\%\)). Por defecto, tiene un valor de 1.
+    - =TrafoMT=: pérdidas por el transformador MT (\(\%\)). Por defecto, tiene un valor de 1.
+    - =Disp=: pérdidas por las paradas del sistema (\(\%\)). Por defecto, tiene un valor de 0.5.
 #+begin_src R
-  prod2x <- prodGCPV(lat, modeTrk = 'two', dataRad = prom)
-  show(prod2x)
+inclin <- calcGef(lat, dataRad = prom, keep.night = FALSE)
+module <- list(Vocn=57.6, Iscn=4.7, Vmn=46.08, Imn=4.35,
+               Ncs=96, Ncp=1, CoefVT=0.0023, TONC=47)
+generator <- list(Nms=12, Nmp=11)
+inverter <- list(Ki=c(0.01, 0.025, 0.05), Pinv=25000,
+                 Vmin=420, Vmax=750, Gumb=20)
+effSys <- list(ModQual=3, ModDisp=2, OhmDC=1.5, OhmAC=1.5,
+               MPP=1, TrafoMT=1, Disp=0.5)
+prod <- fProd(inclin = inclin, module = module,
+              generator = generator, inverter = inverter,
+              effSys = effSys)
+show(prod)
 #+end_src
+
+Esta función brinda estos datos a la función =prodGCPV= para que produzca un objeto de clase =ProdGCPV= como resultado. Esta función tiene como argumentos principales los mismo que =calcGef=, ya que parte de un objeto tipo =Gef=, y los argumentos de la función =fProd=.
+#+begin_src R
+prodFixed <- prodGCPV(lat, modeTrk = 'fixed', dataRad = prom)
+show(prodFixed)
+#+end_src
+#+begin_src R
+prod2x <- prodGCPV(lat, modeTrk = 'two', dataRad = prom)
+show(prod2x)
+#+end_src
+#+begin_src R
+prodHoriz <- prodGCPV(lat, modeTrk = 'horiz', dataRad = prom)
+show(prodHoriz)
+#+end_src
+
 * Producción eléctrica de un SFB
 De igual forma que en el apartado anterior, se puede estimar la producción eléctrica de un sistema fotovoltaico de bombeo.
 
