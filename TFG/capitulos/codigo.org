@@ -30,8 +30,28 @@ Como se puede ver en la figura ref:fig:calcSol, =calcSol= funcia gracias a las s
   library(jsonlite)
   setwd('TFG')
 #+end_src
+
+#+RESULTS:
+#+begin_example
+Cargando paquete requerido: data.table
+data.table 1.15.4 using 6 threads (see ?getDTthreads).  Latest news: r-datatable.com
+Cargando paquete requerido: lattice
+Cargando paquete requerido: latticeExtra
+Time Zone set to UTC.
+
+Adjuntando el paquete: 'zoo'
+
+The following objects are masked from 'package:data.table':
+
+    yearmon, yearqtr
+
+The following objects are masked from 'package:base':
+
+    as.Date, as.Date.numeric
+#+end_example
+
 #+begin_src R 
-lat <- 40
+lat <- 37.2
 BTd <- fBTd(mode = 'prom')
 solD <- fSolD(lat = lat, BTd = BTd)
 show(solD)
@@ -423,11 +443,211 @@ label:produccion-electrica-sfcr
 Con la radiación efectiva, se puede estimar la producción eléctrica que va a tener un sistema fotovoltaico conectado a red. Esta estimación, se puede calcular mediante la función =prodGCPV= [ref:subsec:prodgcpv] la cual mediante la función =fProd= [ref:subsec:fprod] procesa un objeto de clase =Gef= y obtiene un objeto =ProdGCPV=.
 
 Como se puede ver en la figura ref:fig:prodgcpv, =prodGCPV= funciona gracias a la siguiente función:
-#+CAPTION: Estimación de la producción electrica de un SFCR mediante la función =prodGCPV=, la cual emplea la función =fProd= para el computo de la potencia a la entrada (\(P_{DC}\)), a la salida (\(P_{AC}\)) y el rendimiento (\(\eta_{inv}\)) del inversor. label:fig:prodgcpv
+#+CAPTION: Estimación de la producción eléctrica de un SFCR mediante la función =prodGCPV=, la cual emplea la función =fProd= para el computo de la potencia a la entrada (\(P_{DC}\)), a la salida (\(P_{AC}\)) y el rendimiento (\(\eta_{inv}\)) del inversor. label:fig:prodgcpv
 #+ATTR_LATEX: :width \textwidth :height \textheight :options keepaspectratio
 file:figuras/prodgcpv.pdf
+- =fProd=: simula el comportamiento de un sistema fotovoltaico bajo diferentes condiciones de irradiancia y temperatura. Tiene los siguientes argumentos:
+  - =inclin=: puede ser un objeto de clase =Gef= o un =data.frame= (o =data.table=). En el segundo caso deberá contener columnas llamadas =Gef= y =Ta=.
+  - =module=: lista de valores numéricos con la información sobre el módulo fovoltaico.
+  - =generator=: lista de valores numéricos con la información sobre el generador.
+  - =inverter=: lista de valores numéricos con la información sobre el inversor DC/AC.
+  - =effSys=: lista de valores numéricos con la información sobre las pérdidas del sistema.
+    #+begin_src R
+      inclin <- calcGef(lat, dataRad = prom, keep.night = FALSE)
+      ## valores por defecto
+      module <- list(Vocn = 57.6,     #tension de circuito abierto en STC
+		     Iscn = 4.7,      #corriente de cortocircuito en STC
+		     Vmn = 46.08,     #tension en el MPP en STC
+		     Imn = 4.35,      #corriente en el MPP en STC
+		     Ncs = 96,        #numero de celulas en serie
+		     Ncp = 1,         #numero de celulas en paralelo
+		     CoefVT = 0.0023, #coeficiente de disminución de la tension con la temperatura
+		     TONC = 47)       #temperatura de operación nominal de celula
+      generator <- list(Nms = 12, #numero de modulos en serie
+			Nmp = 11) #numero de modulos en paralelo
+      inverter <- list(Ki = c(0.01, 0.025, 0.05), #coeficientes de la eficiencia de la curva del inversor
+		       Pinv = 25000,              #potencia nominal del inversor
+		       Vmin = 420,                #tension minima del rango de MPP del inversor
+		       Vmax = 750,                #tension maxima del rango de MPP del inversor
+		       Gumb = 20)                 #irradiancia umbral para el arranque del inversor
+      effSys <- list(ModQual = 3, #tolerancia de los modulos
+		     ModDisp = 2, #perdidas por dispersión
+		     OhmDc = 1.5, #perdidas por efecto Joule antes del inversor
+		     OhmAC = 1.5, #perdidas por efecto Joule después del inversor
+		     MPP = 1,     #error promedio del algoritmo de MPP
+		     TrafoMT = 1, #perdidas por el tranformador MT
+		     Disp = 0.5)  #perdidas por las paradas del sistema
+      prod <- fProd(inclin, module = module, generator = generator,
+		    inverter = inverter, effSys = effSys)
+      show(prod)
+    #+end_src
+
+La función =prodGCPV= toma el resultado de =fProd= para obtener un objeto de clase =ProdGCPV=.
+#+begin_src R
+  prod2x <- prodGCPV(lat, modeTrk = 'two', dataRad = prom)
+  show(prod2x)
+#+end_src
+* Producción eléctrica de un SFB
+De igual forma que en el apartado anterior, se puede estimar la producción eléctrica de un sistema fotovoltaico de bombeo.
+
+Como se puede ver en la figura ref:fig:prodpvps, =prodPVPS= funciona gracias a la siguiente función:
+#+CAPTION: Estimación de la producción eléctrica de un SFB mediante la función =prodPVPS=, la cual emplea la función =fPump= para el computo del rendimiento de las diferentes parte de una bomba centrífuga alimentada por un convertidor de frecuencia. label:fig:prodpvps
+#+ATTR_LATEX: :width \textwidth :height 0.5\textheight :options keepaspectratio
+file:figuras/prodpvps.pdf
+- =fPump=: computa el rendimiento de las diferentes partes de una bomba centrífuga alimentada por un convertidor de frecuencia siguiendo las leyes de afinidad. Tiene solo dos argumentos:
+  - =pump=: lista que contiene los parametros de la bomba que va a ser simulada. Puede ser una fila de =pumpCoef=:
+    #+begin_src R
+      CoefSP8A44 <- pumpCoef[Qn == 8 & stages == 44]
+      show(CoefSP8A44)
+    #+end_src
+  - =H=: el salto manometrico total.
+  #+begin_src R
+    fSP8A44 <- fPump(pump = CoefSP8A44, H = 40)
+  #+end_src
+  Obtiene como resultado los siguientes valores y funciones:
+  - =lim=: rango de valores de la potencia eléctrica de salida.
+    #+begin_src R
+      show(fSP8A44$lim)
+    #+end_src
+  - =fQ=: función que relaciona el caudal con la potencia eléctrica.
+    #+begin_src R
+      show(fSP8A44$fQ)
+    #+end_src
+  - =fPb=: función que relaciona la potencia del eje de la bomba con la potencia eléctrica del motor.
+    #+begin_src R
+      show(fSP8A44$fPb)
+    #+end_src
+  - =fPh=: función que relaciona la potencia hidráulica con la potencia eléctrica del motor.
+    #+begin_src R
+      show(fSP8A44$fPh)
+    #+end_src
+  - =fFreq=: función que relaciona la frecuencia con la potencia eléctrica del motor.
+    #+begin_src R
+      show(fSP8A44$fFreq)
+    #+end_src
+  Se pueden realizar operaciones con este objeto:
+  #+begin_src R
+    SP8A44 = with(fSP8A44,{
+      Pac = seq(lim[1],lim[2],l=10)
+      Pb = fPb(Pac)
+      etam = Pb/Pac
+      Ph = fPh(Pac)
+      etab = Ph/Pb
+      f = fFreq(Pac)
+      Q = fQ(Pac)
+      result = data.table(Q,Pac,Pb,Ph,etam,etab,f)})
+    show(SP8A44)
+  #+end_src
+  Está función entrega todos estos resultados a =prodPVPS= la cual computa los resultados en base a la potencia del generador a simular, y devuleve un objeto de clase =ProdPVPS=.
+  #+begin_src R
+    prodsfb <- prodPVPS(lat, modeTrk = 'fixed', dataRad = prom,
+			pump = CoefSP8A44, H = 40, Pg = SP8A44$Pac[10])
+    show(prodsfb)
+  #+end_src
+
+* Optimización de distancias
+label:optimizacion-distancias
+Por último, el paquete =solaR2= contiene una función que permite calcular un conjunto de combinaciones de distancias entre los elementos de un sistema fotovoltaico conectado a red, con el fin de que el usuario posteriormente pueda optar cual es la opción mas rentable en base a los precios del cableado y de la ocupación del terreno.
+
+Esta función es =optimShd=, la cual en base a una resolución (determinada por el argumento =res=, el cual, indica el incremento de la secuencia de distancias) obtiene la producción de cada combinación y la plasma en un objeto de clase =Shade=.
+#+begin_src R
+  struct2x <- list(W = 23.11, L = 9.8, Nrow = 2, Ncol = 3)
+  dist2x <- list(Lew = c(30, 45), Lns = c(20, 40))
+  ShdM2x <- optimShd(lat, dataRad = prom, modeTrk = 'two',
+		     modeShd = c('area', 'prom'),
+		     distances = dist2x, struct = struct2x,
+		     res = 5)
+  show(ShdM2x)
+#+end_src
+Además, con el argumento =prog=, podemos indicar si queremos que indique con una barra de progreso el estado de la secuencia.
+
+#+begin_src R
+  structHoriz = list(L = 4.83)
+  distHoriz = list(Lew = structHoriz$L * c(2,5))
+  Shd12HorizBT <- optimShd(lat = lat, dataRad = prom,
+			   modeTrk = 'horiz',
+			   betaLim = 60,
+			   distances = distHoriz, res = 2,
+			   struct = structHoriz,
+			   modeShd = 'bt',
+			   prog = FALSE) #Se quita la barra de progreso
+  show(Shd12HorizBT)
+#+end_src
+#+begin_src R
+  structFixed = list(L = 5)
+  distFixed = list(D = structFixed$L*c(1,3))
+  Shd12Fixed <- optimShd(lat = lat, dataRad = prom,
+			 modeTrk = 'fixed',
+			 distances = distFixed, res = 2,
+			 struct = structFixed,
+			 modeShd = 'area',
+			 prog = FALSE) #Se quita la barra de progreso
+  show(Shd12Fixed)
+#+end_src
+
+* Métodos de visualización
+label:sec:metodos-visualizacion
+Una vez creados todos los objetos, para mejorar la visualización de los mismos, =solaR2= cuanta con una serie de métodos que ayudan a la compresión de los datos obtenidos.
+
+** Geometría solar
+Para la clase =Sol= no hay métodos de visualización directos, pero se puede utilizar el método =as.data.table= [sección ref:subsec:as.data.tablei] para mostrar resultados.
+#+begin_src R
+  lat <- 37.2
+  BTd <- fBTd(mode = 'serie')
+  sol <- calcSol(lat, BTd = BTd[100])
+  show(sol)
+#+end_src
+#+begin_src R :eval no  
+  xyplot(as.data.tableI(sol))
+#+end_src
+#+ATTR_LATEX: :width 0.75\textwidth :height 0.5\textheight :options keepaspectratio
+file:figuras/codigo-sol.pdf
+
+** Datos meteorológicos
+La clase =Meteo= cuenta con un método para =xyplot=.
+#+begin_src R 
+  G0dm = c(2.766,3.491,4.494,5.912,6.989,7.742,
+	   7.919,7.027,5.369,3.562,2.814,2.179) * 1000;
+  Ta = c(10, 14.1, 15.6, 17.2, 19.3, 21.2,
+	 28.4, 29.9, 24.3, 18.2, 17.2, 15.2)
+  BD <- readG0dm(G0dm = G0dm, Ta = Ta, lat = lat)
+  show(BD)
+#+end_src
+#+begin_src R :eval no
+  xyplot(BD)
+#+end_src
+#+ATTR_LATEX: :width 0.75\textwidth :height 0.5\textheight :options keepaspectratio
+file:figuras/codigo-meteo.pdf
+
+** Radiación en el plano horizontal
+La clase =G0= cuenta con un método para =xyplot=.
+#+begin_src R
+  g0 <- calcG0(lat, dataRad = list(G0dm = G0dm, Ta = Ta))
+  show(g0)
+#+end_src
+#+begin_src R :eval no
+  xyplot(g0)
+#+end_src
+#+ATTR_LATEX: :width 0.75\textwidth :height 0.5\textheight :options keepaspectratio
+file:figuras/codigo-g0.pdf
+
+Y con un método =compare=.
 
 
+** Radiación efectiva en el plano del generador
+La clase =Gef= cuenta con un método para =xyplot=.
+#+begin_src R
+  gef <- calcGef(lat, dataRad = list(G0dm = G0dm, Ta = Ta))
+  show(gef)
+#+end_src
+#+begin_src R :eval no
+  xyplot(gef)
+#+end_src
+#+ATTR_LATEX: :width 0.75\textwidth :height 0.5\textheight :options keepaspectratio
+file:figuras/codigo-gef.pdf
+
+** Producción eléctrica de un SFCR
+La clase ==
 * Footnotes
 
 [fn:1] Todas las funciones mencionadas en este punto, se encuentran en el apartado ref:subsec:utils-angles.
