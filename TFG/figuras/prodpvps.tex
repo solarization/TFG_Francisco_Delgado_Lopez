@@ -36,26 +36,14 @@
     \node [class] (gef) {\texttt{Gef}}; &
     \node {}; \\
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \node [function] (fprod) {\texttt{fProd}}; &
-    \node [method] (prodgcpv) {\texttt{prodGCPV}}; &
-    \node [class] (prodGCPV) {\texttt{ProdGCPV}}; \\
+    \node [function] (fpump) {\texttt{fPump}}; &
+    \node [method] (prodpvps) {\texttt{prodPVPS}}; &
+    \node [class] (prodPVPS) {\texttt{ProdPVPS}}; \\
   };
 \end{scope}
 
 \begin{scope}
-  % \draw [->, Blue] (calcgef) -- (gef);
-  % \draw [->, Blue] (g0) -- (calcgef);
-  % \draw [->, BrickRed] (finclin) -- (calcgef);
-  % \draw [->, Green] (ftheta) .. controls ++ (0:3) .. (finclin)
-  % node [simple, above, at end, xshift=3em, yshift=3pt] {$
-  %   \begin{array}{c}
-  %     \beta \\
-  %     \psi_s \\
-  %     cos(\theta_s)\\
-  %   \end{array}
-  %   $};
-  %   \draw [->, BrickRed] (calcshd) .. controls ++(0:-3) .. (calcgef);
-  \draw [->, BrickRed] (fprod) -- (prodgcpv)
+  \draw [->, BrickRed] (fpump) -- (prodpvps)
   node [simple, above, midway, yshift = 1em]{$
     \begin{array}{c}
       P_{DC}\\
@@ -63,8 +51,8 @@
       \eta_{inv}\\
     \end{array}
     $};
-  \draw [->, Blue] (gef) -- (prodgcpv);
-  \draw [->, Blue] (prodgcpv) -- (prodGCPV);
+  \draw [->, Blue] (gef) -- (prodpvps);
+  \draw [->, Blue] (prodpvps) -- (prodPVPS);
 \end{scope}
   
 \end{tikzpicture}
