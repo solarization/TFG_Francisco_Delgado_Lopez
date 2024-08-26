@@ -1,14 +1,14 @@
 \chapter{Desarrollo del código}
 \label{chap:desarrollo-codigo}
-En la figura \ref{fig:org0dbf3f7}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
+En la figura \ref{fig:org6f4c4e3}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
 \begin{figure}[]
 \centering
 \includegraphics[keepaspectratio,width=0.8\textwidth,height=0.5\textheight]{figuras/procedure.pdf}
-\caption{\label{fig:org0dbf3f7}Proceso de cálculo de las funciones de \texttt{solaR2}}
+\caption{\label{fig:org6f4c4e3}Proceso de cálculo de las funciones de \texttt{solaR2}}
 \end{figure}
 A la hora de estimar la producción, el programa sigue los siguientes procesos:
 \section{Geometría solar}
-\label{sec:orgf9e8602}
+\label{sec:orgc775690}
 \label{sec:geometria-solar}
 Para calcular la geometría que definen las posiciones de la Tierra y el Sol, \texttt{solaR2} se vale de una función constructora, \texttt{calcSol} [\ref{subsec:calcsol}], la cual mediante las funciones \texttt{fSolD} [\ref{subsec:fsold}] y \texttt{fSolI} [\ref{subsec:fsoli}] cálcula todos los ángulos y componentes que caracterizan la geometría solar.
 \begin{figure}[]
@@ -286,7 +286,7 @@ Intradaily values:
 \end{verbatim}
 
 \section{Datos meteorológicos}
-\label{sec:orgfb639e1}
+\label{sec:org5e25673}
 \label{sec:datos-meteorologicos}
 Para el procesamiento de datos meteorologicos, \texttt{solaR2} provee una serie de funciones\footnote{Las funciones comentadas en este apartado, se recogen en la sección \ref{subsec:meteoreaders}} que son capaces de leer todo tipo de datos. Estos datos se procesan y se almacenan en un objeto de tipo \texttt{Meteo} tal y como se ve en la figura \ref{fig:meteo}. Estas funciones son:
 \begin{figure}[]
@@ -509,7 +509,7 @@ Esta función tiene dos argumentos importantes:
 \end{itemize}
 
 \section{Radiación en el plano horizontal}
-\label{sec:org93dd9d6}
+\label{sec:org3b61c97}
 \label{sec:radiacion-plano-horizontal}
 Una vez se ha calculado la geometría solar (sección \ref{sec:geometria-solar}) y se han procesado los datos meteorológicos (sección \ref{sec:datos-meteorologicos}), es necesario calcular la radiación en el plano horizontal. Para ello, \texttt{solaR2} cuenta con la función \texttt{calcG0} [\ref{subsec:calcg0}] la cual mediante las funciones \texttt{fCompD} [\ref{subsec:fcompd}] y \texttt{fCompI} [\ref{subsec:fcompi}] procesan los objetos de clase \texttt{Sol} y clase \texttt{Meteo} para dar un objeto de tipo \texttt{G0}.
 
@@ -958,24 +958,24 @@ Latitude for calculations:  37.2 degrees
 Monthly avarages:
 	Dates   G0d      D0d      B0d
        <char> <num>    <num>    <num>
- 1: Jan. 2024 2.766 1.075345 1.690655
- 2: Feb. 2024 3.491 1.499708 1.991292
- 3: Mar. 2024 4.494 1.888571 2.605429
- 4: Apr. 2024 5.912 2.375976 3.536024
- 5: May. 2024 6.989 2.396435 4.592565
- 6: Jun. 2024 7.742 2.410957 5.331043
- 7: Jul. 2024 7.919 2.293043 5.625957
- 8: Aug. 2024 7.027 2.137098 4.889902
- 9: Sep. 2024 5.369 2.028990 3.340010
-10: Oct. 2024 3.562 1.685783 1.876217
-11: Nov. 2024 2.814 1.226196 1.587804
-12: Dec. 2024 2.179 1.085163 1.093837
+ 1: Jan. 2024 2.766 1.077532 1.688468
+ 2: Feb. 2024 3.491 1.581116 1.909884
+ 3: Mar. 2024 4.494 1.911563 2.582437
+ 4: Apr. 2024 5.912 2.360930 3.551070
+ 5: May. 2024 6.989 2.330537 4.658463
+ 6: Jun. 2024 7.742 2.483961 5.258039
+ 7: Jul. 2024 7.919 2.194992 5.724008
+ 8: Aug. 2024 7.027 2.183376 4.843624
+ 9: Sep. 2024 5.369 1.868099 3.500901
+10: Oct. 2024 3.562 1.659716 1.902284
+11: Nov. 2024 2.814 1.207916 1.606084
+12: Dec. 2024 2.179 1.078214 1.100786
 
 Yearly values:
 Key: <Dates>
    Dates      G0d      D0d      B0d
    <int>    <num>    <num>    <num>
-1:  2024 1839.365 674.1596 1165.205
+1:  2024 1839.365 668.9934 1170.372
 \end{verbatim}
 
 \item Diarios.
@@ -996,24 +996,24 @@ Latitude for calculations:  37.2 degrees
 Monthly avarages:
 	Dates   G0d      D0d      B0d
        <char> <num>    <num>    <num>
- 1: Jan. 2024 2.766 1.075345 1.690655
- 2: Feb. 2024 3.491 1.499708 1.991292
- 3: Mar. 2024 4.494 1.888571 2.605429
- 4: Apr. 2024 5.912 2.375976 3.536024
- 5: May. 2024 6.989 2.396435 4.592565
- 6: Jun. 2024 7.742 2.410957 5.331043
- 7: Jul. 2024 7.919 2.293043 5.625957
- 8: Aug. 2024 7.027 2.137098 4.889902
- 9: Sep. 2024 5.369 2.028990 3.340010
-10: Oct. 2024 3.562 1.685783 1.876217
-11: Nov. 2024 2.814 1.226196 1.587804
-12: Dec. 2024 2.179 1.085163 1.093837
+ 1: Jan. 2024 2.766 1.077532 1.688468
+ 2: Feb. 2024 3.491 1.581116 1.909884
+ 3: Mar. 2024 4.494 1.911563 2.582437
+ 4: Apr. 2024 5.912 2.360930 3.551070
+ 5: May. 2024 6.989 2.330537 4.658463
+ 6: Jun. 2024 7.742 2.483961 5.258039
+ 7: Jul. 2024 7.919 2.194992 5.724008
+ 8: Aug. 2024 7.027 2.183376 4.843624
+ 9: Sep. 2024 5.369 1.868099 3.500901
+10: Oct. 2024 3.562 1.659716 1.902284
+11: Nov. 2024 2.814 1.207916 1.606084
+12: Dec. 2024 2.179 1.078214 1.100786
 
 Yearly values:
 Key: <Dates>
    Dates      G0d      D0d      B0d
    <int>    <num>    <num>    <num>
-1:  2024 1839.365 674.1596 1165.205
+1:  2024 1839.365 668.9934 1170.372
 \end{verbatim}
 
 \item Intradiarios
@@ -1032,31 +1032,31 @@ Latitude of source:  37.2 degrees
 Latitude for calculations:  37.2 degrees
 
 Monthly avarages:
-	Dates      G0d       D0d      B0d
-       <char>    <num>     <num>    <num>
- 1: Jan. 2024 2.766000 0.9738308 1.792169
- 2: Feb. 2024 3.491000 1.5958653 1.895135
- 3: Mar. 2024 4.272195 1.7195352 2.552660
- 4: Apr. 2024 5.912000 2.5535113 3.358489
- 5: May. 2024 6.989000 2.2454483 4.743552
- 6: Jun. 2024 7.742000 2.1650011 5.576999
- 7: Jul. 2024 7.919000 1.9542885 5.964711
- 8: Aug. 2024 6.908515 1.6846047 5.223911
- 9: Sep. 2024 5.369000 1.9509385 3.418062
-10: Oct. 2024 3.562000 1.8279443 1.734056
-11: Nov. 2024 2.814000 1.2807683 1.533232
-12: Dec. 2024 2.179000 1.1211730 1.057827
+	Dates      G0d      D0d      B0d
+       <char>    <num>    <num>    <num>
+ 1: Jan. 2024 2.766000 1.014495 1.751505
+ 2: Feb. 2024 3.491000 1.584376 1.906624
+ 3: Mar. 2024 4.494000 2.002068 2.491932
+ 4: Apr. 2024 5.870393 2.367717 3.502676
+ 5: May. 2024 6.748807 1.946976 4.801831
+ 6: Jun. 2024 7.742000 2.476266 5.265734
+ 7: Jul. 2024 7.919000 1.778018 6.140982
+ 8: Aug. 2024 7.027000 1.834311 5.192689
+ 9: Sep. 2024 5.369000 1.787165 3.581835
+10: Oct. 2024 3.562000 1.745649 1.816351
+11: Nov. 2024 2.814000 1.223991 1.590009
+12: Dec. 2024 2.179000 1.142758 1.036242
 
 Yearly values:
 Key: <Dates>
    Dates      G0d      D0d      B0d
    <int>    <num>    <num>    <num>
-1:  2024 1828.816 642.1182 1186.698
+1:  2024 1830.671 636.9936 1193.677
 \end{verbatim}
 \end{itemize}
 
 \section{Radiación efectiva en el plano del generador}
-\label{sec:orgbc40d77}
+\label{sec:org45b7193}
 \label{sec:radiacion-efectiva-plano-generador}
 Teniendo la radiación incidente en plano horizontal (sección \ref{sec:radiacion-plano-horizontal}), se puede calcular la radiación efectiva incidente en el plano del generador. Para ello, \texttt{solaR2} cuenta con la función \texttt{calcGef} [\ref{subsec:calcgef}] la cual mediante las funciones \texttt{fInclin} y \texttt{calcShd} procesa un objeto de clase \texttt{G0} para obtener un objeto \texttt{Gef}.
 
@@ -1704,7 +1704,7 @@ Mode of tracking:  horiz
 \end{verbatim}
 
 \section{Producción eléctrica de un SFCR}
-\label{sec:orgcc172fd}
+\label{sec:org5bfaa31}
 \label{produccion-electrica-sfcr}
 Con la radiación efectiva, se puede estimar la producción eléctrica que va a tener un sistema fotovoltaico conectado a red. Esta estimación, se puede calcular mediante la función \texttt{prodGCPV} [\ref{subsec:prodgcpv}] la cual mediante la función \texttt{fProd} [\ref{subsec:fprod}] procesa un objeto de clase \texttt{Gef} y obtiene un objeto \texttt{ProdGCPV}.
 
@@ -1930,7 +1930,7 @@ Generator:
 \end{verbatim}
 
 \section{Producción eléctrica de un SFB}
-\label{sec:orge0731f1}
+\label{sec:orga838fea}
 De igual forma que en el apartado anterior, se puede estimar la producción eléctrica de un sistema fotovoltaico de bombeo.
 
 Como se puede ver en la figura \ref{fig:prodpvps}, \texttt{prodPVPS} funciona gracias a la siguiente función:
@@ -1994,8 +1994,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x0000012f75736358>
-<environment: 0x0000012f7674c350>
+<bytecode: 0x000001418067a708>
+<environment: 0x000001417925f6d8>
 \end{verbatim}
 
 \item \texttt{fPb}: función que relaciona la potencia del eje de la bomba con la potencia eléctrica del motor.
@@ -2021,8 +2021,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x0000012f75736358>
-<environment: 0x0000012f76d86518>
+<bytecode: 0x000001418067a708>
+<environment: 0x0000014179272bd8>
 \end{verbatim}
 
 \item \texttt{fPh}: función que relaciona la potencia hidráulica con la potencia eléctrica del motor.
@@ -2048,8 +2048,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x0000012f75736358>
-<environment: 0x0000012f7360df40>
+<bytecode: 0x000001418067a708>
+<environment: 0x000001417927d860>
 \end{verbatim}
 
 \item \texttt{fFreq}: función que relaciona la frecuencia con la potencia eléctrica del motor.
@@ -2075,8 +2075,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x0000012f75736358>
-<environment: 0x0000012f6ff358b0>
+<bytecode: 0x000001418067a708>
+<environment: 0x0000014179264158>
 \end{verbatim}
 \end{itemize}
 
@@ -2158,7 +2158,7 @@ Generator (Wp):  4084.218
 \end{itemize}
 
 \section{Optimización de distancias}
-\label{sec:org9276e38}
+\label{sec:org8d2402d}
 \label{optimizacion-distancias}
 Por último, el paquete \texttt{solaR2} contiene una función que permite calcular un conjunto de combinaciones de distancias entre los elementos de un sistema fotovoltaico conectado a red, con el fin de que el usuario posteriormente pueda optar cual es la opción mas rentable en base a los precios del cableado y de la ocupación del terreno.
 
@@ -2174,12 +2174,76 @@ show(ShdM2x)
 \end{lstlisting}
 
 \begin{verbatim}
-  |                                                                                                     |                                                                                             |   0%  |                                                                                                     |====                                                                                         |   5%Error en calcShd(Gef0, modeTrk = modeTrk, modeShd = modeShd, struct = struct, : 
-  el argumento no fue usado (modeTrk = modeTrk)
-Error en h(simpleError(msg, call)): 
-  error in evaluating the argument 'object' in selecting a method for function 'show': objeto 'ShdM2x' no encontrado
-\end{verbatim}
+  |                                                                                                     |                                                                                             |   0%  |                                                                                                     |====                                                                                         |   5%  |                                                                                                     |=========                                                                                    |  10%  |                                                                                                     |=============                                                                                |  14%  |                                                                                                     |==================                                                                           |  19%  |                                                                                                     |======================                                                                       |  24%  |                                                                                                     |===========================                                                                  |  29%  |                                                                                                     |===============================                                                              |  33%  |                                                                                                     |===================================                                                          |  38%  |                                                                                                     |========================================                                                     |  43%  |                                                                                                     |============================================                                                 |  48%  |                                                                                                     |=================================================                                            |  52%  |                                                                                                     |=====================================================                                        |  57%  |                                                                                                     |==========================================================                                   |  62%  |                                                                                                     |==============================================================                               |  67%  |                                                                                                     |==================================================================                           |  71%  |                                                                                                     |=======================================================================                      |  76%  |                                                                                                     |===========================================================================                  |  81%  |                                                                                                     |================================================================================             |  86%  |                                                                                                     |====================================================================================         |  90%  |                                                                                                     |=========================================================================================    |  95%  |                                                                                                     |=============================================================================================| 100%
+Object of class  Shade 
 
+Source of meteorological information: prom- 
+
+Latitude of source:  37.2 degrees
+Latitude for calculations:  37.2 degrees
+
+Monthly avarages:
+Dimensions of structure:
+$W
+[1] 23.11
+
+$L
+[1] 9.8
+
+$Nrow
+[1] 2
+
+$Ncol
+[1] 3
+
+Shade calculation mode:
+[1] "area" "prom"
+Productivity without shadows:
+Object of class  ProdGCPV 
+
+Source of meteorological information: prom- 
+
+Latitude of source:  37.2 degrees
+Latitude for calculations:  37.2 degrees
+
+Monthly avarages:
+        Dates      Eac      Edc       Yf
+       <char>    <num>    <num>    <num>
+ 1: Jan. 2024 138.6806 153.2566 5.241314
+ 2: Feb. 2024 143.4987 158.5247 5.423408
+ 3: Mar. 2024 151.8477 167.7311 5.738952
+ 4: Apr. 2024 178.6717 197.4274 6.752741
+ 5: May. 2024 200.8888 222.0523 7.592419
+ 6: Jun. 2024 223.9959 247.6903 8.465728
+ 7: Jul. 2024 214.2749 236.9628 8.098332
+ 8: Aug. 2024 194.6043 215.1439 7.354902
+ 9: Sep. 2024 168.9824 186.7349 6.386542
+10: Oct. 2024 132.2995 146.0747 5.000145
+11: Nov. 2024 128.5783 141.9871 4.859507
+12: Dec. 2024 102.9116 113.5613 3.889454
+
+Yearly values:
+   Dates      Eac      Edc       Yf
+   <int>    <num>    <num>    <num>
+1:  2024 60369.04 66710.67 2281.595
+-----------------
+Mode of tracking:  two 
+    Inclination limit: 90 
+-----------------
+Generator:
+    Modules in series:  12 
+    Modules in parallel:  11 
+    Nominal power (kWp):  26.5 
+
+Summary of results:
+      Lew             Lns           H           FS               GRR              Yf      
+ Min.   :30.00   Min.   :20   Min.   :0   Min.   :0.01509   Min.   :2.649   Min.   :2104  
+ 1st Qu.:33.75   1st Qu.:25   1st Qu.:0   1st Qu.:0.02223   1st Qu.:3.946   1st Qu.:2192  
+ Median :37.50   Median :30   Median :0   Median :0.02870   Median :4.802   Median :2216  
+ Mean   :37.50   Mean   :30   Mean   :0   Mean   :0.03463   Mean   :4.967   Mean   :2203  
+ 3rd Qu.:41.25   3rd Qu.:35   3rd Qu.:0   3rd Qu.:0.03945   3rd Qu.:6.016   3rd Qu.:2231  
+ Max.   :45.00   Max.   :40   Max.   :0   Max.   :0.07769   Max.   :7.948   Max.   :2247
+\end{verbatim}
 
 Además, con el argumento \texttt{prog}, podemos indicar si queremos que indique con una barra de progreso el estado de la secuencia.
 
@@ -2249,8 +2313,13 @@ Generator:
     Nominal power (kWp):  26.5 
 
 Summary of results:
-Error en as.data.frame.default(object): 
-  no se puede forzar la clase 'structure("Shade", package = "solaR2")' a un data.frame
+      Lew              H           FS               GRR              Yf      
+ Min.   : 9.66   Min.   :0   Min.   :0.04804   Min.   :2.000   Min.   :1736  
+ 1st Qu.:13.16   1st Qu.:0   1st Qu.:0.05727   1st Qu.:2.725   1st Qu.:1824  
+ Median :16.66   Median :0   Median :0.07295   Median :3.449   Median :1871  
+ Mean   :16.66   Mean   :0   Mean   :0.08078   Mean   :3.449   Mean   :1855  
+ 3rd Qu.:20.16   3rd Qu.:0   3rd Qu.:0.09598   3rd Qu.:4.174   3rd Qu.:1902  
+ Max.   :23.66   Max.   :0   Max.   :0.13968   Max.   :4.899   Max.   :1921
 \end{verbatim}
 
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -2266,76 +2335,78 @@ show(Shd12Fixed)
 \end{lstlisting}
 
 \begin{verbatim}
-Error en calcShd(Gef0, modeTrk = modeTrk, modeShd = modeShd, struct = struct, : 
-  el argumento no fue usado (modeTrk = modeTrk)
-Error en h(simpleError(msg, call)): 
-  error in evaluating the argument 'object' in selecting a method for function 'show': objeto 'Shd12Fixed' no encontrado
+Object of class  Shade 
+
+Source of meteorological information: prom- 
+
+Latitude of source:  37.2 degrees
+Latitude for calculations:  37.2 degrees
+
+Monthly avarages:
+Dimensions of structure:
+$L
+[1] 5
+
+Shade calculation mode:
+[1] "area"
+Productivity without shadows:
+Object of class  ProdGCPV 
+
+Source of meteorological information: prom- 
+
+Latitude of source:  37.2 degrees
+Latitude for calculations:  37.2 degrees
+
+Monthly avarages:
+        Dates       Eac       Edc       Yf
+       <char>     <num>     <num>    <num>
+ 1: Jan. 2024  95.36291 105.62767 3.604158
+ 2: Feb. 2024 101.50809 112.56166 3.836410
+ 3: Mar. 2024 110.26945 122.11835 4.167538
+ 4: Apr. 2024 124.53728 138.29836 4.706778
+ 5: May. 2024 131.48629 145.91065 4.969410
+ 6: Jun. 2024 135.89421 150.78725 5.136003
+ 7: Jul. 2024 134.98501 149.81246 5.101641
+ 8: Aug. 2024 130.25804 144.39951 4.922989
+ 9: Sep. 2024 119.91911 132.77648 4.532238
+10: Oct. 2024  96.49455 106.99182 3.646928
+11: Nov. 2024  90.17737  99.88152 3.408175
+12: Dec. 2024  73.89289  81.80967 2.792718
+
+Yearly values:
+   Dates     Eac      Edc       Yf
+   <int>   <num>    <num>    <num>
+1:  2024 41014.8 45473.37 1550.119
+-----------------
+Mode of tracking:  fixed 
+    Inclination:  27.2 
+    Orientation:  0 
+-----------------
+Generator:
+    Modules in series:  12 
+    Modules in parallel:  11 
+    Nominal power (kWp):  26.5 
+
+Summary of results:
+       D              H           FS                 GRR            Yf      
+ Min.   : 5.0   Min.   :0   Min.   :0.0008477   Min.   :1.0   Min.   :1364  
+ 1st Qu.: 7.5   1st Qu.:0   1st Qu.:0.0015710   1st Qu.:1.5   1st Qu.:1511  
+ Median :10.0   Median :0   Median :0.0038992   Median :2.0   Median :1544  
+ Mean   :10.0   Mean   :0   Mean   :0.0269608   Mean   :2.0   Mean   :1508  
+ 3rd Qu.:12.5   3rd Qu.:0   3rd Qu.:0.0252790   3rd Qu.:2.5   3rd Qu.:1548  
+ Max.   :15.0   Max.   :0   Max.   :0.1199180   Max.   :3.0   Max.   :1549
 \end{verbatim}
 
 \section{Métodos de visualización}
-\label{sec:org90abead}
+\label{sec:orgf57c308}
 \label{sec:metodos-visualizacion}
 Una vez creados todos los objetos, para mejorar la visualización de los mismos, \texttt{solaR2} cuanta con una serie de métodos que ayudan a la compresión de los datos obtenidos.
 
-\subsection{Geometría solar}
-\label{sec:org15a59bd}
-Para la clase \texttt{Sol} no hay métodos de visualización directos, pero se puede utilizar el método \texttt{as.data.table} [sección \ref{subsec:as.data.tablei}] para mostrar resultados.
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-lat <- 37.2
-BTd <- fBTd(mode = 'serie')
-sol <- calcSol(lat, BTd = BTd[100])
-show(sol)
-\end{lstlisting}
-
-\begin{verbatim}
-Object of class Sol 
-
-Latitude:  37.2 degrees
-
-Daily values:
-     Dates                 decl              eo              EoT                  ws        
- Min.   :2024-04-09   Min.   :0.1373   Min.   :0.9961   Min.   :-0.004637   Min.   :-1.676  
- 1st Qu.:2024-04-09   1st Qu.:0.1373   1st Qu.:0.9961   1st Qu.:-0.004637   1st Qu.:-1.676  
- Median :2024-04-09   Median :0.1373   Median :0.9961   Median :-0.004637   Median :-1.676  
- Mean   :2024-04-09   Mean   :0.1373   Mean   :0.9961   Mean   :-0.004637   Mean   :-1.676  
- 3rd Qu.:2024-04-09   3rd Qu.:0.1373   3rd Qu.:0.9961   3rd Qu.:-0.004637   3rd Qu.:-1.676  
- Max.   :2024-04-09   Max.   :0.1373   Max.   :0.9961   Max.   :-0.004637   Max.   :-1.676  
-      Bo0d     
- Min.   :9605  
- 1st Qu.:9605  
- Median :9605  
- Mean   :9605  
- 3rd Qu.:9605  
- Max.   :9605  
-
-Intradaily values: 
-     Dates                           w             night            cosThzS              AlS          
- Min.   :2024-04-09 00:00:00   Min.   :-2.8867   Mode :logical   Min.   :-0.70627   Min.   :-0.78421  
- 1st Qu.:2024-04-09 05:45:00   1st Qu.:-1.3810   FALSE:13        1st Qu.:-0.47365   1st Qu.:-0.49344  
- Median :2024-04-09 11:30:00   Median : 0.1246   TRUE :11        Median : 0.08252   Median : 0.08261  
- Mean   :2024-04-09 11:30:00   Mean   : 0.1245                   Mean   : 0.08260   Mean   : 0.10467  
- 3rd Qu.:2024-04-09 17:15:00   3rd Qu.: 1.6302                   3rd Qu.: 0.63882   3rd Qu.: 0.69297  
- Max.   :2024-04-09 23:00:00   Max.   : 3.1347                   Max.   : 0.87177   Max.   : 1.05880  
-      AzS               Bo0        
- Min.   :-2.7936   Min.   :   0.0  
- 1st Qu.:-1.5662   1st Qu.:   0.0  
- Median : 0.2381   Median : 112.4  
- Mean   : 0.1245   Mean   : 401.0  
- 3rd Qu.: 1.7167   3rd Qu.: 869.9  
- Max.   : 3.1319   Max.   :1187.1
-\end{verbatim}
-
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-xyplot(as.data.tableI(sol))
-\end{lstlisting}
-\begin{center}
-\includegraphics[keepaspectratio,width=0.75\textwidth,height=0.5\textheight]{figuras/codigo-sol.pdf}
-\end{center}
-
 \subsection{Datos meteorológicos}
-\label{sec:org9750fae}
+\label{sec:org3717b46}
 La clase \texttt{Meteo} cuenta con un método para \texttt{xyplot}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+lat <- 37.2
 G0dm = c(2.766,3.491,4.494,5.912,6.989,7.742,
          7.919,7.027,5.369,3.562,2.814,2.179) * 1000;
 Ta = c(10, 14.1, 15.6, 17.2, 19.3, 21.2,
@@ -2363,15 +2434,16 @@ Meteorological Data:
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 xyplot(BD)
 \end{lstlisting}
+
 \begin{center}
-\includegraphics[keepaspectratio,width=0.75\textwidth,height=0.5\textheight]{figuras/codigo-meteo.pdf}
+\includegraphics[width=0.8\textwidth]{figuras/codigo-meteo.pdf}
 \end{center}
 
 \subsection{Radiación en el plano horizontal}
-\label{sec:org3d159aa}
+\label{sec:org3e8045a}
 La clase \texttt{G0} cuenta con un método para \texttt{xyplot}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-g0 <- calcG0(lat, dataRad = list(G0dm = G0dm, Ta = Ta))
+g0 <- calcG0(lat, dataRad = BD)
 show(g0)
 \end{lstlisting}
 
@@ -2408,18 +2480,26 @@ Yearly values:
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 xyplot(g0)
 \end{lstlisting}
+
 \begin{center}
-\includegraphics[keepaspectratio,width=0.75\textwidth,height=0.5\textheight]{figuras/codigo-g0.pdf}
+\includegraphics[width=0.8\textwidth]{figuras/codigo-g0.pdf}
 \end{center}
 
-Y con un método \texttt{compare}.
+Y con un método para \texttt{compare}.
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+g02 <- calcG0(lat, dataRad = list(G0dm = G0dm*0.95, Ta = Ta))
+compare(g0, g02)
+\end{lstlisting}
 
+\begin{center}
+\includegraphics[width=0.8\textwidth]{figuras/codigo-g02.pdf}
+\end{center}
 
 \subsection{Radiación efectiva en el plano del generador}
-\label{sec:org4ba908d}
+\label{sec:orga7e5c37}
 La clase \texttt{Gef} cuenta con un método para \texttt{xyplot}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-gef <- calcGef(lat, dataRad = list(G0dm = G0dm, Ta = Ta))
+gef <- calcGef(lat, dataRad = BD)
 show(gef)
 \end{lstlisting}
 
@@ -2460,10 +2540,242 @@ Mode of tracking:  fixed
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 xyplot(gef)
 \end{lstlisting}
+
 \begin{center}
-\includegraphics[keepaspectratio,width=0.75\textwidth,height=0.5\textheight]{figuras/codigo-gef.pdf}
+\includegraphics[width=0.8\textwidth]{figuras/codigo-gef.pdf}
 \end{center}
 
+Y con un método para \texttt{compare}.
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+gef2x <- calcGef(lat, modeTrk = 'two', dataRad = BD)
+gefhoriz <- calcGef(lat, modeTrk = 'horiz', dataRad = BD)
+compare(gef, gef2x, gefhoriz)
+\end{lstlisting}
+
+\begin{center}
+\includegraphics[width=0.8\textwidth]{figuras/codigo-gef2.pdf}
+\end{center}
+
+
 \subsection{Producción eléctrica de un SFCR}
-\label{sec:org86a77bd}
-La clase ==
+\label{sec:orgdcd6f78}
+La clase \texttt{ProdGCPV} cuenta con un método para \texttt{xyplot}.
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+prodFixed <- prodGCPV(lat, modeTrk = 'fixed', dataRad = BD)
+show(prodFixed)
+\end{lstlisting}
+
+\begin{verbatim}
+Object of class  ProdGCPV 
+
+Source of meteorological information: prom- 
+
+Latitude of source:  37.2 degrees
+Latitude for calculations:  37.2 degrees
+
+Monthly avarages:
+        Dates       Eac       Edc       Yf
+       <char>     <num>     <num>    <num>
+ 1: Jan. 2024  95.36291 105.62767 3.604158
+ 2: Feb. 2024 101.50809 112.56166 3.836410
+ 3: Mar. 2024 110.26945 122.11835 4.167538
+ 4: Apr. 2024 124.53728 138.29836 4.706778
+ 5: May. 2024 131.48629 145.91065 4.969410
+ 6: Jun. 2024 135.89421 150.78725 5.136003
+ 7: Jul. 2024 134.98501 149.81246 5.101641
+ 8: Aug. 2024 130.25804 144.39951 4.922989
+ 9: Sep. 2024 119.91911 132.77648 4.532238
+10: Oct. 2024  96.49455 106.99182 3.646928
+11: Nov. 2024  90.17737  99.88152 3.408175
+12: Dec. 2024  73.89289  81.80967 2.792718
+
+Yearly values:
+   Dates     Eac      Edc       Yf
+   <int>   <num>    <num>    <num>
+1:  2024 41014.8 45473.37 1550.119
+-----------------
+Mode of tracking:  fixed 
+    Inclination:  27.2 
+    Orientation:  0 
+-----------------
+Generator:
+    Modules in series:  12 
+    Modules in parallel:  11 
+    Nominal power (kWp):  26.5
+\end{verbatim}
+
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+xyplot(prodFixed)
+\end{lstlisting}
+
+\begin{center}
+\includegraphics[width=0.8\textwidth]{figuras/codigo-prodgcpv.pdf}
+\end{center}
+
+Un método para \texttt{compare}.
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+prod2x <- prodGCPV(lat, modeTrk = 'two', dataRad = BD)
+prodHoriz <- prodGCPV(lat, modeTrk = 'horiz', dataRad = BD)
+compare(prodFixed, prod2x, prodHoriz)
+\end{lstlisting}
+
+\begin{center}
+\includegraphics[width=0.8\textwidth]{figuras/codigo-prodgcpv2.pdf}
+\end{center}
+
+Y un método para \texttt{compareLosses}.
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+compareLosses(prodFixed, prod2x, prodHoriz)
+\end{lstlisting}
+
+\begin{center}
+\includegraphics[width=0.8\textwidth]{figuras/codigo-prodgcpv3.pdf}
+\end{center}
+
+\subsection{Producción electrica de un SFB}
+\label{sec:org60ae102}
+La clase \texttt{ProdPVPS} cuenta con un método para \texttt{xyplot}.
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+pump <- prodPVPS(lat, dataRad = BD, pump = CoefSP8A44, H = 40, Pg = 5000)
+show(pump)
+\end{lstlisting}
+
+\begin{verbatim}
+Object of class  ProdPVPS 
+
+Source of meteorological information: prom- 
+
+Latitude of source:  37.2 degrees
+Latitude for calculations:  37.2 degrees
+
+Monthly avarages:
+        Dates      Eac       Qd       Yf
+       <char>    <num>    <num>    <num>
+ 1: Jan. 2024 17.22642 59.71506 3.445284
+ 2: Feb. 2024 18.89837 64.60949 3.779675
+ 3: Mar. 2024 20.81307 70.36542 4.162613
+ 4: Apr. 2024 23.73937 79.08382 4.747874
+ 5: May. 2024 25.28080 83.74003 5.056160
+ 6: Jun. 2024 26.49158 87.02474 5.298315
+ 7: Jul. 2024 27.70317 89.81648 5.540633
+ 8: Aug. 2024 27.14273 87.89528 5.428546
+ 9: Sep. 2024 24.01466 79.04010 4.802932
+10: Oct. 2024 18.26638 63.00860 3.653277
+11: Nov. 2024 17.06794 59.03182 3.413588
+12: Dec. 2024 13.72784 48.99686 2.745567
+
+Yearly values:
+   Dates      Eac       Qd       Yf
+   <int>    <num>    <num>    <num>
+1:  2024 7942.432 26608.76 1588.486
+-----------------
+Mode of tracking:  fixed 
+    Inclination:  27.2 
+    Orientation:  0 
+-----------------
+Pump:
+    Qn:  8 
+    Stages:  44 
+Height (m):  40 
+Generator (Wp):  5000
+\end{verbatim}
+
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+xyplot(pump)
+\end{lstlisting}
+
+\begin{center}
+\includegraphics[width=.9\linewidth]{figuras/codigo-prodpvps.pdf}
+\end{center}
+
+\subsection{Optimización de distancias}
+\label{sec:orge297e7d}
+La clase \texttt{Shade} cuenta con un método para \texttt{shadeplot}.
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+struct2x = list(W = 23.11, L = 9.8, Nrow = 2, Ncol = 3)
+dist2x = list(Lew = c(30, 45),Lns = c(20, 40))
+ShdM2x <- optimShd(lat = lat, dataRad = prom, modeTrk = 'two',
+                    modeShd = c('area','prom'),
+                   distances = dist2x, struct = struct2x,
+                   res = 5, prog = FALSE)
+show(ShdM2x)
+\end{lstlisting}
+
+\begin{verbatim}
+Object of class  Shade 
+
+Source of meteorological information: prom- 
+
+Latitude of source:  37.2 degrees
+Latitude for calculations:  37.2 degrees
+
+Monthly avarages:
+Dimensions of structure:
+$W
+[1] 23.11
+
+$L
+[1] 9.8
+
+$Nrow
+[1] 2
+
+$Ncol
+[1] 3
+
+Shade calculation mode:
+[1] "area" "prom"
+Productivity without shadows:
+Object of class  ProdGCPV 
+
+Source of meteorological information: prom- 
+
+Latitude of source:  37.2 degrees
+Latitude for calculations:  37.2 degrees
+
+Monthly avarages:
+        Dates      Eac      Edc       Yf
+       <char>    <num>    <num>    <num>
+ 1: Jan. 2024 138.6806 153.2566 5.241314
+ 2: Feb. 2024 143.4987 158.5247 5.423408
+ 3: Mar. 2024 151.8477 167.7311 5.738952
+ 4: Apr. 2024 178.6717 197.4274 6.752741
+ 5: May. 2024 200.8888 222.0523 7.592419
+ 6: Jun. 2024 223.9959 247.6903 8.465728
+ 7: Jul. 2024 214.2749 236.9628 8.098332
+ 8: Aug. 2024 194.6043 215.1439 7.354902
+ 9: Sep. 2024 168.9824 186.7349 6.386542
+10: Oct. 2024 132.2995 146.0747 5.000145
+11: Nov. 2024 128.5783 141.9871 4.859507
+12: Dec. 2024 102.9116 113.5613 3.889454
+
+Yearly values:
+   Dates      Eac      Edc       Yf
+   <int>    <num>    <num>    <num>
+1:  2024 60369.04 66710.67 2281.595
+-----------------
+Mode of tracking:  two 
+    Inclination limit: 90 
+-----------------
+Generator:
+    Modules in series:  12 
+    Modules in parallel:  11 
+    Nominal power (kWp):  26.5 
+
+Summary of results:
+      Lew             Lns           H           FS               GRR              Yf      
+ Min.   :30.00   Min.   :20   Min.   :0   Min.   :0.01509   Min.   :2.649   Min.   :2104  
+ 1st Qu.:33.75   1st Qu.:25   1st Qu.:0   1st Qu.:0.02223   1st Qu.:3.946   1st Qu.:2192  
+ Median :37.50   Median :30   Median :0   Median :0.02870   Median :4.802   Median :2216  
+ Mean   :37.50   Mean   :30   Mean   :0   Mean   :0.03463   Mean   :4.967   Mean   :2203  
+ 3rd Qu.:41.25   3rd Qu.:35   3rd Qu.:0   3rd Qu.:0.03945   3rd Qu.:6.016   3rd Qu.:2231  
+ Max.   :45.00   Max.   :40   Max.   :0   Max.   :0.07769   Max.   :7.948   Max.   :2247
+\end{verbatim}
+
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+shadeplot(ShdM2x)
+\end{lstlisting}
+
+\begin{center}
+\includegraphics[width=0.8\textwidth]{figuras/codigo-optimshd.pdf}
+\end{center}

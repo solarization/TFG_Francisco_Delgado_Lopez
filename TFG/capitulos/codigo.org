@@ -162,7 +162,7 @@ show(BD)
   show(BD_zoo)
 #+end_src
 - =readSIAR=: Esta función es capaz de extraer información de la red SIAR y transformarlo en un objeto de clase =Meteo=.
-#+begin_src R
+#+begin_src R 
   library(httr2)
   library(jsonlite)
   bd_SIAR <- readSIAR(Lat = 40.40596822621351, Lon = -3.70038308516172,
@@ -200,7 +200,7 @@ file:figuras/calcg0.pdf
   compD_lj
   #+end_src
   - Diarios:
-  #+begin_src R
+  #+begin_src R 
   G0d <- readSIAR(Lat = 40.40596822621351, Lon =-3.70038308516172,
 		  inicio = '2024-07-15', final = '2024-08-01',
 		  tipo = 'Diarios', n_est = 3)
@@ -604,65 +604,125 @@ Además, con el argumento =prog=, podemos indicar si queremos que indique con un
 label:sec:metodos-visualizacion
 Una vez creados todos los objetos, para mejorar la visualización de los mismos, =solaR2= cuanta con una serie de métodos que ayudan a la compresión de los datos obtenidos.
 
-** Geometría solar
-Para la clase =Sol= no hay métodos de visualización directos, pero se puede utilizar el método =as.data.table= [sección ref:subsec:as.data.tablei] para mostrar resultados.
-#+begin_src R
-  lat <- 37.2
-  BTd <- fBTd(mode = 'serie')
-  sol <- calcSol(lat, BTd = BTd[100])
-  show(sol)
-#+end_src
-#+begin_src R :eval no  
-  xyplot(as.data.tableI(sol))
-#+end_src
-#+ATTR_LATEX: :width 0.75\textwidth :height 0.5\textheight :options keepaspectratio
-file:figuras/codigo-sol.pdf
-
 ** Datos meteorológicos
 La clase =Meteo= cuenta con un método para =xyplot=.
-#+begin_src R 
-  G0dm = c(2.766,3.491,4.494,5.912,6.989,7.742,
-	   7.919,7.027,5.369,3.562,2.814,2.179) * 1000;
-  Ta = c(10, 14.1, 15.6, 17.2, 19.3, 21.2,
-	 28.4, 29.9, 24.3, 18.2, 17.2, 15.2)
-  BD <- readG0dm(G0dm = G0dm, Ta = Ta, lat = lat)
-  show(BD)
+#+begin_src R
+lat <- 37.2
+G0dm = c(2.766,3.491,4.494,5.912,6.989,7.742,
+	 7.919,7.027,5.369,3.562,2.814,2.179) * 1000;
+Ta = c(10, 14.1, 15.6, 17.2, 19.3, 21.2,
+       28.4, 29.9, 24.3, 18.2, 17.2, 15.2)
+BD <- readG0dm(G0dm = G0dm, Ta = Ta, lat = lat)
+show(BD)
 #+end_src
-#+begin_src R :eval no
-  xyplot(BD)
+#+begin_src R :results output graphics :file "figuras/codigo-meteo.pdf" :width 8 :height 6
+xyplot(BD)
 #+end_src
-#+ATTR_LATEX: :width 0.75\textwidth :height 0.5\textheight :options keepaspectratio
+#+ATTR_LATEX: :width 0.8\textwidth
 file:figuras/codigo-meteo.pdf
 
 ** Radiación en el plano horizontal
 La clase =G0= cuenta con un método para =xyplot=.
 #+begin_src R
-  g0 <- calcG0(lat, dataRad = list(G0dm = G0dm, Ta = Ta))
-  show(g0)
+g0 <- calcG0(lat, dataRad = BD)
+show(g0)
 #+end_src
-#+begin_src R :eval no
-  xyplot(g0)
+#+begin_src R :results output graphics :file "figuras/codigo-g0.pdf" :width 8 :height 6
+xyplot(g0)
 #+end_src
-#+ATTR_LATEX: :width 0.75\textwidth :height 0.5\textheight :options keepaspectratio
+#+ATTR_LATEX: :width 0.8\textwidth
 file:figuras/codigo-g0.pdf
 
-Y con un método =compare=.
-
+Y con un método para =compare=.
+#+begin_src R :results output graphics :file "figuras/codigo-g02.pdf" :width 8 :height 6
+g02 <- calcG0(lat, dataRad = list(G0dm = G0dm*0.95, Ta = Ta))
+compare(g0, g02)
+#+end_src
+#+ATTR_LATEX: :width 0.8\textwidth
+file:figuras/codigo-g02.pdf
 
 ** Radiación efectiva en el plano del generador
 La clase =Gef= cuenta con un método para =xyplot=.
 #+begin_src R
-  gef <- calcGef(lat, dataRad = list(G0dm = G0dm, Ta = Ta))
-  show(gef)
+gef <- calcGef(lat, dataRad = BD)
+show(gef)
 #+end_src
-#+begin_src R :eval no
-  xyplot(gef)
+#+begin_src R :results output graphics :file "figuras/codigo-gef.pdf" :width 8 :height 6
+xyplot(gef)
 #+end_src
-#+ATTR_LATEX: :width 0.75\textwidth :height 0.5\textheight :options keepaspectratio
+#+ATTR_LATEX: :width 0.8\textwidth
 file:figuras/codigo-gef.pdf
 
+Y con un método para =compare=.
+#+begin_src R :results output graphics :file "figuras/codigo-gef2.pdf" :width 8 :height 6
+gef2x <- calcGef(lat, modeTrk = 'two', dataRad = BD)
+gefhoriz <- calcGef(lat, modeTrk = 'horiz', dataRad = BD)
+compare(gef, gef2x, gefhoriz)
+#+end_src
+#+ATTR_LATEX: :width 0.8\textwidth
+file:figuras/codigo-gef2.pdf
+
+
 ** Producción eléctrica de un SFCR
-La clase ==
+La clase =ProdGCPV= cuenta con un método para =xyplot=.
+#+begin_src R
+prodFixed <- prodGCPV(lat, modeTrk = 'fixed', dataRad = BD)
+show(prodFixed)
+#+end_src
+#+begin_src R :results output graphics :file "figuras/codigo-prodgcpv.pdf" :width 8 :height 6
+xyplot(prodFixed)
+#+end_src
+#+ATTR_LATEX: :width 0.8\textwidth
+file:figuras/codigo-prodgcpv.pdf
+
+Un método para =compare=.
+#+begin_src R :results output graphics :file "figuras/codigo-prodgcpv2.pdf" :width 8 :height 6
+prod2x <- prodGCPV(lat, modeTrk = 'two', dataRad = BD)
+prodHoriz <- prodGCPV(lat, modeTrk = 'horiz', dataRad = BD)
+compare(prodFixed, prod2x, prodHoriz)
+#+end_src
+#+ATTR_LATEX: :width 0.8\textwidth
+file:figuras/codigo-prodgcpv2.pdf
+
+Y un método para =compareLosses=.
+#+begin_src R :results output graphics :file "figuras/codigo-prodgcpv3.pdf" :width 8 :height 6
+compareLosses(prodFixed, prod2x, prodHoriz)
+#+end_src
+#+ATTR_LATEX: :width 0.8\textwidth
+file:figuras/codigo-prodgcpv3.pdf
+
+** Producción electrica de un SFB
+La clase =ProdPVPS= cuenta con un método para =xyplot=.
+#+begin_src R
+pump <- prodPVPS(lat, dataRad = BD, pump = CoefSP8A44, H = 40, Pg = 5000)
+show(pump)
+#+end_src
+#+begin_src R :results output graphics :file "figuras/codigo-prodpvps.pdf" :width 8 :height 6
+xyplot(pump)
+#+end_src
+#+ATTR_LATEX: :with 0.8\textwidth
+file:figuras/codigo-prodpvps.pdf
+
+** Optimización de distancias
+La clase =Shade= cuenta con un método para =shadeplot=.
+#+begin_src R
+struct2x = list(W = 23.11, L = 9.8, Nrow = 2, Ncol = 3)
+dist2x = list(Lew = c(30, 45),Lns = c(20, 40))
+ShdM2x <- optimShd(lat = lat, dataRad = prom, modeTrk = 'two',
+                    modeShd = c('area','prom'),
+                   distances = dist2x, struct = struct2x,
+                   res = 5, prog = FALSE)
+show(ShdM2x)
+#+end_src
+#+begin_src R :results output graphics :file "figuras/codigo-optimshd.pdf" :width 12 :height 9
+shadeplot(ShdM2x)
+#+end_src
+
+#+RESULTS:
+
+#+ATTR_LATEX: :width 0.8\textwidth
+file:figuras/codigo-optimshd.pdf
+
 * Footnotes
 
 [fn:1] Todas las funciones mencionadas en este punto, se encuentran en el apartado ref:subsec:utils-angles.
