@@ -46,7 +46,7 @@ B_0(0)=B_0\epsilon_0cos\theta_{zs}
 Siendo cada componente:
 - Constante solar: $B_0=1367\frac{W}{m^2}$ \nomenclature[B0]{\(B_0\)}{Constante solar o irradiancia solar incidente en un plano normal al vector solar en el límite superior de la atmósfera terrestre}
 - Factor de corrección por excentricidad: $\epsilon_0=(\frac{r_0}{r})^2=1+0.033\cdot cos(\frac{2\pi d_n}{365})$[fn:1] \nomenclature[epsilon0]{\(\epsilon_0\)}{Corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del sol}
-- Ángulo zenital solar: $cos(\theta_{zs})=cos(\delta)cos(\omega)cos(\phi)+sin(\delta)+sin(\phi)$[fn:2] \nomenclature[thetazs]{\(\theta_{zs}\))}{Ángulo cenital solar}
+- Ángulo zenital solar: $cos(\theta_{zs})=cos(\delta)cos(\omega)cos(\phi)+sin(\delta)+sin(\phi)$[fn:2] \nomenclature[thetazs]{$\theta_{zs}$}{Ángulo cenital solar}
 
   Donde:
   - Declinación: $\delta =23,45^\circ \cdot sin(\frac{2\pi \cdot (d_n+284)}{365})$ \nomenclature[delta]{\(\delta\)}{Declinación}
