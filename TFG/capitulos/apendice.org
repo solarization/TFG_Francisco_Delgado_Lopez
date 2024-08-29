@@ -2,7 +2,7 @@
 \chapter{Código completo}
 label:chap:codigo-completo
 
-Todo el código que se muestra a continuación está disponible...
+Todo el código que se muestra a continuación está disponible para descargar, consultar y modificar libremente en el repositorio de Github correspondiente a la versión de desarrollo del paquete: https://github.com/solarization/solaR2.
 
 * Constructores
 ** calcSol

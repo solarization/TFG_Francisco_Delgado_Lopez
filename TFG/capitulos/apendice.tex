@@ -1,12 +1,12 @@
 \chapter{Código completo}
 \label{chap:codigo-completo}
 
-Todo el código que se muestra a continuación está disponible\ldots{}
+Todo el código que se muestra a continuación está disponible para descargar, consultar y modificar libremente en el repositorio de Github correspondiente a la versión de desarrollo del paquete: \url{https://github.com/solarization/solaR2}.
 
 \section{Constructores}
-\label{sec:org0a204ab}
+\label{sec:orgb37f319}
 \subsection{calcSol}
-\label{sec:orgf53cdb3}
+\label{sec:org5aefe9b}
 \label{subsec:calcsol}
 \begin{lstlisting}[language=r,label= ,caption={calcSol},captionpos=b,numbers=none]
 calcSol <- function(lat, BTd,
@@ -38,7 +38,7 @@ calcSol <- function(lat, BTd,
 }
 \end{lstlisting}
 \subsection{calcG0}
-\label{sec:orgafa75d7}
+\label{sec:org0de4912}
 \label{subsec:calcg0}
 \begin{lstlisting}[language=r,label= ,caption={calcG0},captionpos=b,numbers=none]
 calcG0 <- function(lat,
@@ -69,7 +69,9 @@ calcG0 <- function(lat,
     else{
     BD <- switch(modeRad,
                  bd = {
-                         if (!is.list(dataRad)) dataRad <- list(file=dataRad)
+                     if (!is.list(dataRad)||is.data.frame(dataRad)){
+                         dataRad <- list(file=dataRad)
+                     }
                          switch(class(dataRad$file)[1],
                                 character={
                                     bd.default=list(file='', lat=lat)
@@ -105,7 +107,9 @@ calcG0 <- function(lat,
                      res <- dt2Meteo(G0d, lat=lat, source='aguiar')
                  }, #End of aguiar
                  bdI = {
-                     if (!is.list(dataRad)) dataRad <- list(file=dataRad)
+                     if (!is.list(dataRad) || is.data.frame(dataRad)){
+                         dataRad <- list(file=dataRad)
+                     }
                      switch(class(dataRad$file)[1],
                             character = {
                                 bdI.default <- list(file='', lat=lat)
@@ -182,9 +186,12 @@ calcG0 <- function(lat,
                       warning('No temperature information available!')
                   }                  
               },
-              aguiar={ 
-                  data.table(Dates = indexI(sol),
-                             Ta = BD@data$Ta)
+              aguiar={
+                  Dates<-indexI(sol)	
+                  x <- as.Date(Dates)
+                  ind.rep <- cumsum(c(1, diff(x) != 0))
+                  data.table(Dates = Dates,
+                             Ta = BD@data$Ta[ind.rep])
               }
               )
 
@@ -223,7 +230,7 @@ calcG0 <- function(lat,
 }
 \end{lstlisting}
 \subsection{calcGef}
-\label{sec:orgec2fc7e}
+\label{sec:org07a3ae3}
 \label{subsec:calcgef}
 \begin{lstlisting}[language=r,label= ,caption={calcGef},captionpos=b,numbers=none]
 calcGef<-function(lat,
@@ -238,7 +245,7 @@ calcGef<-function(lat,
                   iS=2, alb=0.2, horizBright=TRUE, HCPV=FALSE,
                   modeShd='',    #modeShd=c('area','bt','prom')
                   struct=list(), #list(W=23.11, L=9.8, Nrow=2, Ncol=8), 
-                  distances=data.frame(),#data.table(Lew=40, Lns=30, H=0)){
+                  distances=data.table(),#data.table(Lew=40, Lns=30, H=0)){
                   ...){
 
     stopifnot(is.list(struct), is.data.frame(distances))
@@ -321,13 +328,13 @@ calcGef<-function(lat,
         ('bt' %in% modeShd)) {            #nor if there is backtracking
         return(result0)
     } else {
-        result <- calcShd(result0, modeTrk, modeShd, struct, distances)
+        result <- calcShd(result0, modeShd, struct, distances)
         return(result)
     }
 }
 \end{lstlisting}
 \subsection{prodGCPV}
-\label{sec:org127fe5d}
+\label{sec:orgc82b807}
 \label{subsec:prodgcpv}
 \begin{lstlisting}[language=r,label= ,caption={prodGCPV},captionpos=b,numbers=none]
 prodGCPV<-function(lat,
@@ -453,7 +460,7 @@ prodGCPV<-function(lat,
 }
 \end{lstlisting}
 \subsection{prodPVPS}
-\label{sec:org78cfe13}
+\label{sec:orgcf00c68}
 \label{subsec:prodpvps}
 \begin{lstlisting}[language=r,label= ,caption={prodGCPV},captionpos=b,numbers=none]
 prodPVPS<-function(lat, 
@@ -608,14 +615,13 @@ prodPVPS<-function(lat,
 }
 \end{lstlisting}
 \subsection{calcShd}
-\label{sec:org29bdc95}
+\label{sec:org8a3cb84}
 \label{subsec:calcShd}
 \begin{lstlisting}[language=r,label= ,caption={calcShd},captionpos=b,numbers=none]
 calcShd<-function(radEf,##class='Gef'
-                  modeTrk='fixed',     #c('two','horiz','fixed')
                   modeShd='prom',      #modeShd=c('area','bt','prom')
                   struct=list(), #list(W=23.11, L=9.8, Nrow=2, Ncol=8), 
-                  distances=data.frame() #data.table(Lew=40, Lns=30, H=0)){
+                  distances=data.table() #data.table(Lew=40, Lns=30, H=0)){
                   )
 {
     stopifnot(is.list(struct), is.data.frame(distances))
@@ -626,6 +632,7 @@ calcShd<-function(radEf,##class='Gef'
     prom=("prom"  %in%  modeShd)
     prev <- as.data.tableI(radEf, complete=TRUE)
     ## shadow calculations
+    modeTrk <- radEf@modeTrk
     sol <- data.table(AzS = prev$AzS,
                       AlS = prev$AlS)
     theta <- radEf@Theta
@@ -698,7 +705,7 @@ calcShd<-function(radEf,##class='Gef'
 }
 \end{lstlisting}
 \subsection{optimShd}
-\label{sec:orgad1062f}
+\label{sec:org92c073f}
 \label{subsec:optimShd}
 \begin{lstlisting}[language=r,label= ,caption={optimShd},captionpos=b,numbers=none]
 optimShd<-function(lat,
@@ -787,7 +794,7 @@ optimShd<-function(lat,
         prom=('prom' %in% modeShd)
         for (i in seq_len(casos)){
             Gef0=as(Prod0, 'Gef')
-            GefShd=calcShd(Gef0, modeTrk=modeTrk, modeShd=modeShd,
+            GefShd=calcShd(Gef0, modeShd=modeShd,
                            struct=struct, distances=Red[i,])
             listArgsShd <- modifyList(listArgs,
                                       list(modeRad='prev', dataRad=GefShd)
@@ -831,7 +838,7 @@ optimShd<-function(lat,
 }
 \end{lstlisting}
 \subsection{meteoReaders}
-\label{sec:org213996e}
+\label{sec:orgb336e2a}
 \label{subsec:meteoreaders}
 \begin{lstlisting}[language=r,label= ,caption={meteoReaders},captionpos=b,numbers=none]
 #### monthly means of irradiation ####
@@ -855,10 +862,10 @@ readG0dm <- function(G0dm, Ta = 25, lat = 0,
 
 #### file to Meteo (daily) ####
 readBDd <- function(file, lat,
-                   format = "%d/%m/%Y",header = TRUE,
-                   fill = TRUE, dec = '.', sep = ';',
-                   dates.col = 'Dates', ta.col = 'Ta',
-                   g0.col = 'G0', keep.cols = FALSE)
+                    format = "%d/%m/%Y",header = TRUE,
+                    fill = TRUE, dec = '.', sep = ';',
+                    dates.col = 'Dates', ta.col = 'Ta',
+                    g0.col = 'G0', keep.cols = FALSE, ...)
 {
     #stops if the arguments are not characters or numerics
     stopifnot(is.character(dates.col) || is.numeric(dates.col))
@@ -866,7 +873,12 @@ readBDd <- function(file, lat,
     stopifnot(is.character(g0.col) || is.numeric(g0.col))
 
     #read from file and set it in a data.table
-    bd <- fread(file, header = header, fill = fill, dec = dec, sep = sep)
+    bd <- fread(file, header = header, fill = fill, dec = dec, sep = sep, ...)
+
+    if(dates.col == ''){
+        names(bd)[1] <- 'Dates'
+        dates.col <- 'Dates'
+    }
 
     #check the columns
     if(!(dates.col %in% names(bd))) stop(paste('The column', dates.col, 'is not in the file'))
@@ -922,8 +934,8 @@ readBDd <- function(file, lat,
 readBDi <- function(file, lat,
                     format = "%d/%m/%Y %H:%M:%S",
                     header = TRUE, fill = TRUE, dec = '.',
-                    sep = ';', dates.col = 'dates', times.col,
-                    ta.col = 'Ta', g0.col = 'G0', keep.cols = FALSE)
+                    sep = ';', dates.col = 'Dates', times.col,
+                    ta.col = 'Ta', g0.col = 'G0', keep.cols = FALSE, ...)
 {
     #stops if the arguments are not characters or numerics
     stopifnot(is.character(dates.col) || is.numeric(dates.col))
@@ -931,7 +943,12 @@ readBDi <- function(file, lat,
     stopifnot(is.character(g0.col) || is.numeric(g0.col))
 
     #read from file and set it in a data.table
-    bd <- fread(file, header = header, fill = fill, dec = dec, sep = sep)
+    bd <- fread(file, header = header, fill = fill, dec = dec, sep = sep, ...)
+
+    if(dates.col == ''){
+        names(bd)[1] <- 'Dates'
+        dates.col <- 'Dates'
+    }
 
     #check the columns
     if(!(dates.col %in% names(bd))) stop(paste('The column', dates.col, 'is not in the file'))
@@ -997,6 +1014,10 @@ readBDi <- function(file, lat,
 
 
 dt2Meteo <- function(file, lat, source = '', type){
+    if(missing(lat)) stop('lat is missing')
+
+    if(source == '') source <- class(file)[1]
+
     ## Make sure its a data.table
     bd <- data.table(file)
 
@@ -1005,7 +1026,7 @@ dt2Meteo <- function(file, lat, source = '', type){
 
     ## type
     if(missing(type)){
-        sample <- median(diff(file$Dates))
+        sample <- median(diff(bd$Dates))
         IsDaily <- as.numeric(sample, units = 'days')
         if(is.na(IsDaily)) IsDaily <- ifelse('G0d' %in% names(bd),
                                              1, 0)
@@ -1015,12 +1036,6 @@ dt2Meteo <- function(file, lat, source = '', type){
         }
 
     }
-    if(!('Ta' %in% names(bd))){
-        if(all(c('Tempmin', 'TempMax') %in% names(bd)))
-            bd[, Ta := mean(c(Tempmin, TempMax))]
-        else bd[, Ta := 25]
-            }
-
     ## Columns of the data.table
     nms0 <- switch(type,
                    bd = ,
@@ -1029,7 +1044,7 @@ dt2Meteo <- function(file, lat, source = '', type){
                        if(all(c('D0d', 'B0d') %in% names(bd))){
                            nms0 <- c(nms0, 'D0d', 'B0d')
                        }
-                       nms0 <- c(nms0, 'Ta')
+                       if('Ta' %in% names(bd)) nms0 <- c(nms0, 'Ta')
                        if(all(c('TempMin', 'TempMax') %in% names(bd))){
                            nms0 <- c(nms0, 'TempMin', 'TempMax')
                        }
@@ -1040,9 +1055,7 @@ dt2Meteo <- function(file, lat, source = '', type){
                        if(all(c('D0', 'B0') %in% names(bd))){
                            nms0 <- c(nms0, 'D0', 'B0')
                        }
-                       if('Ta' %in% names(bd)){
-                           nms0 <- c(nms0, 'Ta')
-                       }
+                       if('Ta' %in% names(bd)) nms0 <- c(nms0, 'Ta')
                        nms0
                    })
     ## Columns order and set key
@@ -1054,6 +1067,16 @@ dt2Meteo <- function(file, lat, source = '', type){
                   data = bd,
                   type = type,
                   source = source)
+
+    if(!('Ta' %in% names(bd))){
+        if(all(c('TempMin', 'TempMax') %in% names(bd))){
+            sol <- calcSol(lat = lat, BTi = indexD(result))
+            bd[, Ta := fTemp(sol, result)$Ta]
+        }
+        else bd[, Ta := 25]
+        result@data <- bd
+    }
+    return(result)
 }
 
 #### Liu and Jordan, Collares-Pereira and Rabl proposals ####
@@ -1162,12 +1185,18 @@ Meteod2Meteom <- function(G0d)
 
 zoo2Meteo <- function(file, lat, source = '')
 {
+    if(source == ''){
+        name <- deparse(substitute(file))
+        cl <- class(file)
+        source <- paste(cl, name, sep = '-')
+    }
+    bd <- data.table(file)
     sample <- median(diff(index(file)))
     IsDaily <- as.numeric(sample, units = 'days')>=1
     type <- ifelse(IsDaily, 'bd', 'bdI')
     result <- new(Class = 'Meteo',
                   latm = lat,
-                  data = file,
+                  data = bd,
                   type = type,
                   source = source)
 }
@@ -1339,9 +1368,9 @@ readSIAR <- function(Lon = 0, Lat = 0,
 \end{lstlisting}
 
 \section{Clases}
-\label{sec:org9848042}
+\label{sec:orgf47878f}
 \subsection{Sol}
-\label{sec:orgaf9a075}
+\label{sec:org170cf4f}
 \label{subsec:sol}
 \begin{lstlisting}[language=r,label= ,caption={Clase \texttt{Sol}},captionpos=b,numbers=none]
 setClass(
@@ -1357,7 +1386,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{Meteo}
-\label{sec:org6fa821d}
+\label{sec:org3989bd3}
 \label{subsec:meteo}
 \begin{lstlisting}[language=r,label= ,caption={Clase \texttt{Meteo}},captionpos=b,numbers=none]
 setClass(
@@ -1372,7 +1401,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{G0}
-\label{sec:org6e7462a}
+\label{sec:org1dfc051}
 \label{subsec:g0}
 \begin{lstlisting}[language=r,label= ,caption={Clase \texttt{G0}},captionpos=b,numbers=none]
 setClass(
@@ -1390,7 +1419,7 @@ setClass(
 
 \end{lstlisting}
 \subsection{Gef}
-\label{sec:orgde4924e}
+\label{sec:org3c185e6}
 \label{subsec:gef}
 \begin{lstlisting}[language=r,label= ,caption={Clase \texttt{Gef}},captionpos=b,numbers=none]
 setClass(
@@ -1414,7 +1443,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{ProdGCPV}
-\label{sec:org7896825}
+\label{sec:orge814b7f}
 \label{subsec:clase-prodgcpv}
 \begin{lstlisting}[language=r,label= ,caption={Clase \texttt{ProdGCPV}},captionpos=b,numbers=none]
 setClass(
@@ -1434,7 +1463,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{ProdPVPS}
-\label{sec:org59d471e}
+\label{sec:org1146605}
 \label{subsec:claseprodpvps}
 \begin{lstlisting}[language=r,label= ,caption={Clase \texttt{ProdPVPS}},captionpos=b,numbers=none]
 setClass(
@@ -1455,7 +1484,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{Shade}
-\label{sec:orgc307530}
+\label{sec:org1b47f61}
 \label{subsec:shade}
 \begin{lstlisting}[language=r,label= ,caption={Clase \texttt{Shade}},captionpos=b,numbers=none]
 setClass(
@@ -1476,10 +1505,10 @@ setClass(
 )
 \end{lstlisting}
 \section{Funciones}
-\label{sec:orgbe3a575}
+\label{sec:org8694f41}
 \label{sec:funciones}
 \subsection{corrFdKt}
-\label{sec:org2794d2b}
+\label{sec:orge0c1bdd}
 \label{subsec:corrfdkt}
 \begin{lstlisting}[language=r,label= ,caption={corrFdKt},captionpos=b,numbers=none]
 #### monthly Kt ####
@@ -1635,7 +1664,7 @@ persistence <- function(sol, Ktd){
 }
 \end{lstlisting}
 \subsection{fBTd}
-\label{sec:org4a4e4e6}
+\label{sec:org50f11ce}
 \label{subsec:fbtd}
 \begin{lstlisting}[language=r,label= ,caption={fBTd},captionpos=b,numbers=none]
 fBTd<-function(mode='prom',
@@ -1656,7 +1685,7 @@ fBTd<-function(mode='prom',
 }
 \end{lstlisting}
 \subsection{fBTi}
-\label{sec:orgbe063cd}
+\label{sec:orgd723e29}
 \label{subsec:fbti}
 \begin{lstlisting}[language=r,label= ,caption={fBTi},captionpos=b,numbers=none]
 intervalo <- function(day, sample){
@@ -1666,14 +1695,14 @@ intervalo <- function(day, sample){
     return(intervalo)
 }
 
-fBTi <- function(d, sample = 'hour'){
-    BTi <- lapply(d, intervalo, sample)
+fBTi <- function(BTd, sample = 'hour'){
+    BTi <- lapply(BTd, intervalo, sample)
     BTi <- do.call(c, BTi)
     return(BTi)
 }
 \end{lstlisting}
 \subsection{fCompD}
-\label{sec:org625fffa}
+\label{sec:org34df164}
 \label{subsec:fcompd}
 \begin{lstlisting}[language=r,label= ,caption={fCompD},captionpos=b,numbers=none]
 fCompD <- function(sol, G0d, corr = 'CPR', f)
@@ -1711,6 +1740,7 @@ fCompD <- function(sol, G0d, corr = 'CPR', f)
                      CPR = FdKtCPR(sol, G0d),
                      Page = FdKtPage(sol, G0d),
                      LJ = FdKtLJ(sol, G0d),
+                     EKDd = FdKtEKDd(sol, G0d),
                      CLIMEDd = FdKtCLIMEDd(sol, G0d),
                      user = f(sol, G0d))
         Kt <- Fd$Kt
@@ -1720,9 +1750,9 @@ fCompD <- function(sol, G0d, corr = 'CPR', f)
     }
     ### the Direct and Difuse data is given
     else {
-        G0 <- getData(G0d)$G0
-        D0d <- getData(G0d)[['D0']]
-        B0d <- getData(G0d)[['B0']]
+        G0 <- getData(G0d)$G0d
+        D0d <- getData(G0d)[['D0d']]
+        B0d <- getData(G0d)[['B0d']]
         Fd <- D0d/G0
         Kt <- G0/Bo0d
     }
@@ -1733,11 +1763,11 @@ fCompD <- function(sol, G0d, corr = 'CPR', f)
 }
 \end{lstlisting}
 \subsection{fCompI}
-\label{sec:orgc2c5511}
+\label{sec:orgcffffb7}
 \label{subsec:fcompi}
 \begin{lstlisting}[language=r,label= ,caption={fCompI},captionpos=b,numbers=none]
 fCompI <- function(sol, compD, G0I,
-                   corr = 'EKDh', f,
+                   corr = 'none', f,
                    filterG0 = TRUE){
     if(!(corr %in% c('EKDh', 'CLIMEDh', 'BRL', 'user', 'none'))){
         warning('Wrong descriptor of correlation Fd-Ktd. Set EKDh.')
@@ -1768,8 +1798,9 @@ fCompI <- function(sol, compD, G0I,
     } else { ## Use instantaneous values if provided through G0I
 
         if(class(G0I)[1] != 'Meteo'){
-            dt <- copy(G0I)
-            if(!('Dates' %in% names(G0I))){
+            dt <- copy(data.table(G0I))
+            if(!('Dates' %in% names(dt))){
+                if(length(dt) == 1) names(dt) <- 'G0'
                 dt[, Dates := indexI(sol)]
                 setcolorder(dt, 'Dates')
                 setkey(dt, 'Dates')
@@ -1818,7 +1849,7 @@ fCompI <- function(sol, compD, G0I,
 }
 \end{lstlisting}
 \subsection{fInclin}
-\label{sec:orgf2539d1}
+\label{sec:org401130c}
 \label{subsec:finclin}
 \begin{lstlisting}[language=r,label= ,caption={fInclin},captionpos=b,numbers=none]
 fInclin <- function(compI, angGen, iS = 2, alb = 0.2, horizBright = TRUE, HCPV = FALSE){
@@ -1886,7 +1917,7 @@ fInclin <- function(compI, angGen, iS = 2, alb = 0.2, horizBright = TRUE, HCPV =
 }
 \end{lstlisting}
 \subsection{fProd}
-\label{sec:orga9ac9a1}
+\label{sec:org207a236}
 \label{subsec:fprod}
 \begin{lstlisting}[language=r,label= ,caption={fProd},captionpos=b,numbers=none]
 ## voc, isc, vmpp, impp : *cell* values
@@ -2150,7 +2181,7 @@ fProd <- function(inclin,
 }
 \end{lstlisting}
 \subsection{fPump}
-\label{sec:org7417953}
+\label{sec:org6ca8765}
 \label{subsec:fpump}
 \begin{lstlisting}[language=r,label= ,caption={fPump},captionpos=b,numbers=none]
 fPump <- function(pump, H){
@@ -2206,7 +2237,7 @@ fPump <- function(pump, H){
 }
 \end{lstlisting}
 \subsection{fSolD}
-\label{sec:org679f720}
+\label{sec:org914ce20}
 \label{subsec:fsold}
 \begin{lstlisting}[language=r,label= ,caption={fSolD},captionpos=b,numbers=none]
 fSolD <- function(lat, BTd, method = 'michalsky'){
@@ -2239,7 +2270,7 @@ fSolD <- function(lat, BTd, method = 'michalsky'){
 }
 \end{lstlisting}
 \subsection{fSolI}
-\label{sec:org3740b6e}
+\label{sec:org0fdc81f}
 \label{subsec:fsoli}
 \begin{lstlisting}[language=r,label= ,caption={fSolI},captionpos=b,numbers=none]
 fSolI <- function(solD, sample = 'hour', BTi,
@@ -2249,8 +2280,8 @@ fSolI <- function(solD, sample = 'hour', BTi,
     Bo <- 1367
 
     if(missing(BTi)){
-        d <- solD$Dates
-        BTi <- fBTi(d, sample)
+        BTd <- solD$Dates
+        BTi <- fBTi(BTd, sample)
     }
     sun <- data.table(Dates = as.IDate(BTi),
                       Times = as.ITime(BTi))
@@ -2307,7 +2338,7 @@ fSolI <- function(solD, sample = 'hour', BTi,
 }
 \end{lstlisting}
 \subsection{fSombra}
-\label{sec:org7a8e022}
+\label{sec:org224c995}
 \label{subsec:fsombra}
 \begin{lstlisting}[language=r,label= ,caption={fSombra},captionpos=b,numbers=none]
 fSombra<-function(angGen, distances, struct, modeTrk='fixed',prom=TRUE){
@@ -2395,6 +2426,7 @@ fSombraEst<-function(angGen, distances, struct)
     AzS <- angGen$AzS
     cosTheta <- angGen$cosTheta
     h <- dist$H #It must be previously normalized
+    if(is.null(h)) h <- 0
     d <- dist$D                   
     ## Calculations
     s=cos(Beta)+cos(Alfa-AzS)*(sin(Beta)+h)/tan(AlS)
@@ -2428,7 +2460,7 @@ fSombraHoriz<-function(angGen, distances, struct)
 }
 \end{lstlisting}
 \subsection{fTemp}
-\label{sec:orgdf8c320}
+\label{sec:org82b8552}
 \label{subsec:ftemp}
 \begin{lstlisting}[language=r,label= ,caption={fTemp},captionpos=b,numbers=none]
 fTemp<-function(sol, BD)
@@ -2472,7 +2504,7 @@ fTemp<-function(sol, BD)
 }
 \end{lstlisting}
 \subsection{fTheta}
-\label{sec:org2c6d9e6}
+\label{sec:org6716682}
 \label{subsec:ftheta}
 \begin{lstlisting}[language=r,label= ,caption={fTheta},captionpos=b,numbers=none]
 fTheta<-function(sol, beta, alfa=0, modeTrk='fixed', betaLim=90, 
@@ -2550,7 +2582,7 @@ fTheta<-function(sol, beta, alfa=0, modeTrk='fixed', betaLim=90,
 }
 \end{lstlisting}
 \subsection{HQCurve}
-\label{sec:org55e600a}
+\label{sec:orgd0d511c}
 \label{subsec:hqcurve}
 \begin{lstlisting}[language=r,label= ,caption={HQCurve},captionpos=b,numbers=none]
 ## HQCurve: no visible binding for global variable ‘fb’
@@ -2619,7 +2651,7 @@ HQCurve<-function(pump){
 }
 \end{lstlisting}
 \subsection{local2Solar}
-\label{sec:org90853b7}
+\label{sec:org3c80fc7}
 \label{subsec:local2solar}
 \begin{lstlisting}[language=r,label= ,caption={local2Solar},captionpos=b,numbers=none]
 local2Solar <- function(x, lon=NULL){	
@@ -2646,7 +2678,7 @@ local2Solar <- function(x, lon=NULL){
 }
 \end{lstlisting}
 \subsection{markovG0}
-\label{sec:orgd765a0d}
+\label{sec:orgdee8138}
 \label{subsec:markovg0}
 \begin{lstlisting}[language=r,label= ,caption={markovG0},captionpos=b,numbers=none]
 ## Objects loaded at startup from data/MTM.RData
@@ -2689,7 +2721,7 @@ markovG0 <- function(G0dm, solD){
 }
 \end{lstlisting}
 \subsection{NmgPVPS}
-\label{sec:orgfd55a8f}
+\label{sec:orgb2cb164}
 \label{subsec:nmgpvps}
 \begin{lstlisting}[language=r,label= ,caption={NmgPVPS},captionpos=b,numbers=none]
 ## NmgPVPS: no visible binding for global variable ‘Pnom’
@@ -2783,7 +2815,7 @@ NmgPVPS <- function(pump, Pg, H, Gd, Ta=30,
 }
 \end{lstlisting}
 \subsection{solarAngles}
-\label{sec:orga7f68d4}
+\label{sec:org92e1127}
 \label{subsec:solarangles}
 \begin{lstlisting}[language=r,label= ,caption={solarAngles},captionpos=b,numbers=none]
 #### Declination ####
@@ -2889,7 +2921,7 @@ eot <- function(d)
 
 #### Solar time ####
 sunrise <- function(d, lat, method = 'michalsky',
-                    decl = declination(d, method))
+                    decl = declination(d, method = method))
 {
     ##Method check
     if(!(method %in% c("michalsky", "cooper", "strous", "spencer"))){
@@ -2908,9 +2940,9 @@ sunrise <- function(d, lat, method = 'michalsky',
 
 #### Extraterrestrial irradition ####
 bo0d <- function(d, lat, method = 'michalsky',
-                 decl = declination(d, method),
-                 eo = eccentricity(d, method),
-                 ws = sunrise(d, lat, method))
+                 decl = declination(d, method = method),
+                 eo = eccentricity(d, method = method),
+                 ws = sunrise(d, lat, method = method))
 {
     ##Method check
     if(!(method %in% c("michalsky", "cooper", "strous", "spencer"))){
@@ -2929,7 +2961,8 @@ bo0d <- function(d, lat, method = 'michalsky',
 
 
 #### Sun hour angle ####
-sunHour <- function(d, BTi, sample = '1 hour', EoT = TRUE, method = 'michalsky',
+sunHour <- function(d, BTi, sample = 'hour', EoT = TRUE,
+                    method = 'michalsky',
                     eqtime = eot(d))
 {
     ##Method check
@@ -2939,7 +2972,7 @@ sunHour <- function(d, BTi, sample = '1 hour', EoT = TRUE, method = 'michalsky',
     }
 
     if(missing(BTi)){
-        BTi <- fBTi(d = d, sample = sample)
+        BTi <- fBTi(BTd = d, sample = sample)
     }else {
         if (inherits(BTi, 'data.table')) {
             Times <- as.ITime(BTi$Times)
@@ -3009,8 +3042,8 @@ sunHour <- function(d, BTi, sample = '1 hour', EoT = TRUE, method = 'michalsky',
 }
 
 #### zenith angle ####
-zenith <- function(d, lat, BTi, sample = '1 hour',  method = 'michalsky',
-                   decl = declination(d, method),
+zenith <- function(d, lat, BTi, sample = 'hour',  method = 'michalsky',
+                   decl = declination(d, method = method),
                    w = sunHour(d, BTi, sample, method = method))
 {
     ##Method check
@@ -3032,10 +3065,13 @@ zenith <- function(d, lat, BTi, sample = '1 hour',  method = 'michalsky',
 }
 
 #### azimuth ####
-azimuth <- function(d, lat, BTi, sample = '1 hour', method = 'michalsky',
-                    decl = declination(d, method),
+azimuth <- function(d, lat, BTi, sample = 'hour', method = 'michalsky',
+                    decl = declination(d, method = method),
                     w = sunHour(d, BTi, sample, method = method),
-                    cosThzS = zenith(d, lat, BTi, sample, method, decl, w))
+                    cosThzS = zenith(d, lat, BTi, sample,
+                                     method = method,
+                                     decl = decl,
+                                     w = w))
 {
     ##Method check
     if(!(method %in% c("michalsky", "cooper", "strous", "spencer"))){
@@ -3058,7 +3094,7 @@ azimuth <- function(d, lat, BTi, sample = '1 hour', method = 'michalsky',
 }
 \end{lstlisting}
 \subsection{utils-angles}
-\label{sec:orgfd13a77}
+\label{sec:org2e7d862}
 \label{subsec:utils-angles}
 \begin{lstlisting}[language=r,label= ,caption={utils-angles},captionpos=b,numbers=none]
 #degrees to radians
@@ -3086,7 +3122,7 @@ r2sec<-function(x){x*12/pi*3600}
 r2min<-function(x){x*12/pi*60}
 \end{lstlisting}
 \subsection{utils-time}
-\label{sec:orge6c26d6}
+\label{sec:orgca3fd20}
 \label{subsec:utils-time}
 \begin{lstlisting}[language=r,label= ,caption={utils-time},captionpos=b,numbers=none]
 #complete time to hours
@@ -3115,10 +3151,10 @@ dom <- function(x){
 truncDay <- function(x){as.POSIXct(trunc(x, units='days'))}
 \end{lstlisting}
 \section{Métodos}
-\label{sec:org0d6997a}
+\label{sec:orgeba0b9c}
 \label{sec:metodos}
 \subsection{as.data.tableI}
-\label{sec:org2eb8e02}
+\label{sec:org4a34034}
 \label{subsec:as.data.tablei}
 \begin{lstlisting}[language=r,label= ,caption={as.data.tableI},captionpos=b,numbers=none]
 setGeneric('as.data.tableI',
@@ -3284,7 +3320,7 @@ setMethod('as.data.tableI',
           )
 \end{lstlisting}
 \subsection{as.data.tableD}
-\label{sec:orgf0dfc7c}
+\label{sec:org4098811}
 \label{subsec:as.data.tabled}
 \begin{lstlisting}[language=r,label= ,caption={as.data.tableD},captionpos=b,numbers=none]
 setGeneric('as.data.tableD', function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.tableD')})
@@ -3403,7 +3439,7 @@ setMethod('as.data.tableD',
           )
 \end{lstlisting}
 \subsection{as.data.tableM}
-\label{sec:org50525a0}
+\label{sec:orgdef4378}
 \label{subsec:as.data.tablem}
 \begin{lstlisting}[language=r,label= ,caption={as.data.tableM},captionpos=b,numbers=none]
 setGeneric('as.data.tableM', function(object, complete = FALSE, day=FALSE){standardGeneric('as.data.tableM')})
@@ -3484,7 +3520,7 @@ setMethod('as.data.tableM',
           )
 \end{lstlisting}
 \subsection{as.data.tableY}
-\label{sec:orga7d9ad7}
+\label{sec:org1b3aa05}
 \label{subsec:as.data.tabley}
 \begin{lstlisting}[language=r,label= ,caption={as.data.tableY},captionpos=b,numbers=none]
 setGeneric('as.data.tableY', function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.tableY')})
@@ -3549,7 +3585,7 @@ setMethod('as.data.tableY',
           )
 \end{lstlisting}
 \subsection{compare}
-\label{sec:org4e86571}
+\label{sec:orgf82b6ab}
 \label{subsec:compare}
 \begin{lstlisting}[language=r,label= ,caption={compare},captionpos=b,numbers=none]
 ## compareFunction: no visible binding for global variable ‘name’
@@ -3557,7 +3593,7 @@ setMethod('as.data.tableY',
 ## compareFunction: no visible binding for global variable ‘y’
 ## compareFunction: no visible binding for global variable ‘group.value’
 
-if(getRversion() >= "2.15.1") globalVariables(c('name', 'x', 'y', 'group.value'))
+if(getRversion() >= "2.15.1") globalVariables(c('name', 'x', 'y', 'group.value', '..vars'))
 
 setGeneric('compare', signature='...', function(...){standardGeneric('compare')})
 
@@ -3613,7 +3649,7 @@ setMethod('compare',
           )
 \end{lstlisting}
 \subsection{getData}
-\label{sec:orgd57f26d}
+\label{sec:org4d52479}
 \label{subsec:getData}
 \begin{lstlisting}[language=r,label= ,caption={getData},captionpos=b,numbers=none]
 ## extracts the data for class Meteo ##
@@ -3628,7 +3664,7 @@ setMethod('getData',
           })
 \end{lstlisting}
 \subsection{getG0}
-\label{sec:orgd63a32b}
+\label{sec:orga5dd061}
 \label{subsec:getg0}
 \begin{lstlisting}[language=r,label= ,caption={getG0},captionpos=b,numbers=none]
 ## extracts the global irradiance for class Meteo ##
@@ -3643,7 +3679,7 @@ setMethod('getG0',
           })
 \end{lstlisting}
 \subsection{getLat}
-\label{sec:org12c79bc}
+\label{sec:orgc96f2f8}
 \label{subsec:getlat}
 \begin{lstlisting}[language=r,label= ,caption={getLat},captionpos=b,numbers=none]
 ## extracts the latitude from the objects ##
@@ -3665,7 +3701,7 @@ setMethod('getLat',
           })
 \end{lstlisting}
 \subsection{indexD}
-\label{sec:org0c8be90}
+\label{sec:org9728db0}
 \label{subsec:indexd}
 \begin{lstlisting}[language=r,label= ,caption={indexD},captionpos=b,numbers=none]
 ## extract the index of the daily data ##
@@ -3681,7 +3717,7 @@ setMethod('indexD',
           definition = function(object){as.POSIXct(getData(object)$Dates)})
 \end{lstlisting}
 \subsection{indexI}
-\label{sec:org3b015c6}
+\label{sec:org6a443d2}
 \label{subsec:indexi}
 \begin{lstlisting}[language=r,label= ,caption={indexI},captionpos=b,numbers=none]
 ## extract the index of the intradaily data ##
@@ -3693,7 +3729,7 @@ setMethod('indexI',
           })
 \end{lstlisting}
 \subsection{levelplot}
-\label{sec:org5c0401b}
+\label{sec:orgd21750d}
 \label{subsec:levelplot}
 \begin{lstlisting}[language=r,label= ,caption={levelplot},captionpos=b,numbers=none]
 setGeneric('levelplot')
@@ -3766,7 +3802,7 @@ setMethod('levelplot',
           )
 \end{lstlisting}
 \subsection{losses}
-\label{sec:org66b0693}
+\label{sec:orgef956df}
 \label{subsec:losses}
 \begin{lstlisting}[language=r,label= ,caption={losses},captionpos=b,numbers=none]
 setGeneric('losses', function(object){standardGeneric('losses')})
@@ -3860,7 +3896,7 @@ setMethod('compareLosses', 'ProdGCPV',
           )
 \end{lstlisting}
 \subsection{mergeSolar}
-\label{sec:orga92acbf}
+\label{sec:org1ebfd09}
 \label{subsec:mergesolar}
 \begin{lstlisting}[language=r,label= ,caption={mergeSolaR},captionpos=b,numbers=none]
 setGeneric('mergesolaR', signature='...', function(...){standardGeneric('mergesolaR')})
@@ -3932,7 +3968,7 @@ setMethod('mergesolaR',
           )
 \end{lstlisting}
 \subsection{shadeplot}
-\label{sec:org60b290d}
+\label{sec:orgb792897}
 \label{subsec:shadeplot}
 \begin{lstlisting}[language=r,label= ,caption={shadeplot},captionpos=b,numbers=none]
 setGeneric('shadeplot', function(x, ...)standardGeneric('shadeplot'))
@@ -4001,7 +4037,7 @@ setMethod('shadeplot', signature(x='Shade'),
           )
 \end{lstlisting}
 \subsection{window}
-\label{sec:org9d8c799}
+\label{sec:org5dac9e8}
 \label{subsec:window}
 \begin{lstlisting}[language=r,label= ,caption={window},captionpos=b,numbers=none]
 setMethod('[',
@@ -4234,7 +4270,7 @@ setMethod('[',
           )
 \end{lstlisting}
 \subsection{writeSolar}
-\label{sec:orgf92f3b9}
+\label{sec:org9012cd9}
 \label{subsec:writesolar}
 \begin{lstlisting}[language=r,label= ,caption={writeSolar},captionpos=b,numbers=none]
 setGeneric('writeSolar', function(object, file,
@@ -4275,7 +4311,7 @@ setMethod('writeSolar', signature=(object='Sol'),
           })
 \end{lstlisting}
 \subsection{xyplot}
-\label{sec:org0cd2dfa}
+\label{sec:org2ff9646}
 \label{subsec:xyplot}
 \begin{lstlisting}[language=r,label= ,caption={xyplot},captionpos=b,numbers=none]
 ##################################################################
@@ -4305,7 +4341,7 @@ solaR.theme.2 <- function(pch=19, cex=0.7, region=rev(brewer.pal(9, 'YlOrRd')), 
 setGeneric('xyplot')
 
 setMethod('xyplot',
-          signature = c(x = 'data.frame', data = 'missing'),
+          signature = c(x = 'data.table', data = 'missing'),
           definition = function(x, data,
                                 par.settings = solaR.theme.2,
                                 xscale.components=xscale.solar,
@@ -4443,10 +4479,10 @@ setMethod('xyplot',
           )
 \end{lstlisting}
 \section{Conjunto de datos}
-\label{sec:org73134a1}
+\label{sec:org054add8}
 \label{sec:conjunto-datos}
 \subsection{aguiar}
-\label{sec:orgfd6da7e}
+\label{sec:org18e68ce}
 \label{subsec:aguiar}
 \begin{lstlisting}[language=r,label= ,caption={aguiar\textsubscript{1}},captionpos=b,numbers=none]
 data(MTM)
@@ -4484,7 +4520,7 @@ head(MTM)
 \end{verbatim}
 
 \subsection{SIAR}
-\label{sec:orgeb2cc28}
+\label{sec:org92f7d83}
 \label{subsec:siar}
 \begin{lstlisting}[language=r,label= ,caption={SIAR},captionpos=b,numbers=none]
 data(SIAR)
@@ -4503,7 +4539,7 @@ head(est_SIAR)
 \end{verbatim}
 
 \subsection{helios}
-\label{sec:org26295d3}
+\label{sec:org4cc4512}
 \label{subsec:helios}
 \begin{lstlisting}[language=r,label= ,caption={helios},captionpos=b,numbers=none]
 data(helios)
@@ -4521,7 +4557,7 @@ head(helios)
 \end{verbatim}
 
 \subsection{prodEx}
-\label{sec:orgd7b6ea1}
+\label{sec:org0495863}
 \label{subsec:prodex}
 \begin{lstlisting}[language=r,label= ,caption={prodEx},captionpos=b,numbers=none]
 data(prodEx)
@@ -4556,7 +4592,7 @@ head(prodEx)
 \end{verbatim}
 
 \subsection{pumpCoef}
-\label{sec:org4f7ef1e}
+\label{sec:orgac6578d}
 \label{subsec:pumpcoef}
 \begin{lstlisting}[language=r,label= ,caption={pumpCoef},captionpos=b,numbers=none]
 data(pumpCoef)
