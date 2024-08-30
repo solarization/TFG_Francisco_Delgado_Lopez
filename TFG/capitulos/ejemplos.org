@@ -1,10 +1,18 @@
+#+PROPERTY: header-args: :results output :exports both
 \chapter{Ejemplo práctico de aplicación}
 label:chap:ejemplo-practico-aplicacion
-Como demostración se va a realizar un caso práctico...
+Una vez explicado como funciona el paquete, se puede realizar una demostración práctica tomando como ejemplo los módulos fotovoltaicos que tiene en su azotea la Escuela Técnica Superior de Ingeniería y Diseño Industrial (en adelante la ETSIDI).
+
+Se tomará de base un estudio realizado por profesores de la escuela cite:adrada17, en el cual, comparan la producción energética de seis tipos de tecnologías fotovoltaicas.
+
+En este ejemplo se realizará el mismo análisis tomando tres herramientas distintas: =solaR=, para poder tomar como referencia el paquete del que sale para poder apreciar las mejoras del programa, =PVSyst=, ya que es uno de los softwares más usados en el ámbito de la fotovoltaica y puede servir como punto de referencia, y por último =solaR2=.
 
 * =solaR=
+Se empieza inicilizando el paquete:
+#+begin_src R :session solaR
+  library(solaR)
+#+end_src
 
-...
 
 
 * =PVsyst=
@@ -12,7 +20,7 @@ Como demostración se va a realizar un caso práctico...
 ...
 
 
-* =solaR=
+* =solaR2=
 
 ...
 
