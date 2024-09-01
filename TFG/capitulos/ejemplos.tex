@@ -7,24 +7,172 @@ Se tomará de base un estudio realizado por profesores de la escuela \cite{adrad
 En este ejemplo se realizará el mismo análisis tomando tres herramientas distintas: \texttt{solaR}, para poder tomar como referencia el paquete del que sale para poder apreciar las mejoras del programa, \texttt{PVSyst}, ya que es uno de los softwares más usados en el ámbito de la fotovoltaica y puede servir como punto de referencia, y por último \texttt{solaR2}.
 
 \section{\texttt{solaR}}
-\label{sec:orgd052418}
+\label{sec:orgb32ec47}
 Se empieza inicilizando el paquete:
-\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 library(solaR)
 \end{lstlisting}
 
-Leemos los datos extraidos del estudio mencionado previamente. 
+El estudio antes mencionado recopila medias mensuales de la irradiación global incidente en un ángulo de inclinación y azimutal de 30º y 19ºE, respectivamente. Tanto \texttt{solaR} como \texttt{solaR2} emplean datos de irradiación pero en el plano horizontal, por lo que se empleará una proporción para obtener estos datos.
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+### Datos del estudio
+## Valores de la columna PIR_ave
+Gef_pir <- c(102.5, 106.2, 150.0, 156.8, 211.6, 217.7,
+             219.5, 224.1, 181.0, 124.4, 110.2, 96.3)
+
+## Valores de la columna CRC_ave
+Gef_crc <- c(102.7, 104.6, 147.0, 157.9, 203.2, 207.7,
+             219.8, 214.7, 176.1, 126.5, 109.1, 98.1)
+
+## Se obtiene la media de los valores
+Gef_estudio <- mapply(function(x, y) (x+y)/2,
+                      Gef_pir, Gef_crc)
+print(Gef_estudio)
+\end{lstlisting}
+
+\begin{verbatim}
+[1] 102.60 105.40 148.50 157.35 207.40 212.70 219.65 219.40 178.55 125.45 109.65  97.20
+\end{verbatim}
+
+
+Con estos datos se va a calcular un objeto \texttt{Gef} tomando como datos de irradiación horizontal los obtenidos anteriormente, de esta manera se puede obtener una relación entre irradiación incidente y horizonal.
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+gef_estudio <- calcGef(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
+                       dataRad = list(G0dm = Gef_estudio, year = 2013),
+                       beta = 30, alfa = -19,
+                       iS = 1, alb = 0.2)
+gefdm <- as.data.frameM(gef_estudio, complete = TRUE)
+gefgo <- with(gefdm, Gefd/G0d)
+G0_estudio <- Gef_estudio*gefgo
+print(G0_estudio)
+\end{lstlisting}
+
+\begin{verbatim}
+ [1]  94.66548  96.09844 134.79220 142.08586 187.03553 191.60740 198.01539 198.35401 162.03355
+[10] 114.38822 101.08676  90.16601
+\end{verbatim}
+
+
+Una vez se tienen estos datos, se puede calcular la producción que van a tener los diferentes sistemas fotovoltaicos.
+
+Para ello, se necesitan los parámetros de los diferentes sistemas. En la tabla \ref{tab:parametros-tecnicos-modulos-fotovoltaicos} se pueden ver los distintos parámetros de los módulos fotovoltaicos.
+\begin{center}
+{\scriptsize }%
+\begin{table}[]
+{\scriptsize \caption{Parámetros técnicos de diferentes tipos de células solares.\label{tab:parametros-tecnicos-modulos-fotovoltaicos}}
+}{\scriptsize \par}
+\centering{}{\scriptsize }\begin{tabular}{>{\centering}m{4cm} *{6}{>{\centering}m{1.5cm}}}
+\toprule 
+{\scriptsize \textbf{Parámetros Técnicos}} & {\scriptsize \textbf{mc-Si}} & {\scriptsize \textbf{pc-Si}} & {\scriptsize \textbf{a-Si/$\mu$c-Si}} & {\scriptsize \textbf{CdTe/Cds}} & {\scriptsize \textbf{CIS}} & {\scriptsize \textbf{mc-dc-Si}}\tabularnewline
+\midrule
+{\scriptsize Potencia se salida (Wp)} & {\scriptsize 250} & {\scriptsize 220} & {\scriptsize 115} & {\scriptsize 77.5} & {\scriptsize 73} & {\scriptsize 333}\tabularnewline
+{\scriptsize Voltaje en $P_{max}$ (Vmp)} & {\scriptsize 29.9} & {\scriptsize 29.0} & {\scriptsize 174} & {\scriptsize 46.7} & {\scriptsize 33.9} & {\scriptsize 54.7}\tabularnewline
+{\scriptsize Corriente en $P_{max}$ (Imp)} & {\scriptsize 8.37} & {\scriptsize 7.59} & {\scriptsize 0.661} & {\scriptsize 1.68} & {\scriptsize 2.21} & {\scriptsize 6.09}\tabularnewline
+{\scriptsize Voltaje en circuito abierto (Voc)} & {\scriptsize 37.1} & {\scriptsize 36.5} & {\scriptsize 238} & {\scriptsize 62.5} & {\scriptsize 43.1} & {\scriptsize 65.3}\tabularnewline
+{\scriptsize Corriente en cortocircuito (Isc)} & {\scriptsize 8.76} & {\scriptsize 8.15} & {\scriptsize 0.810} & {\scriptsize 1.98} & {\scriptsize 2.40} & {\scriptsize 6.46}\tabularnewline
+{\scriptsize Eficiencia del módulo (\%)} & {\scriptsize 15.5} & {\scriptsize 14.4} & {\scriptsize 8.1} & {\scriptsize 10.4} & {\scriptsize 10.3} & {\scriptsize 20.4}\tabularnewline
+{\scriptsize $\alpha_{Isc}$ (\%/K)} & {\scriptsize 0.0043} & {\scriptsize 0.06} & {\scriptsize 0.07} & {\scriptsize 0.02} & {\scriptsize 0.05} & {\scriptsize 0.054}\tabularnewline
+{\scriptsize $\beta_{Voc}$ (\%/K)} & {\scriptsize -0.338} & {\scriptsize -0.37} & {\scriptsize -0.30} & {\scriptsize -0.24} & {\scriptsize -0.29} & {\scriptsize -0.27}\tabularnewline
+{\scriptsize $\gamma_{Pmpp}$ (\%/K)} & {\scriptsize -0.469} & {\scriptsize -0.45} & {\scriptsize -0.24} & {\scriptsize -0.25} & {\scriptsize -0.36} & {\scriptsize -0.38}\tabularnewline
+{\scriptsize Temperatura NOC (ºC)} & {\scriptsize 43.7} & {\scriptsize 46} & {\scriptsize 44} & {\scriptsize 40} & {\scriptsize 47} & {\scriptsize 45}\tabularnewline
+\bottomrule
+\end{tabular}
+\end{table}
+\end{center}
+Se almacena esta información en listas con la información de cada módulo.
+
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+## mc-Si
+module1 <- list(Vocn = 37.1,
+                Iscn = 8.76,
+                Vmn = 29.9,
+                Imn = 8.37,
+                CoefVT = 0.00338,
+                TONC = 43.7)
+## pc-Si
+module2 <- list(Vocn = 36.5,
+                Iscn = 8.15,
+                Vmn = 29,
+                Imn = 7.59,
+                CoefVT = 0.0037,
+                TONC = 46)
+## a-Si/mc-Si
+module3 <- list(Vocn = 238,
+                Iscn = 0.81,
+                Vmn = 174,
+                Imn = 0.661,
+                CoefVT = 0.003,
+                TONC = 44)
+## CdTe/Cds
+module4 <- list(Vocn = 62.5,
+                Iscn = 1.98,
+                Vmn = 46.7,
+                Imn = 1.68,
+                CoefVT = 0.0024,
+                TONC = 40)
+## CIS
+module5 <- list(Vocn = 43.1,
+                Iscn = 2.4,
+                Vmn = 33.9,
+                Imn = 2.21,
+                CoefVT = 0.0029,
+                TONC = 47)
+## mc-dc-Si
+module6 <- list(Vocn = 65.3,
+                Iscn = 6.46,
+                Vmn = 54.7,
+                Imn = 6.09,
+                CoefVT = 0.0038,
+                TONC = 45)
+\end{lstlisting}
+
+Una vez se tiene la información de cada tipo de módulo, en la tabla \ref{tab:sistemas-fotovoltaicos} se pueden ver la información de la agrupación de cada sistema.
+\begin{center}
+{\footnotesize }%
+\begin{table}[]
+{\scriptsize \caption{Sistemas fotovoltaicos.\label{tab:sistemas-fotovoltaicos}}}
+%% {\scriptsize \par}
+\centering{}{\scriptsize }\begin{tabular}{*{7}{>{\centering}m{1.85cm}}}
+\toprule 
+{\scriptsize \textbf{Sistema}} & {\scriptsize \textbf{Tecnología}} & {\scriptsize \textbf{Año de Fabricación}} & {\scriptsize \textbf{Módulos en Serie}} & {\scriptsize \textbf{Módulos en Paralelo}} & {\scriptsize \textbf{Potencia del Sistema STC ($Wp_{STC}$)}} & {\scriptsize \textbf{Tamaño ($m^2$)}}\tabularnewline
+\midrule
+{\scriptsize 1} & {\scriptsize mc-Si} & {\scriptsize 2012} & {\scriptsize 5} & {\scriptsize 1} & {\scriptsize 1250} & {\scriptsize 8}\tabularnewline
+{\scriptsize 2} & {\scriptsize pc-Si} & {\scriptsize 2009} & {\scriptsize 5} & {\scriptsize 1} & {\scriptsize 1100} & {\scriptsize 8.2}\tabularnewline
+{\scriptsize 3} & {\scriptsize a-Si/$\mu$c-Si} & {\scriptsize 2009} & {\scriptsize 1} & {\scriptsize 10} & {\scriptsize 1150} & {\scriptsize 14.2}\tabularnewline
+{\scriptsize 4} & {\scriptsize CdTe/Cds} & {\scriptsize 2010} & {\scriptsize 5} & {\scriptsize 2} & {\scriptsize 775} & {\scriptsize 7.2}\tabularnewline
+{\scriptsize 5} & {\scriptsize CIS} & {\scriptsize 2008} & {\scriptsize 8} & {\scriptsize 2} & {\scriptsize 1175} & {\scriptsize 11.7}\tabularnewline
+{\scriptsize 6} & {\scriptsize mc-dc-Si} & {\scriptsize 2012} & {\scriptsize 4} & {\scriptsize 1} & {\scriptsize 1332} & {\scriptsize 6.5}\tabularnewline
+\bottomrule
+\end{tabular}
+\end{table}
+\end{center}
+De la misma manera, se almacenará esta información en listas.
+
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+## mc-Si
+generator1 <- list(Nms = 5, Nmp = 1)
+## pc-Si
+generator2 <- list(Nms = 5, Nmp = 1)
+## a-Si/mc-Si
+generator3 <- list(Nms = 1, Nmp = 10)
+## CdTe/Cds
+generator4 <- list(Nms = 5, Nmp = 2)
+## CIS
+generator5 <- list(Nms = 8, Nmp = 2)
+## mc-dc-Si
+generator6 <- list(Nms = 4, Nmp = 1)
+\end{lstlisting}
 
 \section{\texttt{PVsyst}}
-\label{sec:orgda15b80}
+\label{sec:org85a1444}
 
 \ldots{}
 
 
 \section{\texttt{solaR2}}
-\label{sec:org40adc72}
+\label{sec:org86393b1}
 
 \ldots{}
 
 \section{Comparación entre los tres}
-\label{sec:orgaac1a84}
+\label{sec:orgb85f81f}
