@@ -7,14 +7,15 @@ Se tomará de base un estudio realizado por profesores de la escuela \cite{adrad
 En este ejemplo se realizará el mismo análisis tomando tres herramientas distintas: \texttt{solaR}, para poder tomar como referencia el paquete del que sale para poder apreciar las mejoras del programa, \texttt{PVSyst}, ya que es uno de los softwares más usados en el ámbito de la fotovoltaica y puede servir como punto de referencia, y por último \texttt{solaR2}.
 
 \section{\texttt{solaR}}
-\label{sec:orgb32ec47}
+\label{sec:org48f705f}
+\label{sec:solaR}
 Se empieza inicilizando el paquete:
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
 library(solaR)
 \end{lstlisting}
 
 El estudio antes mencionado recopila medias mensuales de la irradiación global incidente en un ángulo de inclinación y azimutal de 30º y 19ºE, respectivamente. Tanto \texttt{solaR} como \texttt{solaR2} emplean datos de irradiación pero en el plano horizontal, por lo que se empleará una proporción para obtener estos datos.
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
 ### Datos del estudio
 ## Valores de la columna PIR_ave
 Gef_pir <- c(102.5, 106.2, 150.0, 156.8, 211.6, 217.7,
@@ -24,19 +25,13 @@ Gef_pir <- c(102.5, 106.2, 150.0, 156.8, 211.6, 217.7,
 Gef_crc <- c(102.7, 104.6, 147.0, 157.9, 203.2, 207.7,
              219.8, 214.7, 176.1, 126.5, 109.1, 98.1)
 
-## Se obtiene la media de los valores
+## Se obtiene la media de los valores en Wh/m2
 Gef_estudio <- mapply(function(x, y) (x+y)/2,
                       Gef_pir, Gef_crc)
-print(Gef_estudio)
+show(Gef_estudio)
 \end{lstlisting}
-
-\begin{verbatim}
-[1] 102.60 105.40 148.50 157.35 207.40 212.70 219.65 219.40 178.55 125.45 109.65  97.20
-\end{verbatim}
-
-
 Con estos datos se va a calcular un objeto \texttt{Gef} tomando como datos de irradiación horizontal los obtenidos anteriormente, de esta manera se puede obtener una relación entre irradiación incidente y horizonal.
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
 gef_estudio <- calcGef(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
                        dataRad = list(G0dm = Gef_estudio, year = 2013),
                        beta = 30, alfa = -19,
@@ -44,14 +39,8 @@ gef_estudio <- calcGef(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
 gefdm <- as.data.frameM(gef_estudio, complete = TRUE)
 gefgo <- with(gefdm, Gefd/G0d)
 G0_estudio <- Gef_estudio*gefgo
-print(G0_estudio)
+G0_estudio
 \end{lstlisting}
-
-\begin{verbatim}
- [1]  94.66548  96.09844 134.79220 142.08586 187.03553 191.60740 198.01539 198.35401 162.03355
-[10] 114.38822 101.08676  90.16601
-\end{verbatim}
-
 
 Una vez se tienen estos datos, se puede calcular la producción que van a tener los diferentes sistemas fotovoltaicos.
 
@@ -59,9 +48,8 @@ Para ello, se necesitan los parámetros de los diferentes sistemas. En la tabla 
 \begin{center}
 {\scriptsize }%
 \begin{table}[]
-{\scriptsize \caption{Parámetros técnicos de diferentes tipos de células solares.\label{tab:parametros-tecnicos-modulos-fotovoltaicos}}
-}{\scriptsize \par}
-\centering{}{\scriptsize }\begin{tabular}{>{\centering}m{4cm} *{6}{>{\centering}m{1.5cm}}}
+{\scriptsize \caption{Parámetros técnicos de diferentes tipos de células solares.\label{tab:parametros-tecnicos-modulos-fotovoltaicos}}}
+\centering{}{\scriptsize }\begin{tabular}{>{\centering}m{4.2cm} *{6}{>{\centering}m{1.48cm}}}
 \toprule 
 {\scriptsize \textbf{Parámetros Técnicos}} & {\scriptsize \textbf{mc-Si}} & {\scriptsize \textbf{pc-Si}} & {\scriptsize \textbf{a-Si/$\mu$c-Si}} & {\scriptsize \textbf{CdTe/Cds}} & {\scriptsize \textbf{CIS}} & {\scriptsize \textbf{mc-dc-Si}}\tabularnewline
 \midrule
@@ -81,7 +69,7 @@ Para ello, se necesitan los parámetros de los diferentes sistemas. En la tabla 
 \end{center}
 Se almacena esta información en listas con la información de cada módulo.
 
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
 ## mc-Si
 module1 <- list(Vocn = 37.1,
                 Iscn = 8.76,
@@ -129,9 +117,8 @@ module6 <- list(Vocn = 65.3,
 Una vez se tiene la información de cada tipo de módulo, en la tabla \ref{tab:sistemas-fotovoltaicos} se pueden ver la información de la agrupación de cada sistema.
 \begin{center}
 {\footnotesize }%
-\begin{table}[]
+\begin{table}
 {\scriptsize \caption{Sistemas fotovoltaicos.\label{tab:sistemas-fotovoltaicos}}}
-%% {\scriptsize \par}
 \centering{}{\scriptsize }\begin{tabular}{*{7}{>{\centering}m{1.85cm}}}
 \toprule 
 {\scriptsize \textbf{Sistema}} & {\scriptsize \textbf{Tecnología}} & {\scriptsize \textbf{Año de Fabricación}} & {\scriptsize \textbf{Módulos en Serie}} & {\scriptsize \textbf{Módulos en Paralelo}} & {\scriptsize \textbf{Potencia del Sistema STC ($Wp_{STC}$)}} & {\scriptsize \textbf{Tamaño ($m^2$)}}\tabularnewline
@@ -148,7 +135,7 @@ Una vez se tiene la información de cada tipo de módulo, en la tabla \ref{tab:s
 \end{center}
 De la misma manera, se almacenará esta información en listas.
 
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
 ## mc-Si
 generator1 <- list(Nms = 5, Nmp = 1)
 ## pc-Si
@@ -163,16 +150,147 @@ generator5 <- list(Nms = 8, Nmp = 2)
 generator6 <- list(Nms = 4, Nmp = 1)
 \end{lstlisting}
 
+Una vez se tienen todos los parémtros del sistema fotovoltaico, se requieren los parámetros del inversor que tienen estos sistemas. Para facilitar el estudio, en el artículo explican que se usa el mismo inversor para todos los sistemas. Los parámetros de este se pueden ver en la tabla \ref{tab:caracteristicas-inversor}. 
+\begin{center}
+{\footnotesize }%
+\begin{table}
+{\scriptsize \caption{Carácteristicas del inversor.\label{tab:caracteristicas-inversor}}}
+\centering{}{\scriptsize }\begin{tabular}{*{2}{>{\centering}m{5cm}}}
+\toprule 
+{\scriptsize \textbf{Inversor}} & {\scriptsize \textbf{SMA Sunny Boy-1200}} \tabularnewline
+\midrule
+{\scriptsize Potencia máxima DC} & {\scriptsize 1320 W} \tabularnewline
+{\scriptsize Corriente máxima DC} & {\scriptsize 12.6 A} \tabularnewline
+{\scriptsize Tensión máxima DC} & {\scriptsize 400 V} \tabularnewline
+{\scriptsize Rango de tensión fotovoltaica (mpp)} & {\scriptsize 100-320 V} \tabularnewline
+{\scriptsize Potencia máxima DC} & {\scriptsize 1320 W} \tabularnewline
+{\scriptsize Potencia nominal de salida} & {\scriptsize 1200 W} \tabularnewline
+{\scriptsize Maxima potencia aparente} & {\scriptsize 1200 VA} \tabularnewline
+{\scriptsize Corriente máxima AC} & {\scriptsize 6.1 A}\tabularnewline
+{\scriptsize Eficiencia} & {\scriptsize 92.1\%} \tabularnewline
+\bottomrule
+\end{tabular}
+\end{table}
+\end{center}
+
+Se almacena esta información en otra lista:
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
+inverter <- list(Pinv = 1200,
+                 Vmin = 100,
+                 Vmax = 320)
+\end{lstlisting}
+
+Una vez recopilada toda la información (la información que falta se deja sin añadir para que el propio paquete añada sus valores por defecto), se puede calcular la producción que tuvieron los sistemas:
+
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
+prod1 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
+                  dataRad = list(G0dm = G0_estudio, year = 2013),
+                  beta = 30, alfa = -19, iS = 1,
+                  module = module1, generator = generator1,
+                  inverter = inverter)
+show(prod1)
+\end{lstlisting}
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
+prod2 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
+                  dataRad = list(G0dm = G0_estudio, year = 2013),
+                  beta = 30, alfa = -19, iS = 1,
+                  module = module2, generator = generator2,
+                  inverter = inverter)
+show(prod2)
+\end{lstlisting}
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
+prod3 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
+                  dataRad = list(G0dm = G0_estudio, year = 2013),
+                  beta = 30, alfa = -19, iS = 1,
+                  module = module3, generator = generator3,
+                  inverter = inverter)
+show(prod3)
+\end{lstlisting}
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
+prod4 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
+                  dataRad = list(G0dm = G0_estudio, year = 2013),
+                  beta = 30, alfa = -19, iS = 1,
+                  module = module4, generator = generator4,
+                  inverter = inverter)
+show(prod4)
+\end{lstlisting}
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
+prod5 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
+                  dataRad = list(G0dm = G0_estudio, year = 2013),
+                  beta = 30, alfa = -19, iS = 1,
+                  module = module5, generator = generator5,
+                  inverter = inverter)
+show(prod1)
+\end{lstlisting}
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
+prod6 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
+                  dataRad = list(G0dm = G0_estudio, year = 2013),
+                  beta = 30, alfa = -19, iS = 1,
+                  module = module6, generator = generator6,
+                  inverter = inverter)
+show(prod6)
+\end{lstlisting}
 \section{\texttt{PVsyst}}
-\label{sec:org85a1444}
+\label{sec:orgdedd277}
 
 \ldots{}
 
 
 \section{\texttt{solaR2}}
-\label{sec:org86393b1}
-
-\ldots{}
+\label{sec:org92d3b35}
+\label{sec:solaR2}
+Con los datos obtenidos en la sección \ref{sec:solaR}, hacemos la misma operación pero con el paquete \texttt{solaR2}.
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
+library(solaR2)
+\end{lstlisting}
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
+prod1 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
+                  dataRad = list(G0dm = G0_estudio, year = 2013),
+                  beta = 30, alfa = -19, iS = 1,
+                  module = module1, generator = generator1,
+                  inverter = inverter)
+show(prod1)
+\end{lstlisting}
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
+prod2 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
+                  dataRad = list(G0dm = G0_estudio, year = 2013),
+                  beta = 30, alfa = -19, iS = 1,
+                  module = module2, generator = generator2,
+                  inverter = inverter)
+show(prod2)
+\end{lstlisting}
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
+prod3 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
+                  dataRad = list(G0dm = G0_estudio, year = 2013),
+                  beta = 30, alfa = -19, iS = 1,
+                  module = module3, generator = generator3,
+                  inverter = inverter)
+show(prod3)
+\end{lstlisting}
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
+prod4 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
+                  dataRad = list(G0dm = G0_estudio, year = 2013),
+                  beta = 30, alfa = -19, iS = 1,
+                  module = module4, generator = generator4,
+                  inverter = inverter)
+show(prod4)
+\end{lstlisting}
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
+prod5 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
+                  dataRad = list(G0dm = G0_estudio, year = 2013),
+                  beta = 30, alfa = -19, iS = 1,
+                  module = module5, generator = generator5,
+                  inverter = inverter)
+show(prod1)
+\end{lstlisting}
+\begin{lstlisting}[language=r,label= ,caption= ,captionpos=b,numbers=none]
+prod6 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
+                  dataRad = list(G0dm = G0_estudio, year = 2013),
+                  beta = 30, alfa = -19, iS = 1,
+                  module = module6, generator = generator6,
+                  inverter = inverter)
+show(prod6)
+\end{lstlisting}
 
 \section{Comparación entre los tres}
-\label{sec:orgb85f81f}
+\label{sec:org9cda98f}

@@ -8,6 +8,7 @@ Se tomará de base un estudio realizado por profesores de la escuela cite:adrada
 En este ejemplo se realizará el mismo análisis tomando tres herramientas distintas: =solaR=, para poder tomar como referencia el paquete del que sale para poder apreciar las mejoras del programa, =PVSyst=, ya que es uno de los softwares más usados en el ámbito de la fotovoltaica y puede servir como punto de referencia, y por último =solaR2=.
 
 * =solaR=
+label:sec:solaR
 Se empieza inicilizando el paquete:
 #+begin_src R :session solaR
   library(solaR)
@@ -15,30 +16,30 @@ Se empieza inicilizando el paquete:
 
 El estudio antes mencionado recopila medias mensuales de la irradiación global incidente en un ángulo de inclinación y azimutal de 30º y 19ºE, respectivamente. Tanto =solaR= como =solaR2= emplean datos de irradiación pero en el plano horizontal, por lo que se empleará una proporción para obtener estos datos.
 #+begin_src R :session solaR
-### Datos del estudio
-## Valores de la columna PIR_ave
-Gef_pir <- c(102.5, 106.2, 150.0, 156.8, 211.6, 217.7,
-             219.5, 224.1, 181.0, 124.4, 110.2, 96.3)
+  ### Datos del estudio
+  ## Valores de la columna PIR_ave
+  Gef_pir <- c(102.5, 106.2, 150.0, 156.8, 211.6, 217.7,
+	       219.5, 224.1, 181.0, 124.4, 110.2, 96.3)
 
-## Valores de la columna CRC_ave
-Gef_crc <- c(102.7, 104.6, 147.0, 157.9, 203.2, 207.7,
-             219.8, 214.7, 176.1, 126.5, 109.1, 98.1)
+  ## Valores de la columna CRC_ave
+  Gef_crc <- c(102.7, 104.6, 147.0, 157.9, 203.2, 207.7,
+	       219.8, 214.7, 176.1, 126.5, 109.1, 98.1)
 
-## Se obtiene la media de los valores
-Gef_estudio <- mapply(function(x, y) (x+y)/2,
-                      Gef_pir, Gef_crc)
-print(Gef_estudio)
+  ## Se obtiene la media de los valores en Wh/m2
+  Gef_estudio <- mapply(function(x, y) (x+y)/2,
+			Gef_pir, Gef_crc)
+  show(Gef_estudio)
 #+end_src
 Con estos datos se va a calcular un objeto =Gef= tomando como datos de irradiación horizontal los obtenidos anteriormente, de esta manera se puede obtener una relación entre irradiación incidente y horizonal.
 #+begin_src R :session solaR
-gef_estudio <- calcGef(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
-                       dataRad = list(G0dm = Gef_estudio, year = 2013),
-                       beta = 30, alfa = -19,
-                       iS = 1, alb = 0.2)
-gefdm <- as.data.frameM(gef_estudio, complete = TRUE)
-gefgo <- with(gefdm, Gefd/G0d)
-G0_estudio <- Gef_estudio*gefgo
-print(G0_estudio)
+  gef_estudio <- calcGef(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
+			 dataRad = list(G0dm = Gef_estudio, year = 2013),
+			 beta = 30, alfa = -19,
+			 iS = 1, alb = 0.2)
+  gefdm <- as.data.frameM(gef_estudio, complete = TRUE)
+  gefgo <- with(gefdm, Gefd/G0d)
+  G0_estudio <- Gef_estudio*gefgo
+  G0_estudio
 #+end_src
 
 Una vez se tienen estos datos, se puede calcular la producción que van a tener los diferentes sistemas fotovoltaicos.
@@ -49,7 +50,7 @@ Para ello, se necesitan los parámetros de los diferentes sistemas. En la tabla 
 {\scriptsize }%
 \begin{table}[]
 {\scriptsize \caption{Parámetros técnicos de diferentes tipos de células solares.\label{tab:parametros-tecnicos-modulos-fotovoltaicos}}}
-\centering{}{\scriptsize }\begin{tabular}{>{\centering}m{4cm} *{6}{>{\centering}m{1.5cm}}}
+\centering{}{\scriptsize }\begin{tabular}{>{\centering}m{4.2cm} *{6}{>{\centering}m{1.48cm}}}
 \toprule 
 {\scriptsize \textbf{Parámetros Técnicos}} & {\scriptsize \textbf{mc-Si}} & {\scriptsize \textbf{pc-Si}} & {\scriptsize \textbf{a-Si/$\mu$c-Si}} & {\scriptsize \textbf{CdTe/Cds}} & {\scriptsize \textbf{CIS}} & {\scriptsize \textbf{mc-dc-Si}}\tabularnewline
 \midrule
@@ -153,13 +154,156 @@ generator5 <- list(Nms = 8, Nmp = 2)
 generator6 <- list(Nms = 4, Nmp = 1)
 #+end_src
 
+Una vez se tienen todos los parémtros del sistema fotovoltaico, se requieren los parámetros del inversor que tienen estos sistemas. Para facilitar el estudio, en el artículo explican que se usa el mismo inversor para todos los sistemas. Los parámetros de este se pueden ver en la tabla ref:tab:caracteristicas-inversor. 
+#+begin_export latex
+\begin{center}
+{\footnotesize }%
+\begin{table}
+{\scriptsize \caption{Carácteristicas del inversor.\label{tab:caracteristicas-inversor}}}
+\centering{}{\scriptsize }\begin{tabular}{*{2}{>{\centering}m{5cm}}}
+\toprule 
+{\scriptsize \textbf{Inversor}} & {\scriptsize \textbf{SMA Sunny Boy-1200}} \tabularnewline
+\midrule
+{\scriptsize Potencia máxima DC} & {\scriptsize 1320 W} \tabularnewline
+{\scriptsize Corriente máxima DC} & {\scriptsize 12.6 A} \tabularnewline
+{\scriptsize Tensión máxima DC} & {\scriptsize 400 V} \tabularnewline
+{\scriptsize Rango de tensión fotovoltaica (mpp)} & {\scriptsize 100-320 V} \tabularnewline
+{\scriptsize Potencia máxima DC} & {\scriptsize 1320 W} \tabularnewline
+{\scriptsize Potencia nominal de salida} & {\scriptsize 1200 W} \tabularnewline
+{\scriptsize Maxima potencia aparente} & {\scriptsize 1200 VA} \tabularnewline
+{\scriptsize Corriente máxima AC} & {\scriptsize 6.1 A}\tabularnewline
+{\scriptsize Eficiencia} & {\scriptsize 92.1\%} \tabularnewline
+\bottomrule
+\end{tabular}
+\end{table}
+\end{center}
+#+end_export
+
+Se almacena esta información en otra lista:
+#+begin_src R :session solaR
+  inverter <- list(Pinv = 1200,
+		   Vmin = 100,
+		   Vmax = 320)
+#+end_src
+
+Una vez recopilada toda la información (la información que falta se deja sin añadir para que el propio paquete añada sus valores por defecto), se puede calcular la producción que tuvieron los sistemas:
+
+#+begin_src R :session solaR
+  prod1 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
+		    dataRad = list(G0dm = G0_estudio, year = 2013),
+		    beta = 30, alfa = -19, iS = 1,
+		    module = module1, generator = generator1,
+		    inverter = inverter)
+  show(prod1)
+#+end_src
+#+begin_src R :session solaR
+  prod2 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
+		    dataRad = list(G0dm = G0_estudio, year = 2013),
+		    beta = 30, alfa = -19, iS = 1,
+		    module = module2, generator = generator2,
+		    inverter = inverter)
+  show(prod2)
+#+end_src
+#+begin_src R :session solaR
+  prod3 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
+		    dataRad = list(G0dm = G0_estudio, year = 2013),
+		    beta = 30, alfa = -19, iS = 1,
+		    module = module3, generator = generator3,
+		    inverter = inverter)
+  show(prod3)
+#+end_src
+#+begin_src R :session solaR
+  prod4 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
+		    dataRad = list(G0dm = G0_estudio, year = 2013),
+		    beta = 30, alfa = -19, iS = 1,
+		    module = module4, generator = generator4,
+		    inverter = inverter)
+  show(prod4)
+#+end_src
+#+begin_src R :session solaR
+  prod5 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
+		    dataRad = list(G0dm = G0_estudio, year = 2013),
+		    beta = 30, alfa = -19, iS = 1,
+		    module = module5, generator = generator5,
+		    inverter = inverter)
+  show(prod1)
+#+end_src
+#+begin_src R :session solaR
+  prod6 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
+		    dataRad = list(G0dm = G0_estudio, year = 2013),
+		    beta = 30, alfa = -19, iS = 1,
+		    module = module6, generator = generator6,
+		    inverter = inverter)
+  show(prod6)
+#+end_src
 * =PVsyst=
 
 ...
 
 
 * =solaR2=
-
-...
+label:sec:solaR2
+Con los datos obtenidos en la sección ref:sec:solaR, hacemos la misma operación pero con el paquete =solaR2=.
+#+begin_src R :session solaR :exports none
+  save(G0_estudio, module1, module2, module3,
+       module4, module5, module6, generator1,
+       generator2, generator3, generator4,
+       generator5, generator6, inverter,
+       file = 'TFG/data/ejemplos.RData')
+#+end_src
+#+begin_src R :session solaR2
+  library(solaR2)
+#+end_src
+#+begin_src R :session solaR2 :exports none
+  load('TFG/data/ejemplos.RData')
+#+end_src
+#+begin_src R :session solaR2
+  prod1 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
+		    dataRad = list(G0dm = G0_estudio, year = 2013),
+		    beta = 30, alfa = -19, iS = 1,
+		    module = module1, generator = generator1,
+		    inverter = inverter)
+  show(prod1)
+#+end_src
+#+begin_src R :session solaR2
+  prod2 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
+		    dataRad = list(G0dm = G0_estudio, year = 2013),
+		    beta = 30, alfa = -19, iS = 1,
+		    module = module2, generator = generator2,
+		    inverter = inverter)
+  show(prod2)
+#+end_src
+#+begin_src R :session solaR2
+  prod3 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
+		    dataRad = list(G0dm = G0_estudio, year = 2013),
+		    beta = 30, alfa = -19, iS = 1,
+		    module = module3, generator = generator3,
+		    inverter = inverter)
+  show(prod3)
+#+end_src
+#+begin_src R :session solaR2
+  prod4 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
+		    dataRad = list(G0dm = G0_estudio, year = 2013),
+		    beta = 30, alfa = -19, iS = 1,
+		    module = module4, generator = generator4,
+		    inverter = inverter)
+  show(prod4)
+#+end_src
+#+begin_src R :session solaR2
+  prod5 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
+		    dataRad = list(G0dm = G0_estudio, year = 2013),
+		    beta = 30, alfa = -19, iS = 1,
+		    module = module5, generator = generator5,
+		    inverter = inverter)
+  show(prod1)
+#+end_src
+#+begin_src R :session solaR2
+  prod6 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
+		    dataRad = list(G0dm = G0_estudio, year = 2013),
+		    beta = 30, alfa = -19, iS = 1,
+		    module = module6, generator = generator6,
+		    inverter = inverter)
+  show(prod6)
+#+end_src
 
 * Comparación entre los tres 
