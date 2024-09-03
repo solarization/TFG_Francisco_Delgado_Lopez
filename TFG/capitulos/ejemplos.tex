@@ -7,52 +7,35 @@ Se tomará de base un estudio realizado por profesores de la escuela \cite{adrad
 En este ejemplo se realizará el mismo análisis tomando tres herramientas distintas: \texttt{solaR}, para poder tomar como referencia el paquete del que sale para poder apreciar las mejoras del programa, \texttt{PVSyst}, ya que es uno de los softwares más usados en el ámbito de la fotovoltaica y puede servir como punto de referencia, y por último \texttt{solaR2}.
 
 \section{\texttt{solaR}}
-\label{sec:org0f6ccb3}
+\label{sec:org0300040}
 \label{sec:solaR}
 Se empieza inicilizando el paquete:
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 library(solaR)
 \end{lstlisting}
 
-El estudio antes mencionado recopila medias mensuales de la irradiación global incidente en un ángulo de inclinación y azimutal de 30º y 19ºE, respectivamente. Tanto \texttt{solaR} como \texttt{solaR2} emplean datos de irradiación pero en el plano horizontal, por lo que se empleará una proporción para obtener estos datos.
+En el estudio anterior, se recopilaron datos intradiarios de irradiación los cuales fueron almacenados en archivos.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-### Datos del estudio
-## Valores de la columna PIR_ave
-Gef_pir <- c(102.5, 106.2, 150.0, 156.8, 211.6, 217.7,
-             219.5, 224.1, 181.0, 124.4, 110.2, 96.3)
-
-## Valores de la columna CRC_ave
-Gef_crc <- c(102.7, 104.6, 147.0, 157.9, 203.2, 207.7,
-             219.8, 214.7, 176.1, 126.5, 109.1, 98.1)
-
-## Se obtiene la media de los valores en Wh/m2
-Gef_estudio <- mapply(function(x, y) (x+y)/2,
-                      Gef_pir, Gef_crc)
-show(Gef_estudio)
+enemar13 <- readBDi(file = 'TFG/data/ETSIDI/etsidi/EneMar2013_1.csv',
+                    lat = 40.4, time.col = 'Fecha')
+show(enemar13)
 \end{lstlisting}
 
 \begin{verbatim}
-[1] 102.60 105.40 148.50 157.35 207.40 212.70 219.65 219.40 178.55 125.45 109.65  97.20
+Object of class  Meteo 
+
+Source of meteorological information: bdI-TFG/data/ETSIDI/etsidi/EneMar2013_1.csv 
+Latitude of source:  40.4 degrees
+
+Meteorological Data:
+     Index                              G0              Ta        
+ Min.   :2013-01-24 00:15:00.00   Min.   :  0.0   Min.   :-33.80  
+ 1st Qu.:2013-02-09 18:00:00.00   1st Qu.: 13.0   1st Qu.:  9.50  
+ Median :2013-02-26 11:15:00.00   Median : 13.0   Median : 12.20  
+ Mean   :2013-02-26 11:19:20.84   Mean   :113.2   Mean   : 11.97  
+ 3rd Qu.:2013-03-15 04:30:00.00   3rd Qu.:135.0   3rd Qu.: 14.40  
+ Max.   :2013-03-31 23:45:00.00   Max.   :755.0   Max.   : 64.50
 \end{verbatim}
-
-
-Con estos datos se va a calcular un objeto \texttt{Gef} tomando como datos de irradiación horizontal los obtenidos anteriormente, de esta manera se puede obtener una relación entre irradiación incidente y horizonal.
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-gef_estudio <- calcGef(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
-                       dataRad = list(G0dm = Gef_estudio, year = 2013),
-                       beta = 30, alfa = -19,
-                       iS = 1, alb = 0.2)
-gefdm <- as.data.frameM(gef_estudio, complete = TRUE)
-gefgo <- with(gefdm, Gefd/G0d)
-G0_estudio <- Gef_estudio*gefgo
-G0_estudio
-\end{lstlisting}
-
-\begin{verbatim}
- [1]  94.66548  96.09844 134.79220 142.08586 187.03553 191.60740 198.01539 198.35401 162.03355
-[10] 114.38822 101.08676  90.16601
-\end{verbatim}
-
 
 Una vez se tienen estos datos, se puede calcular la producción que van a tener los diferentes sistemas fotovoltaicos.
 
@@ -87,6 +70,8 @@ module1 <- list(Vocn = 37.1,
                 Iscn = 8.76,
                 Vmn = 29.9,
                 Imn = 8.37,
+                Ncs = 60,
+                Ncp = 1,
                 CoefVT = 0.00338,
                 TONC = 43.7)
 ## pc-Si
@@ -94,6 +79,8 @@ module2 <- list(Vocn = 36.5,
                 Iscn = 8.15,
                 Vmn = 29,
                 Imn = 7.59,
+                Ncs = 60,
+                Ncp = 1,
                 CoefVT = 0.0037,
                 TONC = 46)
 \end{lstlisting}
@@ -155,8 +142,8 @@ inverter <- list(Pinv = 1200,
 Una vez recopilada toda la información (la información que falta se deja sin añadir para que el propio paquete añada sus valores por defecto), se puede calcular la producción que tuvieron los sistemas:
 
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-prod1 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
-                  dataRad = list(G0dm = G0_estudio, year = 2013),
+prod1 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
+                  dataRad = enemar13,
                   beta = 30, alfa = -19, iS = 1,
                   module = module1, generator = generator1,
                   inverter = inverter)
@@ -166,29 +153,20 @@ show(prod1)
 \begin{verbatim}
 Object of class  ProdGCPV 
 
-Source of meteorological information: prom- 
+Source of meteorological information: bdI-TFG/data/ETSIDI/etsidi/EneMar2013_1.csv 
 
 Latitude of source:  40.4 degrees
 Latitude for calculations:  40.4 degrees
 
 Monthly averages:
-                  Eac        Edc         Yf
-ene. 2013 0.000000000 0.00000000 0.00000000
-feb. 2013 0.000000000 0.00000000 0.00000000
-mar. 2013 0.000000000 0.00000000 0.00000000
-abr. 2013 0.000000000 0.00000000 0.00000000
-may. 2013 0.000000000 0.00000000 0.00000000
-jun. 2013 0.000000000 0.00000000 0.00000000
-jul. 2013 0.009613741 0.02216007 0.00768291
-ago. 2013 0.032013331 0.06983410 0.02558375
-sep. 2013 0.000000000 0.00000000 0.00000000
-oct. 2013 0.000000000 0.00000000 0.00000000
-nov. 2013 0.000000000 0.00000000 0.00000000
-dic. 2013 0.000000000 0.00000000 0.00000000
+               Eac      Edc       Yf
+ene. 2013 2.288657 2.544214 1.829001
+feb. 2013 2.912867 3.246235 2.327844
+mar. 2013 2.642931 2.958194 2.112123
 
 Yearly values:
           Eac      Edc       Yf
-2013 1.290439 2.851819 1.031266
+2013 181.8004 202.9523 145.2875
 -----------------
 Mode of tracking:  fixed 
     Inclination:  30 
@@ -201,8 +179,8 @@ Generator:
 \end{verbatim}
 
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-prod2 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
-                  dataRad = list(G0dm = G0_estudio, year = 2013),
+prod2 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
+                  dataRad = enemar13,
                   beta = 30, alfa = -19, iS = 1,
                   module = module2, generator = generator2,
                   inverter = inverter)
@@ -212,29 +190,20 @@ show(prod2)
 \begin{verbatim}
 Object of class  ProdGCPV 
 
-Source of meteorological information: prom- 
+Source of meteorological information: bdI-TFG/data/ETSIDI/etsidi/EneMar2013_1.csv 
 
 Latitude of source:  40.4 degrees
 Latitude for calculations:  40.4 degrees
 
 Monthly averages:
-                  Eac        Edc          Yf
-ene. 2013 0.000000000 0.00000000 0.000000000
-feb. 2013 0.000000000 0.00000000 0.000000000
-mar. 2013 0.000000000 0.00000000 0.000000000
-abr. 2013 0.000000000 0.00000000 0.000000000
-may. 2013 0.000000000 0.00000000 0.000000000
-jun. 2013 0.000000000 0.00000000 0.000000000
-jul. 2013 0.007712197 0.02014982 0.007007584
-ago. 2013 0.026013451 0.06349067 0.023636773
-sep. 2013 0.000000000 0.00000000 0.000000000
-oct. 2013 0.000000000 0.00000000 0.000000000
-nov. 2013 0.000000000 0.00000000 0.000000000
-dic. 2013 0.000000000 0.00000000 0.000000000
+               Eac      Edc       Yf
+ene. 2013 1.995563 2.219924 1.813242
+feb. 2013 2.546910 2.840829 2.314216
+mar. 2013 2.324995 2.608686 2.112576
 
 Yearly values:
-          Eac      Edc        Yf
-2013 1.045495 2.592855 0.9499751
+          Eac      Edc       Yf
+2013 159.3528 178.1718 144.7938
 -----------------
 Mode of tracking:  fixed 
     Inclination:  30 
@@ -247,22 +216,76 @@ Generator:
 \end{verbatim}
 
 \section{\texttt{PVsyst}}
-\label{sec:org2fbc53f}
+\label{sec:org91ac4f5}
+Con la herramienta \texttt{PVsyst}, se ha generado un año promedio de datos de irradiación en la localización y con estos datos se han obtenido dos informes (uno por cada sistema).
 
-\ldots{}
+Por comodidad, en este documento se van a extraer solo unas tablas con los resultados principales, sin embargo los informes completos están disponibles en el \href{https://github.com/solarization/TFG\_Francisco\_Delgado\_Lopez}{github} del documento.
+
+En las tablas \ref{tab:pvsyst1} y \ref{tab:pvsyst2} se tienen los resultados de la simulación de los sistemas.
+\begin{center}
+{\footnotesize }%
+\begin{table}
+{\scriptsize \caption{Energía media mensual estimada por \texttt{PVSyst} en $KWh$ del sistema 1.\label{tab:pvsyst1}}}
+\centering{}{\scriptsize }\begin{tabular}{*{13}{>{\centering}m{0.75cm}}}
+\toprule 
+{\scriptsize \textbf{Ene}} & {\scriptsize \textbf{Feb}} & {\scriptsize \textbf{Mar}} & {\scriptsize \textbf{Abr}} & {\scriptsize \textbf{May}} & {\scriptsize \textbf{Jun}} & {\scriptsize \textbf{Jul}} & {\scriptsize \textbf{Ago}} & {\scriptsize \textbf{Sep}} & {\scriptsize \textbf{Oct}} & {\scriptsize \textbf{Nov}} & {\scriptsize \textbf{Dic}} & {\scriptsize \textbf{Total}}\tabularnewline
+\midrule
+{\scriptsize 3,7} & {\scriptsize 4,0} & {\scriptsize 5,6} & {\scriptsize 5,3} & {\scriptsize 6,7} & {\scriptsize 6,7} & {\scriptsize 7,9} & {\scriptsize 7,2} & {\scriptsize 6,4} & {\scriptsize 4,8} & {\scriptsize 3,5} & {\scriptsize 3,6} & {\scriptsize 1941,1} \tabularnewline
+\bottomrule
+\end{tabular}
+\end{table}
+\end{center}
+\begin{center}
+{\footnotesize }%
+\begin{table}
+{\scriptsize \caption{Energía media mensual estimada por \texttt{PVSyst} en $KWh$ del sistema 2.\label{tab:pvsyst2}}}
+\centering{}{\scriptsize }\begin{tabular}{*{13}{>{\centering}m{0.75cm}}}
+\toprule 
+{\scriptsize \textbf{Ene}} & {\scriptsize \textbf{Feb}} & {\scriptsize \textbf{Mar}} & {\scriptsize \textbf{Abr}} & {\scriptsize \textbf{May}} & {\scriptsize \textbf{Jun}} & {\scriptsize \textbf{Jul}} & {\scriptsize \textbf{Ago}} & {\scriptsize \textbf{Sep}} & {\scriptsize \textbf{Oct}} & {\scriptsize \textbf{Nov}} & {\scriptsize \textbf{Dic}} & {\scriptsize \textbf{Total}}\tabularnewline
+\midrule
+{\scriptsize 4,3} & {\scriptsize 4,6} & {\scriptsize 6,4} & {\scriptsize 6,1} & {\scriptsize 7,3} & {\scriptsize 7,3} & {\scriptsize 8,3} & {\scriptsize 7,7} & {\scriptsize 6,9} & {\scriptsize 5,4} & {\scriptsize 4,1} & {\scriptsize 4,4} & {\scriptsize 2213,7} \tabularnewline
+\bottomrule
+\end{tabular}
+\end{table}
+\end{center}
+
 
 
 \section{\texttt{solaR2}}
-\label{sec:orga52f088}
+\label{sec:org9ad576d}
 \label{sec:solaR2}
 Con los datos obtenidos en la sección \ref{sec:solaR}, hacemos la misma operación pero con el paquete \texttt{solaR2}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 library(solaR2)
 \end{lstlisting}
 
+Para ello importamos de la misma manera los datos de radiación.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-prod1 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
-                  dataRad = list(G0dm = G0_estudio, year = 2013),
+enemar13 <- readBDi(file = 'TFG/data/ETSIDI/etsidi/EneMar2013_1.csv',
+                    lat = 40.4, dates.col = 'Fecha')
+show(enemar13)
+\end{lstlisting}
+
+\begin{verbatim}
+Object of class  Meteo 
+
+Source of meteorological information: bdI-TFG/data/ETSIDI/etsidi/EneMar2013_1.csv 
+Latitude of source:  40.4 degrees
+
+Meteorological Data:
+     Dates                              G0              Ta        
+ Min.   :2013-01-24 00:15:00.00   Min.   :  0.0   Min.   :-33.80  
+ 1st Qu.:2013-02-09 18:00:00.00   1st Qu.: 13.0   1st Qu.:  9.50  
+ Median :2013-02-26 11:15:00.00   Median : 13.0   Median : 12.20  
+ Mean   :2013-02-26 11:19:20.84   Mean   :113.2   Mean   : 11.97  
+ 3rd Qu.:2013-03-15 04:30:00.00   3rd Qu.:135.0   3rd Qu.: 14.40  
+ Max.   :2013-03-31 23:45:00.00   Max.   :755.0   Max.   : 64.50
+\end{verbatim}
+
+Con estos datos se procede al cálculo de la producción (los datos de los componentes del sistema son los mismos que los realizados en la sección \ref{sec:solaR}).
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+prod1 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
+                  dataRad = enemar13,
                   beta = 30, alfa = -19, iS = 1,
                   module = module1, generator = generator1,
                   inverter = inverter)
@@ -272,31 +295,22 @@ show(prod1)
 \begin{verbatim}
 Object of class  ProdGCPV 
 
-Source of meteorological information: prom- 
+Source of meteorological information: bdI-TFG/data/ETSIDI/etsidi/EneMar2013_1.csv 
 
 Latitude of source:  40.4 degrees
 Latitude for calculations:  40.4 degrees
 
 Monthly avarages:
-        Dates         Eac        Edc         Yf
-       <char>       <num>      <num>      <num>
- 1: Jan. 2013 0.000000000 0.00000000 0.00000000
- 2: Feb. 2013 0.000000000 0.00000000 0.00000000
- 3: Mar. 2013 0.000000000 0.00000000 0.00000000
- 4: Apr. 2013 0.000000000 0.00000000 0.00000000
- 5: May. 2013 0.000000000 0.00000000 0.00000000
- 6: Jun. 2013 0.000000000 0.00000000 0.00000000
- 7: Jul. 2013 0.009613741 0.02216007 0.00768291
- 8: Aug. 2013 0.032013331 0.06983410 0.02558375
- 9: Sep. 2013 0.000000000 0.00000000 0.00000000
-10: Oct. 2013 0.000000000 0.00000000 0.00000000
-11: Nov. 2013 0.000000000 0.00000000 0.00000000
-12: Dec. 2013 0.000000000 0.00000000 0.00000000
+       Dates      Eac      Edc       Yf
+      <char>    <num>    <num>    <num>
+1: Jan. 2013 2.288657 2.544214 1.829001
+2: Feb. 2013 2.912867 3.246235 2.327844
+3: Mar. 2013 2.642931 2.958194 2.112123
 
 Yearly values:
    Dates      Eac      Edc       Yf
    <int>    <num>    <num>    <num>
-1:  2013 1.290439 2.851819 1.031266
+1:  2013 181.8004 202.9523 145.2875
 -----------------
 Mode of tracking:  fixed 
     Inclination:  30 
@@ -309,8 +323,8 @@ Generator:
 \end{verbatim}
 
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-prod2 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'prom',
-                  dataRad = list(G0dm = G0_estudio, year = 2013),
+prod2 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
+                  dataRad = enemar13,
                   beta = 30, alfa = -19, iS = 1,
                   module = module2, generator = generator2,
                   inverter = inverter)
@@ -320,31 +334,22 @@ show(prod2)
 \begin{verbatim}
 Object of class  ProdGCPV 
 
-Source of meteorological information: prom- 
+Source of meteorological information: bdI-TFG/data/ETSIDI/etsidi/EneMar2013_1.csv 
 
 Latitude of source:  40.4 degrees
 Latitude for calculations:  40.4 degrees
 
 Monthly avarages:
-        Dates         Eac        Edc          Yf
-       <char>       <num>      <num>       <num>
- 1: Jan. 2013 0.000000000 0.00000000 0.000000000
- 2: Feb. 2013 0.000000000 0.00000000 0.000000000
- 3: Mar. 2013 0.000000000 0.00000000 0.000000000
- 4: Apr. 2013 0.000000000 0.00000000 0.000000000
- 5: May. 2013 0.000000000 0.00000000 0.000000000
- 6: Jun. 2013 0.000000000 0.00000000 0.000000000
- 7: Jul. 2013 0.007712197 0.02014982 0.007007584
- 8: Aug. 2013 0.026013451 0.06349067 0.023636773
- 9: Sep. 2013 0.000000000 0.00000000 0.000000000
-10: Oct. 2013 0.000000000 0.00000000 0.000000000
-11: Nov. 2013 0.000000000 0.00000000 0.000000000
-12: Dec. 2013 0.000000000 0.00000000 0.000000000
+       Dates      Eac      Edc       Yf
+      <char>    <num>    <num>    <num>
+1: Jan. 2013 1.995563 2.219924 1.813242
+2: Feb. 2013 2.546910 2.840829 2.314216
+3: Mar. 2013 2.324995 2.608686 2.112576
 
 Yearly values:
-   Dates      Eac      Edc        Yf
-   <int>    <num>    <num>     <num>
-1:  2013 1.045495 2.592855 0.9499751
+   Dates      Eac      Edc       Yf
+   <int>    <num>    <num>    <num>
+1:  2013 159.3528 178.1718 144.7938
 -----------------
 Mode of tracking:  fixed 
     Inclination:  30 
@@ -356,5 +361,93 @@ Generator:
     Nominal power (kWp):  1.1
 \end{verbatim}
 
-\section{Comparación entre los tres}
-\label{sec:org8c6ef73}
+\section{Comparación y conclusiones}
+\label{sec:org8d2540f}
+\label{sec:comparacion-conclusiones}
+Como se puede observar en las secciones anteriores, tanto el paquete \texttt{solaR} como el paquete \texttt{solaR2} ofrecen los mismos resultados ya que toman las mismas referencias y estudios para realizar los cáculos. Sin embargo, el paquete \texttt{solaR2}, a parte de la corrección de algunos erores, presenta unas claras ventajas frente a su antecesor. Estas son:
+\begin{itemize}
+\item \textbf{Eficiencia}: al estar basado en \texttt{data.table}, el paquete gana eficiencia en operaciones complejas. Para mostrar esto vamos a utilizar el paquete \texttt{microbenchmark}.
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+## Con el paquete solaR
+library(microbenchmark)
+prodGCPVcustom <- function(){  
+  prod1 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
+                    dataRad = enemar13, beta = 30, alfa =-19,
+                    iS = 1, module = module1,
+                    generator = generator1, inverter = inverter)
+}
+microbenchmark(prodGCPVcustom(), times = 50)
+\end{lstlisting}
+
+\begin{verbatim}
+Unit: milliseconds
+             expr      min       lq     mean   median       uq      max neval
+ prodGCPVcustom() 519.6561 529.6309 537.7213 533.5813 541.5372 588.5352    50
+\end{verbatim}
+
+
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+## Con el paquete solaR2
+library(microbenchmark)
+prodGCPVcustom <- function(){  
+  prod1 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
+                    dataRad = enemar13, beta = 30, alfa =-19,
+                    iS = 1, module = module1,
+                    generator = generator1, inverter = inverter)
+}
+microbenchmark(prodGCPVcustom(), times = 50)
+\end{lstlisting}
+
+\begin{verbatim}
+Unit: milliseconds
+             expr      min      lq     mean   median      uq     max neval
+ prodGCPVcustom() 330.2599 333.759 340.0681 336.0833 340.389 375.635    50
+\end{verbatim}
+
+
+Aquí se puede ver que la eficiencia mejora. Sin embargo, suponiendo que en vez de un sistema fijo, tuvieramos un sistema de seguimiento de doble eje y quisieramos optener la mejor combinación de distancias, se podría utilizar la función \texttt{optimShd}, la cual al ser una tarea muy exigente se aprecia con más detalle las virtudes del paquete \texttt{solaR2} gracias al uso de \texttt{data.table}.
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+## Con el paquete solaR
+struct2x <- list(W = 23.11, L = 9.8, Nrow = 2, Ncol = 3)
+dist2x <- list(Lew = c(30, 45),Lns = c(20, 40))
+optimShdcustom <- function(){  
+  optim <- optimShd(lat = 40.4, modeTrk = 'two', modeRad = 'bdI',
+                    dataRad = enemar13, beta = 30, alfa =-19,
+                    iS = 1, module = module1,
+                    generator = generator1, inverter = inverter,
+                    modeShd = c('area', 'prom'),
+                    distances = dist2x, struct = struct2x,
+                    res = 5, prog = FALSE)
+}
+microbenchmark(optimShdcustom(), times = 20)
+\end{lstlisting}
+
+\begin{verbatim}
+Unit: seconds
+             expr      min       lq     mean   median       uq      max neval
+ optimShdcustom() 6.229458 6.261952 6.297081 6.286866 6.322821 6.456526    20
+\end{verbatim}
+
+
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+## Con el paquete solaR2
+struct2x <- list(W = 23.11, L = 9.8, Nrow = 2, Ncol = 3)
+dist2x <- list(Lew = c(30, 45),Lns = c(20, 40))
+optimShdcustom <- function(){  
+  optim <- optimShd(lat = 40.4, modeTrk = 'two', modeRad = 'bdI',
+                    dataRad = enemar13, beta = 30, alfa =-19,
+                    iS = 1, module = module1,
+                    generator = generator1, inverter = inverter,
+                    modeShd = c('area', 'prom'),
+                    distances = dist2x, struct = struct2x,
+                    res = 5, prog = FALSE)
+}
+microbenchmark(optimShdcustom(), times = 20)
+\end{lstlisting}
+
+\begin{verbatim}
+Unit: seconds
+             expr      min       lq     mean   median       uq      max neval
+ optimShdcustom() 5.037961 5.056003 5.115279 5.089934 5.099124 5.420153    20
+\end{verbatim}
+\end{itemize}
