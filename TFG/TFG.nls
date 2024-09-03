@@ -26,7 +26,12 @@
   \item [{\(FT_R\)}]\begingroup Factor de pérdidas angulares para irradiancia de albedo\nomeqref {3.17}\nompageref{16}
   \item [{\(FT_D\)}]\begingroup Factor de pérdidas angulares para irradiancia difusa\nomeqref {3.17}\nompageref{16}
 \nomgroup{G}
+  \item [{$g$}]\begingroup Aceleración de la gravedad\nomeqref {3.48}\nompageref{23}
   \item [{\(G\)}]\begingroup Radiación global\nomeqref {3.0}\nompageref{12}
+\nomgroup{H}
+  \item [{$H_f$}]\begingroup Altura asociada a las pérdidas de frición en una tubería\nomeqref {3.50}\nompageref{24}
+  \item [{$H_T$}]\begingroup Altura total incluyendo las pérdidas de fricción de la tubería\nomeqref {3.50}\nompageref{24}
+  \item [{$H_v$}]\begingroup Altura vertical aparente\nomeqref {3.48}\nompageref{23}
 \nomgroup{K}
   \item [{\(K_T\)}]\begingroup Índice de claridad\nomeqref {3.3}\nompageref{14}
 \nomgroup{M}
@@ -35,10 +40,17 @@
   \item [{\(\omega\)}]\begingroup Hora solar o tiempo solar verdadero\nomeqref {3.2}\nompageref{13}
   \item [{\(\omega_s\)}]\begingroup Ángulo del amanecer\nomeqref {3.3}\nompageref{13}
 \nomgroup{P}
+  \item [{$P_f$}]\begingroup Pérdidas de frición en la tubería de un sistema de bombeo\nomeqref {3.50}\nompageref{24}
+  \item [{$P_H$}]\begingroup Potencia hidraúlica necesaria en un sistema de bombeo de agua\nomeqref {3.50}\nompageref{24}
+  \item [{$P_H$}]\begingroup Potencia hidráulica\nomeqref {3.48}\nompageref{23}
   \item [{\(\phi\)}]\begingroup Latitud\nomeqref {3.2}\nompageref{13}
+\nomgroup{Q}
+  \item [{$Q$}]\begingroup Caudal de agua\nomeqref {3.48}\nompageref{23}
+  \item [{$Q_t$}]\begingroup Caudal de ensayo de un pozo\nomeqref {3.55}\nompageref{25}
 \nomgroup{R}
   \item [{\(R\)}]\begingroup Radiación del albedo\nomeqref {3.0}\nompageref{11}
   \item [{\(r_D\)}]\begingroup Relación entre la irradiancia y la irradiación difusa en el plano horizontal\nomeqref {3.9}\nompageref{14}
+  \item [{$\rho$}]\begingroup Densidad del agua\nomeqref {3.48}\nompageref{23}
   \item [{\(\rho\)}]\begingroup Coeficiente de reflexión del terreno para la irradiancia de albedo\nomeqref {3.15}\nompageref{16}
 \nomgroup{S}
   \item [{STC}]\begingroup Condiciones estándar de medida de un dispositivo fotovoltaico\nomeqref {3.25}\nompageref{19}
