@@ -7,12 +7,10 @@ En la figura [[fig:prod-calculo]], se muestra un diagrama que resume los pasos q
 #+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio
 [[file:figuras/ProcedimientoCalculoRadiacionInclinada.pdf]]
 Estos pasos son:
-1. Obtener la irradiación global diaria en el plano horizontal
-2. A partir de la irradiación global, obtener las componentes de difusa y directa.
-3. Se trasladan estos valores de irradición a valores de irradiancia.
-4. Con estos valores se pueden obtener los valores correspondientes en el plano del generador
-   1. Sin los efectos de la suciedad de los modulos y las sombras que se generan unos con otros.
-   2. Con estos efectos
+1. Calcular la geometría que define la posición relativa del Sol desde la Tierra.
+2. Obtener la irradiación global diaria en el plano horizontal
+3. A partir de la irradiación global, obtener las componentes de difusa y directa.
+4. Se trasladan estos valores de irradición a valores de irradiancia.
 5. Integrando estos valores se pueden obtener las estimaciones irradiación diaria difusa, directa y global
 6. El generador fotovoltaico produce una potencia en corriente continua dependiente del rendimiento del mismo..
 7. Se transforma en potencia en corriente alterna mediante un inversor que tiene una eficiencia asociada.
@@ -21,7 +19,7 @@ Estos pasos son:
 * Naturaleza de la radiación solar
 label:sec:naturaleza-radiacion-solar
 Para el cálculo de la radiación solar que incide en una superficie se deben distinguir tres componentes diferenciados:
-- *Radiación Directa*, B\nomenclature[B]{\(B\)}{Radiación directa}: porción de radiación que procede en línea recta desde el Sol.
+- *Radiación Directa*, B\nomenclature[B]{\(B\)}{Radiación directa}: fracción de radiación que procede en línea recta desde el Sol.
 - *Radiación Difusa*, D\nomenclature[D]{\(D\)}{Radiación difusa}: fracción de radiación que procede de todo el cielo, excepto del Sol. Son todos aquellos rayos que dispersa la atmósfera.
 - *Radiación del albedo*, R\nomenclature[R]{\(R\)}{Radiación del albedo}: parte de la radiación procedente de la reflexión con el suelo.
 La suma de las tres componentes constituye la denominada radiación global: \nomenclature[G]{\(G\)}{Radiación global}
@@ -35,8 +33,8 @@ Tomando como base el libro antes mencionado [[cite:Perpinan2023]], se describir�
 
 ** Radiación fuera de la atmósfera terrestre
 label:subsec:radiacion-fuera-atmosfera-terrestre
-Lo primero que se menciona en dicho proceso es la obtención de la irradiancia denominda extra-terrestre o extra-atmosférica\nomenclature[B00]{\(B_0(0)\)}{irradiancia extra-atmósferica o extra-terrestre en el plano horizontal}, que es la radiación que llega a la atmósfera, directamente desde el Sol, que no sufre ninguna pérdida por interaccionar con algún medio. Como la relación entre el tamaño de nuesto plenta y la distancia entre el Sol y la Tierra es muy reducida, es posible asumir que el valor de dicha irradiancia es constante, siendo este valor $B_0=1367\frac{W}{m^2}$, según varias mediciones.
-Como la órbita que describe la Tierra alrededor del Sol no es totalmente circular, sino que tiene forma de elipse, para calcular la irradiancia incidente en una superficie tangente a la atmosfera en ua latitud concreta, debemos aplicar un facot de correción de la excentricidad de la elipse:
+Lo primero que se menciona en dicho proceso es la obtención de la irradiancia denominda extra-terrestre o extra-atmosférica\nomenclature[B00]{\(B_0(0)\)}{irradiancia extra-atmósferica o extra-terrestre en el plano horizontal}, que es la radiación que llega a la atmósfera, directamente desde el Sol, que no sufre ninguna pérdida por interaccionar con algún medio. Como la relación entre el tamaño de nuesto planeta y la distancia entre el Sol y la Tierra es muy reducida, es posible asumir que el valor de dicha irradiancia es constante, siendo este valor $B_0=1367\frac{W}{m^2}$, según varias mediciones.
+Como la órbita que describe la Tierra alrededor del Sol no es totalmente circular, sino que tiene forma de elipse, para calcular la irradiancia incidente en una superficie tangente a la atmosfera en ua latitud concreta, debemos aplicar un factor de correción de la excentricidad de la elipse:
 #+begin_export latex
 \begin{equation}
 B_0(0)=B_0\epsilon_0cos\theta_{zs}
@@ -50,6 +48,7 @@ Siendo cada componente:
 
   Donde:
   - Declinación: $\delta =23,45^\circ \cdot sin(\frac{2\pi \cdot (d_n+284)}{365})$ \nomenclature[delta]{\(\delta\)}{Declinación}
+    donde $d_n$ es el dia del año. \nomenclature[dm]{$d_n$}{Día del año}
   - Latitud: \(\phi\) \nomenclature[phi]{\(\phi\)}{Latitud}
   - Hora solar o tiempo solar verdadero: $\omega = 15\cdot (TO-AO-12)+\Delta \lambda +\frac{EoT}{4}$ \nomenclature[omega]{\(\omega\)}{Hora solar o tiempo solar verdadero}
 
@@ -135,7 +134,7 @@ B_d(0)=G_d(0)-D_d(0)
 
 * Radiación en superficies inclinadas
 label:sec:radiacion-superficies-inclinadas
-Dados los valores de irradiación diaria difusa, directa y global en el plano horizontal se puede realizar la transformación al plano inclinado. Para ello, es necesario estimar el perfil de irradiancia correspondiente a cada valor de irradiación. dado que la variación solar durante una hora es baja, podemos suponer que el valor medio de la irradiancia durante esa hora coincide numéricamente con la irradiación horaria. Por otra parte, el análisis de valores /medios/  en /largas/ series temporales ha mostrado que la relación entre la irradiancia y la irradición extra-atmosférica [[cite:Collares-Pereira.Rabl1979]] ([[ref:eq:rel-dif]]):
+Dados los valores de irradiación diaria difusa, directa y global en el plano horizontal se puede realizar la transformación al plano inclinado. Para ello, es necesario estimar el perfil de irradiancia correspondiente a cada valor de irradiación. dado que la variación solar durante una hora es baja, podemos suponer que el valor medio de la irradiancia durante esa hora coincide numéricamente con la irradiación horaria. Por otra parte, el análisis de valores /medios/  en /largas/ series temporales ha mostrado que la relación entre la irradiancia y la irradiación extra-atmosférica [[cite:Collares-Pereira.Rabl1979]] ([[ref:eq:rel-dif]]):
 #+begin_export latex
 \begin{equation}
 r_D=\frac{D(0)}{D_d(0)}=\frac{B_0(0)}{B_{0d}(0)}
@@ -169,13 +168,16 @@ Es importante resaltar que estos perfiles proceden de medias sobre largos perío
 ** Transformación al plano del generador
 label:subsec:transformación-plano-generador
 Una vez otenidos los valores de irradiancia en el plano horizontal, se traspone al plano del generador:
-- *Irradiancia Directa* $B(\beta ,\alpha)$: Ecuación basada en geometríasolar (ángulo zenital) y del generador (ángulo de incidencia).
+- *Irradiancia Directa* $B(\beta ,\alpha)$: Ecuación basada en geometría solar (ángulo zenital) y del generador (ángulo de incidencia).
   #+begin_export latex
   \begin{equation}
   B(\beta ,\alpha)=B(0)\cdot \frac{max(0,cos(\theta_s))}{cos(\theta_{zs})}
   \label{eq:irradiancia-directa-plano-generador}
   \end{equation}
   #+end_export
+  donde:
+  - Ángulo de inclinación: \(\beta\).
+  - Ángulo de orientación: \(\alpha\). \nomenclature[alpha]{\(\alpha\)}{Ángulo de orientación de un sistema fotovoltaico}
 - *Irradiancia Difusa* $D(\beta ,\alpha)$: Utilizando el modelo de cielo anisotrópico [[cite:Perpinan2023]], se distinguen dos componentes de la irradiancia difusa, denominados /circunsolar/ e /isotrópica/. \nomenclature[DI]{\(D^I\)}{Radiación difusa isotrópica} \nomenclature[DC]{\(D^C\)}{Radiación difusa circunsolar}
   #+begin_export latex
   \begin{equation}
@@ -443,9 +445,9 @@ P_{mpp}=I_{mpp}\cdot V_{mpp}
 \end{equation}
 #+end_export
 
-** Cálculo de potencias y energías
+** Cálculo de potencias y energías de un sistema fotovoltaico conectado a la red
 label:subsec:calculo-potencias-energias
-La potencia obtenida en el paso anterior es la de un solo módulo. Para conocer la potencia que va a ser capaz de entregar el generador, se debe tener en cuenta su configuración de módulos en serie y en paralelo.
+La potencia obtenida en el paso anterior es la de un solo módulo. Para conocer la potencia que va a ser capaz de entregar un sfcr, se debe tener en cuenta su configuración de módulos en serie y en paralelo.
 #+begin_export latex
 \begin{equation}
 P_g^*=N_s\cdot N_p\cdot P_m^*
@@ -503,6 +505,10 @@ y la productividad:
 Y_f=\frac{E_{ac}}{P_g^*}
 \end{equation}
 #+end_export  
+
+** Cálculo de potencias y energías de un sistema fovoltaico de bombeo
+
+** Cálculo y optimización de sombras
 
 
 * Footnotes

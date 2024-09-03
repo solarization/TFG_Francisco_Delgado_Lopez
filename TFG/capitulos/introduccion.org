@@ -3,17 +3,17 @@ label:chap:introduccion
 
 * Objetivos
 label:sec:objetivos
-El objetivo principal de este proyecto es el desarrollo de un paquete en R cite:rcoreteam23 con el cual poder realizar estimaciones y representaciones gráficas de la posible generación de una instalación fotovoltaica.
+El objetivo principal de este proyecto es el desarrollo de un paquete en R cite:rcoreteam23 con el cual poder realizar estimaciones y representaciones gráficas de la geometría solar, radiación solar en el plano horizontal y del generador, y el funcionamiento de sistemas fotovoltaicos de conexión a red y de bombeo de agua.
 
 Durante el resto del documento, si fuera necesario, se hará referencia al paquete desarrollado en este proyecto con el nombre solaR2 [CITAR SOLAR2].
 
-El usuario podrá colocar los datos que considere convenientes (desde una base de datos oficial, una base de datos propia... etc.) en cada una de las funciones que ofrece el paquete pudiendo así obtener resultados de la geometría solar, de la radiación horizontal, de la eficaz y hasta de la producción de diferentes tipos de sistemas fotovoltaicos.
+El usuario puede colocar los datos que considere convenientes (desde una base de datos oficial, una base de datos propia... etc.) en cada una de las funciones que ofrece el paquete pudiendo así obtener resultados de la geometría solar, de la radiación horizontal, de la efectiva y hasta de la producción de diferentes tipos de sistemas fotovoltaicos.
 
 El paquete también incluye una serie de funciones que permiten hacer representaciones gráficas de estos resultados con el fin de poder apreciar con más detalle las diferencias entre sistemas y contemplar cual es la mejor opción para el emplazamiento elegido.
 
-Este proyecto toma su origen en el paquete ya existente =solaR= cite:perpinan12 el cual desarrolló el tutor de este proyecto en 2012. Por la antigüedad del código se propuso la idea de renovarlo teniendo en cuenta el paquete en el que basa su funcionamiento. El paquete =solaR= basó su funcionamiento en el paquete =zoo= cite:zeileis05 el cual proporciona una sólida base para trabajar con series temporales. Sin embargo, como base de =solaR2= se optó por el paquete =data.table= cite:barrett24. Este paquete ofrece una extensión de los clásicos =data.frame= de R en los =data.table=, los cuales pueden trabajar rápidamente con enormes cantidades de datos (por ejemplo, 100 GB de RAM).
+Este proyecto toma su origen en el paquete ya existente =solaR= cite:perpinan12 el cual desarrolló el tutor de este proyecto en 2010. Esta versión, la 0.14, tuvo usa serie de actualizaciones, siendo la más reciente la 0.46 (en el 2021). Sin embargo, al ser versiones de un software antiguo se propuso la idea de renovarlo teniendo en cuenta el paquete en el que basa su funcionamiento. El paquete =solaR= basó su funcionamiento en el paquete =zoo= cite:zeileis05 el cual proporciona una sólida base para trabajar con series temporales. Sin embargo, como base de =solaR2= se optó por el paquete =data.table= cite:barrett24. Este paquete ofrece una extensión de los clásicos =data.frame= de R en los =data.table=, los cuales pueden trabajar rápidamente con enormes cantidades de datos (por ejemplo, 100 GB de RAM).
 
-La clave de ambos proyectos es que al estar alojados en R, cualquier usuario puede acceder a ellos de forma gratuita, tan solo necesitas tener instalado R en tu dispositivo.
+La clave de ambos proyectos es que al estar basados en R, cualquier usuario puede acceder a ellos de forma gratuita, tan solo necesitas tener instalado R en tu dispositivo.
 
 Para alojar este proyecto se toman dos vías:
 - =Github= cite:github: Donde se aloja la versión de desarrollo del paquete.
@@ -44,16 +44,18 @@ Este proyecto ha tenido a su vez una serie de objetivos secundarios:
 - Obtener conocimientos teóricos acerca de la radiación solar y de la producción de energía solar mediante sistemas fotovoltaicos y sus diversos tipos.
   Para ello se ha usado en mayor medida el libro "Energía Solar Fotovoltaica" cite:Perpinan2023.
 * Análisis previo de soluciones
-Este proyecto, como ya se ha comentado, es el heredero del paquete =solaR= desarrollado por Oscar Perpiñán. La filosofía de ambos paquetes es la misma y los resultados que dan son muy similares. Sin embargo, lo que les diferencia es el paquete sobre el que construyen sus datos.
+Este proyecto, como ya se ha comentado, es el heredero del paquete =solaR= desarrollado por Oscar Perpiñán. La filosofía de ambos paquetes es la misma y los resultados que dan son muy similares. Sin embargo, lo que les diferencia (a parte de que =solaR2= es más modular, es decir, tiene muchas funciones autónomas que permiten realizar cálculos específicos, en especial de geometría y radiación) es el paquete sobre el que construyen sus datos.
+
 Mientras que =solaR= basa sus clases y métodos en el paquete =zoo=, =solaR2= en el paquete =data.table=. Los dos paquetes pueden trabajar con series temporales, pero, mientras que =zoo= es más eficaz trabajando con series temporales, =data.table= es más eficiente a la hora de trabajar con una cantidad grande de datos, lo cual a la hora de realizar estimaciones muy precisas es beneficioso.
+
 Por otro lado, existen otras soluciones fuera de R:
-1. *PVsyst - Photovoltaic Software*\\
+1. *PVsyst - Photovoltaic Software* cite:pvsyst
    Este software es probablemente el más conocido dentro del ámbito del estudio y la estimación de instalaciones fotovoltaicas. Permite una gran personalización de todos los componentes de la instalación.
-2. *SISIFO*\\
-   Herramienta web diseañda por el *Grupo de Sistemas Fotovoltaicos del Instituto de Energía Solar de la Universidad Politécnica de Madrid*.
-3. *PVGIS*\\
+2. *SISIFO* cite:sisifo
+   Herramienta web diseñada por el *Grupo de Sistemas Fotovoltaicos del Instituto de Energía Solar de la Universidad Politécnica de Madrid*.
+3. *PVGIS* cite:pvgis
    Aplicación web desarrolada por el *European Commission Joint Research Center* desde 2001.
-4. *System Advisor Model*\\
+4. *System Advisor Model* cite:sam
    Desarrollado por el *Laboratorio Nacional de Energías Renovables*, perteneciente al Departamento de energía del gobierno de EE.UU.
 En el capitulo [[ref:chap:ejemplo-practico-aplicacion]] se realizará un ejemplo práctico que compare los resultados entre *PVsyst*, =solaR= y =solaR2=
 * Aspectos técnicos

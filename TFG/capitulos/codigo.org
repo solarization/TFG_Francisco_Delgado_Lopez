@@ -15,9 +15,9 @@ Para calcular la geometría que definen las posiciones de la Tierra y el Sol, =s
 [[file:figuras/calcSol.pdf]]
 
 Como se puede ver en la figura ref:fig:calcSol, =calcSol= funcia gracias a las siguientes funciones:
-- =fSolD=: la cual, a partir de la latitud (\(\phi\)), computa la geometría a nivel diario, es decir, los ángulos y componentes que se pueden calcular en cada día independiente.
+- =fSolD=: la cual, a partir de la latitud (\(\phi\)), calcula la geometría a nivel diario, es decir, los ángulos y componentes que se pueden calcular en cada día independiente.
 
-  estas son:
+  Estas son:
   - Declinación (\(\delta\)): calculada a partir de la función =declination=[fn:1].
   - Excentricidad (\(\epsilon_o\)): obtenida mediante la función =eccentricity=.
   - Ecuación del tiempo (\(EoT\)): obtenida mediante la función =eot=.
@@ -71,12 +71,12 @@ solD_strous <- fSolD(lat = lat, BTd = BTd, method = 'cooper')
 show(solD_strous)
 #+end_src
 - =fSolI=: toma los resultados obtenidos en =fSolD= y calcula la geometría a nivel intradiario, es decir, aquella que se puede calcular en unidades de tiempo menores a los días.
-  estas son:
+  Estas son:
   - La hora solar o tiempo solar verdadero (\(\omega\)): calculada a partir de la función =sunHour=.
   - Los momentos del día en los que es de noche (\(night\)): calculada a partir del resultado anterior y de el ángulo del amanecer (cálculada en =fSolD=)[fn:2].
   - El coseno del ángulo cenital solar (\(cos(\theta_{zs})\)): obtenida a partir de la función =zenith=.
   - La altura solar (\(\gamma_s\)): obtenida a partir del resultado anterior[fn:3].
-  - El ángulo zenital solar (\(\theta_{zs}\)): calculada mediante la función =azimuth=.
+  - El ángulo acimutal solar (\(\theta_{zs}\)): calculada mediante la función =azimuth=.
   - La irradiancia extra-atmosférica (\(B_0(0)\)): calculada mediante el coseno del ángulo cenital, la constante solar (\(B_0\)) y la excentridad (cálculada en =fSolD=) [ecuación ref:eq:irrad_horiz].
 #+begin_src R
 solI <- fSolI(solD = solD[1], sample = 'hour') #Computo solo un día a fin mejorar la visualización
@@ -88,7 +88,7 @@ show(solI)
 solI_nigth <- fSolI(solD = solD[1], sample = 'hour', keep.night = FALSE)
 show(solI_nigth)
 #+end_src
-  A parte, en vez de identificar el intervalo intradiario (con el argumento =sample=), se puede dar directamente la base temporal intradiaria.
+  Aparte, en vez de identificar el intervalo intradiario (con el argumento =sample=), se puede dar directamente la base temporal intradiaria.
 #+begin_src R
 BTi <- fBTi(BTd, sample = 'hour')
 solI_BTi <- fSolI(solD, BTi = BTi)
@@ -100,7 +100,7 @@ solI_EoT <- fSolI(solD = solD, BTi = BTi, EoT = FALSE)
 show(solI_EoT)
 #+end_src
 
-Finalmente, estas dos funciones, como se muestra en la figura ref:fig:calcSol, convergen en la función =calcSol=, dando como resultado un objeto de clase =Sol=. Este objeto muestra un sumario de ambos elementos junto con la latitud de los cálculos.
+Finalmente, estas dos funciones, como se muestra en la figura ref:fig:calcSol, convergen en la función =calcSol=, dando como resultado un objeto de clase =Sol=. Este objeto muestra un resumen de ambos elementos junto con la latitud de los cálculos.
 #+begin_src R
 sol <- calcSol(lat = lat, BTd = BTd, sample = 'hour')
 show(sol)
@@ -184,7 +184,7 @@ Como se puede ver en la figura ref:fig:calcg0, =calcG0= funciona gracias a las s
 #+CAPTION: Cálculo de la radiación incidente en el plano horizontal mediante la función =calcG0=, la cual procesa un objeto clase =Sol= y otro clase =Meteo= mediante las funciones =fCompD= y =fCompI= resultando en un objeto clase =G0=. :label:fig:calcg0
 #+ATTR_LATEX: :width \textwidth :height 0.5\textheight :options keepaspectratio
 file:figuras/calcg0.pdf
-- =fCompD=: La cual computa todas las componentes de la irradiación diaria en una superficie horizontal mediante regresiones entre los parámetros del índice de claridad y la fracción difusa.
+- =fCompD=: La cual calcula todas las componentes de la irradiación diaria en una superficie horizontal mediante regresiones entre los parámetros del índice de claridad y la fracción difusa.
   Para ello se pueden usar varias correlaciones dependiendo del tipo de datos:
   - Mensuales:
   #+begin_src R
@@ -216,7 +216,7 @@ file:figuras/calcg0.pdf
   compD_climedd <- fCompD(sol = sol, G0d = G0d, corr = 'CLIMEDd')
   compD_climedd
   #+end_src
-  También, se puede aportar una función de corrección propia.
+  También, se puede aportar una función de correlación propia.
   #+begin_src R
   f_corrd <- function(sol, G0d){
     ## Función CLIMEDd
@@ -229,13 +229,13 @@ file:figuras/calcg0.pdf
   compD_user <- fCompD(sol = sol, G0d = G0d, corr = 'user', f = f_corrd)
   compD_user
   #+end_src
-  Por último, si =G0d= ya contiene todos los componentes, se puede especifica que no haga ninguna corrección.
+  Por último, si =G0d= ya contiene todos los componentes, se puede especifica que no haga ninguna correlación.
   #+begin_src R
   compD_none <- fCompD(sol = sol, G0d = compD_user, corr = 'none')
   compD_none
   #+end_src
 - =fCompI=: calcula, en base a los valores de irradiación diaria, todas las componentes de irradiancia. Se vale de dos procedimientos en base al tipo de argumentos que toma:
-  - =compD=: Si recibe un =data.table= resultado de =fCompD=, computa las relaciones entre las componentes de irradiancia e irradiación de las componentes de difusa y global, obteniendo con ellas un perfil de irradiancias [ref:sec:radiacion-superficies-inclinadas] (las irradiancias global y difusa salen de estas relaciones, mientras que la directa surge por diferencia entre las dos).
+  - =compD=: Si recibe un =data.table= resultado de =fCompD=, calcula las relaciones entre las componentes de irradiancia e irradiación de las componentes de difusa y global, obteniendo con ellas un perfil de irradiancias [ref:sec:radiacion-superficies-inclinadas] (las irradiancias global y difusa salen de estas relaciones, mientras que la directa surge por diferencia entre las dos).
   #+begin_src R
   sol <- calcSol(lat = 37.2, BTd = fBTd(mode = 'prom'),
 		 sample = 'hour', keep.night = FALSE)
@@ -272,7 +272,7 @@ file:figuras/calcg0.pdf
   compI_user <- fCompI(sol = sol, G0I = G0I, corr = 'user', f = f_corri)
   show(compI_user)
   #+end_src
-  Y además, se puede no añadir corrección.
+  Y además, se puede no añadir correlación.
   #+begin_src R
   G0I <- compI_user
   compI_none <- fCompI(sol = sol, G0I = G0I, corr = 'none')
@@ -280,7 +280,7 @@ file:figuras/calcg0.pdf
   #+end_src
   Por útlimo, esta función incluye un argumento extra, =filterG0= que cuando su valor es =TRUE=, elimina todos aquellos valores de irradiancia que son mayores que la irradiancia extra-atmosfércia (ya que es incoherente que la irradiancia terrestre sea mayor que la extra-terrestre)
 
-Estas dos funciones, como se muestra en la figura ref:fig:calcg0, convergen en la función constructora =calcG0=, dando como resultado un objeto de clase =G0=. Este objeto muestra la media mensual de la irradiación diaria y la irradiación anual. A parte incluye los resultados de =fCompD= y =fCompI= y los objetos =Sol= y =Meteo= de los que parte.
+Estas dos funciones, como se muestra en la figura ref:fig:calcg0, convergen en la función constructora =calcG0=, dando como resultado un objeto de clase =G0=. Este objeto muestra la media mensual de la irradiación diaria y la irradiación anual. Aparte, incluye los resultados de =fCompD= y =fCompI= y los objetos =Sol= y =Meteo= de los que parte.
 
 Como argumento más importante está =modeRad=, el cual selecciona el tipo de datos que introduce el usuario en el argumento =dataRad=. Estos son:
 - Medias mensuales.
@@ -300,13 +300,13 @@ Como argumento más importante está =modeRad=, el cual selecciona el tipo de da
   #+end_src
 - Diarios.
   #+begin_src R
-  bd <- g0_aguiar@G0D
+  bd <- as.data.tableD(g0_aguiar)
   g0_bd <- calcG0(lat, modeRad = 'bd', dataRad = bd)
   show(g0_bd)
   #+end_src
 - Intradiarios
   #+begin_src R
-  bdI <- g0_aguiar@G0I
+  bdI <- as.data.tableI(g0_aguiar)
   g0_bdI <- calcG0(lat, modeRad = 'bdI', dataRad = bdI)
   show(g0_bdI)
   #+end_src
@@ -319,7 +319,7 @@ Como se puede ver en la figura ref:fig:calcgef, =calcGef= funciona gracias a las
 #+CAPTION: Cálculo de la radiación efectiva incidente en el plano del generador mediante la función =calcGef=, la cual emplea la función =fInclin= para el computo de las componentes efectivas, la función =fTheta= que provee a la función anterior los ángulos necesarios para su computo y la función =calcShd= que reprocesa el objeto de clase =Gef= resultante, añadiendole el efecto de las sombras producidas entres módulos. label:fig:calcgef
 #+ATTR_LATEX: :width \textwidth :height 0.5\textheight :options keepaspectratio
 file:figuras/calcgef.pdf
-- =fTheta=: la cual, partiendo del ángulo de inclinación (\(\beta\)) y la orientación (\(\alpha\)), computa el ángulo de inclinación en cada instante (\(\beta\)), el ángulo azimutal (\(\psi_s\)) y el coseno del ángulo de incidencia  de la radiación solar en la superficie (\(cos(\theta_s)\)).
+- =fTheta=: la cual, partiendo del ángulo de inclinación (\(\beta\)) y la orientación (\(\alpha\)), calcula el ángulo de inclinación en cada instante (\(\beta\)), el ángulo azimutal (\(\psi_s\)) y el coseno del ángulo de incidencia  de la radiación solar en la superficie (\(cos(\theta_s)\)).
   Como principal argumento tiene =modeTrk=, el cual determina el sistema de seguimiento que tiene el sistema:
   - =fixed=: para sistemas estáticos.
   #+begin_src R
@@ -354,7 +354,7 @@ file:figuras/calcgef.pdf
   #+end_src
 - =fInclin=: la cual, partiendo del resultado de =fTheta= y de un objeto de clase =G0=, cálcula la irradiancia solar incidente en una superficie inclinada junto con los efectos del ángulo de incidencia y la suciedad para obtener la irradiancia efectiva.
   Como argumentos principales están:
-  - =iS=: permite seleccionar entre 4 valores del 1 al 4 correspondientes al grado de suciedad del módulo. Siendo 1 limpio y 4 alto y basandose en los valores de la tabla ref:tab:coef-perd computa la irradiancia efectiva. Por defecto tiene valor 2 (grado de suciedad bajo).
+  - =iS=: permite seleccionar entre 4 valores del 1 al 4 correspondientes al grado de suciedad del módulo. Siendo 1 limpio y 4 alto y basandose en los valores de la tabla ref:tab:coef-perd calcula la irradiancia efectiva. Por defecto tiene valor 2 (grado de suciedad bajo).
   #+begin_src R
   compI <- calcG0(lat, dataRad = prom, keep.night = FALSE)
   sol <- calcSol(lat, BTi = indexI(compI))
@@ -456,7 +456,7 @@ file:figuras/prodgcpv.pdf
     - =Ncp=: número de células en paralelo dentro del módulo. Por defecto, tiene un valor de 1.
     - =CoefVT=: coeficiente de disminución de la tensión  de cada célula con la temperatura (\(dV_{oc}/dT_c\)). Por defecto, tiene un valor de \(-0.0023 V/^\circ C\).
     - =TONC=: temperatura de operación nominal de célula (\(TONC\)). Por defecto, tiene un valor de \(47^\circ C\).
-  - =generatos=: lista de valores numéricos con la información sobre el generador:
+  - =generator=: lista de valores numéricos con la información sobre el generador:
     - =Nms=: número de módulos en serie. Por defecto, tiene un valor de 12.
     - =Nmp=: número de módulos en paralelo. Por defecto, tiene un valor de 11.
   - =inverter=: lista de valores númericos con la información del inversor DC/AC.
@@ -509,7 +509,7 @@ Como se puede ver en la figura ref:fig:prodpvps, =prodPVPS= funciona gracias a l
 #+CAPTION: Estimación de la producción eléctrica de un SFB mediante la función =prodPVPS=, la cual emplea la función =fPump= para el computo del rendimiento de las diferentes parte de una bomba centrífuga alimentada por un convertidor de frecuencia. label:fig:prodpvps
 #+ATTR_LATEX: :width \textwidth :height 0.5\textheight :options keepaspectratio
 file:figuras/prodpvps.pdf
-- =fPump=: computa el rendimiento de las diferentes partes de una bomba centrífuga alimentada por un convertidor de frecuencia siguiendo las leyes de afinidad. Tiene solo dos argumentos:
+- =fPump=: calcula el rendimiento de las diferentes partes de una bomba centrífuga alimentada por un convertidor de frecuencia siguiendo las leyes de afinidad. Tiene solo dos argumentos:
   - =pump=: lista que contiene los parametros de la bomba que va a ser simulada. Puede ser una fila de =pumpCoef=:
     #+begin_src R
       CoefSP8A44 <- pumpCoef[Qn == 8 & stages == 44]
@@ -553,7 +553,7 @@ file:figuras/prodpvps.pdf
       result = data.table(Q,Pac,Pb,Ph,etam,etab,f)})
     show(SP8A44)
   #+end_src
-  Está función entrega todos estos resultados a =prodPVPS= la cual computa los resultados en base a la potencia del generador a simular, y devuleve un objeto de clase =ProdPVPS=.
+  Está función entrega todos estos resultados a =prodPVPS= la cual calcula los resultados en base a la potencia del generador a simular, y devuleve un objeto de clase =ProdPVPS=.
   #+begin_src R
     prodsfb <- prodPVPS(lat, modeTrk = 'fixed', dataRad = prom,
 			pump = CoefSP8A44, H = 40, Pg = SP8A44$Pac[10])
@@ -566,38 +566,37 @@ Por último, el paquete =solaR2= contiene una función que permite calcular un c
 
 Esta función es =optimShd=, la cual en base a una resolución (determinada por el argumento =res=, el cual, indica el incremento de la secuencia de distancias) obtiene la producción de cada combinación y la plasma en un objeto de clase =Shade=.
 #+begin_src R
-  struct2x <- list(W = 23.11, L = 9.8, Nrow = 2, Ncol = 3)
-  dist2x <- list(Lew = c(30, 45), Lns = c(20, 40))
-  ShdM2x <- optimShd(lat, dataRad = prom, modeTrk = 'two',
-		     modeShd = c('area', 'prom'),
-		     distances = dist2x, struct = struct2x,
-		     res = 5)
-  show(ShdM2x)
-#+end_src
-Además, con el argumento =prog=, podemos indicar si queremos que indique con una barra de progreso el estado de la secuencia.
-
-#+begin_src R
-  structHoriz = list(L = 4.83)
-  distHoriz = list(Lew = structHoriz$L * c(2,5))
-  Shd12HorizBT <- optimShd(lat = lat, dataRad = prom,
-			   modeTrk = 'horiz',
-			   betaLim = 60,
-			   distances = distHoriz, res = 2,
-			   struct = structHoriz,
-			   modeShd = 'bt',
-			   prog = FALSE) #Se quita la barra de progreso
-  show(Shd12HorizBT)
+struct2x <- list(W = 23.11, L = 9.8, Nrow = 2, Ncol = 3)
+dist2x <- list(Lew = c(30, 45), Lns = c(20, 40))
+ShdM2x <- optimShd(lat, dataRad = prom, modeTrk = 'two',
+		   modeShd = c('area', 'prom'),
+		   distances = dist2x, struct = struct2x,
+		   res = 5,
+                   prog = FALSE) #Se quita la barra de progreso
+show(ShdM2x)
 #+end_src
 #+begin_src R
-  structFixed = list(L = 5)
-  distFixed = list(D = structFixed$L*c(1,3))
-  Shd12Fixed <- optimShd(lat = lat, dataRad = prom,
-			 modeTrk = 'fixed',
-			 distances = distFixed, res = 2,
-			 struct = structFixed,
-			 modeShd = 'area',
+structHoriz = list(L = 4.83)
+distHoriz = list(Lew = structHoriz$L * c(2,5))
+Shd12HorizBT <- optimShd(lat = lat, dataRad = prom,
+			 modeTrk = 'horiz',
+			 betaLim = 60,
+			 distances = distHoriz, res = 2,
+			 struct = structHoriz,
+			 modeShd = 'bt',
 			 prog = FALSE) #Se quita la barra de progreso
-  show(Shd12Fixed)
+show(Shd12HorizBT)
+#+end_src
+#+begin_src R
+structFixed = list(L = 5)
+distFixed = list(D = structFixed$L*c(1,3))
+Shd12Fixed <- optimShd(lat = lat, dataRad = prom,
+		       modeTrk = 'fixed',
+		       distances = distFixed, res = 2,
+		       struct = structFixed,
+		       modeShd = 'area',
+		       prog = FALSE) #Se quita la barra de progreso
+show(Shd12Fixed)
 #+end_src
 
 * Métodos de visualización

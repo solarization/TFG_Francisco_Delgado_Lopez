@@ -1,7 +1,7 @@
 \chapter{Estado del arte}
 \label{chap:estado-arte}
 \section{Situación actual de la generación fotovoltaica}
-\label{sec:org33d1784}
+\label{sec:org5cfcddf}
 \label{sec:situacion-actual-generacion-fotovoltaica}
 Según el informe anual de 2023 de la UNEF\footnote{UNEF: Unión Española Fotovoltaica.} \cite{unef23} en 2022 la fotovoltaica se posicionó como la tecnología con más crecimiento a nivel internacional, tanto entre las renovables como entre las no renovables. Se instalaron 240 GWp de nueva capacidad fotovoltaica a nivel mundial, suponiendo esto un incremento del 137\% con respecto a 2021.
 
@@ -29,20 +29,17 @@ La contribución del sector fotovoltaico a la economía española en 2022 fue si
 
 El sector industrial fotovoltaico nacional tiene una fuerte presencia en España, con hasta un 65\% de los componenetes manufacturados localmente. Empresas españolas se encuentran entre los principales fabricantes mundiales de inversores y seguidores solares. Además, España es un importante exportador de estructuras fotovoltaicas y cuenta con iniciativas prometedoras para la fabricación de módulos solares.
 
-UNEF promueve la transformación industrial para que España se convierta en un hub industrial fotovoltaico. Se destaca la necesidad de proteger la industria existente, garantizar un crecimiento constante de la capacidad y ofrecer condiciones de financiamiento favorables. Además se propone implementar una Estrategia Industrial Fotovoltaica para contribuir significativamente a la reindustralización de la economía, aprovechando las medidas del REPower Plan, la Estrategia Solar y la Alianza de al Industria Solar Fotovoltaica.
-
 En definitiva, la fotovoltaica es una tecnología en auge y con perspectivas para ser el pilar de la transición ecológica. Por ello, surge la necesidad de encontrar herramientas que permitan estimar el desempeño que estos sistemas pueden tener a la hora de realizar estudios de viabilidad económica.
 
 \section{Solución actual y sus carencias}
-\label{sec:org9081d17}
-Como se mencionó en el capitulo \ref{chap:introduccion} este proyecto toma su base en el paquete \texttt{solaR} \cite{perpinan12}, el cúal es una herramienta robusta para el cálculo de la radiación solar y el rendimiento de sistemas fotvoltaicos. Este paquete está diseñado utilizando clases \texttt{S4} en \texttt{R}, y su núcleo se basa en series temporales multivariantes almacenadas en objetos de la clase \texttt{zoo}. El paquete permite realizar investigaciones reproducibles sobre el rendimiento de sistemas fotovoltaicos y la radiación solar, proporcionando métodos para calcular la geometría solar, la radiación incidente sobre un generador fotovoltaico, y simular el rendimiento de sistemas fotovoltaicos tanto conectados a la red como de bombeo de agua.
+\label{sec:orgb4b6f9b}
+Como se mencionó en el capitulo \ref{chap:introduccion} este proyecto toma su base en el paquete \texttt{solaR} \cite{perpinan12}, el cual es una herramienta robusta para el cálculo de la radiación solar y el rendimiento de sistemas fotvoltaicos. Este paquete está diseñado utilizando clases \texttt{S4} en \texttt{R}, y su núcleo se basa en series temporales multivariantes almacenadas en objetos de la clase \texttt{zoo}. El paquete permite realizar investigaciones reproducibles sobre el rendimiento de sistemas fotovoltaicos y la radiación solar, proporcionando métodos para calcular la geometría solar, la radiación incidente sobre un generador fotovoltaico, y simular el rendimiento de sistemas fotovoltaicos tanto conectados a la red como de bombeo de agua.
 
 Pese a ser un herramienta muy capaz, \texttt{solaR} presenta una serie de carencias relativas al paquete \texttt{zoo}:
 \begin{itemize}
 \item \textbf{Eficiencia y rendimiento}: el paquete \texttt{solaR} utiliza \texttt{zoo} para manejar series temporales, lo cual es adecuado para volúmenes de datos moderados. Sin embargo, \texttt{zoo} no está optimizado para operaciones de alta eficiencia en datasets grandes. Por otro lado, \texttt{data.table} está diseñado específicamente para manejar grandes volúmenes de datos de manera eficiente, ofreciendo un rendimiento superior en operaciones de lectura, escritura y manipulación masiva de datos.
 \item \textbf{Escalabilidad}: \texttt{solaR} puede experimentar problemas de escalabilidad al trabajar con datasets extensos, ya que \texttt{zoo} no es tan eficiente en operaciones que requieren manipulación compleja o paralelización. Sin embargo, \texttt{data.table} supera esta limitación al proporcionar una infraestructura altamente optimizada para operaciones en paralelo y manejo de grandes conjuntos de datos, permitiendo que las aplicaciones escalen mejor en entornos de datos intensivos.
 \item \textbf{Manipulación de datos}: \texttt{zoo} es adecuado para manejar series temporales básicas, pero carece de las capacidades avanzadas de manipulación de datos que ofrece \texttt{data.table}, como la indexación rápida, las uniones eficientes, y la capacidad de realizar operaciones complejas de agrupamiento y agregación. Estas características de \texttt{data.table} permiten un manejo de datos más flexible y potente, lo cual es esencial en análisis de datos complejo y en tiempo real.
-\item \textbf{Interoperabilidad}: \texttt{solaR} está algo limitado en términos de integración con otras tecnologías de datos modernas debido a su dependencia en \texttt{zoo}. En cambio, \texttt{data.table} es ampliamente compatible y se integra de manera más fluida con otros paqeutes y herramientas en el ecosistema de R, facilitando la interoperabilidad y la contrucción de pipilines de datos más complejos.
 \item \textbf{Consumo de memoria}: \texttt{zoo} puede consumir más memoria en comparación con \texttt{data.table} cuando se trabaja con grandes conjuntos de datos. Por otro lado, \texttt{data.table} está optimizado para operaciones en memoria, lo que permite manejar datasets más grandes sin requerir un incremento proporcionla en el uso de recursos, haciendo que las operaciones sean más sostenibles en términos de memoria.
 \end{itemize}
 
