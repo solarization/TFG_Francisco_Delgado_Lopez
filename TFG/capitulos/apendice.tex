@@ -4,9 +4,9 @@
 Todo el código que se muestra a continuación está disponible para descargar, consultar y modificar libremente en el repositorio de Github correspondiente a la versión de desarrollo del paquete: \url{https://github.com/solarization/solaR2}.
 
 \section{Constructores}
-\label{sec:org4a4a4f5}
+\label{sec:orga6131b4}
 \subsection{calcSol}
-\label{sec:org4bce5fc}
+\label{sec:org3959768}
 \label{subsec:calcsol}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={calcSol},captionpos=b]
 calcSol <- function(lat, BTd,
@@ -38,7 +38,7 @@ calcSol <- function(lat, BTd,
 }
 \end{lstlisting}
 \subsection{calcG0}
-\label{sec:org9e8e525}
+\label{sec:org78c9bf2}
 \label{subsec:calcg0}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={calcG0},captionpos=b]
 utils::globalVariables('DayOfMonth')
@@ -232,7 +232,7 @@ calcG0 <- function(lat,
 }
 \end{lstlisting}
 \subsection{calcGef}
-\label{sec:org1a9bb33}
+\label{sec:orgea7e15e}
 \label{subsec:calcgef}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={calcGef},captionpos=b]
 calcGef<-function(lat,
@@ -336,7 +336,7 @@ calcGef<-function(lat,
 }
 \end{lstlisting}
 \subsection{prodGCPV}
-\label{sec:org3553565}
+\label{sec:org70f2a82}
 \label{subsec:prodgcpv}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={prodGCPV},captionpos=b]
 utils::globalVariables(c('Yf', 'Eac'))
@@ -464,7 +464,7 @@ prodGCPV<-function(lat,
 }
 \end{lstlisting}
 \subsection{prodPVPS}
-\label{sec:orgebac637}
+\label{sec:org1629038}
 \label{subsec:prodpvps}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={prodGCPV},captionpos=b]
 utils::globalVariables('Qd')
@@ -621,7 +621,7 @@ prodPVPS<-function(lat,
 }
 \end{lstlisting}
 \subsection{calcShd}
-\label{sec:org2678257}
+\label{sec:org9b656c2}
 \label{subsec:calcShd}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={calcShd},captionpos=b]
 calcShd<-function(radEf,##class='Gef'
@@ -711,7 +711,7 @@ calcShd<-function(radEf,##class='Gef'
 }
 \end{lstlisting}
 \subsection{optimShd}
-\label{sec:org3703f12}
+\label{sec:org2f4de07}
 \label{subsec:optimShd}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={optimShd},captionpos=b]
 optimShd<-function(lat,
@@ -844,7 +844,7 @@ optimShd<-function(lat,
 }
 \end{lstlisting}
 \subsection{meteoReaders}
-\label{sec:org681c909}
+\label{sec:org5d7b7be}
 \label{subsec:meteoreaders}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={meteoReaders},captionpos=b]
 utils::globalVariables(c('.', 'Dates', 'Bo0d', 'Bo0m', 'G0d',
@@ -1389,9 +1389,9 @@ readSIAR <- function(Lon = 0, Lat = 0,
 \end{lstlisting}
 
 \section{Clases}
-\label{sec:orgd7ca8d7}
+\label{sec:org7251d87}
 \subsection{Sol}
-\label{sec:org10f9430}
+\label{sec:orga85e645}
 \label{subsec:sol}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={Clase \texttt{Sol}},captionpos=b]
 setClass(
@@ -1407,7 +1407,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{Meteo}
-\label{sec:org15c9d0c}
+\label{sec:orgb81703b}
 \label{subsec:meteo}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={Clase \texttt{Meteo}},captionpos=b]
 setClass(
@@ -1422,7 +1422,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{G0}
-\label{sec:org7708b7f}
+\label{sec:orgf2d80b3}
 \label{subsec:g0}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={Clase \texttt{G0}},captionpos=b]
 setClass(
@@ -1440,7 +1440,7 @@ setClass(
 
 \end{lstlisting}
 \subsection{Gef}
-\label{sec:org5125f83}
+\label{sec:orgaeadc4d}
 \label{subsec:gef}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={Clase \texttt{Gef}},captionpos=b]
 setClass(
@@ -1464,7 +1464,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{ProdGCPV}
-\label{sec:org923d3f2}
+\label{sec:org617e956}
 \label{subsec:clase-prodgcpv}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={Clase \texttt{ProdGCPV}},captionpos=b]
 setClass(
@@ -1484,7 +1484,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{ProdPVPS}
-\label{sec:orgdb1d88a}
+\label{sec:org46a7271}
 \label{subsec:claseprodpvps}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={Clase \texttt{ProdPVPS}},captionpos=b]
 setClass(
@@ -1505,7 +1505,7 @@ setClass(
 )
 \end{lstlisting}
 \subsection{Shade}
-\label{sec:org8bea664}
+\label{sec:org7ff4d6c}
 \label{subsec:shade}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={Clase \texttt{Shade}},captionpos=b]
 setClass(
@@ -1526,10 +1526,10 @@ setClass(
 )
 \end{lstlisting}
 \section{Funciones}
-\label{sec:orgedd6db4}
+\label{sec:org047ac8d}
 \label{sec:funciones}
 \subsection{corrFdKt}
-\label{sec:org21418d3}
+\label{sec:orge829281}
 \label{subsec:corrfdkt}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={corrFdKt},captionpos=b]
 utils::globalVariables(c('G0', 'lag1', 'lag2'))
@@ -1684,7 +1684,7 @@ persistence <- function(sol, kt){
 }
 \end{lstlisting}
 \subsection{fBTd}
-\label{sec:org81cbd34}
+\label{sec:org6304576}
 \label{subsec:fbtd}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={fBTd},captionpos=b]
 fBTd<-function(mode='prom',
@@ -1705,7 +1705,7 @@ fBTd<-function(mode='prom',
 }
 \end{lstlisting}
 \subsection{fBTi}
-\label{sec:orge5ada8a}
+\label{sec:org0acbd9e}
 \label{subsec:fbti}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={fBTi},captionpos=b]
 intervalo <- function(day, sample){
@@ -1722,7 +1722,7 @@ fBTi <- function(BTd, sample = 'hour'){
 }
 \end{lstlisting}
 \subsection{fCompD}
-\label{sec:orgb0f482c}
+\label{sec:org5901bbe}
 \label{subsec:fcompd}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={fCompD},captionpos=b]
 utils::globalVariables('lat')
@@ -1785,7 +1785,7 @@ fCompD <- function(sol, G0d, corr = 'CPR', f)
 }
 \end{lstlisting}
 \subsection{fCompI}
-\label{sec:org479caf5}
+\label{sec:orge34ba3c}
 \label{subsec:fcompi}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={fCompI},captionpos=b]
 fCompI <- function(sol, compD, G0I,
@@ -1878,7 +1878,7 @@ fCompI <- function(sol, compD, G0I,
 }
 \end{lstlisting}
 \subsection{fInclin}
-\label{sec:orgb71cdcb}
+\label{sec:orgd5c03c1}
 \label{subsec:finclin}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={fInclin},captionpos=b]
 fInclin <- function(compI, angGen, iS = 2, alb = 0.2, horizBright = TRUE, HCPV = FALSE){
@@ -1946,7 +1946,7 @@ fInclin <- function(compI, angGen, iS = 2, alb = 0.2, horizBright = TRUE, HCPV =
 }
 \end{lstlisting}
 \subsection{fProd}
-\label{sec:org4a16af0}
+\label{sec:orga08c757}
 \label{subsec:fprod}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={fProd},captionpos=b]
 ## voc, isc, vmpp, impp : *cell* values
@@ -2210,7 +2210,7 @@ fProd <- function(inclin,
 }
 \end{lstlisting}
 \subsection{fPump}
-\label{sec:org5e8eca4}
+\label{sec:org2d9225a}
 \label{subsec:fpump}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={fPump},captionpos=b]
 fPump <- function(pump, H){
@@ -2266,7 +2266,7 @@ fPump <- function(pump, H){
 }
 \end{lstlisting}
 \subsection{fSolD}
-\label{sec:org66a85bd}
+\label{sec:orgf91d671}
 \label{subsec:fsold}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={fSolD},captionpos=b]
 utils::globalVariables(c('decl', 'eo', 'EoT', 'ws'))
@@ -2301,7 +2301,7 @@ fSolD <- function(lat, BTd, method = 'michalsky'){
 }
 \end{lstlisting}
 \subsection{fSolI}
-\label{sec:org1a037b7}
+\label{sec:org8f26cfd}
 \label{subsec:fsoli}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={fSolI},captionpos=b]
 utils::globalVariables(c('eqtime', 'w', 'night', 'cosThzS',
@@ -2372,7 +2372,7 @@ fSolI <- function(solD, sample = 'hour', BTi,
 }
 \end{lstlisting}
 \subsection{fSombra}
-\label{sec:org01a7768}
+\label{sec:org5498afc}
 \label{subsec:fsombra}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={fSombra},captionpos=b]
 fSombra<-function(angGen, distances, struct, modeTrk='fixed',prom=TRUE){
@@ -2496,7 +2496,7 @@ fSombraHoriz<-function(angGen, distances, struct)
 }
 \end{lstlisting}
 \subsection{fTemp}
-\label{sec:orga0dda98}
+\label{sec:org9454252}
 \label{subsec:ftemp}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={fTemp},captionpos=b]
 fTemp<-function(sol, BD)
@@ -2540,7 +2540,7 @@ fTemp<-function(sol, BD)
 }
 \end{lstlisting}
 \subsection{fTheta}
-\label{sec:orgde8aa7b}
+\label{sec:orgdbdacba}
 \label{subsec:ftheta}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={fTheta},captionpos=b]
 fTheta<-function(sol, beta, alpha = 0, modeTrk='fixed', betaLim=90, 
@@ -2618,7 +2618,7 @@ fTheta<-function(sol, beta, alpha = 0, modeTrk='fixed', betaLim=90,
 }
 \end{lstlisting}
 \subsection{HQCurve}
-\label{sec:org25bff17}
+\label{sec:orgb56c76d}
 \label{subsec:hqcurve}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={HQCurve},captionpos=b]
 ## HQCurve: no visible binding for global variable ‘fb’
@@ -2687,7 +2687,7 @@ HQCurve<-function(pump){
 }
 \end{lstlisting}
 \subsection{local2Solar}
-\label{sec:orgd306652}
+\label{sec:org9ff7ed7}
 \label{subsec:local2solar}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={local2Solar},captionpos=b]
 local2Solar <- function(x, lon=NULL){	
@@ -2714,7 +2714,7 @@ local2Solar <- function(x, lon=NULL){
 }
 \end{lstlisting}
 \subsection{markovG0}
-\label{sec:org0ba90e0}
+\label{sec:org15f3e3d}
 \label{subsec:markovg0}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={markovG0},captionpos=b]
 ## Objects loaded at startup from data/MTM.RData
@@ -2757,7 +2757,7 @@ markovG0 <- function(G0dm, solD){
 }
 \end{lstlisting}
 \subsection{NmgPVPS}
-\label{sec:org13866bb}
+\label{sec:orgd9ef1f9}
 \label{subsec:nmgpvps}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={NmgPVPS},captionpos=b]
 ## NmgPVPS: no visible binding for global variable ‘Pnom’
@@ -2851,7 +2851,7 @@ NmgPVPS <- function(pump, Pg, H, Gd, Ta=30,
 }
 \end{lstlisting}
 \subsection{solarAngles}
-\label{sec:org67c8da4}
+\label{sec:org98edf16}
 \label{subsec:solarangles}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={solarAngles},captionpos=b]
 #### Declination ####
@@ -3130,7 +3130,7 @@ azimuth <- function(d, lat, BTi, sample = 'hour', method = 'michalsky',
 }
 \end{lstlisting}
 \subsection{utils-angles}
-\label{sec:orgba3190c}
+\label{sec:org8ab63a9}
 \label{subsec:utils-angles}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={utils-angles},captionpos=b]
 #degrees to radians
@@ -3158,7 +3158,7 @@ r2sec<-function(x){x*12/pi*3600}
 r2min<-function(x){x*12/pi*60}
 \end{lstlisting}
 \subsection{utils-time}
-\label{sec:org11e6a9d}
+\label{sec:orgce83b30}
 \label{subsec:utils-time}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={utils-time},captionpos=b]
 #complete time to hours
@@ -3187,10 +3187,10 @@ dom <- function(x){
 truncDay <- function(x){as.POSIXct(trunc(x, units='days'))}
 \end{lstlisting}
 \section{Métodos}
-\label{sec:orgc96bf54}
+\label{sec:orga8387bc}
 \label{sec:metodos}
 \subsection{as.data.tableI}
-\label{sec:orge769b0a}
+\label{sec:orga86f91f}
 \label{subsec:as.data.tablei}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={as.data.tableI},captionpos=b]
 setGeneric('as.data.tableI',
@@ -3356,7 +3356,7 @@ setMethod('as.data.tableI',
           )
 \end{lstlisting}
 \subsection{as.data.tableD}
-\label{sec:org56707ee}
+\label{sec:org053cd06}
 \label{subsec:as.data.tabled}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={as.data.tableD},captionpos=b]
 setGeneric('as.data.tableD', function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.tableD')})
@@ -3475,7 +3475,7 @@ setMethod('as.data.tableD',
           )
 \end{lstlisting}
 \subsection{as.data.tableM}
-\label{sec:org55e8115}
+\label{sec:org2d3b58f}
 \label{subsec:as.data.tablem}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={as.data.tableM},captionpos=b]
 setGeneric('as.data.tableM', function(object, complete = FALSE, day=FALSE){standardGeneric('as.data.tableM')})
@@ -3556,7 +3556,7 @@ setMethod('as.data.tableM',
           )
 \end{lstlisting}
 \subsection{as.data.tableY}
-\label{sec:org27b69b7}
+\label{sec:orgd6bfe38}
 \label{subsec:as.data.tabley}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={as.data.tableY},captionpos=b]
 setGeneric('as.data.tableY', function(object, complete=FALSE, day=FALSE){standardGeneric('as.data.tableY')})
@@ -3621,7 +3621,7 @@ setMethod('as.data.tableY',
           )
 \end{lstlisting}
 \subsection{compare}
-\label{sec:org89d37ba}
+\label{sec:org0696965}
 \label{subsec:compare}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={compare},captionpos=b]
 ## compareFunction: no visible binding for global variable ‘name’
@@ -3685,7 +3685,7 @@ setMethod('compare',
           )
 \end{lstlisting}
 \subsection{getData}
-\label{sec:org92a5ecc}
+\label{sec:org995d948}
 \label{subsec:getData}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={getData},captionpos=b]
 ## extracts the data for class Meteo ##
@@ -3700,7 +3700,7 @@ setMethod('getData',
           })
 \end{lstlisting}
 \subsection{getG0}
-\label{sec:org0b30d52}
+\label{sec:org74b482b}
 \label{subsec:getg0}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={getG0},captionpos=b]
 ## extracts the global irradiance for class Meteo ##
@@ -3715,7 +3715,7 @@ setMethod('getG0',
           })
 \end{lstlisting}
 \subsection{getLat}
-\label{sec:org9b7a5e9}
+\label{sec:org7cc9133}
 \label{subsec:getlat}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={getLat},captionpos=b]
 ## extracts the latitude from the objects ##
@@ -3737,7 +3737,7 @@ setMethod('getLat',
           })
 \end{lstlisting}
 \subsection{indexD}
-\label{sec:org2f56549}
+\label{sec:org138a979}
 \label{subsec:indexd}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={indexD},captionpos=b]
 ## extract the index of the daily data ##
@@ -3753,7 +3753,7 @@ setMethod('indexD',
           definition = function(object){as.POSIXct(getData(object)$Dates)})
 \end{lstlisting}
 \subsection{indexI}
-\label{sec:org59cda45}
+\label{sec:org40727aa}
 \label{subsec:indexi}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={indexI},captionpos=b]
 ## extract the index of the intradaily data ##
@@ -3765,7 +3765,7 @@ setMethod('indexI',
           })
 \end{lstlisting}
 \subsection{levelplot}
-\label{sec:orga01600d}
+\label{sec:orgbe5bade}
 \label{subsec:levelplot}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={levelplot},captionpos=b]
 setGeneric('levelplot')
@@ -3838,7 +3838,7 @@ setMethod('levelplot',
           )
 \end{lstlisting}
 \subsection{losses}
-\label{sec:org7754f3e}
+\label{sec:org73b371f}
 \label{subsec:losses}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={losses},captionpos=b]
 utils::globalVariables(c('Vmpp', 'Impp', 'Pdc', 'EffI', 'V1'))
@@ -3941,7 +3941,7 @@ setMethod('compareLosses', 'ProdGCPV',
           )
 \end{lstlisting}
 \subsection{mergeSolar}
-\label{sec:org3319c40}
+\label{sec:org9e040be}
 \label{subsec:mergesolar}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={mergeSolaR},captionpos=b]
 setGeneric('mergesolaR', signature='...', function(...){standardGeneric('mergesolaR')})
@@ -4013,7 +4013,7 @@ setMethod('mergesolaR',
           )
 \end{lstlisting}
 \subsection{shadeplot}
-\label{sec:orgd776e99}
+\label{sec:org2909c7e}
 \label{subsec:shadeplot}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={shadeplot},captionpos=b]
 setGeneric('shadeplot', function(x, ...)standardGeneric('shadeplot'))
@@ -4082,7 +4082,7 @@ setMethod('shadeplot', signature(x='Shade'),
           )
 \end{lstlisting}
 \subsection{window}
-\label{sec:org90a14c0}
+\label{sec:org26bb65b}
 \label{subsec:window}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={window},captionpos=b]
 setMethod('[',
@@ -4315,7 +4315,7 @@ setMethod('[',
           )
 \end{lstlisting}
 \subsection{writeSolar}
-\label{sec:org6e58049}
+\label{sec:orga043359}
 \label{subsec:writesolar}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={writeSolar},captionpos=b]
 setGeneric('writeSolar', function(object, file,
@@ -4356,7 +4356,7 @@ setMethod('writeSolar', signature=(object='Sol'),
           })
 \end{lstlisting}
 \subsection{xyplot}
-\label{sec:orgfd73693}
+\label{sec:orge62f832}
 \label{subsec:xyplot}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={xyplot},captionpos=b]
 utils::globalVariables('variable')
@@ -4526,10 +4526,10 @@ setMethod('xyplot',
           )
 \end{lstlisting}
 \section{Conjunto de datos}
-\label{sec:orgd4e3123}
+\label{sec:org0cd117a}
 \label{sec:conjunto-datos}
 \subsection{aguiar}
-\label{sec:orgaeba1fa}
+\label{sec:org3c221e0}
 \label{subsec:aguiar}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={aguiar\textsubscript{1}},captionpos=b]
 data(MTM)
@@ -4567,7 +4567,7 @@ head(MTM)
 \end{verbatim}
 
 \subsection{SIAR}
-\label{sec:org7a3ef54}
+\label{sec:org18135c7}
 \label{subsec:siar}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={SIAR},captionpos=b]
 data(SIAR)
@@ -4586,7 +4586,7 @@ head(est_SIAR)
 \end{verbatim}
 
 \subsection{helios}
-\label{sec:orge3ce851}
+\label{sec:orgabbe1a6}
 \label{subsec:helios}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={helios},captionpos=b]
 data(helios)
@@ -4604,7 +4604,7 @@ head(helios)
 \end{verbatim}
 
 \subsection{prodEx}
-\label{sec:orge760357}
+\label{sec:org3b5c3b4}
 \label{subsec:prodex}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={prodEx},captionpos=b]
 data(prodEx)
@@ -4639,7 +4639,7 @@ head(prodEx)
 \end{verbatim}
 
 \subsection{pumpCoef}
-\label{sec:org9c74106}
+\label{sec:org1bf0b61}
 \label{subsec:pumpcoef}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption={pumpCoef},captionpos=b]
 data(pumpCoef)

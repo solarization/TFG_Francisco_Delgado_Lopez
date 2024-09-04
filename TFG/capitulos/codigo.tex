@@ -1,17 +1,17 @@
 \chapter{Desarrollo del código}
 \label{chap:desarrollo-codigo}
-En la figura \ref{fig:org6428930}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
-\begin{figure}[]
+En la figura \ref{fig:org79600e1}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
+\begin{figure}[htbp]
 \centering
 \includegraphics[keepaspectratio,width=0.8\textwidth,height=0.5\textheight]{figuras/procedure.pdf}
-\caption{\label{fig:org6428930}Proceso de cálculo de las funciones de \texttt{solaR2}}
+\caption{\label{fig:org79600e1}Proceso de cálculo de las funciones de \texttt{solaR2}}
 \end{figure}
 A la hora de estimar la producción, el programa sigue los siguientes procesos:
 \section{Geometría solar}
-\label{sec:orga81b0df}
+\label{sec:org782662c}
 \label{sec:geometria-solar}
 Para calcular la geometría que definen las posiciones de la Tierra y el Sol, \texttt{solaR2} se vale de una función constructora, \texttt{calcSol} [\ref{subsec:calcsol}], la cual mediante las funciones \texttt{fSolD} [\ref{subsec:fsold}] y \texttt{fSolI} [\ref{subsec:fsoli}] cálcula todos los ángulos y componentes que caracterizan la geometría solar.
-\begin{figure}[]
+\begin{figure}[htbp]
 \centering
 \includegraphics[keepaspectratio,width=\textwidth,height=0.5\textheight]{figuras/calcSol.pdf}
 \caption{Cálculo de la geometría solar mediante la función \texttt{calcSol}, la cual unifica las funciones \texttt{fSolD} y \texttt{fSolI} resultando en un objeto clase \texttt{Sol} el cual contiene toda la información geométrica necesaria para realizar las siguientes estimaciones. \label{fig:calcSol}}
@@ -286,10 +286,10 @@ Intradaily values:
 \end{verbatim}
 
 \section{Datos meteorológicos}
-\label{sec:org1dffa13}
+\label{sec:org3a06ee8}
 \label{sec:datos-meteorologicos}
 Para el procesamiento de datos meteorologicos, \texttt{solaR2} provee una serie de funciones\footnote{Las funciones comentadas en este apartado, se recogen en la sección \ref{subsec:meteoreaders}} que son capaces de leer todo tipo de datos. Estos datos se procesan y se almacenan en un objeto de tipo \texttt{Meteo} tal y como se ve en la figura \ref{fig:meteo}. Estas funciones son:
-\begin{figure}[]
+\begin{figure}[htbp]
 \centering
 \includegraphics[keepaspectratio,width=\textwidth,height=0.5\textheight]{figuras/meteo.pdf}
 \caption{Los datos meteorologicas se pueden leer mediante las funciones \texttt{readG0dm}, \texttt{readBD}, \texttt{dt2Meteo}, \texttt{zoo2Meteo} y \texttt{readSIAR} las cuales procesan estos datos y los almacenan en un objeto de clase \texttt{Meteo}. \label{fig:meteo}}
@@ -509,12 +509,12 @@ Esta función tiene dos argumentos importantes:
 \end{itemize}
 
 \section{Radiación en el plano horizontal}
-\label{sec:org9f02109}
+\label{sec:org891bcda}
 \label{sec:radiacion-plano-horizontal}
 Una vez se ha calculado la geometría solar (sección \ref{sec:geometria-solar}) y se han procesado los datos meteorológicos (sección \ref{sec:datos-meteorologicos}), es necesario calcular la radiación en el plano horizontal. Para ello, \texttt{solaR2} cuenta con la función \texttt{calcG0} [\ref{subsec:calcg0}] la cual mediante las funciones \texttt{fCompD} [\ref{subsec:fcompd}] y \texttt{fCompI} [\ref{subsec:fcompi}] procesan los objetos de clase \texttt{Sol} y clase \texttt{Meteo} para dar un objeto de tipo \texttt{G0}.
 
 Como se puede ver en la figura \ref{fig:calcg0}, \texttt{calcG0} funciona gracias a las siguientes funciones:
-\begin{figure}[]
+\begin{figure}[htbp]
 \centering
 \includegraphics[keepaspectratio,width=\textwidth,height=0.5\textheight]{figuras/calcg0.pdf}
 \caption{Cálculo de la radiación incidente en el plano horizontal mediante la función \texttt{calcG0}, la cual procesa un objeto clase \texttt{Sol} y otro clase \texttt{Meteo} mediante las funciones \texttt{fCompD} y \texttt{fCompI} resultando en un objeto clase \texttt{G0}. :\label{fig:calcg0}}
@@ -958,24 +958,24 @@ Latitude for calculations:  37.2 degrees
 Monthly avarages:
 	Dates   G0d      D0d      B0d
        <char> <num>    <num>    <num>
- 1: Jan. 2024 2.766 1.146197 1.619803
- 2: Feb. 2024 3.491 1.509201 1.981799
- 3: Mar. 2024 4.494 1.995879 2.498121
- 4: Apr. 2024 5.912 2.259830 3.652170
- 5: May. 2024 6.989 2.473548 4.515452
- 6: Jun. 2024 7.742 2.470506 5.271494
- 7: Jul. 2024 7.919 2.396801 5.522199
- 8: Aug. 2024 7.027 2.107768 4.919232
- 9: Sep. 2024 5.369 1.964577 3.404423
-10: Oct. 2024 3.562 1.648904 1.913096
-11: Nov. 2024 2.814 1.222759 1.591241
-12: Dec. 2024 2.179 1.042617 1.136383
+ 1: Jan. 2024 2.766 1.018399 1.747601
+ 2: Feb. 2024 3.491 1.539128 1.951872
+ 3: Mar. 2024 4.494 2.019729 2.474271
+ 4: Apr. 2024 5.912 2.212283 3.699717
+ 5: May. 2024 6.989 2.443056 4.545944
+ 6: Jun. 2024 7.742 2.469004 5.272996
+ 7: Jul. 2024 7.919 2.202626 5.716374
+ 8: Aug. 2024 7.027 2.245755 4.781245
+ 9: Sep. 2024 5.369 1.714299 3.654701
+10: Oct. 2024 3.562 1.791424 1.770576
+11: Nov. 2024 2.814 1.148719 1.665281
+12: Dec. 2024 2.179 1.161355 1.017645
 
 Yearly values:
 Key: <Dates>
    Dates      G0d      D0d      B0d
    <int>    <num>    <num>    <num>
-1:  2024 1839.365 678.4601 1160.905
+1:  2024 1839.365 670.3165 1169.049
 \end{verbatim}
 
 \item Diarios.
@@ -996,24 +996,24 @@ Latitude for calculations:  37.2 degrees
 Monthly avarages:
 	Dates   G0d      D0d      B0d
        <char> <num>    <num>    <num>
- 1: Jan. 2024 2.766 1.146197 1.619803
- 2: Feb. 2024 3.491 1.509201 1.981799
- 3: Mar. 2024 4.494 1.995879 2.498121
- 4: Apr. 2024 5.912 2.259830 3.652170
- 5: May. 2024 6.989 2.473548 4.515452
- 6: Jun. 2024 7.742 2.470506 5.271494
- 7: Jul. 2024 7.919 2.396801 5.522199
- 8: Aug. 2024 7.027 2.107768 4.919232
- 9: Sep. 2024 5.369 1.964577 3.404423
-10: Oct. 2024 3.562 1.648904 1.913096
-11: Nov. 2024 2.814 1.222759 1.591241
-12: Dec. 2024 2.179 1.042617 1.136383
+ 1: Jan. 2024 2.766 1.018399 1.747601
+ 2: Feb. 2024 3.491 1.539128 1.951872
+ 3: Mar. 2024 4.494 2.019729 2.474271
+ 4: Apr. 2024 5.912 2.212283 3.699717
+ 5: May. 2024 6.989 2.443056 4.545944
+ 6: Jun. 2024 7.742 2.469004 5.272996
+ 7: Jul. 2024 7.919 2.202626 5.716374
+ 8: Aug. 2024 7.027 2.245755 4.781245
+ 9: Sep. 2024 5.369 1.714299 3.654701
+10: Oct. 2024 3.562 1.791424 1.770576
+11: Nov. 2024 2.814 1.148719 1.665281
+12: Dec. 2024 2.179 1.161355 1.017645
 
 Yearly values:
 Key: <Dates>
    Dates      G0d      D0d      B0d
    <int>    <num>    <num>    <num>
-1:  2024 1839.365 678.4601 1160.905
+1:  2024 1839.365 670.3165 1169.049
 \end{verbatim}
 
 \item Intradiarios
@@ -1032,36 +1032,36 @@ Latitude of source:  37.2 degrees
 Latitude for calculations:  37.2 degrees
 
 Monthly avarages:
-	Dates      G0d      D0d      B0d
-       <char>    <num>    <num>    <num>
- 1: Jan. 2024 2.766000 1.159456 1.606544
- 2: Feb. 2024 3.491000 1.534494 1.956506
- 3: Mar. 2024 4.494000 2.098539 2.395461
- 4: Apr. 2024 5.912000 2.239783 3.672217
- 5: May. 2024 6.866824 2.308807 4.558017
- 6: Jun. 2024 7.742000 2.241544 5.500456
- 7: Jul. 2024 7.919000 1.881773 6.037227
- 8: Aug. 2024 7.027000 2.017100 5.009900
- 9: Sep. 2024 5.369000 1.973292 3.395708
-10: Oct. 2024 3.562000 1.640782 1.921218
-11: Nov. 2024 2.814000 1.237715 1.576285
-12: Dec. 2024 2.179000 1.056340 1.122660
+	Dates      G0d       D0d       B0d
+       <char>    <num>     <num>     <num>
+ 1: Jan. 2024 2.766000 0.9625472 1.8034528
+ 2: Feb. 2024 3.491000 1.5898320 1.9011680
+ 3: Mar. 2024 4.494000 2.0981954 2.3958046
+ 4: Apr. 2024 5.912000 2.1497145 3.7622855
+ 5: May. 2024 6.989000 2.3990824 4.5899176
+ 6: Jun. 2024 7.742000 2.3030247 5.4389753
+ 7: Jul. 2024 7.919000 1.7067936 6.2122064
+ 8: Aug. 2024 6.483769 1.6494109 4.8343585
+ 9: Sep. 2024 5.369000 1.6544602 3.7145398
+10: Oct. 2024 3.562000 1.9052417 1.6567583
+11: Nov. 2024 2.659222 0.9870476 1.6721742
+12: Dec. 2024 2.179000 1.2360451 0.9429549
 
 Yearly values:
 Key: <Dates>
-   Dates      G0d      D0d     B0d
-   <int>    <num>    <num>   <num>
-1:  2024 1835.578 652.3171 1183.26
+   Dates      G0d      D0d      B0d
+   <int>    <num>    <num>    <num>
+1:  2024 1817.882 629.6093 1188.272
 \end{verbatim}
 \end{itemize}
 
 \section{Radiación efectiva en el plano del generador}
-\label{sec:orgfef2d0c}
+\label{sec:org9704899}
 \label{sec:radiacion-efectiva-plano-generador}
 Teniendo la radiación incidente en plano horizontal (sección \ref{sec:radiacion-plano-horizontal}), se puede calcular la radiación efectiva incidente en el plano del generador. Para ello, \texttt{solaR2} cuenta con la función \texttt{calcGef} [\ref{subsec:calcgef}] la cual mediante las funciones \texttt{fInclin} y \texttt{calcShd} procesa un objeto de clase \texttt{G0} para obtener un objeto \texttt{Gef}.
 
 Como se puede ver en la figura \ref{fig:calcgef}, \texttt{calcGef} funciona gracias a las siguientes funciones:
-\begin{figure}[]
+\begin{figure}[htbp]
 \centering
 \includegraphics[keepaspectratio,width=\textwidth,height=0.5\textheight]{figuras/calcgef.pdf}
 \caption{Cálculo de la radiación efectiva incidente en el plano del generador mediante la función \texttt{calcGef}, la cual emplea la función \texttt{fInclin} para el computo de las componentes efectivas, la función \texttt{fTheta} que provee a la función anterior los ángulos necesarios para su computo y la función \texttt{calcShd} que reprocesa el objeto de clase \texttt{Gef} resultante, añadiendole el efecto de las sombras producidas entres módulos. \label{fig:calcgef}}
@@ -1704,12 +1704,12 @@ Mode of tracking:  horiz
 \end{verbatim}
 
 \section{Producción eléctrica de un SFCR}
-\label{sec:org364602d}
+\label{sec:orga64d941}
 \label{produccion-electrica-sfcr}
 Con la radiación efectiva, se puede estimar la producción eléctrica que va a tener un sistema fotovoltaico conectado a red. Esta estimación, se puede calcular mediante la función \texttt{prodGCPV} [\ref{subsec:prodgcpv}] la cual mediante la función \texttt{fProd} [\ref{subsec:fprod}] procesa un objeto de clase \texttt{Gef} y obtiene un objeto \texttt{ProdGCPV}.
 
 Como se puede ver en la figura \ref{fig:prodgcpv}, \texttt{prodGCPV} funciona gracias a la siguiente función:
-\begin{figure}[]
+\begin{figure}[htbp]
 \centering
 \includegraphics[keepaspectratio,width=\textwidth,height=\textheight]{figuras/prodgcpv.pdf}
 \caption{Estimación de la producción eléctrica de un SFCR mediante la función \texttt{prodGCPV}, la cual emplea la función \texttt{fProd} para el computo de la potencia a la entrada (\(P_{DC}\)), a la salida (\(P_{AC}\)) y el rendimiento (\(\eta_{inv}\)) del inversor. \label{fig:prodgcpv}}
@@ -1930,11 +1930,11 @@ Generator:
 \end{verbatim}
 
 \section{Producción eléctrica de un SFB}
-\label{sec:org97e725e}
+\label{sec:org7e6dc82}
 De igual forma que en el apartado anterior, se puede estimar la producción eléctrica de un sistema fotovoltaico de bombeo.
 
 Como se puede ver en la figura \ref{fig:prodpvps}, \texttt{prodPVPS} funciona gracias a la siguiente función:
-\begin{figure}[]
+\begin{figure}[htbp]
 \centering
 \includegraphics[keepaspectratio,width=\textwidth,height=0.5\textheight]{figuras/prodpvps.pdf}
 \caption{Estimación de la producción eléctrica de un SFB mediante la función \texttt{prodPVPS}, la cual emplea la función \texttt{fPump} para el computo del rendimiento de las diferentes parte de una bomba centrífuga alimentada por un convertidor de frecuencia. \label{fig:prodpvps}}
@@ -1994,8 +1994,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x00000276e060f568>
-<environment: 0x00000276e060c500>
+<bytecode: 0x00000241cd298748>
+<environment: 0x00000241cd29cda0>
 \end{verbatim}
 
 \item \texttt{fPb}: función que relaciona la potencia del eje de la bomba con la potencia eléctrica del motor.
@@ -2021,8 +2021,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x00000276e060f568>
-<environment: 0x00000276e0639258>
+<bytecode: 0x00000241cd298748>
+<environment: 0x00000241cd311e08>
 \end{verbatim}
 
 \item \texttt{fPh}: función que relaciona la potencia hidráulica con la potencia eléctrica del motor.
@@ -2048,8 +2048,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x00000276e060f568>
-<environment: 0x00000276e063fc68>
+<bytecode: 0x00000241cd298748>
+<environment: 0x00000241cd32cd30>
 \end{verbatim}
 
 \item \texttt{fFreq}: función que relaciona la frecuencia con la potencia eléctrica del motor.
@@ -2075,8 +2075,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x00000276e060f568>
-<environment: 0x00000276e062e928>
+<bytecode: 0x00000241cd298748>
+<environment: 0x00000241cd2be128>
 \end{verbatim}
 \end{itemize}
 
@@ -2158,7 +2158,7 @@ Generator (Wp):  4084.218
 \end{itemize}
 
 \section{Optimización de distancias}
-\label{sec:org669128e}
+\label{sec:org20d1f91}
 \label{optimizacion-distancias}
 Por último, el paquete \texttt{solaR2} contiene una función que permite calcular un conjunto de combinaciones de distancias entre los elementos de un sistema fotovoltaico conectado a red, con el fin de que el usuario posteriormente pueda optar cual es la opción mas rentable en base a los precios del cableado y de la ocupación del terreno.
 
@@ -2396,12 +2396,12 @@ Summary of results:
 \end{verbatim}
 
 \section{Métodos de visualización}
-\label{sec:orga2a34b1}
+\label{sec:orgd70c2ae}
 \label{sec:metodos-visualizacion}
 Una vez creados todos los objetos, para mejorar la visualización de los mismos, \texttt{solaR2} cuanta con una serie de métodos que ayudan a la compresión de los datos obtenidos.
 
 \subsection{Datos meteorológicos}
-\label{sec:orge6622c6}
+\label{sec:orgdf3f212}
 La clase \texttt{Meteo} cuenta con un método para \texttt{xyplot}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 lat <- 37.2
@@ -2438,7 +2438,7 @@ xyplot(BD)
 \end{center}
 
 \subsection{Radiación en el plano horizontal}
-\label{sec:org377fe39}
+\label{sec:org15a745b}
 La clase \texttt{G0} cuenta con un método para \texttt{xyplot}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 g0 <- calcG0(lat, dataRad = BD)
@@ -2494,7 +2494,7 @@ compare(g0, g02)
 \end{center}
 
 \subsection{Radiación efectiva en el plano del generador}
-\label{sec:org12b7956}
+\label{sec:org3ff504b}
 La clase \texttt{Gef} cuenta con un método para \texttt{xyplot}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 gef <- calcGef(lat, dataRad = BD)
@@ -2556,7 +2556,7 @@ compare(gef, gef2x, gefhoriz)
 
 
 \subsection{Producción eléctrica de un SFCR}
-\label{sec:orgfff9fa7}
+\label{sec:orgcbe6d48}
 La clase \texttt{ProdGCPV} cuenta con un método para \texttt{xyplot}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 prodFixed <- prodGCPV(lat, modeTrk = 'fixed', dataRad = BD)
@@ -2631,7 +2631,7 @@ compareLosses(prodFixed, prod2x, prodHoriz)
 \end{center}
 
 \subsection{Producción electrica de un SFB}
-\label{sec:orgbe1694d}
+\label{sec:org4eaa4c7}
 La clase \texttt{ProdPVPS} cuenta con un método para \texttt{xyplot}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 pump <- prodPVPS(lat, dataRad = BD, pump = CoefSP8A44, H = 40, Pg = 5000)
@@ -2687,7 +2687,7 @@ xyplot(pump)
 \end{center}
 
 \subsection{Optimización de distancias}
-\label{sec:org488e576}
+\label{sec:org00e6349}
 La clase \texttt{Shade} cuenta con un método para \texttt{shadeplot}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 struct2x = list(W = 23.11, L = 9.8, Nrow = 2, Ncol = 3)

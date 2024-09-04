@@ -7,12 +7,26 @@ Se tomará de base un estudio realizado por profesores de la escuela \cite{adrad
 En este ejemplo se realizará el mismo análisis tomando tres herramientas distintas: \texttt{solaR}, para poder tomar como referencia el paquete del que sale para poder apreciar las mejoras del programa, \texttt{PVSyst}, ya que es uno de los softwares más usados en el ámbito de la fotovoltaica y puede servir como punto de referencia, y por último \texttt{solaR2}.
 
 \section{\texttt{solaR}}
-\label{sec:org0300040}
+\label{sec:org28bb0be}
 \label{sec:solaR}
 Se empieza inicilizando el paquete:
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 library(solaR)
 \end{lstlisting}
+
+\begin{verbatim}
+Cargando paquete requerido: zoo
+
+Adjuntando el paquete: 'zoo'
+
+The following objects are masked from 'package:base':
+
+    as.Date, as.Date.numeric
+
+Cargando paquete requerido: lattice
+Cargando paquete requerido: latticeExtra
+Time Zone set to UTC.
+\end{verbatim}
 
 En el estudio anterior, se recopilaron datos intradiarios de irradiación los cuales fueron almacenados en archivos.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -216,7 +230,7 @@ Generator:
 \end{verbatim}
 
 \section{\texttt{PVsyst}}
-\label{sec:org91ac4f5}
+\label{sec:org803de5f}
 Con la herramienta \texttt{PVsyst}, se ha generado un año promedio de datos de irradiación en la localización y con estos datos se han obtenido dos informes (uno por cada sistema).
 
 Por comodidad, en este documento se van a extraer solo unas tablas con los resultados principales, sin embargo los informes completos están disponibles en el \href{https://github.com/solarization/TFG\_Francisco\_Delgado\_Lopez}{github} del documento.
@@ -252,12 +266,21 @@ En las tablas \ref{tab:pvsyst1} y \ref{tab:pvsyst2} se tienen los resultados de 
 
 
 \section{\texttt{solaR2}}
-\label{sec:org9ad576d}
+\label{sec:org57c03f0}
 \label{sec:solaR2}
 Con los datos obtenidos en la sección \ref{sec:solaR}, hacemos la misma operación pero con el paquete \texttt{solaR2}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 library(solaR2)
 \end{lstlisting}
+
+\begin{verbatim}
+Cargando paquete requerido: data.table
+data.table 1.15.4 using 6 threads (see ?getDTthreads).  Latest news: r-datatable.com
+Cargando paquete requerido: lattice
+Cargando paquete requerido: latticeExtra
+Time Zone set to UTC.
+\end{verbatim}
+
 
 Para ello importamos de la misma manera los datos de radiación.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -362,7 +385,7 @@ Generator:
 \end{verbatim}
 
 \section{Comparación y conclusiones}
-\label{sec:org8d2540f}
+\label{sec:org2bbb619}
 \label{sec:comparacion-conclusiones}
 Como se puede observar en las secciones anteriores, tanto el paquete \texttt{solaR} como el paquete \texttt{solaR2} ofrecen los mismos resultados ya que toman las mismas referencias y estudios para realizar los cáculos. Sin embargo, el paquete \texttt{solaR2}, a parte de la corrección de algunos erores, presenta unas claras ventajas frente a su antecesor. Estas son:
 \begin{itemize}
@@ -382,7 +405,7 @@ microbenchmark(prodGCPVcustom(), times = 50)
 \begin{verbatim}
 Unit: milliseconds
              expr      min       lq     mean   median       uq      max neval
- prodGCPVcustom() 519.6561 529.6309 537.7213 533.5813 541.5372 588.5352    50
+ prodGCPVcustom() 529.5188 543.3399 554.9077 548.5941 558.3901 626.5719    50
 \end{verbatim}
 
 
@@ -400,8 +423,8 @@ microbenchmark(prodGCPVcustom(), times = 50)
 
 \begin{verbatim}
 Unit: milliseconds
-             expr      min      lq     mean   median      uq     max neval
- prodGCPVcustom() 330.2599 333.759 340.0681 336.0833 340.389 375.635    50
+             expr      min       lq     mean   median       uq      max neval
+ prodGCPVcustom() 333.9282 338.6178 345.8622 341.9009 345.6647 402.8548    50
 \end{verbatim}
 
 
@@ -424,8 +447,8 @@ microbenchmark(optimShdcustom(), times = 20)
 
 \begin{verbatim}
 Unit: seconds
-             expr      min       lq     mean   median       uq      max neval
- optimShdcustom() 6.229458 6.261952 6.297081 6.286866 6.322821 6.456526    20
+             expr     min       lq     mean   median      uq      max neval
+ optimShdcustom() 6.30659 6.387046 6.447254 6.453184 6.48896 6.610802    20
 \end{verbatim}
 
 
@@ -448,6 +471,6 @@ microbenchmark(optimShdcustom(), times = 20)
 \begin{verbatim}
 Unit: seconds
              expr      min       lq     mean   median       uq      max neval
- optimShdcustom() 5.037961 5.056003 5.115279 5.089934 5.099124 5.420153    20
+ optimShdcustom() 5.121113 5.154294 5.175936 5.171816 5.182229 5.249169    20
 \end{verbatim}
 \end{itemize}
