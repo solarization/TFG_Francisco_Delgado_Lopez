@@ -1,7 +1,7 @@
-#+TITLE: Francisco Delgado López - TFG - 2024
+#+TITLE: Francisco Delgado López - Desarrollo de una herramienta software para la simulación de sistemas fotovoltaicos con R - 2024
 #+AUTHOR: Francisco Delgado López
 #+KEYWORDS: geometría solar, radiación solar, energía solar, fotovoltaica, métodos de visualización, series temporales, datos espacio-temporales, S4
-#+DESCRIPTION: TFG - 2024
+#+DESCRIPTION: Desarrollo de una herramienta software para la simulación de sistemas fotovoltaicos con R - 2024
 #+LANGUAGE:  es
 #+OPTIONS:   num:t toc:nil \n:nil ':t @:t ::t |:t ^:t -:t f:t *:t <:t
 #+OPTIONS:   title:nil 
