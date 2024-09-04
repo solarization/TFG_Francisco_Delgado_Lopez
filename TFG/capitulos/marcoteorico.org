@@ -274,7 +274,7 @@ R_{ef}(\beta ,\alpha)=R(\beta ,\alpha)\cdot[\frac{T_{sucio}(0)}{T_{limpio}(0)}]\
 #+end_export
 Siguiendo el esquema de la figura [[fig:prod-calculo]], a partir de estas irradiancias efectivas se puede calcular la irradiación global efectiva diaria, mensual y anual. Comparando la irradiación global incidente con la irradición efectiva, se puede evaluar el impacto de la suciedad y el desajuste del ángulo en períoods prolongados.
 
-* Cálculo de la energía producida por el generador
+* Cálculo de la energía producida por un generador fotovoltaico
 label:sec:calculo-energia-producida-generador
 
 ** Funcionamiento de una célula solar
@@ -673,12 +673,170 @@ Debido a la complicación del cálculo del dimensionamiento de los sistemas foto
  \end{equation}
  #+end_export
 
-** Cálculo y optimización de sombras
+* Sombras y ocupación de terreno
+Al diseñar una central fotovoltaica se debe decidir la ubicación de las diferentes partes del generador resolviendo un compromiso entre la mejor ocupación del terreno disponible y la minimización del impacto de sombras mutuas arrojadas entre los módulos.
+
+Este factor de sombras implica un nivel de ocupación de terreno que depende del modo de seguimiento del generador. La ocupación del terreno se puede medir con dos métricas:
+- Relación de ocupación del terreno (/Ground Coverage Ratio/, $GCR$): es la relación entre el área del generador, $A_G$, y el área del terreno ocupado, $A_T$ (por tanto, siempre será GCR < 1). \nomenclature[AG]{$A_G$}{Área de un generador fotovoltáico} \nomenclature[GCR]{$GCR$}{Ground coverage ratio}
+  #+begin_export latex
+  \begin{equation}
+  GCR = \frac{A_G}{A_T}
+  \end{equation}
+  #+end_export
+- Ratio de ocupación del terreno ($ROT$, o /Ground Requirement Ratio/, $GRR$): es el inverso del GCR, la relación entre el área de terreno ocupado, $A_T$, y el área del generador, $A_G$. \nomenclature[ROT]{$ROT$}{Ratio de ocupación del terreno}
+  #+begin_export latex
+  \begin{equation}
+  ROT = \frac{A_T}{A_G}
+  \end{equation}
+  #+end_export
+
+** Sistemas estáticos
+Las filas que componen el generador arojan sombras unas sobre otras en determinados momentos del días y año. Como recomendación general, es de uso común respetar un mínimo de 4 horas de sol en torno al mediodía del solsticio de invierno libres de sombra. La longitud de la sombra de un obstáculo se mide con:
+#+begin_export latex
+\begin{equation}
+d = \frac{h}{tan\gamma_s}
+\end{equation}
+#+end_export
+siendo $h$ la altura de la fila adyacente, $h=L\cdot sin(\beta)$ y $L$ la longitud del generador, según se indica en la figura ref:fig:sombras-estaticos.
+#+CAPTION: Dimensiones y distancias entre filas de un sistema estático. label:fig:sombras-estaticos
+file:figuras/SombrasEstaticas.pdf
+
+En el mediodía del solsticio de invierno la altura solar es $\gamma_s = 90^\circ - 23.45^\circ - |\phi| \simeq 67^\circ - |\phi|$. Por tanto, la distancia mínima que permite 4 horas libres de sombra alrededor del mediodía es: \nomenclature[dmin]{$d_{min}$}{Distancia mínima entre hileras de un generador para evitar el sombreado}
+#+begin_export latex
+\begin{equation}
+d_{min}=\frac{h}{tan(61^\circ - |\phi|)}
+\end{equation}
+#+end_export
+
+** Sistemas de seguimiento a doble eje
+El diseño de un sistema de seguimiento solar a doble eje busca optimizar la ubicación de los seguidores para minimizar las pérdidas de radiciación por sombras, utilizando eficientemente el terreno. Para esto, se simula el sistema en diferentes configuraciones y se elige la más eficiente en términos de productividad y ROT, que se calcucula con la fórmula:
+#+begin_export latex
+\begin{equation}
+ROT = \frac{L_{ns}\cdot L_{eo}}{L\cdot W}
+\end{equation}
+#+end_export
+donde (figuras ref:fig:sombras-doble y ref:fig:dimensiones-sombras-doble):
+- $L_{ns}$ es la separación entre seguidores en la dirección Norte-Sur. \nomenclature[Lns]{$L_{ns}$}{Separación entre seguidores en sentido Norte-Sur}
+- $L_{eo}$ es la separación en la dirección Este-Oeste. \nomenclature[Leo]{$L_{eo}$}{Separación entre seguidores en sentido Este-Oeste}
+- $L$ es la longitud del seguidor.
+- $W$ es la anchura del seguidor.
+
+#+CAPTION:Sombras mutuas en un conjunto de cuatro seguidores. label:fig:sombras-doble
+#+ATTR_LATEX: :height 0.2\textheight
+file:figuras/Sombras2X.pdf
+#+CAPTION:Dimensiones de un seguidor a doble eje y longitud de su sombra arrojada. label:fig:dimensiones-sombras-doble
+#+ATTR_LATEX: :height 0.2\textheight
+file:figuras/DimensionesSeguidorSombra.pdf
+#+CAPTION:Posibles sombras en un conjunto de seis seguidores. label:fig:conjunto-seis-seguidores
+#+ATTR_LATEX: :height 0.2\textheight
+file:figuras/SixTrackerShadow.pdf
+
+  
+El sistema se modela como un grupo de seis seguidores en una matriz de dos filas en dirección Norte-Sur (figura ref:fig:conjunto-seis-seguidores), representando tres situaciones de sombra: lateral (Este-Oeste), frontal (Norte-Sur) y diagonal, caracterizados por los factores de sombra $FS_{xx}$, definidos como la relación entre el área sombreada y el área total del generador. Las ecuaciones para estos factores son, en las que se emplean los valores normalizados de las distancias, $l_{eo}=\frac{L_{eo}}{W}$ y $l_{ns}=\frac{L_{ns}}{W}$:
+#+begin_export latex
+\begin{equation}
+\begin{array}{c}
+|l_{eo}\cdot\cos(\psi_{s})|<1\\
+|l_{eo}\cdot\sin(\psi_{s})|<s\end
+{array}
+\Rightarrow
+FS_{eo}=\frac{(1-|l_{eo}\cos(\psi_{s})|)\cdot(s-|l_{eo}\sin(\psi_{s})|)}{s}
+\end{equation}
+\begin{equation}
+\begin{array}{c}
+|l_{ns}\cdot\cos(\psi_{s})|<s\\
+|l_{ns}\cdot\sin(\psi_{s})|<1
+\end{array}
+\Rightarrow 
+FS_{ns}=\frac{(s-|l_{ns}\cos(\psi_{s})|)\cdot(1-|l_{ns}\sin(\psi_{s})|)}{s}
+\end{equation}
+\begin{align*}
+\begin{array}{c}
+s>|l_{ns}\cdot\cos(\psi_{s})|+|l_{eo}\sin(\psi_{s})|\\
+1>|l_{eo}\cdot\cos(\psi_{s})|-|l_{ns}\cdot\sin(\psi_{s})|
+\end{array} 
+& \Rightarrow
+\end{align*}
+\begin{equation}
+FS_{d}=\frac{\left[s-\left(|l_{eo}\cdot\sin(\psi_{s})|+|l_{ns}\cos(\psi_{s})|\right)\right]\cdot\left[1-\left(|l_{eo}\cdot\cos(\psi_{s})|-|l_{ns}\sin(\psi_{s})|\right)\right]}{s}
+\end{equation}
+#+end_export
+siendo $\psi_{s}$ el acimut solar y $\gamma_{s}$ la altura solar y donde la longitud de sombra (normalizada con la anchura del seguidor) se calcula con:
+#+begin_export latex
+\begin{align}
+s & =s_{1}+s_{2}\\
+s_{1} & =b\cdot\cos(\beta)\\
+s_{2} & =\frac{b\cdot\sin(\beta)}{\vert\tan(\gamma_{s})\vert}
+\end{align}
+#+end_export
+El factor $\frac{\sin(\gamma_{s})}{\sin(\gamma_{s}+\beta)}$ representa 
+la proyección de sombra existente en el suelo sobre el plano del generador, y por tanto, el porcentaje de área sombreada que debe ser eliminado de la radiación directa. Desarrollando este factor se obtiene una formulación alternativa que puede facilitar el cálculo de los tres factores:
+#+begin_export latex
+\begin{align}
+FS_{eo} & =\frac{(1-l_{eo}\cos(\psi_{s}))\cdot(s-l_{eo}\sin(\psi_{s}))}{s}\\
+FS_{ns} & =\frac{(s-l_{ns}\cos(\psi_{s}))\cdot(1-l_{ns}\sin(\psi_{s}))}{s}\\
+FS_{d} & =\frac{\left[s-\left(l_{eo}\cdot\sin(\psi_{s})+l_{ns}\cos(\psi_{s})\right)\right]\cdot\left[1-\left(l_{eo}\cdot\cos(\psi_{s})-l_{ns}\sin(\psi_{s})\right)\right]}{s}
+\end{align}
+#+end_export
+
+Realizando la simulación de este sistema incluyendo el cálculo de sombras, y repitiendo la simulación para varias combinaciones (Lns,Leo) pueden elaborarse gráficos de nivel como el de la figura ref:fig:abaco-sombras, donde se recoge el ratio entre la energía anual producida por un seguidor /promedio/ incluyendo el efecto de por sombras mutuas[fn:5] y la energía anual producida por un seguidor sin sombreado.
+#+CAPTION: Ábaco para planta de seguimiento a doble eje. Recoge el ratio entre la energía anual producida por un seguidor afectado por sombras mutuas ($E_{acS}$) y la producida por un seguidor sin sombreado ($E_{ac0}$). Las curvas de color negro representan la fracción de energía no afectada por sombras. Las curvas de puntos representan el valor del ROT. label:fig:abaco-sombras
+#+ATTR_LATEX: :height 0.4\textheight
+file:figuras/AbacoSombras.pdf
+
+** Sistemas de seguimiento de eje horizontal
+Se considera que los seguidores son de longitud infinita en sentido Norte-Sur (se desprecia el efecto de borde). Así, los parámetros que determinan el diseño de este tipo de sistema son (figura ref:fig:SeguidorEjeHorizontalSombras):
+#+CAPTION: Dimensiones básicas en sistemas con seguidores de eje horizontal. label:fig:SeguidorEjeHorizontalSombras
+#+ATTR_LATEX: :scale 0.9
+file:figuras/SombrasHoriz.pdf
+1. La inclinación del generador fotovoltaico, $\beta$, (coincidente con el ángulo $\psi_{ns}$).
+2. La dimensión en sentido Este-Oeste del campo generador, L.
+3. La separación entre los diferente seguidores en la dirección Este-Oeste, $L_{eo}$.
+   Por tanto, $ROT=\frac{L_{eo}}{L}$.
+
+Para caracterizar numéricamente el sombreado, se empreará el factor $FS_{eo}$. Mediante consideraciones geométricas, utilizando la distancia normalizada $l_{eo}=\frac{L_{eo}}{L}$, es posible escribir:
+#+begin_export latex
+\begin{align}
+FS_{eo} & =\frac{s-l_{eo}}{s}\nonumber \\
+ & =1-l_{eo}\cdot\cos(\beta)\nonumber \\
+ &
+ =1-l_{eo}\cdot\frac{\sin(\omega)}{\sqrt{\sin^{2}(\omega)+\left(\cos(\omega)\cos(\phi)+\tan(\delta)\sin(\phi)\right)^{2}}}\label{eq:FSeoHorizontal}
+\end{align}
+#+end_export
+
+*** Limitación de ángulo y retroseguimeitno
+En seguidores de eje horizontal se puede evitar la incidencia de sombras en cualquier en cualquier instante mediante algoritmos de /backtracking/ o retroseguimiento cite:Panico.Garvison.ea1991. Esta técnia provoca el desvío del seguidor de su posición óptima en los instantes en los que se produce la sombra entre seguidores, evitando el impacto de sombras pero con la consiguiente reducción en energía producida pro alejamiento del apuntamiento óptimo.
+
+Para evitar la aparición de sombras, el ángulo de inclinación de los seguidores debe ser tal que la longitud de la sombra sea igual a la distancia entre seguidores. Siendo, $\beta$ el ángulo de inclinación con retroseguimiento, y, $\beta_0$ el ángulo de inclinación original, de la ecuación ref:eq:FSeoHorizontal se deduce que sólo será necesario aplicar esta técnica cuando $l_{eo}\cdot cos(\beta_0) \leq 1$. El triángulo definido por el rayo solar, el seguidro y la sombra debe cumplir la siguiente condición, basada en el teorema de los senos:
+#+begin_export latex
+\begin{equation}
+\label{eq:BT_senos}
+\frac{l_{eo}}{\cos(\beta_0-\beta)}=\frac{1}{\cos{\beta_0}}
+\end{equation}
+#+end_export
+
+Por tanto, el ángulo de inclinación que grantiza la ausencia de sombras a costa de apartarse de la condición de seguimiento es:
+#+begin_export latex
+\begin{equation}
+\label{eq:retroseguimiento}
+\beta=\beta_0-\arccos(l_{eo}\cdot\cos{\beta_0})  
+\end{equation}
+#+end_export
+ecuación que debe aplicarse sólo cuando $l_{eo} \cdot \cos(\beta_0) \leq 1$. En caso contrario $\beta = \beta_0$.
+
+
+
+
+
 
 
 * Footnotes
-[fn:4] Es de uso común añadir un asterisco como superíndice para denotar aquellos parámetros medidos en estas condiciones.
-[fn:3] Relación entre el camino recorrido por los rayos directos del Sol a través de la atmósfera hasta la superficie receptora y el que recorrerían en caso de incidencia vertical ($AM=1/cos\theta_{zs}$).
-[fn:2] Se van a utilizar las ecuaciones propuestas por P.I. Cooper [[cite:Cooper1969]] por su simpleza.
+[fn:5] En el cálculo de la producción del seguidor afectado por sombras mutuas se considera que la reducción en potencia está exclusivamente relacionada con el área sombreada, por tanto, no se tienen en cuenta las conexiones eléctricas entre módulos. 
+
 [fn:1] Para las ecuaciones de este apartado se va a optar por poner la ecuación más simple posible. Sin embargo, el paquete =solaR2= otorga la posibilidad de realizar los cálculos de utilizando las ecuaciones propuestas por 4 autores diferentes.
 
+[fn:2] Se van a utilizar las ecuaciones propuestas por P.I. Cooper [[cite:Cooper1969]] por su simpleza.
+
+[fn:3] Relación entre el camino recorrido por los rayos directos del Sol a través de la atmósfera hasta la superficie receptora y el que recorrerían en caso de incidencia vertical ($AM=1/cos\theta_{zs}$).
+
+[fn:4] Es de uso común añadir un asterisco como superíndice para denotar aquellos parámetros medidos en estas condiciones.
