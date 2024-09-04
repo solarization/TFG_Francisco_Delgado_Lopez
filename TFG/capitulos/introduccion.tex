@@ -2,7 +2,7 @@
 \label{chap:introduccion}
 
 \section{Objetivos}
-\label{sec:org561091d}
+\label{sec:org021f4cc}
 \label{sec:objetivos}
 El objetivo principal de este proyecto es el desarrollo de un paquete en R \cite{rcoreteam23} con el cual poder realizar estimaciones y representaciones gráficas de la geometría solar, radiación solar en el plano horizontal y del generador, y el funcionamiento de sistemas fotovoltaicos de conexión a red y de bombeo de agua.
 
@@ -12,7 +12,7 @@ El usuario puede colocar los datos que considere convenientes (desde una base de
 
 El paquete también incluye una serie de funciones que permiten hacer representaciones gráficas de estos resultados con el fin de poder apreciar con más detalle las diferencias entre sistemas y contemplar cual es la mejor opción para el emplazamiento elegido.
 
-Este proyecto toma su origen en el paquete ya existente \texttt{solaR} \cite{perpinan12} el cual desarrolló el tutor de este proyecto en 2010. Esta versión, la 0.14, tuvo usa serie de actualizaciones, siendo la más reciente la 0.46 (en el 2021). Sin embargo, al ser versiones de un software antiguo se propuso la idea de renovarlo teniendo en cuenta el paquete en el que basa su funcionamiento. El paquete \texttt{solaR} basó su funcionamiento en el paquete \texttt{zoo} \cite{zeileis05} el cual proporciona una sólida base para trabajar con series temporales. Sin embargo, como base de \texttt{solaR2} se optó por el paquete \texttt{data.table} \cite{barrett24}. Este paquete ofrece una extensión de los clásicos \texttt{data.frame} de R en los \texttt{data.table}, los cuales pueden trabajar rápidamente con enormes cantidades de datos (por ejemplo, 100 GB de RAM).
+Este proyecto toma su origen en el paquete ya existente \texttt{solaR} \cite{perpinan12} el cual desarrolló el tutor de este proyecto en 2010. Esta versión, la 0.14, ha tenido una serie de actualizaciones, siendo la más reciente la 0.46 (en el 2021). Sin embargo, al ser versiones de un software antiguo se propuso la idea de renovarlo teniendo en cuenta el paquete en el que basa su funcionamiento. El paquete \texttt{solaR} basó su funcionamiento en el paquete \texttt{zoo} \cite{zeileis05} el cual proporciona una sólida base para trabajar con series temporales. Sin embargo, como base de \texttt{solaR2} se optó por el paquete \texttt{data.table} \cite{barrett24}. Este paquete ofrece una extensión de los clásicos \texttt{data.frame} de R en los \texttt{data.table}, los cuales pueden trabajar rápidamente con enormes cantidades de datos (por ejemplo, 100 GB de RAM).
 
 La clave de ambos proyectos es que al estar basados en R, cualquier usuario puede acceder a ellos de forma gratuita, tan solo necesitas tener instalado R en tu dispositivo.
 
@@ -55,7 +55,7 @@ El paquete \texttt{solaR2} utiliza este paquete para representar de forma visual
 Para ello se ha usado en mayor medida el libro ``Energía Solar Fotovoltaica'' \cite{Perpinan2023}.
 \end{itemize}
 \section{Análisis previo de soluciones}
-\label{sec:org99b2931}
+\label{sec:orgcef32ac}
 Este proyecto, como ya se ha comentado, es el heredero del paquete \texttt{solaR} desarrollado por Oscar Perpiñán. La filosofía de ambos paquetes es la misma y los resultados que dan son muy similares. Sin embargo, lo que les diferencia (a parte de que \texttt{solaR2} es más modular, es decir, tiene muchas funciones autónomas que permiten realizar cálculos específicos, en especial de geometría y radiación) es el paquete sobre el que construyen sus datos.
 
 Mientras que \texttt{solaR} basa sus clases y métodos en el paquete \texttt{zoo}, \texttt{solaR2} en el paquete \texttt{data.table}. Los dos paquetes pueden trabajar con series temporales, pero, mientras que \texttt{zoo} es más eficaz trabajando con series temporales, \texttt{data.table} es más eficiente a la hora de trabajar con una cantidad grande de datos, lo cual a la hora de realizar estimaciones muy precisas es beneficioso.
@@ -73,7 +73,7 @@ Desarrollado por el \textbf{Laboratorio Nacional de Energías Renovables}, perte
 \end{enumerate}
 En el capitulo \ref{chap:ejemplo-practico-aplicacion} se realizará un ejemplo práctico que compare los resultados entre \textbf{PVsyst}, \texttt{solaR} y \texttt{solaR2}
 \section{Aspectos técnicos}
-\label{sec:orgc97298b}
+\label{sec:orgc037ad9}
 \label{sec:aspectos-tecnicos}
 Las fuentes de un paquete de \texttt{R} están contenidas en un directorio que contiene al menos:
 \begin{itemize}
@@ -87,7 +87,7 @@ Las fuentes de un paquete de \texttt{R} están contenidas en un directorio que c
 Esta estructura puede ser generada con \texttt{package.skeleton}
 
 \subsection{DESCRIPTION}
-\label{sec:org8167737}
+\label{sec:org4b5cad2}
 \label{subsec:description}
 El fichero DESCRIPTION contiene la información básica:
 \begin{examplebox}
@@ -116,7 +116,7 @@ URL: http://www.r-project.org, http://www.another.url
 \item Si usa métodos \texttt{S4} debe incluir \texttt{Depends: methods}.
 \end{itemize}
 \subsection{NAMESPACE}
-\label{sec:orge68ddad}
+\label{sec:org01d355a}
 \label{subsec:namespace}
 \texttt{R} usa un sistema de gestión de \textbf{espacio de nombres} que permite al autor del paquete especificar:
 \begin{itemize}
@@ -143,7 +143,7 @@ search()
 \end{verbatim}
 
 \subsubsection{Manejo de variables}
-\label{sec:orgc13a7e1}
+\label{sec:org4475fe8}
 \begin{itemize}
 \item Exportar variables:
 \end{itemize}
@@ -163,7 +163,7 @@ import(pkgExt)
 importFrom(pkgExt, var1, var2)
 \end{lstlisting}
 \subsubsection{Manejo de clases y métodos}
-\label{sec:orgebce134}
+\label{sec:orgd785ba6}
 \begin{itemize}
 \item Para registrar un \textbf{método} para una \textbf{clase} determinada:
 \end{itemize}
@@ -196,7 +196,7 @@ importClassesFrom(package, ...)
 importMethodsFrom(package, ...)
 \end{lstlisting}
 \subsection{Documentación}
-\label{sec:org3882e9c}
+\label{sec:org5afe08d}
 \label{subsec:documentacion}
 Las páginas de ayuda de los objetos \texttt{R} se escriben usando el formato ``R documentation'' (Rd), un lenguaje similar a \LaTeX{}.
 \begin{examplebox}
