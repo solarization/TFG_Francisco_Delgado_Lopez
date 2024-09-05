@@ -1,11 +1,12 @@
 \chapter{Marco teórico}
 label:chap:marco-teorico
-El paquete =solaR2= toma como marco teórico el libro de Oscar Perpiñán, tutor de este trabajo, Energía Solar Fotovoltaica \cite{Perpinan2023} para cada una de las operaciones de cálculo que realizan cada una de las funciones.
-En la figura [[fig:prod-calculo]], se muestra un diagrama que resume los pasos que se siguen a la hora de calcular la producción de sistemas fotovoltaicos.
 #+CAPTION: Procedimiento de cálculo
 #+NAME: fig:prod-calculo
-#+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio
-[[file:figuras/ProcedimientoCalculoRadiacionInclinada.pdf]]
+#+ATTR_LATEX: :placement [!h] :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio
+file:figuras/ProcedimientoCalculoRadiacionInclinada.pdf
+El paquete =solaR2= toma como marco teórico el libro de Oscar Perpiñán, tutor de este trabajo, Energía Solar Fotovoltaica \cite{Perpinan2023} para cada una de las operaciones de cálculo que realizan cada una de las funciones.
+En la figura [[fig:prod-calculo]], se muestra un diagrama que resume los pasos que se siguen a la hora de calcular la producción de sistemas fotovoltaicos.
+
 Estos pasos son:
 1. Calcular la geometría que define la posición relativa del Sol desde la Tierra.
 2. Obtener la irradiación global diaria en el plano horizontal
