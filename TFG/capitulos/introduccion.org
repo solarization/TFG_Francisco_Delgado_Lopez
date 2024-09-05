@@ -44,7 +44,7 @@ Este proyecto ha tenido a su vez una serie de objetivos secundarios:
 - Obtener conocimientos teóricos acerca de la radiación solar y de la producción de energía solar mediante sistemas fotovoltaicos y sus diversos tipos.
   Para ello se ha usado en mayor medida el libro "Energía Solar Fotovoltaica" cite:Perpinan2023.
 * Análisis previo de soluciones
-Este proyecto, como ya se ha comentado, es el heredero del paquete =solaR= desarrollado por Oscar Perpiñán. La filosofía de ambos paquetes es la misma y los resultados que dan son muy similares. Sin embargo, lo que les diferencia (a parte de que =solaR2= es más modular, es decir, tiene muchas funciones autónomas que permiten realizar cálculos específicos, en especial de geometría y radiación) es el paquete sobre el que construyen sus datos.
+Este proyecto, como ya se ha comentado, es el heredero del paquete =solaR= desarrollado por Oscar Perpiñán. La filosofía de ambos paquetes es la misma y los resultados que dan son muy similares. Sin embargo, lo que les diferencia (aparte de que =solaR2= es más modular, es decir, tiene muchas funciones autónomas que permiten realizar cálculos específicos, en especial de geometría y radiación) es el paquete sobre el que construyen sus datos.
 
 Mientras que =solaR= basa sus clases y métodos en el paquete =zoo=, =solaR2= en el paquete =data.table=. Los dos paquetes pueden trabajar con series temporales, pero, mientras que =zoo= es más eficaz trabajando con series temporales, =data.table= es más eficiente a la hora de trabajar con una cantidad grande de datos, lo cual a la hora de realizar estimaciones muy precisas es beneficioso.
 
