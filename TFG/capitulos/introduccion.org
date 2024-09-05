@@ -20,12 +20,12 @@ Para alojar este proyecto se toman dos vías:
 - =CRAN=: Acrónimo de Comprehensive R Archive Network, es el repositorio donde se alojan las versiones definitivas de los paquetes y desde el cual se descargan a la sesión de R.
 
 El paquete =solaR2= permite realizar las siguientes operaciones:
-- Cálculo de toda la geometría que caracteriza a la radiación procedente del Sol (ref:subsec:calcsol).
-- Tratamiento de datos meteorológicos (en especial de radiación), procedentes de datos ofrecidos del usuario y de la red de estaciones SIAR cite:siar23 (ref:subsec:meteoreaders).
+- Cálculo de toda la geometría que caracteriza a la radiación procedente del Sol.
+- Tratamiento de datos meteorológicos (en especial de radiación), procedentes de datos ofrecidos del usuario y de la red de estaciones SIAR cite:siar23.
 - Una vez calculado lo anterior, se pueden hacer estimaciones de:
-  * Los componentes de radiación horizontal (ref:subsec:calcg0).
-  * Los componentes de radiación eficaz en el plano inclinado (ref:subsec:calcgef).
-  * La producción de sistemas fotovoltaicos conectados a red (ref:subsec:prodgcpv) y sistemas fotovoltaivos de bombeo (ref:subsec:prodpvps).
+  * Los componentes de radiación horizontal.
+  * Los componentes de radiación eficaz en el plano inclinado.
+  * La producción de sistemas fotovoltaicos conectados a red y sistemas fotovoltaivos de bombeo.
 
 Este proyecto ha tenido a su vez una serie de objetivos secundarios:
 - Uso y manejo de GNU Emacs cite:emacs85 en el que se realizaron todos los archivos que componen este documento (utilizando el modo Org cite:dominik03) y el paquete descrito (empleando ESS cite:ess24)
@@ -50,141 +50,39 @@ Mientras que =solaR= basa sus clases y métodos en el paquete =zoo=, =solaR2= en
 
 Por otro lado, existen otras soluciones fuera de R:
 1. *PVsyst - Photovoltaic Software* cite:pvsyst
-   Este software es probablemente el más conocido dentro del ámbito del estudio y la estimación de instalaciones fotovoltaicas. Permite una gran personalización de todos los componentes de la instalación.
+   Este software es probablemente el más conocido dentro del ámbito del estudio y la estimación de instalaciones fotovoltaicas. Destaca por la personalización detallada de los componentes de la instalación (módulos, inversores, sombreado, etc.), lo que ermite una simulación precisa a través de datos meteorológicos y parámetros detallados del sistema. Su uso está extendido en proyectos de gran escala y estuidos avanzados de eficiencia.
+   - Ventajas:
+     - *Completo y profesional*: PVsyst es altamente detallado, permitiendo análisis avanzados para proyectos pequeños y grandes.
+     - *Base de datos meteorológicos*: Integra datos climáticos de fuentes como Meteonorm cite:jan20, lo que mejora la precisión de las simulaciones.
+     - *Simulaciones avanzadas*: Permite modelar la energía producida por una planta fotovoltaica y calcular las pérdidas debidas a sombreamiento, inclinación, orientaciones y resistencias internas de los módulos.
+     - *Herramientas de dimensionamiento*: Ofrece módulos específicos para diseñar la configuración de inversores y módulos solares.
+   - Limitaciones:
+     - *Costo*: Es un software comercial , con licencias que pueden ser costosas para proyectos pequeños.
+     - *Curva de aprendizaje*: Su interfaz puede resultar compleja para usuarios nuevos, lo que implica una curva de aprendizaje considerable.
+     - *Enfoque técnico*: Está más orientado a ingenieros y técnicos, por lo que carece de accedsibilidad para usuarios no especializados.
 2. *SISIFO* cite:sisifo
-   Herramienta web diseñada por el *Grupo de Sistemas Fotovoltaicos del Instituto de Energía Solar de la Universidad Politécnica de Madrid*.
+   Herramienta web diseñada por el *Grupo de Sistemas Fotovoltaicos del Instituto de Energía Solar de la Universidad Politécnica de Madrid*. Está diseñada para ser accesible y fácil de usar, enfocándose en una audiencia más general, incluyenco ingenieros, pero también técnicos y académicos.
+   - Ventajas:
+     - *Facilidad de uso*: Tiene una interfaz amigable y fácil de utilizar, lo que lohace accesible para usuarios con distintos niveles de experiencia.
+     - *Open-source*: Al ser de código abierto, permite a los desarrolladores modificar y adaptar el software a sus necesidades específicas.
+     - *Simulación integrada*: Ofrece la posibilidad de realizar simulaciones basadas en datos meteorológicos, aunque con un nivel de detalle inferior a PVsyst.
+     - *Soporte comunitario*: Al ser de código abierto, cuenta con una comunidad activa de usuarios y desarrrolladores que colaboran en mejoras y actualizaciones.
+   - Limitaciones:
+     - *Menos preciso*: Al compararse con otras herramientas, su precisión puede ser menor en cuanto a modelado y simulación de pérdidas, ya que simplifica varios aspectos del sistema.
+     - *Limitaciones en grandes proyectos*: No está tan bien adaptado para grandes instalaciones o análisis financieros avanzados.
 3. *PVGIS* cite:pvgis
-   Aplicación web desarrolada por el *European Commission Joint Research Center* desde 2001.
+   Aplicación web desarrolada por el *European Commission Joint Research Center* desde 2001. Está diseñada para proporcionar estimaciones de producción de energía solar en función de la ubicación geográfica y condiciones meteorológicas históricas.
+   - Ventajas:
+     - *Gratuito y accesible*: Esta herramienta es completamente gratuira y accesible a través de una interfaz web, lo que facilita el uso por parte de cualquier persona.
+     - *Datos meteorológicos precisos*: Proporciona acceso a datos meteorológicos satelitales y de estaciones terrestres, lo que permite obtener estimaciones razonables de producción de energía.
+     - *Estudios rápidos*: Es ideal para obtener estimaciones preliminares y estudios de viabilidad de sistemas fotovoltaicos.
 4. *System Advisor Model* cite:sam
-   Desarrollado por el *Laboratorio Nacional de Energías Renovables*, perteneciente al Departamento de energía del gobierno de EE.UU.
+   Desarrollado por el *Laboratorio Nacional de Energías Renovables*, perteneciente al Departamento de energía del gobierno de EE.UU. Está orientada a la modelación tanto técnica como económica de sistemas de energía renovable, incluyendo fotovoltaicos.
+   - Ventajas:
+     - *Modelo económico avanzado*: Integra análisis detalados sobre la viabilidad económica, lo que permite evaluar tanto la producción energética como los costos y benefecios a lo largo de la vida útil del proyecto.
+     - *Acceso a múltiples tecnologías*: Además de fotovoltaicos, permite modelar otras tecnologías de energía renovable, lo que lo hace más flexible para estuidos multidisciplinares.
+     - *Integración de bases de datos*: Utiliza datos meteorológicos detallados, lo que mejora la precisión de las simulaciones.
+   - Limitaciones:
+     - *Complejidad*: Aunque gratuito, SAM es bastante complejo y técnico, lo que puede limitar su uso a usuarios con experiencia en el modelado de sistemas energéticos.
+     - *Interfaz no tan intuitiva*: Comparado con otras herramientas, requiere un mayor tiempo de familiarización debido a su enfoque integral y detalle en las simulaciones.
 En el capitulo [[ref:chap:ejemplo-practico-aplicacion]] se realizará un ejemplo práctico que compare los resultados entre *PVsyst*, =solaR= y =solaR2=
-* Aspectos técnicos
-label:sec:aspectos-tecnicos
-Las fuentes de un paquete de =R= están contenidas en un directorio que contiene al menos:
-- Los ficheros *DESCRIPTION* y *NAMESPACE*
-- Los subdirectorios:
-  - =R=: código en ficheros .R
-  - =man=: páginas de ayuda de las funciones, métodos y clases contenidas en el paquete.
-Esta estructura puede ser generada con =package.skeleton=
-
-** DESCRIPTION
-label:subsec:description
-El fichero DESCRIPTION contiene la información básica:
-#+begin_export latex
-\begin{examplebox}
-#+end_export
-#+begin_example
-     Package: pkgname
-     Version: 0.5-1
-     Date: 2004-01-01
-     Title: My First Collection of Functions
-     Authors@R: c(person("Joe", "Developer", role = c("aut", "cre"),
-                          email = "Joe.Developer@some.domain.net"),
-                   person("Pat", "Developer", role = "aut"),
-                   person("A.", "User", role = "ctb",
-     	             email = "A.User@whereever.net"))
-     Author: Joe Developer and Pat Developer, with contributions from A. User
-     Maintainer: Joe Developer <Joe.Developer@some.domain.net>
-     Depends: R (>= 1.8.0), nlme
-     Suggests: MASS
-     Description: A short (one paragraph) description of what
-       the package does and why it may be useful.
-     License: GPL (>= 2)
-     URL: http://www.r-project.org, http://www.another.url
-#+end_example
-#+begin_export latex
-\end{examplebox}
-#+end_export
-- Los campos =Package=, =Version=, =License=, =Title=, =Autor= y =Maintainer= son obligatorios.
-- Si usa métodos =S4= debe incluir =Depends: methods=.
-** NAMESPACE
-label:subsec:namespace
-=R= usa un sistema de gestión de *espacio de nombres* que permite al autor del paquete especificar:
-- Las *variables* del paquete que se *exportan* (y son, por tanto, accesibles a los usuarios).
-- Las *variables* que se *importan* de otros paquetes.
-- Las *clases y métodos* =S3= y =S4= que deben registrarse.
-
-El =NAMESPACE= controla la estrategia de búsqueda de variables que utilizan las funciones del paquete:
-- En primer lugar, busca entre las creadas localmente (por el código de la carpeta =R/=).
-- En segundo lugar, busca entre las variables importadas explícitamente de otros paquetes.
-- En tercer lugar, busca en el =NAMESPACE= del paquete =base=.
-- Por último, busca siguiendo el camino habitual (usando =search()=).
-#+begin_src R :exports both :results output
-search()
-#+end_src
-*** Manejo de variables
-- Exportar variables:
-#+begin_src R :eval no
-  export(f, g)
-#+end_src
-- Importar *todas* las variables de un paquete:
-#+begin_src R :eval no
-  import(pkgExt)
-#+end_src
-- Importar variables *concretas* de un paquete:
-#+begin_src R :eval no
-  importFrom(pkgExt, var1, var2)
-#+end_src
-*** Manejo de clases y métodos
-- Para registrar un *método* para una *clase* determinada:
-#+begin_src R :eval no
-  S3method(print, myClass)
-#+end_src
-- Para usar clases y métodos =S4=:
-#+begin_src R :eval no
-  import("methods")
-#+end_src
-- Para registrar clases =S4=:
-#+begin_src R :eval no
-  exportClasses(class1, class2)
-#+end_src
-- Para registrar métodos =S4=:
-#+begin_src R :eval no
-  exportMethods(method1, method2)
-#+end_src
-- Para importar métodos y clases =S4= de otro paquete:
-#+begin_src R :eval no
-  importClassesFrom(package, ...)
-  importMethodsFrom(package, ...)
-#+end_src
-** Documentación
-label:subsec:documentacion
-Las páginas de ayuda de los objetos =R= se escriben usando el formato "R documentation" (Rd), un lenguaje similar a LaTeX.
-#+begin_export latex
-\begin{examplebox}
-#+end_export
-#+begin_example
-  \name{load}
-  \alias{load}
-  \title{Reload Saved Datasets}
-  \description{
-    Reload the datasets written to a file with the function
-    \code{save}.
-  }
-  \usage{
-    load(file, envir = parent.frame())
-  }
-  \arguments{
-  \item{file}{a connection or a character string giving the
-      name of the file to load.}
-  \item{envir}{the environment where the data should be
-      loaded.}
-  }
-  \seealso{
-    \code{\link{save}}.
-  }
-  \examples{
-    ## save all data
-    save(list = ls(), file= "all.RData")
-    
-    ## restore the saved values to the current environment
-    load("all.RData")
-    
-    ## restore the saved values to the workspace
-    load("all.RData", .GlobalEnv)
-  }
-  \keyword{file}
-#+end_example
-#+begin_export latex
-\end{examplebox}
-#+end_export

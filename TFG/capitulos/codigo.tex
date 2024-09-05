@@ -1,16 +1,16 @@
 \chapter{Desarrollo del código}
 \label{chap:desarrollo-codigo}
-En la figura \ref{fig:org79600e1}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
+En la figura \ref{fig:orgf772152}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
 \begin{figure}[htbp]
 \centering
 \includegraphics[keepaspectratio,width=0.8\textwidth,height=0.5\textheight]{figuras/procedure.pdf}
-\caption{\label{fig:org79600e1}Proceso de cálculo de las funciones de \texttt{solaR2}}
+\caption{\label{fig:orgf772152}Proceso de cálculo de las funciones de \texttt{solaR2}}
 \end{figure}
-A la hora de estimar la producción, el programa sigue los siguientes procesos:
+A la hora de estimar la producción, el programa sigue los siguientes procesos\footnote{Todas las funciones recogidas en este capítulo, están descritas en el manual de uso del paquete \texttt{solaR2}, el cual, está disponible en el apendice \ref{chap:manual} de este documento.}:
 \section{Geometría solar}
-\label{sec:org782662c}
+\label{sec:orgb67a7d0}
 \label{sec:geometria-solar}
-Para calcular la geometría que definen las posiciones de la Tierra y el Sol, \texttt{solaR2} se vale de una función constructora, \texttt{calcSol} [\ref{subsec:calcsol}], la cual mediante las funciones \texttt{fSolD} [\ref{subsec:fsold}] y \texttt{fSolI} [\ref{subsec:fsoli}] cálcula todos los ángulos y componentes que caracterizan la geometría solar.
+Para calcular la geometría que definen las posiciones de la Tierra y el Sol, \texttt{solaR2} se vale de una función constructora, \texttt{calcSol}, la cual mediante las funciones \texttt{fSolD} y \texttt{fSolI} cálcula todos los ángulos y componentes que caracterizan la geometría solar.
 \begin{figure}[htbp]
 \centering
 \includegraphics[keepaspectratio,width=\textwidth,height=0.5\textheight]{figuras/calcSol.pdf}
@@ -23,7 +23,7 @@ Como se puede ver en la figura \ref{fig:calcSol}, \texttt{calcSol} funcia gracia
 
 Estas son:
 \begin{itemize}
-\item Declinación (\(\delta\)): calculada a partir de la función \texttt{declination}\footnote{Todas las funciones mencionadas en este punto, se encuentran en el apartado \ref{subsec:utils-angles}.}.
+\item Declinación (\(\delta\)): calculada a partir de la función \texttt{declination}.
 \item Excentricidad (\(\epsilon_o\)): obtenida mediante la función \texttt{eccentricity}.
 \item Ecuación del tiempo (\(EoT\)): obtenida mediante la función \texttt{eot}.
 \item Ángulo del amanecer (\(\omega_s\)): calculada a partir de la función \texttt{sunrise}.
@@ -286,9 +286,9 @@ Intradaily values:
 \end{verbatim}
 
 \section{Datos meteorológicos}
-\label{sec:org3a06ee8}
+\label{sec:orge5f12fb}
 \label{sec:datos-meteorologicos}
-Para el procesamiento de datos meteorologicos, \texttt{solaR2} provee una serie de funciones\footnote{Las funciones comentadas en este apartado, se recogen en la sección \ref{subsec:meteoreaders}} que son capaces de leer todo tipo de datos. Estos datos se procesan y se almacenan en un objeto de tipo \texttt{Meteo} tal y como se ve en la figura \ref{fig:meteo}. Estas funciones son:
+Para el procesamiento de datos meteorologicos, \texttt{solaR2} provee una serie de funciones que son capaces de leer todo tipo de datos. Estos datos se procesan y se almacenan en un objeto de tipo \texttt{Meteo} tal y como se ve en la figura \ref{fig:meteo}. Estas funciones son:
 \begin{figure}[htbp]
 \centering
 \includegraphics[keepaspectratio,width=\textwidth,height=0.5\textheight]{figuras/meteo.pdf}
@@ -509,9 +509,9 @@ Esta función tiene dos argumentos importantes:
 \end{itemize}
 
 \section{Radiación en el plano horizontal}
-\label{sec:org891bcda}
+\label{sec:org62ae912}
 \label{sec:radiacion-plano-horizontal}
-Una vez se ha calculado la geometría solar (sección \ref{sec:geometria-solar}) y se han procesado los datos meteorológicos (sección \ref{sec:datos-meteorologicos}), es necesario calcular la radiación en el plano horizontal. Para ello, \texttt{solaR2} cuenta con la función \texttt{calcG0} [\ref{subsec:calcg0}] la cual mediante las funciones \texttt{fCompD} [\ref{subsec:fcompd}] y \texttt{fCompI} [\ref{subsec:fcompi}] procesan los objetos de clase \texttt{Sol} y clase \texttt{Meteo} para dar un objeto de tipo \texttt{G0}.
+Una vez se ha calculado la geometría solar (sección \ref{sec:geometria-solar}) y se han procesado los datos meteorológicos (sección \ref{sec:datos-meteorologicos}), es necesario calcular la radiación en el plano horizontal. Para ello, \texttt{solaR2} cuenta con la función \texttt{calcG0} la cual mediante las funciones \texttt{fCompD} y \texttt{fCompI} procesan los objetos de clase \texttt{Sol} y clase \texttt{Meteo} para dar un objeto de tipo \texttt{G0}.
 
 Como se puede ver en la figura \ref{fig:calcg0}, \texttt{calcG0} funciona gracias a las siguientes funciones:
 \begin{figure}[htbp]
@@ -958,24 +958,24 @@ Latitude for calculations:  37.2 degrees
 Monthly avarages:
 	Dates   G0d      D0d      B0d
        <char> <num>    <num>    <num>
- 1: Jan. 2024 2.766 1.018399 1.747601
- 2: Feb. 2024 3.491 1.539128 1.951872
- 3: Mar. 2024 4.494 2.019729 2.474271
- 4: Apr. 2024 5.912 2.212283 3.699717
- 5: May. 2024 6.989 2.443056 4.545944
- 6: Jun. 2024 7.742 2.469004 5.272996
- 7: Jul. 2024 7.919 2.202626 5.716374
- 8: Aug. 2024 7.027 2.245755 4.781245
- 9: Sep. 2024 5.369 1.714299 3.654701
-10: Oct. 2024 3.562 1.791424 1.770576
-11: Nov. 2024 2.814 1.148719 1.665281
-12: Dec. 2024 2.179 1.161355 1.017645
+ 1: Jan. 2024 2.766 1.074389 1.691611
+ 2: Feb. 2024 3.491 1.481393 2.009607
+ 3: Mar. 2024 4.494 1.943261 2.550739
+ 4: Apr. 2024 5.912 2.350714 3.561286
+ 5: May. 2024 6.989 2.475692 4.513308
+ 6: Jun. 2024 7.742 2.491763 5.250237
+ 7: Jul. 2024 7.919 2.274205 5.644795
+ 8: Aug. 2024 7.027 2.014195 5.012805
+ 9: Sep. 2024 5.369 1.809217 3.559783
+10: Oct. 2024 3.562 1.625923 1.936077
+11: Nov. 2024 2.814 1.232074 1.581926
+12: Dec. 2024 2.179 1.084729 1.094271
 
 Yearly values:
 Key: <Dates>
    Dates      G0d      D0d      B0d
    <int>    <num>    <num>    <num>
-1:  2024 1839.365 670.3165 1169.049
+1:  2024 1839.365 666.7377 1172.627
 \end{verbatim}
 
 \item Diarios.
@@ -996,24 +996,24 @@ Latitude for calculations:  37.2 degrees
 Monthly avarages:
 	Dates   G0d      D0d      B0d
        <char> <num>    <num>    <num>
- 1: Jan. 2024 2.766 1.018399 1.747601
- 2: Feb. 2024 3.491 1.539128 1.951872
- 3: Mar. 2024 4.494 2.019729 2.474271
- 4: Apr. 2024 5.912 2.212283 3.699717
- 5: May. 2024 6.989 2.443056 4.545944
- 6: Jun. 2024 7.742 2.469004 5.272996
- 7: Jul. 2024 7.919 2.202626 5.716374
- 8: Aug. 2024 7.027 2.245755 4.781245
- 9: Sep. 2024 5.369 1.714299 3.654701
-10: Oct. 2024 3.562 1.791424 1.770576
-11: Nov. 2024 2.814 1.148719 1.665281
-12: Dec. 2024 2.179 1.161355 1.017645
+ 1: Jan. 2024 2.766 1.074389 1.691611
+ 2: Feb. 2024 3.491 1.481393 2.009607
+ 3: Mar. 2024 4.494 1.943261 2.550739
+ 4: Apr. 2024 5.912 2.350714 3.561286
+ 5: May. 2024 6.989 2.475692 4.513308
+ 6: Jun. 2024 7.742 2.491763 5.250237
+ 7: Jul. 2024 7.919 2.274205 5.644795
+ 8: Aug. 2024 7.027 2.014195 5.012805
+ 9: Sep. 2024 5.369 1.809217 3.559783
+10: Oct. 2024 3.562 1.625923 1.936077
+11: Nov. 2024 2.814 1.232074 1.581926
+12: Dec. 2024 2.179 1.084729 1.094271
 
 Yearly values:
 Key: <Dates>
    Dates      G0d      D0d      B0d
    <int>    <num>    <num>    <num>
-1:  2024 1839.365 670.3165 1169.049
+1:  2024 1839.365 666.7377 1172.627
 \end{verbatim}
 
 \item Intradiarios
@@ -1032,33 +1032,33 @@ Latitude of source:  37.2 degrees
 Latitude for calculations:  37.2 degrees
 
 Monthly avarages:
-	Dates      G0d       D0d       B0d
-       <char>    <num>     <num>     <num>
- 1: Jan. 2024 2.766000 0.9625472 1.8034528
- 2: Feb. 2024 3.491000 1.5898320 1.9011680
- 3: Mar. 2024 4.494000 2.0981954 2.3958046
- 4: Apr. 2024 5.912000 2.1497145 3.7622855
- 5: May. 2024 6.989000 2.3990824 4.5899176
- 6: Jun. 2024 7.742000 2.3030247 5.4389753
- 7: Jul. 2024 7.919000 1.7067936 6.2122064
- 8: Aug. 2024 6.483769 1.6494109 4.8343585
- 9: Sep. 2024 5.369000 1.6544602 3.7145398
-10: Oct. 2024 3.562000 1.9052417 1.6567583
-11: Nov. 2024 2.659222 0.9870476 1.6721742
-12: Dec. 2024 2.179000 1.2360451 0.9429549
+	Dates   G0d      D0d      B0d
+       <char> <num>    <num>    <num>
+ 1: Jan. 2024 2.766 1.043772 1.722228
+ 2: Feb. 2024 3.491 1.540259 1.950741
+ 3: Mar. 2024 4.494 1.988388 2.505612
+ 4: Apr. 2024 5.912 2.355717 3.556283
+ 5: May. 2024 6.989 2.310988 4.678012
+ 6: Jun. 2024 7.742 2.018162 5.723838
+ 7: Jul. 2024 7.919 1.999583 5.919417
+ 8: Aug. 2024 7.027 1.982788 5.044212
+ 9: Sep. 2024 5.369 1.654032 3.714968
+10: Oct. 2024 3.562 1.600744 1.961256
+11: Nov. 2024 2.814 1.248700 1.565300
+12: Dec. 2024 2.179 1.116547 1.062453
 
 Yearly values:
 Key: <Dates>
-   Dates      G0d      D0d      B0d
-   <int>    <num>    <num>    <num>
-1:  2024 1817.882 629.6093 1188.272
+   Dates      G0d     D0d      B0d
+   <int>    <num>   <num>    <num>
+1:  2024 1839.365 636.293 1203.072
 \end{verbatim}
 \end{itemize}
 
 \section{Radiación efectiva en el plano del generador}
-\label{sec:org9704899}
+\label{sec:org47040ff}
 \label{sec:radiacion-efectiva-plano-generador}
-Teniendo la radiación incidente en plano horizontal (sección \ref{sec:radiacion-plano-horizontal}), se puede calcular la radiación efectiva incidente en el plano del generador. Para ello, \texttt{solaR2} cuenta con la función \texttt{calcGef} [\ref{subsec:calcgef}] la cual mediante las funciones \texttt{fInclin} y \texttt{calcShd} procesa un objeto de clase \texttt{G0} para obtener un objeto \texttt{Gef}.
+Teniendo la radiación incidente en plano horizontal (sección \ref{sec:radiacion-plano-horizontal}), se puede calcular la radiación efectiva incidente en el plano del generador. Para ello, \texttt{solaR2} cuenta con la función \texttt{calcGef} la cual mediante las funciones \texttt{fInclin} y \texttt{calcShd} procesa un objeto de clase \texttt{G0} para obtener un objeto \texttt{Gef}.
 
 Como se puede ver en la figura \ref{fig:calcgef}, \texttt{calcGef} funciona gracias a las siguientes funciones:
 \begin{figure}[htbp]
@@ -1076,14 +1076,14 @@ Como principal argumento tiene \texttt{modeTrk}, el cual determina el sistema de
 BTd <- fBTd(mode = 'prom')[6] 
 sol <- calcSol(lat, BTd = BTd, keep.night = FALSE)
 beta <- lat - 10
-alfa <- 0
-angGen_fixed <- fTheta(sol = sol, beta = beta, alfa = alfa,
-                 modeTrk = 'fixed')
+alpha <- 0
+angGen_fixed <- fTheta(sol = sol, beta = beta, alpha = alpha,
+                       modeTrk = 'fixed')
 show(angGen_fixed)
 \end{lstlisting}
 
 \begin{verbatim}
-		  Dates      Beta  Alfa   cosTheta
+		  Dates      Beta Alpha   cosTheta
 		 <POSc>     <num> <num>      <num>
  1: 2024-06-10 05:00:00 0.4747296     0 0.00000000
  2: 2024-06-10 06:00:00 0.4747296     0 0.06990810
@@ -1106,13 +1106,13 @@ show(angGen_fixed)
 \item \texttt{two}: para sistemas de seguimiento de doble eje.
 \end{itemize}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-angGen_two <- fTheta(sol = sol, beta = beta, alfa = alfa,
+angGen_two <- fTheta(sol = sol, beta = beta, alpha = alpha,
                      modeTrk = 'two')
 show(angGen_two)
 \end{lstlisting}
 
 \begin{verbatim}
-		  Dates      Beta         Alfa cosTheta
+		  Dates      Beta        Alpha cosTheta
 		 <POSc>     <num>        <num>    <num>
  1: 2024-06-10 05:00:00 1.5220852 -2.043678875        1
  2: 2024-06-10 06:00:00 1.3300857 -1.896688029        1
@@ -1135,13 +1135,13 @@ show(angGen_two)
 \item \texttt{horiz}: para sistemas de seguimiento horizontal Norte-Sur.
 \end{itemize}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-angGen_horiz <- fTheta(sol = sol, beta = beta, alfa = alfa,
+angGen_horiz <- fTheta(sol = sol, beta = beta, alpha = alpha,
                        modeTrk = 'horiz')
 show(angGen_horiz)
 \end{lstlisting}
 
 \begin{verbatim}
-		  Dates        Beta      Alfa  cosTheta
+		  Dates        Beta     Alpha  cosTheta
 		 <POSc>       <num>     <num>     <num>
  1: 2024-06-10 05:00:00 1.516091993 -1.570796 0.8905353
  2: 2024-06-10 06:00:00 1.317263961 -1.570796 0.9504350
@@ -1164,14 +1164,14 @@ También, tiene un argumento \texttt{BT} que indica cuando se usa la técnica de
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 struct <- list(L = 1)
 distances <- data.table(Lew = 2)
-angGen_BT <- fTheta(sol = sol, beta = beta, alfa = alfa,
+angGen_BT <- fTheta(sol = sol, beta = beta, alpha = alpha,
                     modeTrk = 'horiz', BT = TRUE,
                     struct = struct, dist = distances)
 show(angGen_BT)
 \end{lstlisting}
 
 \begin{verbatim}
-		  Dates        Beta      Alfa   cosTheta
+		  Dates        Beta     Alpha   cosTheta
 		 <POSc>       <num>     <num>      <num>
  1: 2024-06-10 05:00:00 0.054868903 -1.570796 0.09738369
  2: 2024-06-10 06:00:00 0.271972628 -1.570796 0.47678565
@@ -1198,7 +1198,7 @@ Como argumentos principales están:
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 compI <- calcG0(lat, dataRad = prom, keep.night = FALSE)
 sol <- calcSol(lat, BTi = indexI(compI))
-angGen <- fTheta(sol = sol, beta = beta, alfa = alfa)
+angGen <- fTheta(sol = sol, beta = beta, alpha = alpha)
 inclin_limpio <- fInclin(compI = compI, angGen = angGen, iS = 1)
 show(inclin_limpio)
 \end{lstlisting}
@@ -1413,7 +1413,7 @@ Finalmente, esta función le otorga estos datos a la función \texttt{calcGef} p
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 gef_prom <- calcGef(lat = lat, modeTrk = 'two', modeRad = 'prom',
                     dataRad = prom,
-                    beta = lat-10, alfa = 0,
+                    beta = lat-10, alpha = 0,
                     iS = 2, alb = 0.2,
                     horizBright = TRUE, HCPV = FALSE)
 show(gef_prom)
@@ -1704,9 +1704,9 @@ Mode of tracking:  horiz
 \end{verbatim}
 
 \section{Producción eléctrica de un SFCR}
-\label{sec:orga64d941}
+\label{sec:org21e0596}
 \label{produccion-electrica-sfcr}
-Con la radiación efectiva, se puede estimar la producción eléctrica que va a tener un sistema fotovoltaico conectado a red. Esta estimación, se puede calcular mediante la función \texttt{prodGCPV} [\ref{subsec:prodgcpv}] la cual mediante la función \texttt{fProd} [\ref{subsec:fprod}] procesa un objeto de clase \texttt{Gef} y obtiene un objeto \texttt{ProdGCPV}.
+Con la radiación efectiva, se puede estimar la producción eléctrica que va a tener un sistema fotovoltaico conectado a red. Esta estimación, se puede calcular mediante la función \texttt{prodGCPV} la cual mediante la función \texttt{fProd} procesa un objeto de clase \texttt{Gef} y obtiene un objeto \texttt{ProdGCPV}.
 
 Como se puede ver en la figura \ref{fig:prodgcpv}, \texttt{prodGCPV} funciona gracias a la siguiente función:
 \begin{figure}[htbp]
@@ -1805,6 +1805,11 @@ show(prodFixed)
 \end{lstlisting}
 
 \begin{verbatim}
+Avisos:
+1: In iv(vocn, iscn, vmn, imn, module$TONC, module$CoefVT, Ta, Gef,  :
+  Minimum MPP voltage of the inverter has been reached
+2: In iv(vocn, iscn, vmn, imn, module$TONC, module$CoefVT, Ta, Gef,  :
+  Maximum MPP voltage of the inverter has been reached
 Object of class  ProdGCPV 
 
 Source of meteorological information: prom- 
@@ -1813,34 +1818,34 @@ Latitude of source:  37.2 degrees
 Latitude for calculations:  37.2 degrees
 
 Monthly avarages:
-        Dates       Eac       Edc       Yf
-       <char>     <num>     <num>    <num>
- 1: Jan. 2024  95.36291 105.62767 3.604158
- 2: Feb. 2024 101.50809 112.56166 3.836410
- 3: Mar. 2024 110.26945 122.11835 4.167538
- 4: Apr. 2024 124.53728 138.29836 4.706778
- 5: May. 2024 131.48629 145.91065 4.969410
- 6: Jun. 2024 135.89421 150.78725 5.136003
- 7: Jul. 2024 134.98501 149.81246 5.101641
- 8: Aug. 2024 130.25804 144.39951 4.922989
- 9: Sep. 2024 119.91911 132.77648 4.532238
-10: Oct. 2024  96.49455 106.99182 3.646928
-11: Nov. 2024  90.17737  99.88152 3.408175
-12: Dec. 2024  73.89289  81.80967 2.792718
+        Dates       Eac        Edc        Yf
+       <char>     <num>      <num>     <num>
+ 1: Jan. 2024 1279.0575  8847.1280 0.7843363
+ 2: Feb. 2024 1336.2237  9534.3988 0.8193914
+ 3: Mar. 2024 1501.8962 10787.4853 0.9209841
+ 4: Apr. 2024 1617.2294 12291.1666 0.9917081
+ 5: May. 2024 1670.0349 13000.3672 1.0240892
+ 6: Jun. 2024 1736.8935 12967.6713 1.0650879
+ 7: Jul. 2024 1252.6160  7003.9010 0.7681220
+ 8: Aug. 2024  337.0509   803.7692 0.2066844
+ 9: Sep. 2024 1422.1577  9693.6980 0.8720874
+10: Oct. 2024 1308.7969  9163.0111 0.8025729
+11: Nov. 2024 1265.5096  8657.4023 0.7760285
+12: Dec. 2024 1036.5903  6634.0963 0.6356519
 
 Yearly values:
-   Dates     Eac      Edc       Yf
-   <int>   <num>    <num>    <num>
-1:  2024 41014.8 45473.37 1550.119
+   Dates      Eac     Edc       Yf
+   <int>    <num>   <num>    <num>
+1:  2024 479971.5 3328228 294.3254
 -----------------
 Mode of tracking:  fixed 
     Inclination:  27.2 
     Orientation:  0 
 -----------------
 Generator:
-    Modules in series:  12 
-    Modules in parallel:  11 
-    Nominal power (kWp):  26.5
+    Modules in series:  22 
+    Modules in parallel:  130 
+    Nominal power (kWp):  1630.8
 \end{verbatim}
 
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -1849,6 +1854,11 @@ show(prod2x)
 \end{lstlisting}
 
 \begin{verbatim}
+Avisos:
+1: In iv(vocn, iscn, vmn, imn, module$TONC, module$CoefVT, Ta, Gef,  :
+  Minimum MPP voltage of the inverter has been reached
+2: In iv(vocn, iscn, vmn, imn, module$TONC, module$CoefVT, Ta, Gef,  :
+  Maximum MPP voltage of the inverter has been reached
 Object of class  ProdGCPV 
 
 Source of meteorological information: prom- 
@@ -1857,33 +1867,33 @@ Latitude of source:  37.2 degrees
 Latitude for calculations:  37.2 degrees
 
 Monthly avarages:
-        Dates      Eac      Edc       Yf
-       <char>    <num>    <num>    <num>
- 1: Jan. 2024 138.6806 153.2566 5.241314
- 2: Feb. 2024 143.4987 158.5247 5.423408
- 3: Mar. 2024 151.8477 167.7311 5.738952
- 4: Apr. 2024 178.6717 197.4274 6.752741
- 5: May. 2024 200.8888 222.0523 7.592419
- 6: Jun. 2024 223.9959 247.6903 8.465728
- 7: Jul. 2024 214.2749 236.9628 8.098332
- 8: Aug. 2024 194.6043 215.1439 7.354902
- 9: Sep. 2024 168.9824 186.7349 6.386542
-10: Oct. 2024 132.2995 146.0747 5.000145
-11: Nov. 2024 128.5783 141.9871 4.859507
-12: Dec. 2024 102.9116 113.5613 3.889454
+        Dates       Eac       Edc        Yf
+       <char>     <num>     <num>     <num>
+ 1: Jan. 2024 1829.1421 13993.996 1.1216560
+ 2: Feb. 2024 1960.5763 14724.330 1.2022533
+ 3: Mar. 2024 2107.0772 15660.016 1.2920897
+ 4: Apr. 2024 2427.6546 18908.076 1.4886724
+ 5: May. 2024 2706.0114 21661.810 1.6593647
+ 6: Jun. 2024 2862.9464 22598.516 1.7555995
+ 7: Jul. 2024 1899.9978 11153.533 1.1651057
+ 8: Aug. 2024  495.2908  1191.801 0.3037194
+ 9: Sep. 2024 2028.5846 14444.922 1.2439570
+10: Oct. 2024 1887.0955 13723.573 1.1571938
+11: Nov. 2024 1786.6758 13393.040 1.0956151
+12: Dec. 2024 1480.9283 10327.859 0.9081263
 
 Yearly values:
-   Dates      Eac      Edc       Yf
-   <int>    <num>    <num>    <num>
-1:  2024 60369.04 66710.67 2281.595
+   Dates      Eac     Edc       Yf
+   <int>    <num>   <num>    <num>
+1:  2024 714604.4 5226432 438.2056
 -----------------
 Mode of tracking:  two 
     Inclination limit: 90 
 -----------------
 Generator:
-    Modules in series:  12 
-    Modules in parallel:  11 
-    Nominal power (kWp):  26.5
+    Modules in series:  22 
+    Modules in parallel:  130 
+    Nominal power (kWp):  1630.8
 \end{verbatim}
 
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -1892,6 +1902,11 @@ show(prodHoriz)
 \end{lstlisting}
 
 \begin{verbatim}
+Avisos:
+1: In iv(vocn, iscn, vmn, imn, module$TONC, module$CoefVT, Ta, Gef,  :
+  Minimum MPP voltage of the inverter has been reached
+2: In iv(vocn, iscn, vmn, imn, module$TONC, module$CoefVT, Ta, Gef,  :
+  Maximum MPP voltage of the inverter has been reached
 Object of class  ProdGCPV 
 
 Source of meteorological information: prom- 
@@ -1900,37 +1915,37 @@ Latitude of source:  37.2 degrees
 Latitude for calculations:  37.2 degrees
 
 Monthly avarages:
-        Dates       Eac       Edc       Yf
-       <char>     <num>     <num>    <num>
- 1: Jan. 2024  99.43006 109.66074 3.757873
- 2: Feb. 2024 116.24796 128.22238 4.393490
- 3: Mar. 2024 137.39485 151.61074 5.192719
- 4: Apr. 2024 172.03044 189.97488 6.501741
- 5: May. 2024 196.91337 217.61396 7.442169
- 6: Jun. 2024 219.15566 242.31468 8.282797
- 7: Jul. 2024 210.33644 232.56087 7.949482
- 8: Aug. 2024 189.03576 208.87993 7.144442
- 9: Sep. 2024 156.22909 172.44519 5.904542
-10: Oct. 2024 110.69482 122.11859 4.183614
-11: Nov. 2024  94.40734 104.14723 3.568043
-12: Dec. 2024  69.94550  77.30532 2.643529
+        Dates       Eac       Edc        Yf
+       <char>     <num>     <num>     <num>
+ 1: Jan. 2024 1486.0581  9421.710 0.9112720
+ 2: Feb. 2024 1718.2118 11403.484 1.0536319
+ 3: Mar. 2024 1978.3998 13821.135 1.2131830
+ 4: Apr. 2024 2367.7852 17987.013 1.4519596
+ 5: May. 2024 2670.3265 21145.726 1.6374823
+ 6: Jun. 2024 2822.0712 22058.200 1.7305343
+ 7: Jul. 2024 1888.3205 11035.200 1.1579450
+ 8: Aug. 2024  493.7619  1186.029 0.3027818
+ 9: Sep. 2024 1934.8317 13172.970 1.1864663
+10: Oct. 2024 1689.4313 11072.369 1.0359833
+11: Nov. 2024 1473.9336  9283.631 0.9038371
+12: Dec. 2024 1172.8019  6667.352 0.7191788
 
 Yearly values:
-   Dates      Eac      Edc       Yf
-   <int>    <num>    <num>    <num>
-1:  2024 54052.14 59697.16 2042.854
+   Dates      Eac     Edc       Yf
+   <int>    <num>   <num>    <num>
+1:  2024 660538.9 4510591 405.0519
 -----------------
 Mode of tracking:  horiz 
     Inclination limit: 90 
 -----------------
 Generator:
-    Modules in series:  12 
-    Modules in parallel:  11 
-    Nominal power (kWp):  26.5
+    Modules in series:  22 
+    Modules in parallel:  130 
+    Nominal power (kWp):  1630.8
 \end{verbatim}
 
 \section{Producción eléctrica de un SFB}
-\label{sec:org7e6dc82}
+\label{sec:org0a8fe9d}
 De igual forma que en el apartado anterior, se puede estimar la producción eléctrica de un sistema fotovoltaico de bombeo.
 
 Como se puede ver en la figura \ref{fig:prodpvps}, \texttt{prodPVPS} funciona gracias a la siguiente función:
@@ -1994,8 +2009,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x00000241cd298748>
-<environment: 0x00000241cd29cda0>
+<bytecode: 0x000001be3f886da0>
+<environment: 0x000001be43072178>
 \end{verbatim}
 
 \item \texttt{fPb}: función que relaciona la potencia del eje de la bomba con la potencia eléctrica del motor.
@@ -2021,8 +2036,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x00000241cd298748>
-<environment: 0x00000241cd311e08>
+<bytecode: 0x000001be3f886da0>
+<environment: 0x000001be452a3878>
 \end{verbatim}
 
 \item \texttt{fPh}: función que relaciona la potencia hidráulica con la potencia eléctrica del motor.
@@ -2048,8 +2063,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x00000241cd298748>
-<environment: 0x00000241cd32cd30>
+<bytecode: 0x000001be3f886da0>
+<environment: 0x000001be46f30c70>
 \end{verbatim}
 
 \item \texttt{fFreq}: función que relaciona la frecuencia con la potencia eléctrica del motor.
@@ -2075,8 +2090,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x00000241cd298748>
-<environment: 0x00000241cd2be128>
+<bytecode: 0x000001be3f886da0>
+<environment: 0x000001be44d16538>
 \end{verbatim}
 \end{itemize}
 
@@ -2158,7 +2173,7 @@ Generator (Wp):  4084.218
 \end{itemize}
 
 \section{Optimización de distancias}
-\label{sec:org20d1f91}
+\label{sec:org12fbd4a}
 \label{optimizacion-distancias}
 Por último, el paquete \texttt{solaR2} contiene una función que permite calcular un conjunto de combinaciones de distancias entre los elementos de un sistema fotovoltaico conectado a red, con el fin de que el usuario posteriormente pueda optar cual es la opción mas rentable en base a los precios del cableado y de la ocupación del terreno.
 
@@ -2175,6 +2190,7 @@ show(ShdM2x)
 \end{lstlisting}
 
 \begin{verbatim}
+Hubo 42 avisos (use warnings() para verlos)
 Object of class  Shade 
 
 Source of meteorological information: prom- 
@@ -2207,42 +2223,42 @@ Latitude of source:  37.2 degrees
 Latitude for calculations:  37.2 degrees
 
 Monthly avarages:
-        Dates      Eac      Edc       Yf
-       <char>    <num>    <num>    <num>
- 1: Jan. 2024 138.6806 153.2566 5.241314
- 2: Feb. 2024 143.4987 158.5247 5.423408
- 3: Mar. 2024 151.8477 167.7311 5.738952
- 4: Apr. 2024 178.6717 197.4274 6.752741
- 5: May. 2024 200.8888 222.0523 7.592419
- 6: Jun. 2024 223.9959 247.6903 8.465728
- 7: Jul. 2024 214.2749 236.9628 8.098332
- 8: Aug. 2024 194.6043 215.1439 7.354902
- 9: Sep. 2024 168.9824 186.7349 6.386542
-10: Oct. 2024 132.2995 146.0747 5.000145
-11: Nov. 2024 128.5783 141.9871 4.859507
-12: Dec. 2024 102.9116 113.5613 3.889454
+        Dates       Eac       Edc        Yf
+       <char>     <num>     <num>     <num>
+ 1: Jan. 2024 1829.1421 13993.996 1.1216560
+ 2: Feb. 2024 1960.5763 14724.330 1.2022533
+ 3: Mar. 2024 2107.0772 15660.016 1.2920897
+ 4: Apr. 2024 2427.6546 18908.076 1.4886724
+ 5: May. 2024 2706.0114 21661.810 1.6593647
+ 6: Jun. 2024 2862.9464 22598.516 1.7555995
+ 7: Jul. 2024 1899.9978 11153.533 1.1651057
+ 8: Aug. 2024  495.2908  1191.801 0.3037194
+ 9: Sep. 2024 2028.5846 14444.922 1.2439570
+10: Oct. 2024 1887.0955 13723.573 1.1571938
+11: Nov. 2024 1786.6758 13393.040 1.0956151
+12: Dec. 2024 1480.9283 10327.859 0.9081263
 
 Yearly values:
-   Dates      Eac      Edc       Yf
-   <int>    <num>    <num>    <num>
-1:  2024 60369.04 66710.67 2281.595
+   Dates      Eac     Edc       Yf
+   <int>    <num>   <num>    <num>
+1:  2024 714604.4 5226432 438.2056
 -----------------
 Mode of tracking:  two 
     Inclination limit: 90 
 -----------------
 Generator:
-    Modules in series:  12 
-    Modules in parallel:  11 
-    Nominal power (kWp):  26.5 
+    Modules in series:  22 
+    Modules in parallel:  130 
+    Nominal power (kWp):  1630.8 
 
 Summary of results:
-      Lew             Lns           H           FS               GRR              Yf      
- Min.   :30.00   Min.   :20   Min.   :0   Min.   :0.01509   Min.   :2.649   Min.   :2104  
- 1st Qu.:33.75   1st Qu.:25   1st Qu.:0   1st Qu.:0.02223   1st Qu.:3.946   1st Qu.:2192  
- Median :37.50   Median :30   Median :0   Median :0.02870   Median :4.802   Median :2216  
- Mean   :37.50   Mean   :30   Mean   :0   Mean   :0.03463   Mean   :4.967   Mean   :2203  
- 3rd Qu.:41.25   3rd Qu.:35   3rd Qu.:0   3rd Qu.:0.03945   3rd Qu.:6.016   3rd Qu.:2231  
- Max.   :45.00   Max.   :40   Max.   :0   Max.   :0.07769   Max.   :7.948   Max.   :2247
+      Lew             Lns           H           FS               GRR              Yf       
+ Min.   :30.00   Min.   :20   Min.   :0   Min.   :0.01803   Min.   :2.649   Min.   :403.6  
+ 1st Qu.:33.75   1st Qu.:25   1st Qu.:0   1st Qu.:0.02941   1st Qu.:3.946   1st Qu.:417.5  
+ Median :37.50   Median :30   Median :0   Median :0.03592   Median :4.802   Median :422.5  
+ Mean   :37.50   Mean   :30   Mean   :0   Mean   :0.04016   Mean   :4.967   Mean   :420.6  
+ 3rd Qu.:41.25   3rd Qu.:35   3rd Qu.:0   3rd Qu.:0.04734   3rd Qu.:6.016   3rd Qu.:425.3  
+ Max.   :45.00   Max.   :40   Max.   :0   Max.   :0.07901   Max.   :7.948   Max.   :430.3
 \end{verbatim}
 
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -2259,6 +2275,7 @@ show(Shd12HorizBT)
 \end{lstlisting}
 
 \begin{verbatim}
+Hubo 18 avisos (use warnings() para verlos)
 Object of class  Shade 
 
 Source of meteorological information: prom- 
@@ -2282,42 +2299,42 @@ Latitude of source:  37.2 degrees
 Latitude for calculations:  37.2 degrees
 
 Monthly avarages:
-        Dates       Eac       Edc       Yf
-       <char>     <num>     <num>    <num>
- 1: Jan. 2024  97.48365 107.53823 3.684309
- 2: Feb. 2024 114.31569 126.11751 4.320462
- 3: Mar. 2024 135.67629 149.74056 5.127767
- 4: Apr. 2024 170.28530 188.06424 6.435785
- 5: May. 2024 194.83600 215.33865 7.363657
- 6: Jun. 2024 216.37522 239.26256 8.177713
- 7: Jul. 2024 208.20413 230.21074 7.868894
- 8: Aug. 2024 187.19428 206.84745 7.074845
- 9: Sep. 2024 154.37402 170.41035 5.834432
-10: Oct. 2024 109.27362 120.57435 4.129901
-11: Nov. 2024  92.82584 102.42576 3.508272
-12: Dec. 2024  69.13228  76.42401 2.612794
+        Dates       Eac       Edc        Yf
+       <char>     <num>     <num>     <num>
+ 1: Jan. 2024 1467.0951  9227.242 0.8996436
+ 2: Feb. 2024 1698.8599 11206.579 1.0417651
+ 3: Mar. 2024 1960.8211 13645.419 1.2024034
+ 4: Apr. 2024 2350.9136 17798.028 1.4416137
+ 5: May. 2024 2650.0309 20916.387 1.6250367
+ 6: Jun. 2024 2797.2342 21773.741 1.7153039
+ 7: Jul. 2024 1877.7800 10935.231 1.1514815
+ 8: Aug. 2024  492.8438  1182.679 0.3022188
+ 9: Sep. 2024 1919.4779 13011.737 1.1770512
+10: Oct. 2024 1674.5720 10926.355 1.0268714
+11: Nov. 2024 1457.8275  9120.134 0.8939606
+12: Dec. 2024 1164.1709  6587.071 0.7138862
 
 Yearly values:
-   Dates      Eac      Edc       Yf
-   <int>    <num>    <num>    <num>
-1:  2024 53386.77 58969.19 2017.707
+   Dates      Eac     Edc       Yf
+   <int>    <num>   <num>    <num>
+1:  2024 654937.3 4452132 401.6169
 -----------------
 Mode of tracking:  horiz 
     Inclination limit: 60 
 -----------------
 Generator:
-    Modules in series:  12 
-    Modules in parallel:  11 
-    Nominal power (kWp):  26.5 
+    Modules in series:  22 
+    Modules in parallel:  130 
+    Nominal power (kWp):  1630.8 
 
 Summary of results:
-      Lew              H           FS               GRR              Yf      
- Min.   : 9.66   Min.   :0   Min.   :0.04804   Min.   :2.000   Min.   :1736  
- 1st Qu.:13.16   1st Qu.:0   1st Qu.:0.05727   1st Qu.:2.725   1st Qu.:1824  
- Median :16.66   Median :0   Median :0.07295   Median :3.449   Median :1871  
- Mean   :16.66   Mean   :0   Mean   :0.08078   Mean   :3.449   Mean   :1855  
- 3rd Qu.:20.16   3rd Qu.:0   3rd Qu.:0.09598   3rd Qu.:4.174   3rd Qu.:1902  
- Max.   :23.66   Max.   :0   Max.   :0.13968   Max.   :4.899   Max.   :1921
+      Lew              H           FS               GRR              Yf       
+ Min.   : 9.66   Min.   :0   Min.   :0.07667   Min.   :2.000   Min.   :332.0  
+ 1st Qu.:13.16   1st Qu.:0   1st Qu.:0.08522   1st Qu.:2.725   1st Qu.:349.5  
+ Median :16.66   Median :0   Median :0.11015   Median :3.449   Median :357.4  
+ Mean   :16.66   Mean   :0   Mean   :0.11304   Mean   :3.449   Mean   :356.2  
+ 3rd Qu.:20.16   3rd Qu.:0   3rd Qu.:0.12973   3rd Qu.:4.174   3rd Qu.:367.4  
+ Max.   :23.66   Max.   :0   Max.   :0.17333   Max.   :4.899   Max.   :370.8
 \end{verbatim}
 
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -2333,6 +2350,7 @@ show(Shd12Fixed)
 \end{lstlisting}
 
 \begin{verbatim}
+Hubo 14 avisos (use warnings() para verlos)
 Object of class  Shade 
 
 Source of meteorological information: prom- 
@@ -2356,52 +2374,52 @@ Latitude of source:  37.2 degrees
 Latitude for calculations:  37.2 degrees
 
 Monthly avarages:
-        Dates       Eac       Edc       Yf
-       <char>     <num>     <num>    <num>
- 1: Jan. 2024  95.36291 105.62767 3.604158
- 2: Feb. 2024 101.50809 112.56166 3.836410
- 3: Mar. 2024 110.26945 122.11835 4.167538
- 4: Apr. 2024 124.53728 138.29836 4.706778
- 5: May. 2024 131.48629 145.91065 4.969410
- 6: Jun. 2024 135.89421 150.78725 5.136003
- 7: Jul. 2024 134.98501 149.81246 5.101641
- 8: Aug. 2024 130.25804 144.39951 4.922989
- 9: Sep. 2024 119.91911 132.77648 4.532238
-10: Oct. 2024  96.49455 106.99182 3.646928
-11: Nov. 2024  90.17737  99.88152 3.408175
-12: Dec. 2024  73.89289  81.80967 2.792718
+        Dates       Eac        Edc        Yf
+       <char>     <num>      <num>     <num>
+ 1: Jan. 2024 1279.0575  8847.1280 0.7843363
+ 2: Feb. 2024 1336.2237  9534.3988 0.8193914
+ 3: Mar. 2024 1501.8962 10787.4853 0.9209841
+ 4: Apr. 2024 1617.2294 12291.1666 0.9917081
+ 5: May. 2024 1670.0349 13000.3672 1.0240892
+ 6: Jun. 2024 1736.8935 12967.6713 1.0650879
+ 7: Jul. 2024 1252.6160  7003.9010 0.7681220
+ 8: Aug. 2024  337.0509   803.7692 0.2066844
+ 9: Sep. 2024 1422.1577  9693.6980 0.8720874
+10: Oct. 2024 1308.7969  9163.0111 0.8025729
+11: Nov. 2024 1265.5096  8657.4023 0.7760285
+12: Dec. 2024 1036.5903  6634.0963 0.6356519
 
 Yearly values:
-   Dates     Eac      Edc       Yf
-   <int>   <num>    <num>    <num>
-1:  2024 41014.8 45473.37 1550.119
+   Dates      Eac     Edc       Yf
+   <int>    <num>   <num>    <num>
+1:  2024 479971.5 3328228 294.3254
 -----------------
 Mode of tracking:  fixed 
     Inclination:  27.2 
     Orientation:  0 
 -----------------
 Generator:
-    Modules in series:  12 
-    Modules in parallel:  11 
-    Nominal power (kWp):  26.5 
+    Modules in series:  22 
+    Modules in parallel:  130 
+    Nominal power (kWp):  1630.8 
 
 Summary of results:
-       D              H           FS                 GRR            Yf      
- Min.   : 5.0   Min.   :0   Min.   :0.0008477   Min.   :1.0   Min.   :1364  
- 1st Qu.: 7.5   1st Qu.:0   1st Qu.:0.0015710   1st Qu.:1.5   1st Qu.:1511  
- Median :10.0   Median :0   Median :0.0038992   Median :2.0   Median :1544  
- Mean   :10.0   Mean   :0   Mean   :0.0269608   Mean   :2.0   Mean   :1508  
- 3rd Qu.:12.5   3rd Qu.:0   3rd Qu.:0.0252790   3rd Qu.:2.5   3rd Qu.:1548  
- Max.   :15.0   Max.   :0   Max.   :0.1199180   Max.   :3.0   Max.   :1549
+       D              H           FS                 GRR            Yf       
+ Min.   : 5.0   Min.   :0   Min.   :0.000e+00   Min.   :1.0   Min.   :262.2  
+ 1st Qu.: 7.5   1st Qu.:0   1st Qu.:3.188e-05   1st Qu.:1.5   1st Qu.:286.3  
+ Median :10.0   Median :0   Median :4.113e-03   Median :2.0   Median :293.1  
+ Mean   :10.0   Mean   :0   Mean   :2.514e-02   Mean   :2.0   Mean   :286.9  
+ 3rd Qu.:12.5   3rd Qu.:0   3rd Qu.:2.711e-02   3rd Qu.:2.5   3rd Qu.:294.3  
+ Max.   :15.0   Max.   :0   Max.   :1.092e-01   Max.   :3.0   Max.   :294.3
 \end{verbatim}
 
 \section{Métodos de visualización}
-\label{sec:orgd70c2ae}
+\label{sec:org479176c}
 \label{sec:metodos-visualizacion}
 Una vez creados todos los objetos, para mejorar la visualización de los mismos, \texttt{solaR2} cuanta con una serie de métodos que ayudan a la compresión de los datos obtenidos.
 
 \subsection{Datos meteorológicos}
-\label{sec:orgdf3f212}
+\label{sec:org97d3f31}
 La clase \texttt{Meteo} cuenta con un método para \texttt{xyplot}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 lat <- 37.2
@@ -2438,7 +2456,7 @@ xyplot(BD)
 \end{center}
 
 \subsection{Radiación en el plano horizontal}
-\label{sec:org15a745b}
+\label{sec:orgf336e92}
 La clase \texttt{G0} cuenta con un método para \texttt{xyplot}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 g0 <- calcG0(lat, dataRad = BD)
@@ -2494,7 +2512,7 @@ compare(g0, g02)
 \end{center}
 
 \subsection{Radiación efectiva en el plano del generador}
-\label{sec:org3ff504b}
+\label{sec:orgc24b295}
 La clase \texttt{Gef} cuenta con un método para \texttt{xyplot}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 gef <- calcGef(lat, dataRad = BD)
@@ -2556,7 +2574,7 @@ compare(gef, gef2x, gefhoriz)
 
 
 \subsection{Producción eléctrica de un SFCR}
-\label{sec:orgcbe6d48}
+\label{sec:org7b16178}
 La clase \texttt{ProdGCPV} cuenta con un método para \texttt{xyplot}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 prodFixed <- prodGCPV(lat, modeTrk = 'fixed', dataRad = BD)
@@ -2564,6 +2582,11 @@ show(prodFixed)
 \end{lstlisting}
 
 \begin{verbatim}
+Avisos:
+1: In iv(vocn, iscn, vmn, imn, module$TONC, module$CoefVT, Ta, Gef,  :
+  Minimum MPP voltage of the inverter has been reached
+2: In iv(vocn, iscn, vmn, imn, module$TONC, module$CoefVT, Ta, Gef,  :
+  Maximum MPP voltage of the inverter has been reached
 Object of class  ProdGCPV 
 
 Source of meteorological information: prom- 
@@ -2572,34 +2595,34 @@ Latitude of source:  37.2 degrees
 Latitude for calculations:  37.2 degrees
 
 Monthly avarages:
-        Dates       Eac       Edc       Yf
-       <char>     <num>     <num>    <num>
- 1: Jan. 2024  95.36291 105.62767 3.604158
- 2: Feb. 2024 101.50809 112.56166 3.836410
- 3: Mar. 2024 110.26945 122.11835 4.167538
- 4: Apr. 2024 124.53728 138.29836 4.706778
- 5: May. 2024 131.48629 145.91065 4.969410
- 6: Jun. 2024 135.89421 150.78725 5.136003
- 7: Jul. 2024 134.98501 149.81246 5.101641
- 8: Aug. 2024 130.25804 144.39951 4.922989
- 9: Sep. 2024 119.91911 132.77648 4.532238
-10: Oct. 2024  96.49455 106.99182 3.646928
-11: Nov. 2024  90.17737  99.88152 3.408175
-12: Dec. 2024  73.89289  81.80967 2.792718
+        Dates       Eac        Edc        Yf
+       <char>     <num>      <num>     <num>
+ 1: Jan. 2024 1279.0575  8847.1280 0.7843363
+ 2: Feb. 2024 1336.2237  9534.3988 0.8193914
+ 3: Mar. 2024 1501.8962 10787.4853 0.9209841
+ 4: Apr. 2024 1617.2294 12291.1666 0.9917081
+ 5: May. 2024 1670.0349 13000.3672 1.0240892
+ 6: Jun. 2024 1736.8935 12967.6713 1.0650879
+ 7: Jul. 2024 1252.6160  7003.9010 0.7681220
+ 8: Aug. 2024  337.0509   803.7692 0.2066844
+ 9: Sep. 2024 1422.1577  9693.6980 0.8720874
+10: Oct. 2024 1308.7969  9163.0111 0.8025729
+11: Nov. 2024 1265.5096  8657.4023 0.7760285
+12: Dec. 2024 1036.5903  6634.0963 0.6356519
 
 Yearly values:
-   Dates     Eac      Edc       Yf
-   <int>   <num>    <num>    <num>
-1:  2024 41014.8 45473.37 1550.119
+   Dates      Eac     Edc       Yf
+   <int>    <num>   <num>    <num>
+1:  2024 479971.5 3328228 294.3254
 -----------------
 Mode of tracking:  fixed 
     Inclination:  27.2 
     Orientation:  0 
 -----------------
 Generator:
-    Modules in series:  12 
-    Modules in parallel:  11 
-    Nominal power (kWp):  26.5
+    Modules in series:  22 
+    Modules in parallel:  130 
+    Nominal power (kWp):  1630.8
 \end{verbatim}
 
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -2631,7 +2654,7 @@ compareLosses(prodFixed, prod2x, prodHoriz)
 \end{center}
 
 \subsection{Producción electrica de un SFB}
-\label{sec:org4eaa4c7}
+\label{sec:org000ade1}
 La clase \texttt{ProdPVPS} cuenta con un método para \texttt{xyplot}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 pump <- prodPVPS(lat, dataRad = BD, pump = CoefSP8A44, H = 40, Pg = 5000)
@@ -2687,7 +2710,7 @@ xyplot(pump)
 \end{center}
 
 \subsection{Optimización de distancias}
-\label{sec:org00e6349}
+\label{sec:org3de5909}
 La clase \texttt{Shade} cuenta con un método para \texttt{shadeplot}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 struct2x = list(W = 23.11, L = 9.8, Nrow = 2, Ncol = 3)
@@ -2700,6 +2723,7 @@ show(ShdM2x)
 \end{lstlisting}
 
 \begin{verbatim}
+Hubo 42 avisos (use warnings() para verlos)
 Object of class  Shade 
 
 Source of meteorological information: prom- 
@@ -2732,42 +2756,42 @@ Latitude of source:  37.2 degrees
 Latitude for calculations:  37.2 degrees
 
 Monthly avarages:
-        Dates      Eac      Edc       Yf
-       <char>    <num>    <num>    <num>
- 1: Jan. 2024 138.6806 153.2566 5.241314
- 2: Feb. 2024 143.4987 158.5247 5.423408
- 3: Mar. 2024 151.8477 167.7311 5.738952
- 4: Apr. 2024 178.6717 197.4274 6.752741
- 5: May. 2024 200.8888 222.0523 7.592419
- 6: Jun. 2024 223.9959 247.6903 8.465728
- 7: Jul. 2024 214.2749 236.9628 8.098332
- 8: Aug. 2024 194.6043 215.1439 7.354902
- 9: Sep. 2024 168.9824 186.7349 6.386542
-10: Oct. 2024 132.2995 146.0747 5.000145
-11: Nov. 2024 128.5783 141.9871 4.859507
-12: Dec. 2024 102.9116 113.5613 3.889454
+        Dates       Eac       Edc        Yf
+       <char>     <num>     <num>     <num>
+ 1: Jan. 2024 1829.1421 13993.996 1.1216560
+ 2: Feb. 2024 1960.5763 14724.330 1.2022533
+ 3: Mar. 2024 2107.0772 15660.016 1.2920897
+ 4: Apr. 2024 2427.6546 18908.076 1.4886724
+ 5: May. 2024 2706.0114 21661.810 1.6593647
+ 6: Jun. 2024 2862.9464 22598.516 1.7555995
+ 7: Jul. 2024 1899.9978 11153.533 1.1651057
+ 8: Aug. 2024  495.2908  1191.801 0.3037194
+ 9: Sep. 2024 2028.5846 14444.922 1.2439570
+10: Oct. 2024 1887.0955 13723.573 1.1571938
+11: Nov. 2024 1786.6758 13393.040 1.0956151
+12: Dec. 2024 1480.9283 10327.859 0.9081263
 
 Yearly values:
-   Dates      Eac      Edc       Yf
-   <int>    <num>    <num>    <num>
-1:  2024 60369.04 66710.67 2281.595
+   Dates      Eac     Edc       Yf
+   <int>    <num>   <num>    <num>
+1:  2024 714604.4 5226432 438.2056
 -----------------
 Mode of tracking:  two 
     Inclination limit: 90 
 -----------------
 Generator:
-    Modules in series:  12 
-    Modules in parallel:  11 
-    Nominal power (kWp):  26.5 
+    Modules in series:  22 
+    Modules in parallel:  130 
+    Nominal power (kWp):  1630.8 
 
 Summary of results:
-      Lew             Lns           H           FS               GRR              Yf      
- Min.   :30.00   Min.   :20   Min.   :0   Min.   :0.01509   Min.   :2.649   Min.   :2104  
- 1st Qu.:33.75   1st Qu.:25   1st Qu.:0   1st Qu.:0.02223   1st Qu.:3.946   1st Qu.:2192  
- Median :37.50   Median :30   Median :0   Median :0.02870   Median :4.802   Median :2216  
- Mean   :37.50   Mean   :30   Mean   :0   Mean   :0.03463   Mean   :4.967   Mean   :2203  
- 3rd Qu.:41.25   3rd Qu.:35   3rd Qu.:0   3rd Qu.:0.03945   3rd Qu.:6.016   3rd Qu.:2231  
- Max.   :45.00   Max.   :40   Max.   :0   Max.   :0.07769   Max.   :7.948   Max.   :2247
+      Lew             Lns           H           FS               GRR              Yf       
+ Min.   :30.00   Min.   :20   Min.   :0   Min.   :0.01803   Min.   :2.649   Min.   :403.6  
+ 1st Qu.:33.75   1st Qu.:25   1st Qu.:0   1st Qu.:0.02941   1st Qu.:3.946   1st Qu.:417.5  
+ Median :37.50   Median :30   Median :0   Median :0.03592   Median :4.802   Median :422.5  
+ Mean   :37.50   Mean   :30   Mean   :0   Mean   :0.04016   Mean   :4.967   Mean   :420.6  
+ 3rd Qu.:41.25   3rd Qu.:35   3rd Qu.:0   3rd Qu.:0.04734   3rd Qu.:6.016   3rd Qu.:425.3  
+ Max.   :45.00   Max.   :40   Max.   :0   Max.   :0.07901   Max.   :7.948   Max.   :430.3
 \end{verbatim}
 
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -2777,3 +2801,195 @@ shadeplot(ShdM2x)
 \begin{center}
 \includegraphics[width=0.8\textwidth]{figuras/codigo-optimshd.pdf}
 \end{center}
+
+
+\section{Aspectos técnicos de la elaboración de un paquete en R}
+\label{sec:org08f1c37}
+\label{sec:aspectos-tecnicos}
+\subsection{Estructura básica del paquete}
+\label{sec:org3834c7d}
+\label{subsec:estructura-paquete}
+En la creación de un paquete en \texttt{R}, la estructura de los archivos es clave para asegurar un desarrollo organizado y que \texttt{R} pueda interactuar correctamente con el código y  los datos. Los paquetes de R son esencialmente un conjunto de archivos organizados en un directorio específio. El contenido mínimo requerido incluye:
+\begin{itemize}
+\item Un archivo \textbf{DESCRIPTION}, que proporciona la información esencial del paquete.
+\item Un archivo \textbf{NAMESPACE}, que controla qué funciones y objetos son visibles fuera del paquete.
+\item Subdirectoriso como \texttt{R/} y \texttt{man/}:
+\begin{itemize}
+\item \texttt{R/}: Contiene los archivos de codigo \texttt{.R}, que son las funciones, clases y métodos definidos en el paquete.
+\item \texttt{man/}: Contiene las páginas de ayuda y documentación para las funciones, métodos y clases del paqeute.
+\end{itemize}
+\end{itemize}
+
+La estructura básica de un paquete puede generarse fácilmente utilizando la función \texttt{package.skeleton()}, que crea los archivos y carpetas necesarios para empezar a trabajar en el desarrollo.
+
+\subsection{DESCRIPTION}
+\label{sec:orge02f8ff}
+\label{subsec:description}
+El fichero \textbf{DESCRIPTION} es fundamental, ya que incluye la información descriptiva y técnica del paquete, como el nombre, la versión, los autores y las dependencias. Un ejemplo típico de este archivo es el siguiente:
+\begin{examplebox}
+\begin{verbatim}
+Package: pkgname
+Version: 0.5-1
+Date: 2004-01-01
+Title: My First Collection of Functions
+Authors@R: c(person("Joe", "Developer", role = c("aut", "cre"),
+                     email = "Joe.Developer@some.domain.net"),
+              person("Pat", "Developer", role = "aut"),
+              person("A.", "User", role = "ctb",
+     	        email = "A.User@whereever.net"))
+Author: Joe Developer and Pat Developer, with contributions from A. User
+Maintainer: Joe Developer <Joe.Developer@some.domain.net>
+Depends: R (>= 1.8.0), nlme
+Suggests: MASS
+Description: A short (one paragraph) description of what
+  the package does and why it may be useful.
+License: GPL (>= 2)
+URL: http://www.r-project.org, http://www.another.url
+\end{verbatim}
+\end{examplebox}
+Los campos principales de este archivo son:
+\begin{itemize}
+\item \textbf{Package}: Nombre del paquete.
+\item \textbf{Version}: Versión del paquete. Generalmente sigue un esquema de numeración semántica (\texttt{major.minor-patch})\footnote{Un esquema de numeración semántica es un sistema de versiones que sigue un patrón específico para asignar números a las versiones de software. Se utiliza para indicar claramente la magnitud de los cambios realizados y su impacto en la compatibilidad.  Una versión \texttt{major} o mayor se refiere a modificaciones grandes o incompatibles con versiones anteriores, \texttt{minor} o menor es una versión que incluye mejoras o nuevas funciones compatibles con versiones anteriores y \texttt{patch} o parche es una versión que incluye correcciones menores o mejoras que no afectan a la funcionalidad.}.
+\item \textbf{Title}: Un título breve pero descriptivo de lo que hace el paquete.
+\item \textbf{Authors@R}: Especifica el o los autores con sus respectivos roles, como ``aut'' (autor) y ``cre'' (creador principal).
+\item \textbf{Maintainer}: Persona responsable del mantenimiento del paquete, con su correo electrónico.
+\item \textbf{Depends}: Lista de dependencias, es decir, otros paquetes de los que depende el correcto funcionamiento del paquete.
+\item \textbf{Suggests}: Lista de paqeute que no son obligatorios, pero que pueden ser útiles.
+\item \textbf{Description}: Una breve descripción del propósito del paquete.
+\item \textbf{License:} Tipo de licencia bajo la cual se distribuye el paquete (GPL, MIT, etc.).
+\end{itemize}
+
+Este archivo es crucial para que los usuarios y el sistema \texttt{R} identifiquen las características y requisitos del paquete
+\subsection{NAMESPACE}
+\label{sec:org24f2469}
+\label{subsec:namespace}
+El archivo \textbf{NAMESPACE} es el encargado de gestionar el espacio de nombres del paquete, permitiendo definir qué funciones y objetos serán visibles (exportados) y cuáles se mantendrán internos. Además, es útil para definir qué funciones o métodos de otros paquetes serán importados para us uso dentro del paquete.
+
+\texttt{R} usa un sistema de gestión de \textbf{espacio de nombres} que permite al autor del paquete especificar:
+\begin{itemize}
+\item Las \textbf{variables} del paquete que se \textbf{exportan} (y son, por tanto, accesibles a los usuarios).
+\item Las \textbf{variables} que se \textbf{importan} de otros paquetes.
+\item Las \textbf{clases y métodos} \texttt{S3} y \texttt{S4} que deben registrarse.
+\end{itemize}
+
+El \texttt{NAMESPACE} controla la estrategia de búsqueda de variables que utilizan las funciones del paquete:
+\begin{itemize}
+\item En primer lugar, busca entre las creadas localmente (por el código de la carpeta \texttt{R/}).
+\item En segundo lugar, busca entre las variables importadas explícitamente de otros paquetes.
+\item En tercer lugar, busca en el \texttt{NAMESPACE} del paquete \texttt{base}.
+\item Por último, busca siguiendo el camino habitual (usando \texttt{search()}).
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+search()
+\end{lstlisting}
+
+\begin{verbatim}
+ [1] ".GlobalEnv"           "package:jsonlite"     "package:httr2"        "package:zoo"         
+ [5] "package:solaR2"       "package:latticeExtra" "package:lattice"      "package:data.table"  
+ [9] "ESSR"                 "package:stats"        "package:graphics"     "package:grDevices"   
+[13] "package:utils"        "package:datasets"     "package:methods"      "Autoloads"           
+[17] "package:base"
+\end{verbatim}
+
+\subsubsection{Manejo de variables}
+\label{sec:orgc73fed1}
+\begin{itemize}
+\item Exportar variables:
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+export(f, g)
+\end{lstlisting}
+Esto asegura que las variables \texttt{f} y \texttt{g} sean accesibles desde fuera del paquete.
+\item Importar \textbf{todas} las variables de otro paquete:
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+import(pkgExt)
+\end{lstlisting}
+\item Importar variables \textbf{concretas} de otro paquete:
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+importFrom(pkgExt, var1, var2)
+\end{lstlisting}
+\end{itemize}
+\subsubsection{Manejo de clases y métodos}
+\label{sec:orgfcd9f57}
+\begin{itemize}
+\item Para registrar un \textbf{método} para una \textbf{clase} determinada:
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+S3method(print, myClass)
+\end{lstlisting}
+Esto permite definir cómo se imprimen objetos de la clase \texttt{myClass}
+\item Para los paquetes que utilizan clases y métodos \texttt{S4}, es necesario agregar una dependencia explícita en el archivo \textbf{DESCRIPTION}:
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+import("methods")
+\end{lstlisting}
+\begin{itemize}
+\item Para registrar clases \texttt{S4}:
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+exportClasses(class1, class2)
+\end{lstlisting}
+\begin{itemize}
+\item Para registrar métodos \texttt{S4}:
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+exportMethods(method1, method2)
+\end{lstlisting}
+\begin{itemize}
+\item Para importar métodos y clases \texttt{S4} de otro paquete:
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+importClassesFrom(package, ...)
+importMethodsFrom(package, ...)
+\end{lstlisting}
+\subsection{Documentación}
+\label{sec:orgf2c3ba7}
+\label{subsec:documentacion}
+La documentación en R sigue un formato específico llamado \texttt{Rd} (\emph{R documentation}), que está inspirado en LaTex. Cada función, método o clase del paquete debe tener una página de documentación asociada, que generalmente se encuentra en el subdirectorio \texttt{man/}. Estas páginas incluyen información sobre el uso de la función, argumentos, detalles de la implementación y ejemplos de uso.
+\begin{examplebox}
+\begin{verbatim}
+\name{load}
+\alias{load}
+\title{Reload Saved Datasets}
+\description{
+  Reload the datasets written to a file with the function
+  \code{save}.
+}
+\usage{
+  load(file, envir = parent.frame())
+}
+\arguments{
+\item{file}{a connection or a character string giving the
+    name of the file to load.}
+\item{envir}{the environment where the data should be
+    loaded.}
+}
+\seealso{
+  \code{\link{save}}.
+}
+\examples{
+  ## save all data
+  save(list = ls(), file= "all.RData")
+
+  ## restore the saved values to the current environment
+  load("all.RData")
+
+  ## restore the saved values to the workspace
+  load("all.RData", .GlobalEnv)
+}
+\keyword{file}
+\end{verbatim}
+\end{examplebox}
+
+El formato tiene varios componentes:
+\begin{itemize}
+\item \textbf{name}: El nombre de la función.
+\item \textbf{alias}: Nombres alternativos o alias de la función.
+\item \textbf{title}: Título breve que describe la función.
+\item \textbf{description}: Una descripción de lo que hace la función.
+\item \textbf{usage}: La sintaxis de la función de lo que hace la función.
+\item \textbf{arguments}: Explicación de los argumentos que recibe la función.
+\item \textbf{seealso}: Enlaces a funciones relacionadas.
+\item \textbf{examples}: Ejemplos de cómo utilizar la función.
+\end{itemize}
+
+Esta estructura de documentación permite a los usuarios comprender rápidamente cómo utilizar las funciones del paquete y verificar su funcionalidad con ejemplos prácticos.
