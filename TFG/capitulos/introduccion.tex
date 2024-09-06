@@ -2,7 +2,7 @@
 \label{chap:introduccion}
 
 \section{Objetivos}
-\label{sec:orga7bfd2e}
+\label{sec:org4cd37d2}
 \label{sec:objetivos}
 El objetivo principal de este proyecto es el desarrollo de un paquete en R \cite{rcoreteam23} con el cual poder realizar estimaciones y representaciones gráficas de la geometría solar, radiación solar en el plano horizontal y del generador, y el funcionamiento de sistemas fotovoltaicos de conexión a red y de bombeo de agua.
 
@@ -54,71 +54,3 @@ El paquete \texttt{solaR2} utiliza este paquete para representar de forma visual
 \item Obtener conocimientos teóricos acerca de la radiación solar y de la producción de energía solar mediante sistemas fotovoltaicos y sus diversos tipos.
 Para ello se ha usado en mayor medida el libro ``Energía Solar Fotovoltaica'' \cite{Perpinan2023}.
 \end{itemize}
-\section{Análisis previo de soluciones}
-\label{sec:org14fdb72}
-Este proyecto, como ya se ha comentado, es el heredero del paquete \texttt{solaR} desarrollado por Oscar Perpiñán. La filosofía de ambos paquetes es la misma y los resultados que dan son muy similares. Sin embargo, lo que les diferencia es que \texttt{solaR2} es más modular, es decir, tiene muchas funciones autónomas que permiten realizar cálculos específicos, en especial de geometría y radiación, y, el paquete sobre el que construyen sus datos.
-
-Mientras que \texttt{solaR} basa sus clases y métodos en el paquete \texttt{zoo}, \texttt{solaR2} en el paquete \texttt{data.table}. Los dos paquetes pueden trabajar con series temporales, pero, mientras que \texttt{zoo} es más eficaz trabajando con series temporales, \texttt{data.table} es más eficiente a la hora de trabajar con una cantidad grande de datos, lo cual a la hora de realizar estimaciones muy precisas es beneficioso.
-
-Por otro lado, existen otras soluciones fuera de R:
-\begin{enumerate}
-\item \textbf{PVsyst - Photovoltaic Software} \cite{pvsyst}
-Este software es probablemente el más conocido dentro del ámbito del estudio y la estimación de instalaciones fotovoltaicas. Destaca por la personalización detallada de los componentes de la instalación (módulos, inversores, sombreado, etc.), lo que ermite una simulación precisa a través de datos meteorológicos y parámetros detallados del sistema. Su uso está extendido en proyectos de gran escala y estuidos avanzados de eficiencia.
-\begin{itemize}
-\item Ventajas:
-\begin{itemize}
-\item \textbf{Completo y profesional}: PVsyst es altamente detallado, permitiendo análisis avanzados para proyectos pequeños y grandes.
-\item \textbf{Base de datos meteorológicos}: Integra datos climáticos de fuentes como Meteonorm \cite{jan20}, lo que mejora la precisión de las simulaciones.
-\item \textbf{Simulaciones avanzadas}: Permite modelar la energía producida por una planta fotovoltaica y calcular las pérdidas debidas a sombreamiento, inclinación, orientaciones y resistencias internas de los módulos.
-\item \textbf{Herramientas de dimensionamiento}: Ofrece módulos específicos para diseñar la configuración de inversores y módulos solares.
-\end{itemize}
-\item Limitaciones:
-\begin{itemize}
-\item \textbf{Costo}: Es un software comercial , con licencias que pueden ser costosas para proyectos pequeños.
-\item \textbf{Curva de aprendizaje}: Su interfaz puede resultar compleja para usuarios nuevos, lo que implica una curva de aprendizaje considerable.
-\item \textbf{Enfoque técnico}: Está más orientado a ingenieros y técnicos, por lo que carece de accedsibilidad para usuarios no especializados.
-\end{itemize}
-\end{itemize}
-\item \textbf{SISIFO} \cite{sisifo}
-Herramienta web diseñada por el \textbf{Grupo de Sistemas Fotovoltaicos del Instituto de Energía Solar de la Universidad Politécnica de Madrid}. Está diseñada para ser accesible y fácil de usar, enfocándose en una audiencia más general, incluyenco ingenieros, pero también técnicos y académicos.
-\begin{itemize}
-\item Ventajas:
-\begin{itemize}
-\item \textbf{Facilidad de uso}: Tiene una interfaz amigable y fácil de utilizar, lo que lohace accesible para usuarios con distintos niveles de experiencia.
-\item \textbf{Open-source}: Al ser de código abierto, permite a los desarrolladores modificar y adaptar el software a sus necesidades específicas.
-\item \textbf{Simulación integrada}: Ofrece la posibilidad de realizar simulaciones basadas en datos meteorológicos, aunque con un nivel de detalle inferior a PVsyst.
-\item \textbf{Soporte comunitario}: Al ser de código abierto, cuenta con una comunidad activa de usuarios y desarrrolladores que colaboran en mejoras y actualizaciones.
-\end{itemize}
-\item Limitaciones:
-\begin{itemize}
-\item \textbf{Menos preciso}: Al compararse con otras herramientas, su precisión puede ser menor en cuanto a modelado y simulación de pérdidas, ya que simplifica varios aspectos del sistema.
-\item \textbf{Limitaciones en grandes proyectos}: No está tan bien adaptado para grandes instalaciones o análisis financieros avanzados.
-\end{itemize}
-\end{itemize}
-\item \textbf{PVGIS} \cite{pvgis}
-Aplicación web desarrolada por el \textbf{European Commission Joint Research Center} desde 2001. Está diseñada para proporcionar estimaciones de producción de energía solar en función de la ubicación geográfica y condiciones meteorológicas históricas.
-\begin{itemize}
-\item Ventajas:
-\begin{itemize}
-\item \textbf{Gratuito y accesible}: Esta herramienta es completamente gratuira y accesible a través de una interfaz web, lo que facilita el uso por parte de cualquier persona.
-\item \textbf{Datos meteorológicos precisos}: Proporciona acceso a datos meteorológicos satelitales y de estaciones terrestres, lo que permite obtener estimaciones razonables de producción de energía.
-\item \textbf{Estudios rápidos}: Es ideal para obtener estimaciones preliminares y estudios de viabilidad de sistemas fotovoltaicos.
-\end{itemize}
-\end{itemize}
-\item \textbf{System Advisor Model} \cite{sam}
-Desarrollado por el \textbf{Laboratorio Nacional de Energías Renovables}, perteneciente al Departamento de energía del gobierno de EE.UU. Está orientada a la modelación tanto técnica como económica de sistemas de energía renovable, incluyendo fotovoltaicos.
-\begin{itemize}
-\item Ventajas:
-\begin{itemize}
-\item \textbf{Modelo económico avanzado}: Integra análisis detalados sobre la viabilidad económica, lo que permite evaluar tanto la producción energética como los costos y benefecios a lo largo de la vida útil del proyecto.
-\item \textbf{Acceso a múltiples tecnologías}: Además de fotovoltaicos, permite modelar otras tecnologías de energía renovable, lo que lo hace más flexible para estuidos multidisciplinares.
-\item \textbf{Integración de bases de datos}: Utiliza datos meteorológicos detallados, lo que mejora la precisión de las simulaciones.
-\end{itemize}
-\item Limitaciones:
-\begin{itemize}
-\item \textbf{Complejidad}: Aunque gratuito, SAM es bastante complejo y técnico, lo que puede limitar su uso a usuarios con experiencia en el modelado de sistemas energéticos.
-\item \textbf{Interfaz no tan intuitiva}: Comparado con otras herramientas, requiere un mayor tiempo de familiarización debido a su enfoque integral y detalle en las simulaciones.
-\end{itemize}
-\end{itemize}
-\end{enumerate}
-En el capitulo \ref{chap:ejemplo-practico-aplicacion} se realizará un ejemplo práctico que compare los resultados entre \textbf{PVsyst}, \texttt{solaR} y \texttt{solaR2}

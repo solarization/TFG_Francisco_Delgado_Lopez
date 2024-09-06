@@ -1,9 +1,11 @@
 \chapter{Marco teórico}
 label:chap:marco-teorico
-#+CAPTION: Procedimiento de cálculo
+#+CAPTION:Procedimiento de cálculo. Tomando la irradiación global en el plano horizontal, se pueden calcular las componentes directa y difusa mediante índices de claridad y fracciones de difusa. Con todas las componentes de irradiación, se pueden estimar los valores de irradiancia. A continuación, se trasladan estos valores al plano inclinado para después poder aplicar los facotres por suciedad y sombras y obtener así los valores de irradiancia efectiva. Por ultimo, con la eficiencia del sistema fotovoltaico se puede obtener la potencia en corriente continua, la cual, al pasar por un inversor, se convierte en corriente alterna. Integrando esta potencia se consigue la energía. Figura modificada de la figura 3.3 del libro ESF cite:Perpinan2023. 
 #+NAME: fig:prod-calculo
-#+ATTR_LATEX: :placement [H] :height 0.44\textheight :width 0.8\textwidth :options keepaspectratio
+#+ATTR_LATEX: :placement [H] :height 0.4\textheight :width 0.8\textwidth :options keepaspectratio
 file:figuras/ProcedimientoCalculoRadiacionInclinada.pdf
+
+
 El paquete =solaR2= toma como marco teórico el libro de Oscar Perpiñán, tutor de este trabajo, Energía Solar Fotovoltaica \cite{Perpinan2023} para cada una de las operaciones de cálculo que realizan cada una de las funciones.
 En la figura [[fig:prod-calculo]], se muestra un diagrama que resume los pasos que se siguen a la hora de calcular la producción de sistemas fotovoltaicos.
 
@@ -230,7 +232,7 @@ Donde:
 
 Es importante resaltar que estos perfiles proceden de medias sobre largos períodos, y de ahí que, como es observable en la figura [[fig:Perfil-de-irradiancia]], las fluctuaciones propias del movimiento de nubes a lo largo del día queden atenuadas y se obtenga una curva sin alteraciones.
 #+NAME: fig:Perfil-de-irradiancia
-#+CAPTION: Perfil de irradiancia difusa y global obtenido a partir del generador empírico de [[cite:Collares-Pereira.Rabl1979]] para valores de irradiancia tomadas cada 10 minutos
+#+CAPTION: Perfil de irradiancia difusa y global obtenido a partir del generador empírico de [[cite:Collares-Pereira.Rabl1979]] para valores de irradiancia tomadas cada 10 minutos. Figura 3.4 del libro ESF cite:Perpinan2023.
 #+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio
 [[file:figuras/RgRd.pdf]]
 
@@ -269,7 +271,7 @@ Una vez otenidos los valores de irradiancia en el plano horizontal, se traspone 
   \end{equation}
   #+end_export
   #+NAME: fig:AnguloVisionCielo
-  #+CAPTION: Ángulo de visión del cielo
+  #+CAPTION: Ángulo de visión del cielo. Figura 3.5 del libro ESF cite:Perpinan2023.
   #+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio
   [[file:figuras/AnguloVisionCielo.pdf]]
 
@@ -292,7 +294,7 @@ FTB(\theta_s)=\frac{exp(-\frac{cos(\theta_s)}{a_r})-exp(-\frac{1}{a_r})}{1-exp(-
 #+end_export
 Este factor depende el ángulo de incidencia \(theta_s\) y del coeficiente de pérdidas angulares \(a_r\). Cuando la radiación es perpendicular a la superficie ($\theta_s=0$), \(FTB\) es cero. En la figura [[fig:PerdidasAngulares]] se puede observar que las pérdidas angulares son más significativas cuando \(\theta_s\) supera los 60º, y se acentúan con mayor suciedad.
 #+NAME: fig:PerdidasAngulares
-#+CAPTION: Pérdidas angulares de un módulo fotovoltaico para diferentes grados de suciedad en función del ángulo de incidencia.
+#+CAPTION: Pérdidas angulares de un módulo fotovoltaico para diferentes grados de suciedad en función del ángulo de incidencia. Figura 3.7 del libro ESF cite:Perpinan2023.
 #+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio 
 [[file:figuras/Suciedad.pdf]]
 
@@ -370,7 +372,7 @@ Para definir una célula solar, se tomar 4 variables:
 
 *** Punto de máxima potencia
 El punto de máxima potencia es aquel situado en la curva de funcionamiento del generador donde, como su propio nombre indica, los valores de tensión y corriente son tales que la potencia que entrega es máxima (figura [[fig:iv-20-800]]).
-#+CAPTION: Curvas corriente-tensión(línea discontinua) y potencia-tensión(línea continua) de una célula solar ($T_a=20^\circ C$ y $G=800 W/m^2$)
+#+CAPTION: Curvas corriente-tensión(línea discontinua) y potencia-tensión(línea continua) de una célula solar ($T_a=20^\circ C$ y $G=800 W/m^2$). Figura 4.6 del libro ESF cite:Perpinan2023.
 #+NAME: fig:iv-20-800
 #+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio 
 [[file:figuras/CurvaIV_Ta20_G800.pdf]]
@@ -805,7 +807,7 @@ d = \frac{h}{tan\gamma_s}
 \end{equation}
 #+end_export
 siendo $h$ la altura de la fila adyacente, $h=L\cdot sin(\beta)$ y $L$ la longitud del generador, según se indica en la figura ref:fig:sombras-estaticos.
-#+CAPTION: Dimensiones y distancias entre filas de un sistema estático. label:fig:sombras-estaticos
+#+CAPTION: Dimensiones y distancias entre filas de un sistema estático. Figura 6.10 del libro ESF cite:Perpinan2023. label:fig:sombras-estaticos
 file:figuras/SombrasEstaticas.pdf
 
 En el mediodía del solsticio de invierno la altura solar es $\gamma_s = 90^\circ - 23.45^\circ - |\phi| \simeq 67^\circ - |\phi|$. Por tanto, la distancia mínima que permite 4 horas libres de sombra alrededor del mediodía es:
@@ -837,13 +839,13 @@ donde (figuras ref:fig:sombras-doble y ref:fig:dimensiones-sombras-doble):
 - $L$ es la longitud del seguidor.
 - $W$ es la anchura del seguidor.
 
-#+CAPTION:Sombras mutuas en un conjunto de cuatro seguidores. label:fig:sombras-doble
+#+CAPTION:Sombras mutuas en un conjunto de cuatro seguidores. Figura 6.11 del libro ESF cite:Perpinan2023. label:fig:sombras-doble
 #+ATTR_LATEX: :height 0.2\textheight
 file:figuras/Sombras2X.pdf
-#+CAPTION:Dimensiones de un seguidor a doble eje y longitud de su sombra arrojada. label:fig:dimensiones-sombras-doble
+#+CAPTION:Dimensiones de un seguidor a doble eje y longitud de su sombra arrojada. Figura 6.12 del libro ESF cite:Perpinan2023. label:fig:dimensiones-sombras-doble
 #+ATTR_LATEX: :height 0.2\textheight
 file:figuras/DimensionesSeguidorSombra.pdf
-#+CAPTION:Posibles sombras en un conjunto de seis seguidores. label:fig:conjunto-seis-seguidores
+#+CAPTION:Posibles sombras en un conjunto de seis seguidores. Figura 6.13 del libro ESF cite:Perpinan2023. label:fig:conjunto-seis-seguidores
 #+ATTR_LATEX: :height 0.2\textheight
 file:figuras/SixTrackerShadow.pdf
 
@@ -896,13 +898,13 @@ FS_{d} & =\frac{\left[s-\left(l_{eo}\cdot\sin(\psi_{s})+l_{ns}\cos(\psi_{s})\rig
 #+end_export
 
 Realizando la simulación de este sistema incluyendo el cálculo de sombras, y repitiendo la simulación para varias combinaciones (Lns, Leo) pueden elaborarse gráficos de nivel como el de la figura ref:fig:abaco-sombras, donde se recoge el ratio entre la energía anual producida por un seguidor /promedio/ incluyendo el efecto de por sombras mutuas[fn:24] y la energía anual producida por un seguidor sin sombreado.
-#+CAPTION: Ábaco para planta de seguimiento a doble eje. Recoge el ratio entre la energía anual producida por un seguidor afectado por sombras mutuas ($E_{acS}$) y la producida por un seguidor sin sombreado ($E_{ac0}$). Las curvas de color negro representan la fracción de energía no afectada por sombras. Las curvas de puntos representan el valor del ROT. label:fig:abaco-sombras
+#+CAPTION: Ábaco para planta de seguimiento a doble eje. Recoge el ratio entre la energía anual producida por un seguidor afectado por sombras mutuas ($E_{acS}$) y la producida por un seguidor sin sombreado ($E_{ac0}$). Las curvas de color negro representan la fracción de energía no afectada por sombras. Las curvas de puntos representan el valor del ROT. Figura 6.14 del libro ESF cite:Perpinan2023. label:fig:abaco-sombras
 #+ATTR_LATEX: :height 0.4\textheight
 file:figuras/AbacoSombras.pdf
 
 ** Sistemas de seguimiento de eje horizontal
 Se considera que los seguidores son de longitud infinita en sentido Norte-Sur (se desprecia el efecto de borde). Así, los parámetros que determinan el diseño de este tipo de sistema son (figura ref:fig:SeguidorEjeHorizontalSombras):
-#+CAPTION: Dimensiones básicas en sistemas con seguidores de eje horizontal. label:fig:SeguidorEjeHorizontalSombras
+#+CAPTION: Dimensiones básicas en sistemas con seguidores de eje horizontal. Figura 6.16 del libro ESF cite:Perpinan2023. label:fig:SeguidorEjeHorizontalSombras
 #+ATTR_LATEX: :scale 0.9
 file:figuras/SombrasHoriz.pdf
 1. La inclinación del generador fotovoltaico, $\beta$, (coincidente con el ángulo $\psi_{ns}$).
