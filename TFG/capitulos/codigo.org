@@ -16,7 +16,6 @@ Para calcular la geometría que definen las posiciones de la Tierra y el Sol, =s
 
 Como se puede ver en la figura ref:fig:calcSol, =calcSol= funcia gracias a las siguientes funciones:
 - =fSolD=: la cual, a partir de la latitud (\(\phi\)), calcula la geometría a nivel diario, es decir, los ángulos y componentes que se pueden calcular en cada día independiente.
-
   Estas son:
   - Declinación (\(\delta\)): calculada a partir de la función =declination=.
   - Excentricidad (\(\epsilon_o\)): obtenida mediante la función =eccentricity=.
@@ -56,20 +55,29 @@ BTd <- fBTd(mode = 'prom')
 solD <- fSolD(lat = lat, BTd = BTd)
 show(solD)
 #+end_src
-
-  Además, =fSolD= permite seleccionar el método de cáculo entre los propuestos por 4 autores diferentes (=cooper= cite:Cooper1969, =spencer= cite:Spencer1971, =strous= cite:Strous2011, =michalsky= cite:Michalsky1988)(el valor por defecto es =michalsky=):
-#+begin_src R 
-solD_cooper <- fSolD(lat = lat, BTd = BTd, method = 'cooper')
-show(solD_cooper)
-#+end_src
-#+begin_src R
-solD_spencer <- fSolD(lat = lat, BTd = BTd, method = 'spencer')
-show(solD_spencer)
-#+end_src
-#+begin_src R
-solD_strous <- fSolD(lat = lat, BTd = BTd, method = 'cooper')
-show(solD_strous)
-#+end_src
+  Tiene los siguientes argumentos:
+  - =lat=: para introducir la latitud en grados.
+  - =BTd=: para introducir la base temporal *diaria* sobre la que se harán los cálculos.
+  - =method=: para elegir el método de cálculo. Se puede elegir entre: =michalsky=, =cooper=, =spencer= y =strous=
+    #+begin_src R :results output graphics :file "figuras/codigo-fSolD.pdf" :width 8 :height 6
+    BTd <- fBTd(mode = 'prom')
+    solD_michalsky <- fSolD(lat, BTd, method = 'michalsky')
+    solD_michalsky[, group := 'michalsky']
+    solD_cooper <- fSolD(lat, BTd, method = 'cooper')
+    solD_cooper[, group := 'cooper']
+    solD_spencer <- fSolD(lat, BTd, method = 'spencer')
+    solD_spencer[, group := 'spencer']
+    solD_strous <- fSolD(lat, BTd, method = 'strous')
+    solD_strous[, group := 'strous']
+    solD_all <- rbind(solD_michalsky, solD_cooper,
+		      solD_spencer, solD_strous)
+    xyplot(eo + ws + Bo0d ~ Dates , solD_all,
+	   groups = group, type = 'l', auto.key = TRUE,
+	   par.settings = solaR.theme, scales = list(y = 'free'),
+	   ylab = '', layout = c(1, 3))
+    #+end_src
+    #+ATTR_LATEX: :width \textwidth
+    file:figuras/codigo-fSolD.pdf
 - =fSolI=: toma los resultados obtenidos en =fSolD= y calcula la geometría a nivel intradiario, es decir, aquella que se puede calcular en unidades de tiempo menores a los días.
   Estas son:
   - La hora solar o tiempo solar verdadero (\(\omega\)): calculada a partir de la función =sunHour=.
@@ -78,33 +86,44 @@ show(solD_strous)
   - La altura solar (\(\gamma_s\)): obtenida a partir del resultado anterior[fn:3].
   - El ángulo acimutal solar (\(\theta_{zs}\)): calculada mediante la función =azimuth=.
   - La irradiancia extra-atmosférica (\(B_0(0)\)): calculada mediante el coseno del ángulo cenital, la constante solar (\(B_0\)) y la excentridad (cálculada en =fSolD=) [ecuación ref:eq:irradianciaextra].
-#+begin_src R
-solI <- fSolI(solD = solD[1], sample = 'hour') #Computo solo un día a fin mejorar la visualización
-show(solI)
+  Su argumento principal es =sample= con el cual se puede determinar el intervalo intradiario de cálculos.
+#+begin_src R :results output graphics :file "figuras/codigo-solI.pdf" :width 8 :height 6
+solD <- solD[1] #Computo solo un día a fin mejorar la visualización
+solI <- fSolI(solD = solD, sample = 'min') 
+xyplot(solI)
 #+end_src
-
+#+ATTR_LATEX: :width \textwidth
+file:figuras/codigo-solI.pdf
   Además, como los datos nocturnos aportan poco a los cálculos que atañen a este proyecto, =fSolI= presenta la posibilidad de eliminar estos datos con el argumento =keep.night=.
-#+begin_src R
-solI_nigth <- fSolI(solD = solD[1], sample = 'hour', keep.night = FALSE)
-show(solI_nigth)
+#+begin_src R :results graphics output :file "figuras/codigo-solInight.pdf" :width 8 :height 6
+solI_nigth <- fSolI(solD = solD, sample = 'min', keep.night = FALSE)
+xyplot(solI_nigth)
 #+end_src
+#+ATTR_LATEX: :width \textwidth
+file:figuras/codigo-solInight.pdf
   Aparte, en vez de identificar el intervalo intradiario (con el argumento =sample=), se puede dar directamente la base temporal intradiaria.
-#+begin_src R
-BTi <- fBTi(BTd, sample = 'hour')
-solI_BTi <- fSolI(solD, BTi = BTi)
-show(solI_BTi)
+#+begin_src R :results graphics output :file "figuras/codigo-solIBTi.pdf" :width 8 :height 6
+BTd <- solD$Dates
+BTi <- fBTi(BTd, sample = 'min')
+solI_BTi <- fSolI(solD, BTi = BTi, keep.night = FALSE)
+xyplot(solI_BTi)
 #+end_src
+#+ATTR_LATEX: :width \textwidth
+file:figuras/codigo-solIBTi.pdf
   También, se puede indicar que no realice las correcciones de la ecuación del tiempo.
-#+begin_src R
+#+begin_src R :results output graphics :file "figuras/codigo-solIEoT.pdf" :width 8 :height 6
 solI_EoT <- fSolI(solD = solD, BTi = BTi, EoT = FALSE)
-show(solI_EoT)
+xyplot(solI_EoT)
 #+end_src
+#+ATTR_LATEX: :width \textwidth
+file:figuras/codigo-solIEoT.pdf
 
-Finalmente, estas dos funciones, como se muestra en la figura ref:fig:calcSol, convergen en la función =calcSol=, dando como resultado un objeto de clase =Sol=. Este objeto muestra un resumen de ambos elementos junto con la latitud de los cálculos.
+Finalmente, estas dos funciones, como se muestra en la figura ref:fig:calcSol, convergen en la función =calcSol=, dando como resultado un objeto de clase =Sol=. Este objeto muestra un resumen de ambos elementos junto con la latitud de los cálculos. Los argumentos de =calcSol= son las argumentos de las funciones anteriores
 #+begin_src R
 sol <- calcSol(lat = lat, BTd = BTd, sample = 'hour')
 show(sol)
 #+end_src
+
 
 * Datos meteorológicos
 label:sec:datos-meteorologicos
@@ -113,17 +132,34 @@ Para el procesamiento de datos meteorologicos, =solaR2= provee una serie de func
 #+ATTR_LATEX: :height 0.5\textheight :width \textwidth :options keepaspectratio 
 file:figuras/meteo.pdf
 - =readG0dm=: Esta función construye un objeto =Meteo= a partir de 12 valores de medias mensuales de irradiación.
-#+begin_src R
+  Como argumentos tiene:
+  - =G0dm=: vector con medias mensuales de irradiación global horizontal.
+  - =Ta=: vector con la temperatura ambiente.
+  - =lat=: latitud en grados.
+  - =year=: año de los datos. Por defecto presenta el año actual.
+  - =source=: información de la fuente de los datos.
+#+begin_src R :results graphics output :file "figuras/codigo-readg0dm.pdf" :width 8 :height 6
 G0dm = c(2.766,3.491,4.494,5.912,6.989,7.742,
          7.919,7.027,5.369,3.562,2.814,2.179) * 1000;
 Ta = c(10, 14.1, 15.6, 17.2, 19.3, 21.2,
        28.4, 29.9, 24.3, 18.2, 17.2, 15.2)
 BD <- readG0dm(G0dm = G0dm, Ta = Ta, lat = 37.2)
-show(BD)
+xyplot(BD)
 #+end_src
+#+ATTR_LATEX: :width \textwidth
+file:figuras/codigo-readg0dm.pdf
 - =readBD=: Esta familia de funciones puede leer ficheros de datos y transformarlos en un objeto de clase =Meteo=. Se dividen en:
   - =readBDd=: Procesa datos meteorológicos de tipo diarios.
-  #+begin_src R
+    Como argumentos tiene:
+    - =file=: nombre del archivo que contiene los datos.
+    - =lat=: latitud en grados.
+    - =format=: formato de los datos de fechas.
+    - =header=, =fill=, =dec=, =sep=: argumentos para [[https://search.r-project.org/CRAN/refmans/data.table/html/fread.html][=fread=]].
+    - =dates.col=: nombre de la columna que contiene los datos de fechas. Por defecto es 'Dates'.
+    - =ta.col=: nombre de la columna que contiene los datos de temperatura. Por defecto es 'Ta'.
+    - =g0.col=: nombre de la columna que contiene los datos de irradiación. Por defecto es 'G0'.
+    - =keep.cols=: si su valor es =TRUE=, mantiene las columnas que no sean importantes para el resto de operaciones.
+  #+begin_src R :results graphics output :file "figuras/codigo-readBD.pdf" :width 8 :height 6
   ## Se utiliza un archivo alojado en el
   ## github del tutor de este proyecto 
   myURL <-"https://raw.githubusercontent.com/oscarperpinan/R/master/data/aranjuez.csv"
@@ -132,49 +168,80 @@ show(BD)
 		 format = '%Y-%m-%d', header = TRUE,
 		 fill = TRUE, dec = '.', sep = ',', dates.col = '',
 		 ta.col = 'TempAvg', g0.col = 'Radiation', keep.cols = TRUE)
-  show(BDd)
+  xyplot(BDd)
   #+end_src
+  #+ATTR_LATEX: :width \textwidth
+  file:figuras/codigo-readBD.pdf
   - =readBDi=: Procesa datos meteorológicos de tipo intradiarios.
-  #+begin_src R
-    myURL <- "https://raw.githubusercontent.com/oscarperpinan/R/master/data/NREL-Hawaii.csv"
-    download.file(myURL, 'data/NREL-Hawaii.csv', quiet = TRUE)
-    BDi <- readBDi(file = 'data/NREL-Hawaii.csv', lat = 19,
-		   format = "%d/%m/%Y %H:%M", header = TRUE,
-		   fill = TRUE, dec = '.', sep = ',',
-		   dates.col = 'DATE', times.col = 'HST',
-		   ta.col = 'Air Temperature [deg C]',
-		   g0.col = 'Global Horizontal [W/m^2]',
-		   keep.cols = TRUE)
-    show(BDi)
+    Como argumentos tiene:
+    - =file=: nombre del archivo que contiene los datos.
+    - =lat=: latitud en grados.
+    - =format=: formato de los datos de fechas.
+    - =header=, =fill=, =dec=, =sep=: argumentos para [[https://search.r-project.org/CRAN/refmans/data.table/html/fread.html][=fread=]].
+    - =dates.col=: nombre de la columna que contiene los datos de fechas y/o tiempos. Por defecto es 'Dates'.
+    - =times.col=: nombre de la columna que contiene los datos de tiempos en caso de que =dates.col= no los incluyera.
+    - =ta.col=: nombre de la columna que contiene los datos de temperatura. Por defecto es 'Ta'.
+    - =g0.col=: nombre de la columna que contiene los datos de irradiancia. Por defecto es 'G0'.
+    - =keep.cols=: si su valor es =TRUE=, mantiene las columnas que no sean importantes para el resto de operaciones.
+  #+begin_src R :results graphics output :file "figuras/codigo-readBDi.pdf" :width 8 :height 6
+  myURL <- "https://raw.githubusercontent.com/oscarperpinan/R/master/data/NREL-Hawaii.csv"
+  download.file(myURL, 'data/NREL-Hawaii.csv', quiet = TRUE)
+  BDi <- readBDi(file = 'data/NREL-Hawaii.csv', lat = 19,
+		 format = "%d/%m/%Y %H:%M", header = TRUE,
+		 fill = TRUE, dec = '.', sep = ',',
+		 dates.col = 'DATE', times.col = 'HST',
+		 ta.col = 'Air Temperature [deg C]',
+		 g0.col = 'Global Horizontal [W/m^2]',
+		 keep.cols = TRUE)
+  xyplot(BDi)
   #+end_src
+  #+ATTR_LATEX: :width \textwidth
+  file:figuras/codigo-readBDi.pdf
 - =dt2Meteo=: Transforma un =data.table= o =data.frame= en un objeto de clase =Meteo=.
-#+begin_src R
-  data(helios)
-  names(helios) <- c('Dates', 'G0d', 'TempMax', 'TempMin')
-  helios_meteo <- dt2Meteo(file = helios, lat = 40, type = 'bd')
-  show(helios_meteo)
-#+end_src  
+  Como argumentos tiene:
+  - =file=: =data.table= que contiene los datos.
+  - =lat=: latitud en grados.
+  - =source=: información sobre la fuente de los datos.
+  - =type=: tipo de datos. A elegir  entre =bdI= (intradiarios), =bd= (diarios) y =prom= (medias mensuales). Si no viene dado, lo calcula por su cuenta.
+#+begin_src R :results graphics output :file "figuras/codigo-dt2meteo.pdf" :width 8 :height 6
+data(helios)
+names(helios) <- c('Dates', 'G0d', 'TempMax', 'TempMin')
+helios_meteo <- dt2Meteo(file = helios, lat = 40, type = 'bd')
+xyplot(helios_meteo)
+#+end_src
+#+ATTR_LATEX: :width \textwidth
+file:figuras/codigo-dt2meteo.pdf
 - =zoo2Meteo=: Transforma un objeto de clase =zoo=[fn:4] en un objeto de clase =Meteo=.
+  Como argumentos tiene:
+  - =file=: =data.table= que contiene los datos.
+  - =lat=: latitud en grados.
+  - =source=: información sobre la fuente de los datos.
 #+begin_src R
-  library(zoo)
-  bd_zoo <- read.csv.zoo('data/aranjuez.csv')
-  BD_zoo <- zoo2Meteo(file = bd_zoo, lat = 40)
-  show(BD_zoo)
+library(zoo)
+bd_zoo <- read.csv.zoo('data/aranjuez.csv')
+BD_zoo <- zoo2Meteo(file = bd_zoo, lat = 40)
+show(BD_zoo)
 #+end_src
-- =readSIAR=: Esta función es capaz de extraer información de la red SIAR y transformarlo en un objeto de clase =Meteo=.
-#+begin_src R 
-  library(httr2)
-  library(jsonlite)
-  bd_SIAR <- readSIAR(Lat = 40.40596822621351, Lon = -3.70038308516172,
-		      ## Ubicación de la Escuela Técnica Superior
-		      ## de Ingeniería y Diseño Industrial (ETSIDI)
-		      inicio = '2023-09-01', final = '2024-08-01',
-		      tipo = 'Mensuales', n_est = 3)
-  show(bd_SIAR)
+- =readSIAR=: Esta función es capaz de extraer información de la red SIAR[fn:5] y transformarlo en un objeto de clase =Meteo=.
+  Como argumentos tiene:
+  - =Lon=: Longitud en grados.
+  - =Lat=: Latitud en grados.
+  - =inicio=: Primer día de los registros.
+  - =final=: Último día de los registros.
+  - =tipo=: La API SIAR[fn:6] permite tener 4 tipos de registros: =Mensuales=, =Semanales=, =Diarios= y =Horarios=.
+  - =n_est=: Con este argumento, la función es capaz de localizar el número seleccionado de estaciones más proximas a la ubicación dada, y obtener los datos individuales de cada una de ellas. Una vez obtenidos estos datos realiza una interpolación de distancia inversa ponderada (IDW[fn:7]) y entrega un solo resultado. Es importante añadir que la API SIAR tiene una limitación a la solicitud de registros que se le hace cada minuto, por lo que esta función cuenta con un comprobante para impedir que el usuario exceda este límite.
+#+begin_src R :results graphics :file "figuras/codigo-readsiar.pdf" :width 8 :height 6
+library(httr2)
+library(jsonlite)
+bd_SIAR <- readSIAR(Lat = 40.40596822621351, Lon = -3.70038308516172,
+		    ## Ubicación de la Escuela Técnica Superior
+		    ## de Ingeniería y Diseño Industrial (ETSIDI)
+		    inicio = '2023-09-01', final = '2024-08-01',
+		    tipo = 'Mensuales', n_est = 3)
+xyplot(bd_SIAR)
 #+end_src
-  Esta función tiene dos argumentos importantes:
-  - =tipo=: La API SIAR[fn:5] permite tener 4 tipos de registros: =Mensuales=, =Semanales=, =Diarios= y =Horarios=.
-  - =n_est=: Con este argumento, la función es capaz de localizar el número seleccionado de estaciones más proximas a la ubicación dada, y obtener los datos individuales de cada una de ellas. Una vez obtenidos estos datos realiza una interpolación de distancia inversa ponderada (IDW[fn:6]) y entrega un solo resultado. Es importante añadir que la API SIAR tiene una limitación a la solicitud de registros que se le hace cada minuto, por lo que esta función cuenta con un comprobante para impedir que el usuario exceda este límite.
+#+ATTR_LATEX: :width \textwidth
+file:figuras/codigo-readsiar.pdf
       
 * Radiación en el plano horizontal
 label:sec:radiacion-plano-horizontal
@@ -185,80 +252,99 @@ Como se puede ver en la figura ref:fig:calcg0, =calcG0= funciona gracias a las s
 #+ATTR_LATEX: :width \textwidth :height 0.5\textheight :options keepaspectratio
 file:figuras/calcg0.pdf
 - =fCompD=: La cual calcula todas las componentes de la irradiación diaria en una superficie horizontal mediante regresiones entre los parámetros del índice de claridad y la fracción difusa.
-  Para ello se pueden usar varias correlaciones dependiendo del tipo de datos:
-  - Mensuales:
-  #+begin_src R
-  lat <- 37.2
-  BTd <- fBTd(mode = 'prom')
-  solD <- fSolD(lat, BTd)
-  G0d <- c(2.766,3.491,4.494,5.912,6.989,7.742,7.919,7.027,5.369,3.562,2.814,2.179) * 1000
-  compD_page <- fCompD(sol = solD, G0d = G0d, corr = "Page")
-  compD_page
-  #+end_src
-  #+begin_src R
-  compD_lj <- fCompD(sol = solD, G0d = G0d, corr = "LJ")
-  compD_lj
-  #+end_src
-  - Diarios:
-  #+begin_src R 
-  G0d <- readSIAR(Lat = 40.40596822621351, Lon =-3.70038308516172,
-		  inicio = '2024-07-15', final = '2024-08-01',
-		  tipo = 'Diarios', n_est = 3)
-  sol <- calcSol(lat, BTd = indexD(G0d))
-  compD_cpr <- fCompD(sol = sol, G0d = G0d, corr = "CPR")
-  compD_cpr
-  #+end_src
-  #+begin_src R
-  compD_ekdd <- fCompD(sol = sol, G0d = G0d, corr = 'EKDd')
-  compD_ekdd
-  #+end_src
-  #+begin_src R
-  compD_climedd <- fCompD(sol = sol, G0d = G0d, corr = 'CLIMEDd')
-  compD_climedd
-  #+end_src
-  También, se puede aportar una función de correlación propia.
-  #+begin_src R
-  f_corrd <- function(sol, G0d){
-    ## Función CLIMEDd
-      Kt <- Ktd(sol, G0d)
-      Fd=(Kt<=0.13)*(0.952)+
-      (Kt>0.13 & Kt<=0.8)*(0.868+1.335*Kt-5.782*Kt^2+3.721*Kt^3)+
-	(Kt>0.8)*0.141
-    return(data.table(Fd, Kt))
-  }
-  compD_user <- fCompD(sol = sol, G0d = G0d, corr = 'user', f = f_corrd)
-  compD_user
-  #+end_src
-  Por último, si =G0d= ya contiene todos los componentes, se puede especifica que no haga ninguna correlación.
-  #+begin_src R
-  compD_none <- fCompD(sol = sol, G0d = compD_user, corr = 'none')
-  compD_none
-  #+end_src
+  Tiene los siguientes argumentos:
+  - =sol=: Un objeto de clase =Sol=.
+  - =G0d=: Un objeto clase =Meteo= o un =data.table= con datos de irradiación diaria en una superficie horizontal.
+  - =corr=: A elegir el tipo de correlación entre la fracción de difusa y el índice de claridad.
+    Dependiendo del tipo de datos:
+    - Mensuales:
+    #+begin_src R :results graphics output :file "figuras/codigo-fcompdmes.pdf" :width 8 :height 6
+    lat <- 37.2
+    BTd <- fBTd(mode = 'prom')
+    solD <- fSolD(lat, BTd)
+    G0d <- c(2.766,3.491,4.494,5.912,6.989,7.742,7.919,7.027,5.369,3.562,2.814,2.179) * 1000
+    compD_page <- fCompD(sol = solD, G0d = G0d, corr = "Page")
+    compD_page[, group := 'page']
+    compD_lj <- fCompD(sol = solD, G0d = G0d, corr = "LJ")
+    compD_lj[, group := 'lj']
+    compD_dia <- rbind(compD_page, compD_lj)
+    xyplot(Fd + D0d + B0d ~ Dates, compD_dia,
+	   groups = group, type = 'l', auto.key = TRUE,
+	   par.settings = solaR.theme, scales = list(y = 'free'),
+	   ylab = '', layout = c(1, 3))
+
+    #+end_src
+    #+ATTR_LATEX: :width \textwidth
+    file:figuras/codigo-fcompdmes.pdf
+    - Diarios:
+    #+begin_src R :results graphics output :file "figuras/codigo-fcompddia.pdf" :width 8 :height 6 
+    G0d <- readSIAR(Lat = 40.40596822621351, Lon =-3.70038308516172,
+		    inicio = '2024-07-15', final = '2024-08-01',
+		    tipo = 'Diarios', n_est = 3)
+    sol <- calcSol(lat, BTd = indexD(G0d))
+    compD_cpr <- fCompD(sol = sol, G0d = G0d, corr = "CPR")
+    compD_cpr[, group := 'cpr']
+    compD_ekdd <- fCompD(sol = sol, G0d = G0d, corr = 'EKDd')
+    compD_ekdd[, group := 'ekdd']
+    compD_climedd <- fCompD(sol = sol, G0d = G0d, corr = 'CLIMEDd')
+    compD_climedd[, group := 'climedd']
+    compD_mes <- rbind(compD_cpr, compD_ekdd, compD_climedd)
+    xyplot(Fd + D0d + B0d ~ Dates, compD_mes,
+	   groups = group, type = 'l',auto.key = TRUE,
+	   par.settings = solaR.theme, scales = list(y = 'free'),
+	   ylab = '', layout = c(1, 3))
+    #+end_src
+    #+ATTR_LATEX: :width \textwidth
+    file:figuras/codigo-fcompddia.pdf
+    También, se puede aportar una función de correlación propia con el argumento =f=.
+    #+begin_src R :results graphics output :file "figuras/codigo-fcompduser.pdf" :width 8 :height 6
+    f_corrd <- function(sol, G0d){
+      ## Función CLIMEDd
+	Kt <- Ktd(sol, G0d)
+	Fd=(Kt<=0.13)*(0.952)+
+	(Kt>0.13 & Kt<=0.8)*(0.868+1.335*Kt-5.782*Kt^2+3.721*Kt^3)+
+	  (Kt>0.8)*0.141
+      return(data.table(Fd, Kt))
+    }
+    compD_user <- fCompD(sol = sol, G0d = G0d, corr = 'user', f = f_corrd)
+    xyplot(compD_user)
+    #+end_src
+    #+ATTR_LATEX: :width \textwidth
+    file:figuras/codigo-fcompduser.pdf
+    Por último, si =G0d= ya contiene todos los componentes, se puede especifica que no haga ninguna correlación.
+    #+begin_src R
+    compD_none <- fCompD(sol = sol, G0d = compD_user, corr = 'none')
+    compD_none
+    #+end_src
 - =fCompI=: calcula, en base a los valores de irradiación diaria, todas las componentes de irradiancia. Se vale de dos procedimientos en base al tipo de argumentos que toma:
   - =compD=: Si recibe un =data.table= resultado de =fCompD=, calcula las relaciones entre las componentes de irradiancia e irradiación de las componentes de difusa y global, obteniendo con ellas un perfil de irradiancias [ref:sec:radiacion-superficies-inclinadas] (las irradiancias global y difusa salen de estas relaciones, mientras que la directa surge por diferencia entre las dos).
-  #+begin_src R
+  #+begin_src R :results graphics output :file "figuras/codigo-fcompicompd.pdf" :width 8 :height 6
   sol <- calcSol(lat = 37.2, BTd = fBTd(mode = 'prom'),
 		 sample = 'hour', keep.night = FALSE)
   G0d <- c(2.766,3.491,4.494,5.912,6.989,7.742,7.919,
 	    7.027,5.369,3.562,2.814,2.179) * 1000
   compD <- fCompD(sol = sol, G0d = G0d, corr = 'CPR')
   compI <- fCompI(sol = sol, compD = compD)
-  show(compI)
+  xyplot(compI)
   #+end_src
+  #+ATTR_LATEX: :width \textwidth
+  file:figuras/codigo-fcompicompd.pdf
   - =G0I=: Este argumento recibe datos de irradiancia, para después, poder aplicar las correcciones indicadas en el argumento =corr=.
-  #+begin_src R
+  #+begin_src R :results graphics output :file "figuras/codigo-compicorr.pdf" :width 8 :height 6
   G0I <- compI$G0
   compI_ekdh <- fCompI(sol = sol, G0I = G0I, corr = 'EKDh')
-  show(compI_ekdh)
-  #+end_src
-  #+begin_src R
+  compI_ekdh[, group := 'ekdh']
   compI_brl <- fCompI(sol = sol, G0I = G0I, corr = 'BRL')
-  show(compI_brl)
-  #+end_src
-  #+begin_src R
+  compI_brl[, group := 'brl']
   compI_climedh <- fCompI(sol = sol, G0I = G0I, corr = 'CLIMEDh')
-  show(compI_climedh)
+  compI_climedh[, group := 'climedh']
+  compI_all <- rbind(compI_ekdh, compI_ekdh, compI_climedh)
+  xyplot(Fd+ D0 +B0 ~ Dates, compI_all,
+	 groups= group, type = 'l',auto.key= TRUE,
+	 par.settings= solaR.theme,scales =list(y = 'free'),
+	 ylab = '', layout= c(1,3))
   #+end_src
+  #+ATTR_LATEX: :width \textwidth
   Como con =fCompD=, se puede añadir una función correctora propia.
   #+begin_src R
   f_corri <- function(sol, G0i){
@@ -305,11 +391,13 @@ Como argumento más importante está =modeRad=, el cual selecciona el tipo de da
   show(g0_bd)
   #+end_src
 - Intradiarios
-  #+begin_src R
+  #+begin_src R :results graphics output :file "figuras/codigo-calcg0.pdf" :width 8 :height 6
   bdI <- as.data.tableI(g0_aguiar)
   g0_bdI <- calcG0(lat, modeRad = 'bdI', dataRad = bdI)
-  show(g0_bdI)
+  xyplot(g0_bdI)
   #+end_src
+  #+ATTR_LATEX: :width \textwidth
+  file:figuras/codigo-calcg0.pdf
 
 * Radiación efectiva en el plano del generador
 label:sec:radiacion-efectiva-plano-generador
@@ -322,36 +410,44 @@ file:figuras/calcgef.pdf
 - =fTheta=: la cual, partiendo del ángulo de inclinación (\(\beta\)) y la orientación (\(\alpha\)), calcula el ángulo de inclinación en cada instante (\(\beta\)), el ángulo azimutal (\(\psi_s\)) y el coseno del ángulo de incidencia  de la radiación solar en la superficie (\(cos(\theta_s)\)).
   Como principal argumento tiene =modeTrk=, el cual determina el sistema de seguimiento que tiene el sistema:
   - =fixed=: para sistemas estáticos.
-  #+begin_src R
-  BTd <- fBTd(mode = 'prom')[6] 
+  #+begin_src R :results graphics output :file "figuras/codigo-fthetafixed.pdf" :width 8 :height 6
+  BTd <- fBTd(mode = 'serie')[1:10]
   sol <- calcSol(lat, BTd = BTd, keep.night = FALSE)
   beta <- lat - 10
   alpha <- 0
   angGen_fixed <- fTheta(sol = sol, beta = beta, alpha = alpha,
 			 modeTrk = 'fixed')
-  show(angGen_fixed)
+  xyplot(angGen_fixed)
   #+end_src
+  #+ATTR_LATEX: :width \textwidth
+  file:figuras/codigo-fthetafixed.pdf
   - =two=: para sistemas de seguimiento de doble eje.
-  #+begin_src R
+  #+begin_src R :results graphics output :file "figuras/codigo-fthetatwo.pdf" :width 8 :height 6
   angGen_two <- fTheta(sol = sol, beta = beta, alpha = alpha,
 		       modeTrk = 'two')
-  show(angGen_two)
+  xyplot(angGen_two)
   #+end_src
+  #+ATTR_LATEX: :width \textwidth
+  file:figuras/codigo-fthetatwo.pdf
   - =horiz=: para sistemas de seguimiento horizontal Norte-Sur.
-  #+begin_src R
+  #+begin_src R :results graphics output :file "figuras/codigo-fthetahoriz.pdf" :width 8 :height 6 
   angGen_horiz <- fTheta(sol = sol, beta = beta, alpha = alpha,
 			 modeTrk = 'horiz')
-  show(angGen_horiz)
+  xyplot(angGen_horiz)
   #+end_src
+  #+ATTR_LATEX: :width \textwidth
+  file:figuras/codigo-fthetahoriz.pdf
   También, tiene un argumento =BT= que indica cuando se usa la técnica de backtracking para un sistema horizontal Norte-Sur. Para funcionar, necesita de los argumentos =struct=, el cual presenta una lista con la altura de los módulos, y =dist=, el cual presenta un =data.frame= (o =data.table=) con la distancia que separa los módulos en la dirección Este-Oeste.
-  #+begin_src R
+  #+begin_src R :results graphics output :file "figuras/codigo-fthetabt.pdf" :width 8 :height 6
   struct <- list(L = 1)
   distances <- data.table(Lew = 2)
   angGen_BT <- fTheta(sol = sol, beta = beta, alpha = alpha,
 		      modeTrk = 'horiz', BT = TRUE,
 		      struct = struct, dist = distances)
-  show(angGen_BT)
+  xyplot(angGen_BT)
   #+end_src
+  #+ATTR_LATEX: :width \textwidth
+  file:figuras/codigo-fthetabt.pdf
 - =fInclin=: la cual, partiendo del resultado de =fTheta= y de un objeto de clase =G0=, cálcula la irradiancia solar incidente en una superficie inclinada junto con los efectos del ángulo de incidencia y la suciedad para obtener la irradiancia efectiva.
   Como argumentos principales están:
   - =iS=: permite seleccionar entre 4 valores del 1 al 4 correspondientes al grado de suciedad del módulo. Siendo 1 limpio y 4 alto y basandose en los valores de la tabla ref:tab:coef-perd calcula la irradiancia efectiva. Por defecto tiene valor 2 (grado de suciedad bajo).
@@ -375,7 +471,7 @@ file:figuras/calcgef.pdf
   inclin_alb1 <- fInclin(compI = compI, angGen = angGen, alb = 1)
   show(inclin_alb1)
   #+end_src
-  Además, cuenta con dos argumentos adicionales, =horizBright=, el cual, cuando su valor es =TRUE= (el que tiene por defecto), realiza una corrección de la radiación difusa cite:REINDL19909, y =HCPV=, es el acrónimo de *High Concentration PV system*[fn:7] (sistema fotovoltaico de alta concentración) que cuando su valor es =TRUE= (por defecto está puesto en =FALSE=), anula los valores de radiación difusa y de albedo.
+  Además, cuenta con dos argumentos adicionales, =horizBright=, el cual, cuando su valor es =TRUE= (el que tiene por defecto), realiza una corrección de la radiación difusa cite:REINDL19909, y =HCPV=, es el acrónimo de *High Concentration PV system*[fn:8] (sistema fotovoltaico de alta concentración) que cuando su valor es =TRUE= (por defecto está puesto en =FALSE=), anula los valores de radiación difusa y de albedo.
   #+begin_src R
   inclin_horizBright <- fInclin(compI = compI, angGen = angGen,
 				horizBright = FALSE)
@@ -599,129 +695,6 @@ Shd12Fixed <- optimShd(lat = lat, dataRad = prom,
 show(Shd12Fixed)
 #+end_src
 
-* Métodos de visualización
-label:sec:metodos-visualizacion
-Una vez creados todos los objetos, para mejorar la visualización de los mismos, =solaR2= cuanta con una serie de métodos que ayudan a la compresión de los datos obtenidos.
-
-** Datos meteorológicos
-La clase =Meteo= cuenta con un método para =xyplot=.
-#+begin_src R
-lat <- 37.2
-G0dm = c(2.766,3.491,4.494,5.912,6.989,7.742,
-	 7.919,7.027,5.369,3.562,2.814,2.179) * 1000;
-Ta = c(10, 14.1, 15.6, 17.2, 19.3, 21.2,
-       28.4, 29.9, 24.3, 18.2, 17.2, 15.2)
-BD <- readG0dm(G0dm = G0dm, Ta = Ta, lat = lat)
-show(BD)
-#+end_src
-#+begin_src R :results output graphics :file "figuras/codigo-meteo.pdf" :width 8 :height 6
-xyplot(BD)
-#+end_src
-#+ATTR_LATEX: :width 0.8\textwidth
-file:figuras/codigo-meteo.pdf
-
-** Radiación en el plano horizontal
-La clase =G0= cuenta con un método para =xyplot=.
-#+begin_src R
-g0 <- calcG0(lat, dataRad = BD)
-show(g0)
-#+end_src
-#+begin_src R :results output graphics :file "figuras/codigo-g0.pdf" :width 8 :height 6
-xyplot(g0)
-#+end_src
-#+ATTR_LATEX: :width 0.8\textwidth
-file:figuras/codigo-g0.pdf
-
-Y con un método para =compare=.
-#+begin_src R :results output graphics :file "figuras/codigo-g02.pdf" :width 8 :height 6
-g02 <- calcG0(lat, dataRad = list(G0dm = G0dm*0.95, Ta = Ta))
-compare(g0, g02)
-#+end_src
-#+ATTR_LATEX: :width 0.8\textwidth
-file:figuras/codigo-g02.pdf
-
-** Radiación efectiva en el plano del generador
-La clase =Gef= cuenta con un método para =xyplot=.
-#+begin_src R
-gef <- calcGef(lat, dataRad = BD)
-show(gef)
-#+end_src
-#+begin_src R :results output graphics :file "figuras/codigo-gef.pdf" :width 8 :height 6
-xyplot(gef)
-#+end_src
-#+ATTR_LATEX: :width 0.8\textwidth
-file:figuras/codigo-gef.pdf
-
-Y con un método para =compare=.
-#+begin_src R :results output graphics :file "figuras/codigo-gef2.pdf" :width 8 :height 6
-gef2x <- calcGef(lat, modeTrk = 'two', dataRad = BD)
-gefhoriz <- calcGef(lat, modeTrk = 'horiz', dataRad = BD)
-compare(gef, gef2x, gefhoriz)
-#+end_src
-#+ATTR_LATEX: :width 0.8\textwidth
-file:figuras/codigo-gef2.pdf
-
-
-** Producción eléctrica de un SFCR
-La clase =ProdGCPV= cuenta con un método para =xyplot=.
-#+begin_src R
-prodFixed <- prodGCPV(lat, modeTrk = 'fixed', dataRad = BD)
-show(prodFixed)
-#+end_src
-#+begin_src R :results output graphics :file "figuras/codigo-prodgcpv.pdf" :width 8 :height 6
-xyplot(prodFixed)
-#+end_src
-#+ATTR_LATEX: :width 0.8\textwidth
-file:figuras/codigo-prodgcpv.pdf
-
-Un método para =compare=.
-#+begin_src R :results output graphics :file "figuras/codigo-prodgcpv2.pdf" :width 8 :height 6
-prod2x <- prodGCPV(lat, modeTrk = 'two', dataRad = BD)
-prodHoriz <- prodGCPV(lat, modeTrk = 'horiz', dataRad = BD)
-compare(prodFixed, prod2x, prodHoriz)
-#+end_src
-#+ATTR_LATEX: :width 0.8\textwidth
-file:figuras/codigo-prodgcpv2.pdf
-
-Y un método para =compareLosses=.
-#+begin_src R :results output graphics :file "figuras/codigo-prodgcpv3.pdf" :width 8 :height 6
-compareLosses(prodFixed, prod2x, prodHoriz)
-#+end_src
-#+ATTR_LATEX: :width 0.8\textwidth
-file:figuras/codigo-prodgcpv3.pdf
-
-** Producción electrica de un SFB
-La clase =ProdPVPS= cuenta con un método para =xyplot=.
-#+begin_src R
-pump <- prodPVPS(lat, dataRad = BD, pump = CoefSP8A44, H = 40, Pg = 5000)
-show(pump)
-#+end_src
-#+begin_src R :results output graphics :file "figuras/codigo-prodpvps.pdf" :width 8 :height 6
-xyplot(pump)
-#+end_src
-#+ATTR_LATEX: :with 0.8\textwidth
-file:figuras/codigo-prodpvps.pdf
-
-** Optimización de distancias
-La clase =Shade= cuenta con un método para =shadeplot=.
-#+begin_src R
-struct2x = list(W = 23.11, L = 9.8, Nrow = 2, Ncol = 3)
-dist2x = list(Lew = c(30, 45),Lns = c(20, 40))
-ShdM2x <- optimShd(lat = lat, dataRad = prom, modeTrk = 'two',
-                    modeShd = c('area','prom'),
-                   distances = dist2x, struct = struct2x,
-                   res = 5, prog = FALSE)
-show(ShdM2x)
-#+end_src
-#+begin_src R :results output graphics :file "figuras/codigo-optimshd.pdf" :width 12 :height 9
-shadeplot(ShdM2x)
-#+end_src
-
-#+RESULTS:
-
-#+ATTR_LATEX: :width 0.8\textwidth
-file:figuras/codigo-optimshd.pdf
-
 
 * Aspectos técnicos de la elaboración de un paquete en R
 label:sec:aspectos-tecnicos
@@ -766,7 +739,7 @@ El fichero *DESCRIPTION* es fundamental, ya que incluye la información descript
 #+end_export
 Los campos principales de este archivo son:
 - *Package*: Nombre del paquete.
-- *Version*: Versión del paquete. Generalmente sigue un esquema de numeración semántica (=major.minor-patch=)[fn:8].
+- *Version*: Versión del paquete. Generalmente sigue un esquema de numeración semántica (=major.minor-patch=)[fn:9].
 - *Title*: Un título breve pero descriptivo de lo que hace el paquete.
 - *Authors@R*: Especifica el o los autores con sus respectivos roles, como "aut" (autor) y "cre" (creador principal).
 - *Maintainer*: Persona responsable del mantenimiento del paquete, con su correo electrónico.
@@ -894,10 +867,12 @@ Esta estructura de documentación permite a los usuarios comprender rápidamente
 
 [fn:4] Pese a que este proyecto trate de "desligarse" del paquete =zoo=, sigue siendo un paquete muy extendido. Por lo que es interesante tener una función así para que los usuarios tengan una mayor flexibilidad.
 
-[fn:5] La API (Interfaz de Programación de Aplicaciones) que se usa para la función =readSIAR= está proporcionada por la propia red SIAR cite:siar23.
+[fn:5] La red SiAR (Sistema de Información Agroclimática para el Regadio) es una infraestructura que captura, registra y divulga los datos climáticos necesarios para el cálculo de la demanda hídrica en las zonas de riego cite:siar23.
 
-[fn:6] La interpolación IDW es un método de interpolación que estima el valor de un punto desconocido basodo en los valores conocidos de puntos cercanos. Los puntos más cercanos tienen más peso en la estimación que los más lejanos, utilizando una relación inversa con la distancia.
+[fn:6] La API (Interfaz de Programación de Aplicaciones) que se usa para la función =readSIAR= está proporcionada por la propia red SIAR cite:siar23.
 
-[fn:7] la tencología de concentración fotovoltaica funciona gracias a unos dispositivos ópticos que permiten concentrar la radiación solar sobre una célula fotovoltaica de tamaño reducido pero con una eficiencia muy superior alas células tradicionales. Con ello se consigue emplear menor cantidad de semiconductores reduciendo los costes.
+[fn:7] La interpolación IDW es un método de interpolación que estima el valor de un punto desconocido basado en los valores conocidos de puntos cercanos. Los puntos más cercanos tienen más peso en la estimación que los más lejanos, utilizando una relación inversa con la distancia.
 
-[fn:8] Un esquema de numeración semántica es un sistema de versiones que sigue un patrón específico para asignar números a las versiones de software. Se utiliza para indicar claramente la magnitud de los cambios realizados y su impacto en la compatibilidad.  Una versión =major= o mayor se refiere a modificaciones grandes o incompatibles con versiones anteriores, =minor= o menor es una versión que incluye mejoras o nuevas funciones compatibles con versiones anteriores y =patch= o parche es una versión que incluye correcciones menores o mejoras que no afectan a la funcionalidad.
+[fn:8] la tencología de concentración fotovoltaica funciona gracias a unos dispositivos ópticos que permiten concentrar la radiación solar sobre una célula fotovoltaica de tamaño reducido pero con una eficiencia muy superior alas células tradicionales. Con ello se consigue emplear menor cantidad de semiconductores reduciendo los costes.
+
+[fn:9] Un esquema de numeración semántica es un sistema de versiones que sigue un patrón específico para asignar números a las versiones de software. Se utiliza para indicar claramente la magnitud de los cambios realizados y su impacto en la compatibilidad.  Una versión =major= o mayor se refiere a modificaciones grandes o incompatibles con versiones anteriores, =minor= o menor es una versión que incluye mejoras o nuevas funciones compatibles con versiones anteriores y =patch= o parche es una versión que incluye correcciones menores o mejoras que no afectan a la funcionalidad.

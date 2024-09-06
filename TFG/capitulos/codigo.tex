@@ -1,14 +1,14 @@
 \chapter{Desarrollo del código}
 \label{chap:desarrollo-codigo}
-En la figura \ref{fig:org39916ee}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
+En la figura \ref{fig:orgc4a1c97}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
 \begin{figure}[htbp]
 \centering
 \includegraphics[keepaspectratio,width=0.8\textwidth,height=0.43\textheight]{figuras/procedure.pdf}
-\caption{\label{fig:org39916ee}Proceso de cálculo de las funciones de \texttt{solaR2}}
+\caption{\label{fig:orgc4a1c97}Proceso de cálculo de las funciones de \texttt{solaR2}}
 \end{figure}
 A la hora de estimar la producción, el programa sigue los siguientes procesos\footnote{Todas las funciones recogidas en este capítulo, están descritas en el manual de uso del paquete \texttt{solaR2}, el cual, está disponible en el apendice \ref{chap:manual} de este documento.}:
 \section{Geometría solar}
-\label{sec:org0b7b239}
+\label{sec:orgb474fe2}
 \label{sec:geometria-solar}
 Para calcular la geometría que definen las posiciones de la Tierra y el Sol, \texttt{solaR2} se vale de una función constructora, \texttt{calcSol}, la cual mediante las funciones \texttt{fSolD} y \texttt{fSolI} cálcula todos los ángulos y componentes que caracterizan la geometría solar.
 \begin{figure}[htbp]
@@ -20,7 +20,6 @@ Para calcular la geometría que definen las posiciones de la Tierra y el Sol, \t
 Como se puede ver en la figura \ref{fig:calcSol}, \texttt{calcSol} funcia gracias a las siguientes funciones:
 \begin{itemize}
 \item \texttt{fSolD}: la cual, a partir de la latitud (\(\phi\)), calcula la geometría a nivel diario, es decir, los ángulos y componentes que se pueden calcular en cada día independiente.
-
 Estas son:
 \begin{itemize}
 \item Declinación (\(\delta\)): calculada a partir de la función \texttt{declination}.
@@ -55,76 +54,33 @@ Key: <Dates>
 12: 2024-12-13  37.2 -0.40478283 1.0328516  0.0158622941 -1.239567  4284.472
 \end{verbatim}
 
-Además, \texttt{fSolD} permite seleccionar el método de cáculo entre los propuestos por 4 autores diferentes (\texttt{cooper} \cite{Cooper1969}, \texttt{spencer} \cite{Spencer1971}, \texttt{strous} \cite{Strous2011}, \texttt{michalsky} \cite{Michalsky1988})(el valor por defecto es \texttt{michalsky}):
+Tiene los siguientes argumentos:
+\begin{itemize}
+\item \texttt{lat}: para introducir la latitud en grados.
+\item \texttt{BTd}: para introducir la base temporal \textbf{diaria} sobre la que se harán los cálculos.
+\item \texttt{method}: para elegir el método de cálculo. Se puede elegir entre: \texttt{michalsky}, \texttt{cooper}, \texttt{spencer} y \texttt{strous}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-solD_cooper <- fSolD(lat = lat, BTd = BTd, method = 'cooper')
-show(solD_cooper)
+BTd <- fBTd(mode = 'prom')
+solD_michalsky <- fSolD(lat, BTd, method = 'michalsky')
+solD_michalsky[, group := 'michalsky']
+solD_cooper <- fSolD(lat, BTd, method = 'cooper')
+solD_cooper[, group := 'cooper']
+solD_spencer <- fSolD(lat, BTd, method = 'spencer')
+solD_spencer[, group := 'spencer']
+solD_strous <- fSolD(lat, BTd, method = 'strous')
+solD_strous[, group := 'strous']
+solD_all <- rbind(solD_michalsky, solD_cooper,
+                  solD_spencer, solD_strous)
+xyplot(eo + ws + Bo0d ~ Dates , solD_all,
+       groups = group, type = 'l', auto.key = TRUE,
+       par.settings = solaR.theme, scales = list(y = 'free'),
+       ylab = '', layout = c(1, 3))
 \end{lstlisting}
 
-\begin{verbatim}
-Key: <Dates>
-         Dates   lat        decl        eo           EoT        ws      Bo0d
-        <IDat> <num>       <num>     <num>         <num>     <num>     <num>
- 1: 2024-01-17  37.2 -0.36506987 1.0315970 -0.0455346238 -1.276457  4702.617
- 2: 2024-02-14  37.2 -0.23770977 1.0235842 -0.0614793356 -1.385835  6024.833
- 3: 2024-03-15  37.2 -0.04219743 1.0091112 -0.0368674274 -1.538742  7968.679
- 4: 2024-04-15  37.2  0.17074888 0.9917107  0.0017482721 -1.702053  9870.335
- 5: 2024-05-15  37.2  0.33214647 0.9770196  0.0143055938 -1.835696 11107.378
- 6: 2024-06-10  37.2  0.40292516 0.9690335 -0.0007378952 -1.900263 11575.213
- 7: 2024-07-18  37.2  0.36346384 0.9684861 -0.0263454380 -1.863677 11260.684
- 8: 2024-08-18  37.2  0.21721704 0.9778484 -0.0111761118 -1.739110 10144.635
- 9: 2024-09-18  37.2  0.01056696 0.9933706  0.0342189964 -1.578817  8367.014
-10: 2024-10-19  37.2 -0.19902155 1.0107363  0.0689613044 -1.417100  6356.454
-11: 2024-11-18  37.2 -0.34965673 1.0247443  0.0575423573 -1.290358  4835.353
-12: 2024-12-13  37.2 -0.40651987 1.0315970  0.0158622941 -1.237915  4260.830
-\end{verbatim}
-
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-solD_spencer <- fSolD(lat = lat, BTd = BTd, method = 'spencer')
-show(solD_spencer)
-\end{lstlisting}
-
-\begin{verbatim}
-Key: <Dates>
-         Dates   lat        decl        eo           EoT        ws      Bo0d
-        <IDat> <num>       <num>     <num>         <num>     <num>     <num>
- 1: 2024-01-17  37.2 -0.36483670 1.0340422 -0.0455346238 -1.276669  4716.264
- 2: 2024-02-14  37.2 -0.23199205 1.0259717 -0.0614793356 -1.390501  6100.057
- 3: 2024-03-15  37.2 -0.03563921 1.0107943 -0.0368674274 -1.543730  8048.574
- 4: 2024-04-15  37.2  0.17171286 0.9926547  0.0017482721 -1.702813  9888.522
- 5: 2024-05-15  37.2  0.33007088 0.9775162  0.0143055938 -1.833871 11096.093
- 6: 2024-06-10  37.2  0.40208757 0.9691480 -0.0007378952 -1.899469 11570.124
- 7: 2024-07-18  37.2  0.36657157 0.9675489 -0.0263454380 -1.866501 11274.319
- 8: 2024-08-18  37.2  0.22748717 0.9758022 -0.0111761118 -1.747427 10212.886
- 9: 2024-09-18  37.2  0.03143967 0.9907919  0.0342189964 -1.594670  8548.821
-10: 2024-10-19  37.2 -0.17549393 1.0088406  0.0689613044 -1.435795  6590.939
-11: 2024-11-18  37.2 -0.33679169 1.0245012  0.0575423573 -1.301800  4971.285
-12: 2024-12-13  37.2 -0.40419949 1.0328516  0.0158622941 -1.240121  4290.674
-\end{verbatim}
-
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-solD_strous <- fSolD(lat = lat, BTd = BTd, method = 'cooper')
-show(solD_strous)
-\end{lstlisting}
-
-\begin{verbatim}
-Key: <Dates>
-         Dates   lat        decl        eo           EoT        ws      Bo0d
-        <IDat> <num>       <num>     <num>         <num>     <num>     <num>
- 1: 2024-01-17  37.2 -0.36506987 1.0315970 -0.0455346238 -1.276457  4702.617
- 2: 2024-02-14  37.2 -0.23770977 1.0235842 -0.0614793356 -1.385835  6024.833
- 3: 2024-03-15  37.2 -0.04219743 1.0091112 -0.0368674274 -1.538742  7968.679
- 4: 2024-04-15  37.2  0.17074888 0.9917107  0.0017482721 -1.702053  9870.335
- 5: 2024-05-15  37.2  0.33214647 0.9770196  0.0143055938 -1.835696 11107.378
- 6: 2024-06-10  37.2  0.40292516 0.9690335 -0.0007378952 -1.900263 11575.213
- 7: 2024-07-18  37.2  0.36346384 0.9684861 -0.0263454380 -1.863677 11260.684
- 8: 2024-08-18  37.2  0.21721704 0.9778484 -0.0111761118 -1.739110 10144.635
- 9: 2024-09-18  37.2  0.01056696 0.9933706  0.0342189964 -1.578817  8367.014
-10: 2024-10-19  37.2 -0.19902155 1.0107363  0.0689613044 -1.417100  6356.454
-11: 2024-11-18  37.2 -0.34965673 1.0247443  0.0575423573 -1.290358  4835.353
-12: 2024-12-13  37.2 -0.40651987 1.0315970  0.0158622941 -1.237915  4260.830
-\end{verbatim}
-
+\begin{center}
+\includegraphics[width=\textwidth]{figuras/codigo-fSolD.pdf}
+\end{center}
+\end{itemize}
 \begin{itemize}
 \item \texttt{fSolI}: toma los resultados obtenidos en \texttt{fSolD} y calcula la geometría a nivel intradiario, es decir, aquella que se puede calcular en unidades de tiempo menores a los días.
 Estas son:
@@ -136,112 +92,48 @@ Estas son:
 \item El ángulo acimutal solar (\(\theta_{zs}\)): calculada mediante la función \texttt{azimuth}.
 \item La irradiancia extra-atmosférica (\(B_0(0)\)): calculada mediante el coseno del ángulo cenital, la constante solar (\(B_0\)) y la excentridad (cálculada en \texttt{fSolD}) [ecuación \ref{eq:irradianciaextra}].
 \end{itemize}
+Su argumento principal es \texttt{sample} con el cual se puede determinar el intervalo intradiario de cálculos.
 \end{itemize}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-solI <- fSolI(solD = solD[1], sample = 'hour') #Computo solo un día a fin mejorar la visualización
-show(solI)
+solD <- solD[1] #Computo solo un día a fin mejorar la visualización
+solI <- fSolI(solD = solD, sample = 'min') 
+xyplot(solI)
 \end{lstlisting}
 
-\begin{verbatim}
-Index: <night>
-                  Dates   lat           w  night      cosThzS          AlS         AzS       Bo0
-                 <POSc> <num>       <num> <lgcl>        <num>        <num>       <num>     <num>
- 1: 2024-01-17 00:00:00  37.2  3.09905026   TRUE -0.958552332 -1.281876984  3.00157749   0.00000
- 2: 2024-01-17 01:00:00  37.2 -2.92239722   TRUE -0.941407376 -1.226779122 -2.49462689   0.00000
- 3: 2024-01-17 02:00:00  37.2 -2.66065932   TRUE -0.874749489 -1.064918604 -2.03862388   0.00000
- 4: 2024-01-17 03:00:00  37.2 -2.39892132   TRUE -0.763119126 -0.868125900 -1.77932134   0.00000
- 5: 2024-01-17 04:00:00  37.2 -2.13718324   TRUE -0.614120126 -0.661270606 -1.59701536   0.00000
- 6: 2024-01-17 05:00:00  37.2 -1.87544507   TRUE -0.437901763 -0.453263434 -1.44469585   0.00000
- 7: 2024-01-17 06:00:00  37.2 -1.61370681   TRUE -0.246467423 -0.249033534 -1.30093496   0.00000
- 8: 2024-01-17 07:00:00  37.2 -1.35196846   TRUE -0.052856976 -0.052881619 -1.15283370   0.00000
- 9: 2024-01-17 08:00:00  37.2 -1.09023003  FALSE  0.129741461  0.130108233 -0.99014548 183.39419
-10: 2024-01-17 09:00:00  37.2 -0.82849151  FALSE  0.288889848  0.293067041 -0.80329847 408.35612
-11: 2024-01-17 10:00:00  37.2 -0.56675290  FALSE  0.413747472  0.426566560 -0.58400587 584.84684
-12: 2024-01-17 11:00:00  37.2 -0.30501420  FALSE  0.495809380  0.518766586 -0.32921922 700.84427
-13: 2024-01-17 12:00:00  37.2 -0.04327541  FALSE  0.529485721  0.557994217 -0.04769723 748.44699
-14: 2024-01-17 13:00:00  37.2  0.21846346  FALSE  0.512482515  0.538073327  0.23821864 724.41235
-15: 2024-01-17 14:00:00  37.2  0.48020243  FALSE  0.445957919  0.462244212  0.50355560 630.37745
-16: 2024-01-17 15:00:00  37.2  0.74194148  FALSE  0.334443348  0.341014503  0.73469016 472.74762
-17: 2024-01-17 16:00:00  37.2  1.00368062  FALSE  0.185534810  0.186616094  0.93148844 262.26008
-18: 2024-01-17 17:00:00  37.2  1.26541985  FALSE  0.009375501  0.009375638  1.10112996  13.25261
-19: 2024-01-17 18:00:00  37.2  1.52715917   TRUE -0.182035120 -0.183055757  1.25297092   0.00000
-20: 2024-01-17 19:00:00  37.2  1.78889857   TRUE -0.375658695 -0.385107424  1.39694027   0.00000
-21: 2024-01-17 20:00:00  37.2  2.05063807   TRUE -0.558306105 -0.592342658  1.54466726   0.00000
-22: 2024-01-17 21:00:00  37.2  2.31237766   TRUE -0.717535874 -0.800258081  1.71368519   0.00000
-23: 2024-01-17 22:00:00  37.2  2.57411733   TRUE -0.842501657 -1.001910427  1.93928567   0.00000
-24: 2024-01-17 23:00:00  37.2  2.83585709   TRUE -0.924691065 -1.180223341  2.30977400   0.00000
-                  Dates   lat           w  night      cosThzS          AlS         AzS       Bo0
-\end{verbatim}
-
-Además, como los datos nocturnos aportan poco a los cálculos que atañen a este proyecto, \texttt{fSolI} presenta la posibilidad de eliminar estos datos con el argumento \texttt{keep.night}.
+\begin{center}
+\includegraphics[width=\textwidth]{figuras/codigo-solI.pdf}
+\end{center}
+  Además, como los datos nocturnos aportan poco a los cálculos que atañen a este proyecto, \texttt{fSolI} presenta la posibilidad de eliminar estos datos con el argumento \texttt{keep.night}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-solI_nigth <- fSolI(solD = solD[1], sample = 'hour', keep.night = FALSE)
-show(solI_nigth)
+solI_nigth <- fSolI(solD = solD, sample = 'min', keep.night = FALSE)
+xyplot(solI_nigth)
 \end{lstlisting}
 
-\begin{verbatim}
-                  Dates   lat           w  night     cosThzS         AlS         AzS       Bo0
-                 <POSc> <num>       <num> <lgcl>       <num>       <num>       <num>     <num>
- 1: 2024-01-17 08:00:00  37.2 -1.09023003  FALSE 0.129741461 0.130108233 -0.99014548 183.39419
- 2: 2024-01-17 09:00:00  37.2 -0.82849151  FALSE 0.288889848 0.293067041 -0.80329847 408.35612
- 3: 2024-01-17 10:00:00  37.2 -0.56675290  FALSE 0.413747472 0.426566560 -0.58400587 584.84684
- 4: 2024-01-17 11:00:00  37.2 -0.30501420  FALSE 0.495809380 0.518766586 -0.32921922 700.84427
- 5: 2024-01-17 12:00:00  37.2 -0.04327541  FALSE 0.529485721 0.557994217 -0.04769723 748.44699
- 6: 2024-01-17 13:00:00  37.2  0.21846346  FALSE 0.512482515 0.538073327  0.23821864 724.41235
- 7: 2024-01-17 14:00:00  37.2  0.48020243  FALSE 0.445957919 0.462244212  0.50355560 630.37745
- 8: 2024-01-17 15:00:00  37.2  0.74194148  FALSE 0.334443348 0.341014503  0.73469016 472.74762
- 9: 2024-01-17 16:00:00  37.2  1.00368062  FALSE 0.185534810 0.186616094  0.93148844 262.26008
-10: 2024-01-17 17:00:00  37.2  1.26541985  FALSE 0.009375501 0.009375638  1.10112996  13.25261
-\end{verbatim}
-
-Aparte, en vez de identificar el intervalo intradiario (con el argumento \texttt{sample}), se puede dar directamente la base temporal intradiaria.
+\begin{center}
+\includegraphics[width=\textwidth]{figuras/codigo-solInight.pdf}
+\end{center}
+  Aparte, en vez de identificar el intervalo intradiario (con el argumento \texttt{sample}), se puede dar directamente la base temporal intradiaria.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-BTi <- fBTi(BTd, sample = 'hour')
-solI_BTi <- fSolI(solD, BTi = BTi)
-show(solI_BTi)
+BTd <- solD$Dates
+BTi <- fBTi(BTd, sample = 'min')
+solI_BTi <- fSolI(solD, BTi = BTi, keep.night = FALSE)
+xyplot(solI_BTi)
 \end{lstlisting}
 
-\begin{verbatim}
-Index: <night>
-                   Dates   lat         w  night    cosThzS        AlS       AzS   Bo0
-                  <POSc> <num>     <num> <lgcl>      <num>      <num>     <num> <num>
-  1: 2024-01-17 00:00:00  37.2  3.099050   TRUE -0.9585523 -1.2818770  3.001577     0
-  2: 2024-01-17 01:00:00  37.2 -2.922397   TRUE -0.9414074 -1.2267791 -2.494627     0
-  3: 2024-01-17 02:00:00  37.2 -2.660659   TRUE -0.8747495 -1.0649186 -2.038624     0
-  4: 2024-01-17 03:00:00  37.2 -2.398921   TRUE -0.7631191 -0.8681259 -1.779321     0
-  5: 2024-01-17 04:00:00  37.2 -2.137183   TRUE -0.6141201 -0.6612706 -1.597015     0
- ---                                                                                 
-284: 2024-12-13 19:00:00  37.2  1.856445   TRUE -0.4444110 -0.4605166  1.394524     0
-285: 2024-12-13 20:00:00  37.2  2.118158   TRUE -0.6191456 -0.6676542  1.539641     0
-286: 2024-12-13 21:00:00  37.2  2.379871   TRUE -0.7679298 -0.8756029  1.709361     0
-287: 2024-12-13 22:00:00  37.2  2.641583   TRUE -0.8806309 -1.0771921  1.946876     0
-288: 2024-12-13 23:00:00  37.2  2.903296   TRUE -0.9495736 -1.2518732  2.377338     0
-\end{verbatim}
-
-También, se puede indicar que no realice las correcciones de la ecuación del tiempo.
+\begin{center}
+\includegraphics[width=\textwidth]{figuras/codigo-solIBTi.pdf}
+\end{center}
+  También, se puede indicar que no realice las correcciones de la ecuación del tiempo.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 solI_EoT <- fSolI(solD = solD, BTi = BTi, EoT = FALSE)
-show(solI_EoT)
+xyplot(solI_EoT)
 \end{lstlisting}
 
-\begin{verbatim}
-Index: <night>
-                   Dates   lat         w  night    cosThzS        AlS       AzS   Bo0
-                  <POSc> <num>     <num> <lgcl>      <num>      <num>     <num> <num>
-  1: 2024-01-17 00:00:00  37.2  3.099050   TRUE -0.9585523 -1.2818770  3.001577     0
-  2: 2024-01-17 01:00:00  37.2 -2.922397   TRUE -0.9414074 -1.2267791 -2.494627     0
-  3: 2024-01-17 02:00:00  37.2 -2.660659   TRUE -0.8747495 -1.0649186 -2.038624     0
-  4: 2024-01-17 03:00:00  37.2 -2.398921   TRUE -0.7631191 -0.8681259 -1.779321     0
-  5: 2024-01-17 04:00:00  37.2 -2.137183   TRUE -0.6141201 -0.6612706 -1.597015     0
- ---                                                                                 
-284: 2024-12-13 19:00:00  37.2  1.856445   TRUE -0.4444110 -0.4605166  1.394524     0
-285: 2024-12-13 20:00:00  37.2  2.118158   TRUE -0.6191456 -0.6676542  1.539641     0
-286: 2024-12-13 21:00:00  37.2  2.379871   TRUE -0.7679298 -0.8756029  1.709361     0
-287: 2024-12-13 22:00:00  37.2  2.641583   TRUE -0.8806309 -1.0771921  1.946876     0
-288: 2024-12-13 23:00:00  37.2  2.903296   TRUE -0.9495736 -1.2518732  2.377338     0
-\end{verbatim}
+\begin{center}
+\includegraphics[width=\textwidth]{figuras/codigo-solIEoT.pdf}
+\end{center}
 
-Finalmente, estas dos funciones, como se muestra en la figura \ref{fig:calcSol}, convergen en la función \texttt{calcSol}, dando como resultado un objeto de clase \texttt{Sol}. Este objeto muestra un resumen de ambos elementos junto con la latitud de los cálculos.
+Finalmente, estas dos funciones, como se muestra en la figura \ref{fig:calcSol}, convergen en la función \texttt{calcSol}, dando como resultado un objeto de clase \texttt{Sol}. Este objeto muestra un resumen de ambos elementos junto con la latitud de los cálculos. Los argumentos de \texttt{calcSol} son las argumentos de las funciones anteriores
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 sol <- calcSol(lat = lat, BTd = BTd, sample = 'hour')
 show(sol)
@@ -253,40 +145,41 @@ Object of class Sol
 Latitude:  37.2 degrees
 
 Daily values:
-     Dates                 decl                 eo              EoT                   ws        
- Min.   :2024-01-17   Min.   :-0.404783   Min.   :0.9675   Min.   :-0.0614793   Min.   :-1.900  
- 1st Qu.:2024-04-07   1st Qu.:-0.256032   1st Qu.:0.9771   1st Qu.:-0.0289759   1st Qu.:-1.767  
- Median :2024-06-29   Median :-0.002305   Median :1.0007   Median : 0.0005052   Median :-1.569  
- Mean   :2024-07-01   Mean   :-0.001618   Mean   :1.0009   Mean   : 0.0008748   Mean   :-1.569  
- 3rd Qu.:2024-09-25   3rd Qu.: 0.251172   3rd Qu.:1.0249   3rd Qu.: 0.0204515   3rd Qu.:-1.370  
- Max.   :2024-12-13   Max.   : 0.402578   Max.   :1.0340   Max.   : 0.0689613   Max.   :-1.240  
-      Bo0d      
- Min.   : 4284  
- 1st Qu.: 5841  
- Median : 8297  
- Mean   : 8109  
- 3rd Qu.:10416  
- Max.   :11574  
+     Dates                 decl               eo             EoT                 ws        
+ Min.   :2024-01-17   Min.   :-0.3627   Min.   :1.034   Min.   :-0.04553   Min.   :-1.279  
+ 1st Qu.:2024-01-17   1st Qu.:-0.3627   1st Qu.:1.034   1st Qu.:-0.04553   1st Qu.:-1.279  
+ Median :2024-01-17   Median :-0.3627   Median :1.034   Median :-0.04553   Median :-1.279  
+ Mean   :2024-01-17   Mean   :-0.3627   Mean   :1.034   Mean   :-0.04553   Mean   :-1.279  
+ 3rd Qu.:2024-01-17   3rd Qu.:-0.3627   3rd Qu.:1.034   3rd Qu.:-0.04553   3rd Qu.:-1.279  
+ Max.   :2024-01-17   Max.   :-0.3627   Max.   :1.034   Max.   :-0.04553   Max.   :-1.279  
+      Bo0d     
+ Min.   :4739  
+ 1st Qu.:4739  
+ Median :4739  
+ Mean   :4739  
+ 3rd Qu.:4739  
+ Max.   :4739  
 
 Intradaily values: 
-     Dates                           w                night            cosThzS          
- Min.   :2024-01-17 00:00:00   Min.   :-3.1393050   Mode :logical   Min.   :-0.9700256  
- 1st Qu.:2024-04-07 11:45:00   1st Qu.:-1.5692285   FALSE:145       1st Qu.:-0.5004531  
- Median :2024-06-29 11:30:00   Median : 0.0010871   TRUE :143       Median : 0.0062923  
- Mean   :2024-07-01 15:30:00   Mean   : 0.0009975                   Mean   :-0.0009523  
- 3rd Qu.:2024-09-26 11:15:00   3rd Qu.: 1.5716412                   3rd Qu.: 0.5007129  
- Max.   :2024-12-13 23:00:00   Max.   : 3.1413972                   Max.   : 0.9697262  
-      AlS                 AzS                 Bo0          
- Min.   :-1.325336   Min.   :-3.139169   Min.   :   0.000  
- 1st Qu.:-0.524130   1st Qu.:-1.570722   1st Qu.:   0.000  
- Median : 0.006292   Median : 0.003834   Median :   8.748  
- Mean   :-0.001202   Mean   : 0.001011   Mean   : 337.752  
- 3rd Qu.: 0.524433   3rd Qu.: 1.555342   3rd Qu.: 698.153  
- Max.   : 1.324107   Max.   : 3.141331   Max.   :1284.718
+     Dates                           w              night            cosThzS             AlS         
+ Min.   :2024-01-17 00:00:00   Min.   :-2.92240   Mode :logical   Min.   :-0.9586   Min.   :-1.2819  
+ 1st Qu.:2024-01-17 05:45:00   1st Qu.:-1.41740   FALSE:10        1st Qu.:-0.7289   1st Qu.:-0.8172  
+ Median :2024-01-17 11:30:00   Median : 0.08759   TRUE :14        Median :-0.2143   Median :-0.2160  
+ Mean   :2024-01-17 11:30:00   Mean   : 0.08766                   Mean   :-0.2144   Mean   :-0.2724  
+ 3rd Qu.:2024-01-17 17:15:00   3rd Qu.: 1.59259                   3rd Qu.: 0.3003   3rd Qu.: 0.3051  
+ Max.   :2024-01-17 23:00:00   Max.   : 3.09905                   Max.   : 0.5295   Max.   : 0.5580  
+      AzS                Bo0       
+ Min.   :-2.49463   Min.   :  0.0  
+ 1st Qu.:-1.18986   1st Qu.:  0.0  
+ Median : 0.09526   Median :  0.0  
+ Mean   : 0.08773   Mean   :197.0  
+ 3rd Qu.: 1.28896   3rd Qu.:424.5  
+ Max.   : 3.00158   Max.   :748.4
 \end{verbatim}
 
+
 \section{Datos meteorológicos}
-\label{sec:orgd9e982c}
+\label{sec:org3b23fa2}
 \label{sec:datos-meteorologicos}
 Para el procesamiento de datos meteorologicos, \texttt{solaR2} provee una serie de funciones que son capaces de leer todo tipo de datos. Estos datos se procesan y se almacenan en un objeto de tipo \texttt{Meteo} tal y como se ve en la figura \ref{fig:meteo}. Estas funciones son:
 \begin{figure}[htbp]
@@ -296,6 +189,14 @@ Para el procesamiento de datos meteorologicos, \texttt{solaR2} provee una serie 
 \end{figure}
 \begin{itemize}
 \item \texttt{readG0dm}: Esta función construye un objeto \texttt{Meteo} a partir de 12 valores de medias mensuales de irradiación.
+Como argumentos tiene:
+\begin{itemize}
+\item \texttt{G0dm}: vector con medias mensuales de irradiación global horizontal.
+\item \texttt{Ta}: vector con la temperatura ambiente.
+\item \texttt{lat}: latitud en grados.
+\item \texttt{year}: año de los datos. Por defecto presenta el año actual.
+\item \texttt{source}: información de la fuente de los datos.
+\end{itemize}
 \end{itemize}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 G0dm = c(2.766,3.491,4.494,5.912,6.989,7.742,
@@ -303,29 +204,27 @@ G0dm = c(2.766,3.491,4.494,5.912,6.989,7.742,
 Ta = c(10, 14.1, 15.6, 17.2, 19.3, 21.2,
        28.4, 29.9, 24.3, 18.2, 17.2, 15.2)
 BD <- readG0dm(G0dm = G0dm, Ta = Ta, lat = 37.2)
-show(BD)
+xyplot(BD)
 \end{lstlisting}
 
-\begin{verbatim}
-Object of class  Meteo 
-
-Source of meteorological information: prom- 
-Latitude of source:  37.2 degrees
-
-Meteorological Data:
-     Dates                 G0d             Ta       
- Min.   :2024-01-17   Min.   :2179   Min.   :10.00  
- 1st Qu.:2024-04-07   1st Qu.:3322   1st Qu.:15.50  
- Median :2024-06-29   Median :4932   Median :17.70  
- Mean   :2024-07-01   Mean   :5022   Mean   :19.22  
- 3rd Qu.:2024-09-25   3rd Qu.:6998   3rd Qu.:21.98  
- Max.   :2024-12-13   Max.   :7919   Max.   :29.90
-\end{verbatim}
-
+\begin{center}
+\includegraphics[width=\textwidth]{figuras/codigo-readg0dm.pdf}
+\end{center}
 \begin{itemize}
 \item \texttt{readBD}: Esta familia de funciones puede leer ficheros de datos y transformarlos en un objeto de clase \texttt{Meteo}. Se dividen en:
 \begin{itemize}
 \item \texttt{readBDd}: Procesa datos meteorológicos de tipo diarios.
+Como argumentos tiene:
+\begin{itemize}
+\item \texttt{file}: nombre del archivo que contiene los datos.
+\item \texttt{lat}: latitud en grados.
+\item \texttt{format}: formato de los datos de fechas.
+\item \texttt{header}, \texttt{fill}, \texttt{dec}, \texttt{sep}: argumentos para \href{https://search.r-project.org/CRAN/refmans/data.table/html/fread.html}{\texttt{fread}}.
+\item \texttt{dates.col}: nombre de la columna que contiene los datos de fechas. Por defecto es 'Dates'.
+\item \texttt{ta.col}: nombre de la columna que contiene los datos de temperatura. Por defecto es 'Ta'.
+\item \texttt{g0.col}: nombre de la columna que contiene los datos de irradiación. Por defecto es 'G0'.
+\item \texttt{keep.cols}: si su valor es \texttt{TRUE}, mantiene las columnas que no sean importantes para el resto de operaciones.
+\end{itemize}
 \end{itemize}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 ## Se utiliza un archivo alojado en el
@@ -336,36 +235,26 @@ BDd <- readBDd(file = 'data/aranjuez.csv', lat = lat,
                format = '%Y-%m-%d', header = TRUE,
                fill = TRUE, dec = '.', sep = ',', dates.col = '',
                ta.col = 'TempAvg', g0.col = 'Radiation', keep.cols = TRUE)
-show(BDd)
+xyplot(BDd)
 \end{lstlisting}
 
-\begin{verbatim}
-Object of class  Meteo 
-
-Source of meteorological information: bd-data/aranjuez.csv 
-Latitude of source:  37.2 degrees
-
-Meteorological Data:
-     Dates                  G0               Ta            TempMin           TempMax      
- Min.   :2004-01-01   Min.   : 0.277   Min.   :-5.309   Min.   :-12.980   Min.   :-2.362  
- 1st Qu.:2005-12-29   1st Qu.: 9.370   1st Qu.: 7.692   1st Qu.:  1.515   1st Qu.:14.530  
- Median :2008-01-09   Median :16.660   Median :13.810   Median :  7.170   Median :21.670  
- Mean   :2008-01-03   Mean   :16.742   Mean   :14.405   Mean   :  6.888   Mean   :22.531  
- 3rd Qu.:2010-01-02   3rd Qu.:24.650   3rd Qu.:21.615   3rd Qu.: 12.590   3rd Qu.:30.875  
- Max.   :2011-12-31   Max.   :32.740   Max.   :30.680   Max.   : 22.710   Max.   :41.910  
-		      NA's   :13                        NA's   :4                         
-    HumidAvg         HumidMax         WindAvg         WindMax            Rain              ET       
- Min.   : 19.89   Min.   : 35.88   Min.   :0.251   Min.   : 0.000   Min.   : 0.000   Min.   :0.000  
- 1st Qu.: 47.04   1st Qu.: 81.60   1st Qu.:0.667   1st Qu.: 3.783   1st Qu.: 0.000   1st Qu.:1.168  
- Median : 62.58   Median : 90.90   Median :0.920   Median : 5.027   Median : 0.000   Median :2.758  
- Mean   : 62.16   Mean   : 87.22   Mean   :1.174   Mean   : 5.208   Mean   : 1.094   Mean   :3.091  
- 3rd Qu.: 77.38   3rd Qu.: 94.90   3rd Qu.:1.431   3rd Qu.: 6.537   3rd Qu.: 0.200   3rd Qu.:4.926  
- Max.   :100.00   Max.   :100.00   Max.   :8.260   Max.   :10.000   Max.   :49.730   Max.   :8.564  
-		  NA's   :13       NA's   :8       NA's   :128      NA's   :4        NA's   :18
-\end{verbatim}
-
+\begin{center}
+\includegraphics[width=\textwidth]{figuras/codigo-readBD.pdf}
+\end{center}
 \begin{itemize}
 \item \texttt{readBDi}: Procesa datos meteorológicos de tipo intradiarios.
+Como argumentos tiene:
+\begin{itemize}
+\item \texttt{file}: nombre del archivo que contiene los datos.
+\item \texttt{lat}: latitud en grados.
+\item \texttt{format}: formato de los datos de fechas.
+\item \texttt{header}, \texttt{fill}, \texttt{dec}, \texttt{sep}: argumentos para \href{https://search.r-project.org/CRAN/refmans/data.table/html/fread.html}{\texttt{fread}}.
+\item \texttt{dates.col}: nombre de la columna que contiene los datos de fechas y/o tiempos. Por defecto es 'Dates'.
+\item \texttt{times.col}: nombre de la columna que contiene los datos de tiempos en caso de que \texttt{dates.col} no los incluyera.
+\item \texttt{ta.col}: nombre de la columna que contiene los datos de temperatura. Por defecto es 'Ta'.
+\item \texttt{g0.col}: nombre de la columna que contiene los datos de irradiancia. Por defecto es 'G0'.
+\item \texttt{keep.cols}: si su valor es \texttt{TRUE}, mantiene las columnas que no sean importantes para el resto de operaciones.
+\end{itemize}
 \end{itemize}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 myURL <- "https://raw.githubusercontent.com/oscarperpinan/R/master/data/NREL-Hawaii.csv"
@@ -377,67 +266,39 @@ BDi <- readBDi(file = 'data/NREL-Hawaii.csv', lat = 19,
                ta.col = 'Air Temperature [deg C]',
                g0.col = 'Global Horizontal [W/m^2]',
                keep.cols = TRUE)
-show(BDi)
+xyplot(BDi)
 \end{lstlisting}
 
-\begin{verbatim}
-Object of class  Meteo 
-
-Source of meteorological information: bdI-data/NREL-Hawaii.csv 
-Latitude of source:  19 degrees
-
-Meteorological Data:
-     Dates                              G0                  Ta        Direct Normal [W/m^2]
- Min.   :2010-01-11 06:32:00.00   Min.   :   0.4769   Min.   :13.42   Min.   :  0.0        
- 1st Qu.:2010-03-11 17:37:45.00   1st Qu.: 147.4328   1st Qu.:22.76   1st Qu.:  0.0        
- Median :2010-06-11 17:32:30.00   Median : 300.6510   Median :24.15   Median :270.3        
- Mean   :2010-06-26 11:55:22.63   Mean   : 370.5293   Mean   :23.64   Mean   :356.6        
- 3rd Qu.:2010-09-11 17:34:15.00   3rd Qu.: 585.7402   3rd Qu.:25.24   3rd Qu.:715.2        
- Max.   :2010-12-11 17:46:00.00   Max.   :1172.3000   Max.   :28.12   Max.   :943.0        
- NA's   :4660                                                                              
- Diffuse Horizontal [W/m^2]
- Min.   :  0.4769          
- 1st Qu.: 78.4636          
- Median :152.9320          
- Mean   :171.7706          
- 3rd Qu.:246.3193          
- Max.   :586.3600
-\end{verbatim}
-
+\begin{center}
+\includegraphics[width=\textwidth]{figuras/codigo-readBDi.pdf}
+\end{center}
 \item \texttt{dt2Meteo}: Transforma un \texttt{data.table} o \texttt{data.frame} en un objeto de clase \texttt{Meteo}.
+Como argumentos tiene:
+\begin{itemize}
+\item \texttt{file}: \texttt{data.table} que contiene los datos.
+\item \texttt{lat}: latitud en grados.
+\item \texttt{source}: información sobre la fuente de los datos.
+\item \texttt{type}: tipo de datos. A elegir  entre \texttt{bdI} (intradiarios), \texttt{bd} (diarios) y \texttt{prom} (medias mensuales). Si no viene dado, lo calcula por su cuenta.
+\end{itemize}
 \end{itemize}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 data(helios)
 names(helios) <- c('Dates', 'G0d', 'TempMax', 'TempMin')
 helios_meteo <- dt2Meteo(file = helios, lat = 40, type = 'bd')
-show(helios_meteo)
+xyplot(helios_meteo)
 \end{lstlisting}
 
-\begin{verbatim}
-Object of class  Meteo 
-
-Source of meteorological information: bd-data.frame 
-Latitude of source:  40 degrees
-
-Meteorological Data:
-     Dates                             G0d             TempMin           TempMax     
- Min.   :2009-01-01 00:00:00.00   Min.   :  325.6   Min.   :-37.500   Min.   : 1.41  
- 1st Qu.:2009-04-08 12:00:00.00   1st Qu.: 2523.2   1st Qu.:  1.950   1st Qu.:14.41  
- Median :2009-07-07 00:00:00.00   Median : 4745.7   Median :  7.910   Median :23.16  
- Mean   :2009-07-04 21:29:54.93   Mean   : 4812.0   Mean   :  5.323   Mean   :22.59  
- 3rd Qu.:2009-10-03 12:00:00.00   3rd Qu.: 7139.5   3rd Qu.: 15.105   3rd Qu.:31.06  
- Max.   :2009-12-31 00:00:00.00   Max.   :11253.9   Max.   : 24.800   Max.   :38.04  
-       Ta         
- Min.   :-23.049  
- 1st Qu.:  7.008  
- Median : 12.055  
- Mean   : 10.944  
- 3rd Qu.: 19.472  
- Max.   : 28.619
-\end{verbatim}
-
+\begin{center}
+\includegraphics[width=\textwidth]{figuras/codigo-dt2meteo.pdf}
+\end{center}
 \begin{itemize}
 \item \texttt{zoo2Meteo}: Transforma un objeto de clase \texttt{zoo}\footnote{Pese a que este proyecto trate de ``desligarse'' del paquete \texttt{zoo}, sigue siendo un paquete muy extendido. Por lo que es interesante tener una función así para que los usuarios tengan una mayor flexibilidad.} en un objeto de clase \texttt{Meteo}.
+Como argumentos tiene:
+\begin{itemize}
+\item \texttt{file}: \texttt{data.table} que contiene los datos.
+\item \texttt{lat}: latitud en grados.
+\item \texttt{source}: información sobre la fuente de los datos.
+\end{itemize}
 \end{itemize}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 library(zoo)
@@ -472,7 +333,16 @@ Meteorological Data:
 \end{verbatim}
 
 \begin{itemize}
-\item \texttt{readSIAR}: Esta función es capaz de extraer información de la red SIAR y transformarlo en un objeto de clase \texttt{Meteo}.
+\item \texttt{readSIAR}: Esta función es capaz de extraer información de la red SIAR\footnote{La red SiAR (Sistema de Información Agroclimática para el Regadio) es una infraestructura que captura, registra y divulga los datos climáticos necesarios para el cálculo de la demanda hídrica en las zonas de riego \cite{siar23}.} y transformarlo en un objeto de clase \texttt{Meteo}.
+Como argumentos tiene:
+\begin{itemize}
+\item \texttt{Lon}: Longitud en grados.
+\item \texttt{Lat}: Latitud en grados.
+\item \texttt{inicio}: Primer día de los registros.
+\item \texttt{final}: Último día de los registros.
+\item \texttt{tipo}: La API SIAR\footnote{La API (Interfaz de Programación de Aplicaciones) que se usa para la función \texttt{readSIAR} está proporcionada por la propia red SIAR \cite{siar23}.} permite tener 4 tipos de registros: \texttt{Mensuales}, \texttt{Semanales}, \texttt{Diarios} y \texttt{Horarios}.
+\item \texttt{n\_est}: Con este argumento, la función es capaz de localizar el número seleccionado de estaciones más proximas a la ubicación dada, y obtener los datos individuales de cada una de ellas. Una vez obtenidos estos datos realiza una interpolación de distancia inversa ponderada (IDW\footnote{La interpolación IDW es un método de interpolación que estima el valor de un punto desconocido basado en los valores conocidos de puntos cercanos. Los puntos más cercanos tienen más peso en la estimación que los más lejanos, utilizando una relación inversa con la distancia.}) y entrega un solo resultado. Es importante añadir que la API SIAR tiene una limitación a la solicitud de registros que se le hace cada minuto, por lo que esta función cuenta con un comprobante para impedir que el usuario exceda este límite.
+\end{itemize}
 \end{itemize}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 library(httr2)
@@ -482,34 +352,15 @@ bd_SIAR <- readSIAR(Lat = 40.40596822621351, Lon = -3.70038308516172,
                     ## de Ingeniería y Diseño Industrial (ETSIDI)
                     inicio = '2023-09-01', final = '2024-08-01',
                     tipo = 'Mensuales', n_est = 3)
-show(bd_SIAR)
+xyplot(bd_SIAR)
 \end{lstlisting}
 
-\begin{verbatim}
-Object of class  Meteo 
-
-Source of meteorological information: prom-https://servicio.mapama.gob.es 
-  -Estaciones: Center: Finca experimental(M01), Arganda(M02), San Martín de la Vega(M05) 
-Latitude of source:  40.4 degrees
-
-Meteorological Data:
-     Dates                          G0d             Ta            TempMin           TempMax     
- Min.   :2023-09-18 00:00:00   Min.   :1860   Min.   : 5.318   Min.   :-4.6513   Min.   :15.34  
- 1st Qu.:2023-12-06 18:00:00   1st Qu.:2744   1st Qu.: 9.857   1st Qu.:-2.1466   1st Qu.:21.12  
- Median :2024-02-29 00:00:00   Median :4052   Median :14.890   Median : 0.3663   Median :31.01  
- Mean   :2024-03-01 04:00:00   Mean   :4502   Mean   :15.307   Mean   : 2.4225   Mean   :29.41  
- 3rd Qu.:2024-05-21 12:00:00   3rd Qu.:6549   3rd Qu.:20.047   3rd Qu.: 7.1506   3rd Qu.:35.47  
- Max.   :2024-08-18 00:00:00   Max.   :7608   Max.   :27.069   Max.   :12.6082   Max.   :40.70
-\end{verbatim}
-
-Esta función tiene dos argumentos importantes:
-\begin{itemize}
-\item \texttt{tipo}: La API SIAR\footnote{La API (Interfaz de Programación de Aplicaciones) que se usa para la función \texttt{readSIAR} está proporcionada por la propia red SIAR \cite{siar23}.} permite tener 4 tipos de registros: \texttt{Mensuales}, \texttt{Semanales}, \texttt{Diarios} y \texttt{Horarios}.
-\item \texttt{n\_est}: Con este argumento, la función es capaz de localizar el número seleccionado de estaciones más proximas a la ubicación dada, y obtener los datos individuales de cada una de ellas. Una vez obtenidos estos datos realiza una interpolación de distancia inversa ponderada (IDW\footnote{La interpolación IDW es un método de interpolación que estima el valor de un punto desconocido basodo en los valores conocidos de puntos cercanos. Los puntos más cercanos tienen más peso en la estimación que los más lejanos, utilizando una relación inversa con la distancia.}) y entrega un solo resultado. Es importante añadir que la API SIAR tiene una limitación a la solicitud de registros que se le hace cada minuto, por lo que esta función cuenta con un comprobante para impedir que el usuario exceda este límite.
-\end{itemize}
+\begin{center}
+\includegraphics[width=\textwidth]{figuras/codigo-readsiar.pdf}
+\end{center}
 
 \section{Radiación en el plano horizontal}
-\label{sec:orgaf2e693}
+\label{sec:orgb434c52}
 \label{sec:radiacion-plano-horizontal}
 Una vez se ha calculado la geometría solar (sección \ref{sec:geometria-solar}) y se han procesado los datos meteorológicos (sección \ref{sec:datos-meteorologicos}), es necesario calcular la radiación en el plano horizontal. Para ello, \texttt{solaR2} cuenta con la función \texttt{calcG0} la cual mediante las funciones \texttt{fCompD} y \texttt{fCompI} procesan los objetos de clase \texttt{Sol} y clase \texttt{Meteo} para dar un objeto de tipo \texttt{G0}.
 
@@ -521,7 +372,12 @@ Como se puede ver en la figura \ref{fig:calcg0}, \texttt{calcG0} funciona gracia
 \end{figure}
 \begin{itemize}
 \item \texttt{fCompD}: La cual calcula todas las componentes de la irradiación diaria en una superficie horizontal mediante regresiones entre los parámetros del índice de claridad y la fracción difusa.
-Para ello se pueden usar varias correlaciones dependiendo del tipo de datos:
+Tiene los siguientes argumentos:
+\begin{itemize}
+\item \texttt{sol}: Un objeto de clase \texttt{Sol}.
+\item \texttt{G0d}: Un objeto clase \texttt{Meteo} o un \texttt{data.table} con datos de irradiación diaria en una superficie horizontal.
+\item \texttt{corr}: A elegir el tipo de correlación entre la fracción de difusa y el índice de claridad.
+Dependiendo del tipo de datos:
 \begin{itemize}
 \item Mensuales:
 \end{itemize}
@@ -531,50 +387,20 @@ BTd <- fBTd(mode = 'prom')
 solD <- fSolD(lat, BTd)
 G0d <- c(2.766,3.491,4.494,5.912,6.989,7.742,7.919,7.027,5.369,3.562,2.814,2.179) * 1000
 compD_page <- fCompD(sol = solD, G0d = G0d, corr = "Page")
-compD_page
-\end{lstlisting}
-
-\begin{verbatim}
-Key: <Dates>
-	 Dates        Fd        Kt   G0d      D0d      B0d
-	<POSc>     <num>     <num> <num>    <num>    <num>
- 1: 2024-01-17 0.3404548 0.5836683  2766  941.698 1824.302
- 2: 2024-02-14 0.3572461 0.5688088  3491 1247.146 2243.854
- 3: 2024-03-15 0.3719989 0.5557532  4494 1671.763 2822.237
- 4: 2024-04-15 0.3266485 0.5958862  5912 1931.146 3980.854
- 5: 2024-05-15 0.2895069 0.6287549  6989 2023.364 4965.636
- 6: 2024-06-10 0.2441221 0.6689185  7742 1889.994 5852.006
- 7: 2024-07-18 0.2050844 0.7034651  7919 1624.064 6294.936
- 8: 2024-08-18 0.2202349 0.6900576  7027 1547.591 5479.409
- 9: 2024-09-18 0.2869638 0.6310055  5369 1540.708 3828.292
-10: 2024-10-19 0.3858825 0.5434669  3562 1374.513 2187.487
-11: 2024-11-18 0.3578392 0.5682839  2814 1006.959 1807.041
-12: 2024-12-13 0.4253038 0.5085807  2179  926.737 1252.263
-\end{verbatim}
-
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+compD_page[, group := 'page']
 compD_lj <- fCompD(sol = solD, G0d = G0d, corr = "LJ")
-compD_lj
+compD_lj[, group := 'lj']
+compD_dia <- rbind(compD_page, compD_lj)
+xyplot(Fd + D0d + B0d ~ Dates, compD_dia,
+       groups = group, type = 'l', auto.key = TRUE,
+       par.settings = solaR.theme, scales = list(y = 'free'),
+       ylab = '', layout = c(1, 3))
+
 \end{lstlisting}
 
-\begin{verbatim}
-Key: <Dates>
-	 Dates        Fd        Kt   G0d       D0d      B0d
-	<POSc>     <num>     <num> <num>     <num>    <num>
- 1: 2024-01-17 0.3058193 0.5836683  2766  845.8961 1920.104
- 2: 2024-02-14 0.3169470 0.5688088  3491 1106.4621 2384.538
- 3: 2024-03-15 0.3268047 0.5557532  4494 1468.6603 3025.340
- 4: 2024-04-15 0.2967018 0.5958862  5912 1754.1011 4157.899
- 5: 2024-05-15 0.2720419 0.6287549  6989 1901.3006 5087.699
- 6: 2024-06-10 0.2408700 0.6689185  7742 1864.8154 5877.185
- 7: 2024-07-18 0.2152460 0.7034651  7919 1704.5331 6214.467
- 8: 2024-08-18 0.2236251 0.6900576  7027 1571.4138 5455.586
- 9: 2024-09-18 0.2703347 0.6310055  5369 1451.4268 3917.573
-10: 2024-10-19 0.3361895 0.5434669  3562 1197.5071 2364.493
-11: 2024-11-18 0.3173415 0.5682839  2814  892.9990 1921.001
-12: 2024-12-13 0.3637158 0.5085807  2179  792.5367 1386.463
-\end{verbatim}
-
+\begin{center}
+\includegraphics[width=\textwidth]{figuras/codigo-fcompdmes.pdf}
+\end{center}
 \begin{itemize}
 \item Diarios:
 \end{itemize}
@@ -584,92 +410,22 @@ G0d <- readSIAR(Lat = 40.40596822621351, Lon =-3.70038308516172,
                 tipo = 'Diarios', n_est = 3)
 sol <- calcSol(lat, BTd = indexD(G0d))
 compD_cpr <- fCompD(sol = sol, G0d = G0d, corr = "CPR")
-compD_cpr
-\end{lstlisting}
-
-\begin{verbatim}
-Key: <Dates>
-	 Dates        Fd        Kt      G0d      D0d      B0d
-	<POSc>     <num>     <num>    <num>    <num>    <num>
- 1: 2024-07-15 0.2833125 0.6798139 7697.945 2180.924 5517.021
- 2: 2024-07-16 0.2597185 0.7000272 7911.858 2054.856 5857.002
- 3: 2024-07-17 0.2815044 0.6812283 7684.293 2163.163 5521.131
- 4: 2024-07-18 0.6627754 0.4674993 5262.702 3487.989 1774.713
- 5: 2024-07-19 0.2595844 0.7001561 7865.166 2041.675 5823.491
- 6: 2024-07-20 0.2594075 0.7003266 7849.961 2036.339 5813.622
- 7: 2024-07-21 0.2315068 0.7365959 8237.938 1907.138 6330.799
- 8: 2024-07-22 0.2269337 0.7493438 8361.056 1897.406 6463.650
- 9: 2024-07-23 0.2451723 0.7156288 7965.753 1952.982 6012.771
-10: 2024-07-24 0.2620008 0.6978638 7748.845 2030.204 5718.641
-11: 2024-07-25 0.2746548 0.6867564 7606.140 2089.063 5517.077
-12: 2024-07-26 0.3320728 0.6462270 7138.548 2370.518 4768.030
-13: 2024-07-27 0.3186769 0.6547900 7213.697 2298.839 4914.858
-14: 2024-07-28 0.2767163 0.6850625 7526.355 2082.665 5443.689
-15: 2024-07-29 0.6566999 0.4709412 5159.260 3388.086 1771.174
-16: 2024-07-30 0.3185533 0.6548709 7153.359 2278.726 4874.633
-17: 2024-07-31 0.2503814 0.7096003 7728.034 1934.956 5793.078
-18: 2024-08-01 0.2428514 0.7185406 7801.435 1894.589 5906.846
-\end{verbatim}
-
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+compD_cpr[, group := 'cpr']
 compD_ekdd <- fCompD(sol = sol, G0d = G0d, corr = 'EKDd')
-compD_ekdd
-\end{lstlisting}
-
-\begin{verbatim}
-Key: <Dates>
-	 Dates    Fd        Kt      G0d      D0d   B0d
-	<POSc> <num>     <num>    <num>    <num> <num>
- 1: 2024-07-15     1 0.6798139 7697.945 7697.945     0
- 2: 2024-07-16     1 0.7000272 7911.858 7911.858     0
- 3: 2024-07-17     1 0.6812283 7684.293 7684.293     0
- 4: 2024-07-18     1 0.4674993 5262.702 5262.702     0
- 5: 2024-07-19     1 0.7001561 7865.166 7865.166     0
- 6: 2024-07-20     1 0.7003266 7849.961 7849.961     0
- 7: 2024-07-21     1 0.7365959 8237.938 8237.938     0
- 8: 2024-07-22     1 0.7493438 8361.056 8361.056     0
- 9: 2024-07-23     1 0.7156288 7965.753 7965.753     0
-10: 2024-07-24     1 0.6978638 7748.845 7748.845     0
-11: 2024-07-25     1 0.6867564 7606.140 7606.140     0
-12: 2024-07-26     1 0.6462270 7138.548 7138.548     0
-13: 2024-07-27     1 0.6547900 7213.697 7213.697     0
-14: 2024-07-28     1 0.6850625 7526.355 7526.355     0
-15: 2024-07-29     1 0.4709412 5159.260 5159.260     0
-16: 2024-07-30     1 0.6548709 7153.359 7153.359     0
-17: 2024-07-31     1 0.7096003 7728.034 7728.034     0
-18: 2024-08-01     1 0.7185406 7801.435 7801.435     0
-\end{verbatim}
-
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+compD_ekdd[, group := 'ekdd']
 compD_climedd <- fCompD(sol = sol, G0d = G0d, corr = 'CLIMEDd')
-compD_climedd
+compD_climedd[, group := 'climedd']
+compD_mes <- rbind(compD_cpr, compD_ekdd, compD_climedd)
+xyplot(Fd + D0d + B0d ~ Dates, compD_mes,
+       groups = group, type = 'l',auto.key = TRUE,
+       par.settings = solaR.theme, scales = list(y = 'free'),
+       ylab = '', layout = c(1, 3))
 \end{lstlisting}
 
-\begin{verbatim}
-Key: <Dates>
-	 Dates        Fd        Kt      G0d      D0d      B0d
-	<POSc>     <num>     <num>    <num>    <num>    <num>
- 1: 2024-07-15 0.2724591 0.6798139 7697.945 2097.375 5600.570
- 2: 2024-07-16 0.2455880 0.7000272 7911.858 1943.057 5968.801
- 3: 2024-07-17 0.2705287 0.6812283 7684.293 2078.822 5605.472
- 4: 2024-07-18 0.6086148 0.4674993 5262.702 3202.958 2059.744
- 5: 2024-07-19 0.2454217 0.7001561 7865.166 1930.282 5934.884
- 6: 2024-07-20 0.2452020 0.7003266 7849.961 1924.826 5925.135
- 7: 2024-07-21 0.2013208 0.7365959 8237.938 1658.468 6579.470
- 8: 2024-07-22 0.1873678 0.7493438 8361.056 1566.592 6794.463
- 9: 2024-07-23 0.2259736 0.7156288 7965.753 1800.050 6165.703
-10: 2024-07-24 0.2483878 0.6978638 7748.845 1924.718 5824.126
-11: 2024-07-25 0.2630540 0.6867564 7606.140 2000.826 5605.314
-12: 2024-07-26 0.3202837 0.6462270 7138.548 2286.361 4852.187
-13: 2024-07-27 0.3077503 0.6547900 7213.697 2220.018 4993.679
-14: 2024-07-28 0.2653324 0.6850625 7526.355 1996.986 5529.369
-15: 2024-07-29 0.6029930 0.4709412 5159.260 3110.998 2048.263
-16: 2024-07-30 0.3076331 0.6548709 7153.359 2200.610 4952.749
-17: 2024-07-31 0.2334298 0.7096003 7728.034 1803.954 5924.080
-18: 2024-08-01 0.2224291 0.7185406 7801.435 1735.266 6066.168
-\end{verbatim}
-
-También, se puede aportar una función de correlación propia.
+\begin{center}
+\includegraphics[width=\textwidth]{figuras/codigo-fcompddia.pdf}
+\end{center}
+También, se puede aportar una función de correlación propia con el argumento \texttt{f}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 f_corrd <- function(sol, G0d){
   ## Función CLIMEDd
@@ -680,33 +436,12 @@ f_corrd <- function(sol, G0d){
   return(data.table(Fd, Kt))
 }
 compD_user <- fCompD(sol = sol, G0d = G0d, corr = 'user', f = f_corrd)
-compD_user
+xyplot(compD_user)
 \end{lstlisting}
 
-\begin{verbatim}
-Key: <Dates>
-	 Dates        Fd        Kt      G0d      D0d      B0d
-	<POSc>     <num>     <num>    <num>    <num>    <num>
- 1: 2024-07-15 0.2724591 0.6798139 7697.945 2097.375 5600.570
- 2: 2024-07-16 0.2455880 0.7000272 7911.858 1943.057 5968.801
- 3: 2024-07-17 0.2705287 0.6812283 7684.293 2078.822 5605.472
- 4: 2024-07-18 0.6086148 0.4674993 5262.702 3202.958 2059.744
- 5: 2024-07-19 0.2454217 0.7001561 7865.166 1930.282 5934.884
- 6: 2024-07-20 0.2452020 0.7003266 7849.961 1924.826 5925.135
- 7: 2024-07-21 0.2013208 0.7365959 8237.938 1658.468 6579.470
- 8: 2024-07-22 0.1873678 0.7493438 8361.056 1566.592 6794.463
- 9: 2024-07-23 0.2259736 0.7156288 7965.753 1800.050 6165.703
-10: 2024-07-24 0.2483878 0.6978638 7748.845 1924.718 5824.126
-11: 2024-07-25 0.2630540 0.6867564 7606.140 2000.826 5605.314
-12: 2024-07-26 0.3202837 0.6462270 7138.548 2286.361 4852.187
-13: 2024-07-27 0.3077503 0.6547900 7213.697 2220.018 4993.679
-14: 2024-07-28 0.2653324 0.6850625 7526.355 1996.986 5529.369
-15: 2024-07-29 0.6029930 0.4709412 5159.260 3110.998 2048.263
-16: 2024-07-30 0.3076331 0.6548709 7153.359 2200.610 4952.749
-17: 2024-07-31 0.2334298 0.7096003 7728.034 1803.954 5924.080
-18: 2024-08-01 0.2224291 0.7185406 7801.435 1735.266 6066.168
-\end{verbatim}
-
+\begin{center}
+\includegraphics[width=\textwidth]{figuras/codigo-fcompduser.pdf}
+\end{center}
 Por último, si \texttt{G0d} ya contiene todos los componentes, se puede especifica que no haga ninguna correlación.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 compD_none <- fCompD(sol = sol, G0d = compD_user, corr = 'none')
@@ -736,6 +471,7 @@ Key: <Dates>
 17: 2024-07-31 0.2334298 0.7096003 7728.034 1803.954 5924.080
 18: 2024-08-01 0.2224291 0.7185406 7801.435 1735.266 6066.168
 \end{verbatim}
+\end{itemize}
 
 \item \texttt{fCompI}: calcula, en base a los valores de irradiación diaria, todas las componentes de irradiancia. Se vale de dos procedimientos en base al tipo de argumentos que toma:
 \begin{itemize}
@@ -748,95 +484,29 @@ G0d <- c(2.766,3.491,4.494,5.912,6.989,7.742,7.919,
           7.027,5.369,3.562,2.814,2.179) * 1000
 compD <- fCompD(sol = sol, G0d = G0d, corr = 'CPR')
 compI <- fCompI(sol = sol, compD = compD)
-show(compI)
+xyplot(compI)
 \end{lstlisting}
 
-\begin{verbatim}
-Key: <Dates>
-		   Dates        Fd        Kt        G0        D0        B0
-		  <POSc>     <num>     <num>     <num>     <num>     <num>
-  1: 2024-01-17 08:00:00 0.5656199 0.4583592  84.06042  47.54625  36.40399
-  2: 2024-01-17 09:00:00 0.4912826 0.5277148 215.49558 105.86922 109.51548
-  3: 2024-01-17 10:00:00 0.4453619 0.5821268 340.45500 151.62569 188.82159
-  4: 2024-01-17 11:00:00 0.4195854 0.6178887 433.04376 181.69885 251.45464
-  5: 2024-01-17 12:00:00 0.4098508 0.6325646 473.44106 194.04019 279.57020
- ---                                                                      
-141: 2024-12-13 12:00:00 0.5437347 0.5488870 382.71443 208.09513 174.85828
-142: 2024-12-13 13:00:00 0.5556284 0.5371376 352.10710 195.64071 156.62669
-143: 2024-12-13 14:00:00 0.5893861 0.5063725 276.60890 163.02945 113.57257
-144: 2024-12-13 15:00:00 0.6506594 0.4586869 172.87432 112.48231  60.23704
-145: 2024-12-13 16:00:00 0.7511394 0.3973283  63.15968  47.44173  15.57107
-\end{verbatim}
-
+\begin{center}
+\includegraphics[width=\textwidth]{figuras/codigo-fcompicompd.pdf}
+\end{center}
 \begin{itemize}
 \item \texttt{G0I}: Este argumento recibe datos de irradiancia, para después, poder aplicar las correcciones indicadas en el argumento \texttt{corr}.
 \end{itemize}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 G0I <- compI$G0
 compI_ekdh <- fCompI(sol = sol, G0I = G0I, corr = 'EKDh')
-show(compI_ekdh)
-\end{lstlisting}
-
-\begin{verbatim}
-Key: <Dates>
-		   Dates        Fd        Kt        G0        D0        B0
-		  <POSc>     <num>     <num>     <num>     <num>     <num>
-  1: 2024-01-17 08:00:00 0.7417600 0.4583592  84.06042  62.35265  21.70776
-  2: 2024-01-17 09:00:00 0.6000150 0.5277148 215.49558 129.30057  86.19500
-  3: 2024-01-17 10:00:00 0.4791716 0.5821268 340.45500 163.13636 177.31865
-  4: 2024-01-17 11:00:00 0.4004462 0.6178887 433.04376 173.41074 259.63302
-  5: 2024-01-17 12:00:00 0.3692679 0.6325646 473.44106 174.82659 298.61447
- ---                                                                      
-141: 2024-12-13 12:00:00 0.5533972 0.5488870 382.71443 211.79307 170.92135
-142: 2024-12-13 13:00:00 0.5793829 0.5371376 352.10710 204.00484 148.10226
-143: 2024-12-13 14:00:00 0.6457949 0.5063725 276.60890 178.63262  97.97628
-144: 2024-12-13 15:00:00 0.7411461 0.4586869 172.87432 128.12512  44.74920
-145: 2024-12-13 16:00:00 0.8439123 0.3973283  63.15968  53.30123   9.85845
-\end{verbatim}
-
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+compI_ekdh[, group := 'ekdh']
 compI_brl <- fCompI(sol = sol, G0I = G0I, corr = 'BRL')
-show(compI_brl)
-\end{lstlisting}
-
-\begin{verbatim}
-Key: <Dates>
-		   Dates        Fd        Kt        G0        D0        B0
-		  <POSc>     <num>     <num>     <num>     <num>     <num>
-  1: 2024-01-17 08:00:00 0.6689300 0.4583592  84.06042  56.23053  27.82988
-  2: 2024-01-17 09:00:00 0.5775367 0.5277148 215.49558 124.45660  91.03897
-  3: 2024-01-17 10:00:00 0.4826595 0.5821268 340.45500 164.32384 176.13116
-  4: 2024-01-17 11:00:00 0.4204896 0.6178887 433.04376 182.09040 250.95337
-  5: 2024-01-17 12:00:00 0.3948666 0.6325646 473.44106 186.94604 286.49502
- ---                                                                      
-141: 2024-12-13 12:00:00 0.5872522 0.5488870 382.71443 224.74989 157.96454
-142: 2024-12-13 13:00:00 0.6048894 0.5371376 352.10710 212.98583 139.12126
-143: 2024-12-13 14:00:00 0.6521416 0.5063725 276.60890 180.38818  96.22073
-144: 2024-12-13 15:00:00 0.7207149 0.4586869 172.87432 124.59311  48.28121
-145: 2024-12-13 16:00:00 0.7818945 0.3973283  63.15968  49.38421  13.77547
-\end{verbatim}
-
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+compI_brl[, group := 'brl']
 compI_climedh <- fCompI(sol = sol, G0I = G0I, corr = 'CLIMEDh')
-show(compI_climedh)
+compI_climedh[, group := 'climedh']
+compI_all <- rbind(compI_ekdh, compI_ekdh, compI_climedh)
+xyplot(Fd+ D0 +B0 ~ Dates, compI_all,
+       groups= group, type = 'l',auto.key= TRUE,
+       par.settings= solaR.theme,scales =list(y = 'free'),
+       ylab = '', layout= c(1,3))
 \end{lstlisting}
-
-\begin{verbatim}
-Key: <Dates>
-		   Dates        Fd        Kt        G0        D0        B0
-		  <POSc>     <num>     <num>     <num>     <num>     <num>
-  1: 2024-01-17 08:00:00 0.7093252 0.4583592  84.06042  59.62617  24.43424
-  2: 2024-01-17 09:00:00 0.5818534 0.5277148 215.49558 125.38683  90.10875
-  3: 2024-01-17 10:00:00 0.4782729 0.5821268 340.45500 162.83039 177.62462
-  4: 2024-01-17 11:00:00 0.4110389 0.6178887 433.04376 177.99784 255.04592
-  5: 2024-01-17 12:00:00 0.3840268 0.6325646 473.44106 181.81406 291.62701
- ---                                                                      
-141: 2024-12-13 12:00:00 0.5416063 0.5488870 382.71443 207.28055 175.43387
-142: 2024-12-13 13:00:00 0.5639749 0.5371376 352.10710 198.57956 153.52754
-143: 2024-12-13 14:00:00 0.6220088 0.5063725 276.60890 172.05317 104.55573
-144: 2024-12-13 15:00:00 0.7087489 0.4586869 172.87432 122.52448  50.34984
-145: 2024-12-13 16:00:00 0.8099691 0.3973283  63.15968  51.15739  12.00229
-\end{verbatim}
 
 Como con \texttt{fCompD}, se puede añadir una función correctora propia.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -958,24 +628,24 @@ Latitude for calculations:  37.2 degrees
 Monthly avarages:
 	Dates   G0d      D0d      B0d
        <char> <num>    <num>    <num>
- 1: Jan. 2024 2.766 1.140678 1.625322
- 2: Feb. 2024 3.491 1.355850 2.135150
- 3: Mar. 2024 4.494 1.831543 2.662457
- 4: Apr. 2024 5.912 2.211287 3.700713
- 5: May. 2024 6.989 2.351559 4.637441
- 6: Jun. 2024 7.742 2.393501 5.348499
- 7: Jul. 2024 7.919 2.524364 5.394636
- 8: Aug. 2024 7.027 2.102866 4.924134
- 9: Sep. 2024 5.369 1.900781 3.468219
-10: Oct. 2024 3.562 1.696035 1.865965
-11: Nov. 2024 2.814 1.214375 1.599625
-12: Dec. 2024 2.179 1.113915 1.065085
+ 1: Jan. 2024 2.766 1.123545 1.642455
+ 2: Feb. 2024 3.491 1.621815 1.869185
+ 3: Mar. 2024 4.494 1.721746 2.772254
+ 4: Apr. 2024 5.912 2.268278 3.643722
+ 5: May. 2024 6.989 2.448019 4.540981
+ 6: Jun. 2024 7.742 2.395234 5.346766
+ 7: Jul. 2024 7.919 2.367209 5.551791
+ 8: Aug. 2024 7.027 2.119732 4.907268
+ 9: Sep. 2024 5.369 1.860263 3.508737
+10: Oct. 2024 3.562 1.681007 1.880993
+11: Nov. 2024 2.814 1.274863 1.539137
+12: Dec. 2024 2.179 1.072612 1.106388
 
 Yearly values:
 Key: <Dates>
    Dates      G0d      D0d      B0d
    <int>    <num>    <num>    <num>
-1:  2024 1839.365 666.5077 1172.857
+1:  2024 1839.365 669.5417 1169.823
 \end{verbatim}
 
 \item Diarios.
@@ -996,67 +666,40 @@ Latitude for calculations:  37.2 degrees
 Monthly avarages:
 	Dates   G0d      D0d      B0d
        <char> <num>    <num>    <num>
- 1: Jan. 2024 2.766 1.140678 1.625322
- 2: Feb. 2024 3.491 1.355850 2.135150
- 3: Mar. 2024 4.494 1.831543 2.662457
- 4: Apr. 2024 5.912 2.211287 3.700713
- 5: May. 2024 6.989 2.351559 4.637441
- 6: Jun. 2024 7.742 2.393501 5.348499
- 7: Jul. 2024 7.919 2.524364 5.394636
- 8: Aug. 2024 7.027 2.102866 4.924134
- 9: Sep. 2024 5.369 1.900781 3.468219
-10: Oct. 2024 3.562 1.696035 1.865965
-11: Nov. 2024 2.814 1.214375 1.599625
-12: Dec. 2024 2.179 1.113915 1.065085
+ 1: Jan. 2024 2.766 1.123545 1.642455
+ 2: Feb. 2024 3.491 1.621815 1.869185
+ 3: Mar. 2024 4.494 1.721746 2.772254
+ 4: Apr. 2024 5.912 2.268278 3.643722
+ 5: May. 2024 6.989 2.448019 4.540981
+ 6: Jun. 2024 7.742 2.395234 5.346766
+ 7: Jul. 2024 7.919 2.367209 5.551791
+ 8: Aug. 2024 7.027 2.119732 4.907268
+ 9: Sep. 2024 5.369 1.860263 3.508737
+10: Oct. 2024 3.562 1.681007 1.880993
+11: Nov. 2024 2.814 1.274863 1.539137
+12: Dec. 2024 2.179 1.072612 1.106388
 
 Yearly values:
 Key: <Dates>
    Dates      G0d      D0d      B0d
    <int>    <num>    <num>    <num>
-1:  2024 1839.365 666.5077 1172.857
+1:  2024 1839.365 669.5417 1169.823
 \end{verbatim}
 
 \item Intradiarios
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 bdI <- as.data.tableI(g0_aguiar)
 g0_bdI <- calcG0(lat, modeRad = 'bdI', dataRad = bdI)
-show(g0_bdI)
+xyplot(g0_bdI)
 \end{lstlisting}
 
-\begin{verbatim}
-Object of class  G0 
-
-Source of meteorological information: bdI-data.table 
-
-Latitude of source:  37.2 degrees
-Latitude for calculations:  37.2 degrees
-
-Monthly avarages:
-	Dates      G0d      D0d      B0d
-       <char>    <num>    <num>    <num>
- 1: Jan. 2024 2.766000 1.039204 1.726796
- 2: Feb. 2024 3.491000 1.239890 2.251110
- 3: Mar. 2024 4.494000 1.671693 2.822307
- 4: Apr. 2024 5.599075 1.764623 3.834452
- 5: May. 2024 6.989000 2.263169 4.725831
- 6: Jun. 2024 7.742000 2.394953 5.347047
- 7: Jul. 2024 7.796645 1.953483 5.843162
- 8: Aug. 2024 7.027000 1.905943 5.121057
- 9: Sep. 2024 5.369000 1.890650 3.478350
-10: Oct. 2024 3.562000 1.769562 1.792438
-11: Nov. 2024 2.814000 1.231110 1.582890
-12: Dec. 2024 2.179000 1.158471 1.020529
-
-Yearly values:
-Key: <Dates>
-   Dates      G0d      D0d     B0d
-   <int>    <num>    <num>   <num>
-1:  2024 1826.184 619.0042 1207.18
-\end{verbatim}
+\begin{center}
+\includegraphics[width=\textwidth]{figuras/codigo-calcg0.pdf}
+\end{center}
 \end{itemize}
 
 \section{Radiación efectiva en el plano del generador}
-\label{sec:orgca94f40}
+\label{sec:org91be8ba}
 \label{sec:radiacion-efectiva-plano-generador}
 Teniendo la radiación incidente en plano horizontal (sección \ref{sec:radiacion-plano-horizontal}), se puede calcular la radiación efectiva incidente en el plano del generador. Para ello, \texttt{solaR2} cuenta con la función \texttt{calcGef} la cual mediante las funciones \texttt{fInclin} y \texttt{calcShd} procesa un objeto de clase \texttt{G0} para obtener un objeto \texttt{Gef}.
 
@@ -1073,93 +716,42 @@ Como principal argumento tiene \texttt{modeTrk}, el cual determina el sistema de
 \item \texttt{fixed}: para sistemas estáticos.
 \end{itemize}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-BTd <- fBTd(mode = 'prom')[6] 
+BTd <- fBTd(mode = 'serie')[1:10]
 sol <- calcSol(lat, BTd = BTd, keep.night = FALSE)
 beta <- lat - 10
 alpha <- 0
 angGen_fixed <- fTheta(sol = sol, beta = beta, alpha = alpha,
                        modeTrk = 'fixed')
-show(angGen_fixed)
+xyplot(angGen_fixed)
 \end{lstlisting}
 
-\begin{verbatim}
-		  Dates      Beta Alpha   cosTheta
-		 <POSc>     <num> <num>      <num>
- 1: 2024-06-10 05:00:00 0.4747296     0 0.00000000
- 2: 2024-06-10 06:00:00 0.4747296     0 0.06990810
- 3: 2024-06-10 07:00:00 0.4747296     0 0.30432148
- 4: 2024-06-10 08:00:00 0.4747296     0 0.52263672
- 5: 2024-06-10 09:00:00 0.4747296     0 0.70998013
- 6: 2024-06-10 10:00:00 0.4747296     0 0.85358815
- 7: 2024-06-10 11:00:00 0.4747296     0 0.94367686
- 8: 2024-06-10 12:00:00 0.4747296     0 0.97410861
- 9: 2024-06-10 13:00:00 0.4747296     0 0.94281011
-10: 2024-06-10 14:00:00 0.4747296     0 0.85191372
-11: 2024-06-10 15:00:00 0.4747296     0 0.70761218
-12: 2024-06-10 16:00:00 0.4747296     0 0.51973665
-13: 2024-06-10 17:00:00 0.4747296     0 0.30108697
-14: 2024-06-10 18:00:00 0.4747296     0 0.06655958
-15: 2024-06-10 19:00:00 0.4747296     0 0.00000000
-\end{verbatim}
-
+\begin{center}
+\includegraphics[width=\textwidth]{figuras/codigo-fthetafixed.pdf}
+\end{center}
 \begin{itemize}
 \item \texttt{two}: para sistemas de seguimiento de doble eje.
 \end{itemize}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 angGen_two <- fTheta(sol = sol, beta = beta, alpha = alpha,
                      modeTrk = 'two')
-show(angGen_two)
+xyplot(angGen_two)
 \end{lstlisting}
 
-\begin{verbatim}
-		  Dates      Beta        Alpha cosTheta
-		 <POSc>     <num>        <num>    <num>
- 1: 2024-06-10 05:00:00 1.5220852 -2.043678875        1
- 2: 2024-06-10 06:00:00 1.3300857 -1.896688029        1
- 3: 2024-06-10 07:00:00 1.1285281 -1.756655282        1
- 4: 2024-06-10 08:00:00 0.9215732 -1.612213267        1
- 5: 2024-06-10 09:00:00 0.7134716 -1.445120762        1
- 6: 2024-06-10 10:00:00 0.5110180 -1.215351693        1
- 7: 2024-06-10 11:00:00 0.3328578 -0.809087856        1
- 8: 2024-06-10 12:00:00 0.2466893  0.006963841        1
- 9: 2024-06-10 13:00:00 0.3349967  0.817155564        1
-10: 2024-06-10 14:00:00 0.5137803  1.219398208        1
-11: 2024-06-10 15:00:00 0.7163931  1.447776194        1
-12: 2024-06-10 16:00:00 0.9245147  1.614353339        1
-13: 2024-06-10 17:00:00 1.1314208  1.758631827        1
-14: 2024-06-10 18:00:00 1.3328735  1.898691776        1
-15: 2024-06-10 19:00:00 1.5247042  2.045849315        1
-\end{verbatim}
-
+\begin{center}
+\includegraphics[width=\textwidth]{figuras/codigo-fthetatwo.pdf}
+\end{center}
 \begin{itemize}
 \item \texttt{horiz}: para sistemas de seguimiento horizontal Norte-Sur.
 \end{itemize}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 angGen_horiz <- fTheta(sol = sol, beta = beta, alpha = alpha,
                        modeTrk = 'horiz')
-show(angGen_horiz)
+xyplot(angGen_horiz)
 \end{lstlisting}
 
-\begin{verbatim}
-		  Dates        Beta     Alpha  cosTheta
-		 <POSc>       <num>     <num>     <num>
- 1: 2024-06-10 05:00:00 1.516091993 -1.570796 0.8905353
- 2: 2024-06-10 06:00:00 1.317263961 -1.570796 0.9504350
- 3: 2024-06-10 07:00:00 1.121771495 -1.570796 0.9859551
- 4: 2024-06-10 08:00:00 0.921160041 -1.570796 0.9994560
- 5: 2024-06-10 09:00:00 0.709555740 -1.570796 0.9966296
- 6: 2024-06-10 10:00:00 0.483954771 -1.570796 0.9854098
- 7: 2024-06-10 11:00:00 0.245151627 -1.570796 0.9742418
- 8: 2024-06-10 12:00:00 0.001753607  1.570796 0.9697277
- 9: 2024-06-10 13:00:00 0.248597042  1.570796 0.9743648
-10: 2024-06-10 14:00:00 0.487239436  1.570796 0.9855868
-11: 2024-06-10 15:00:00 0.712638107  1.570796 0.9967482
-12: 2024-06-10 16:00:00 0.924058412  1.570796 0.9993956
-13: 2024-06-10 17:00:00 1.124550569  1.570796 0.9856166
-14: 2024-06-10 18:00:00 1.320024608  1.570796 0.9497600
-15: 2024-06-10 19:00:00 1.518974473  1.570796 0.8895182
-\end{verbatim}
-
+\begin{center}
+\includegraphics[width=\textwidth]{figuras/codigo-fthetahoriz.pdf}
+\end{center}
 También, tiene un argumento \texttt{BT} que indica cuando se usa la técnica de backtracking para un sistema horizontal Norte-Sur. Para funcionar, necesita de los argumentos \texttt{struct}, el cual presenta una lista con la altura de los módulos, y \texttt{dist}, el cual presenta un \texttt{data.frame} (o \texttt{data.table}) con la distancia que separa los módulos en la dirección Este-Oeste.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 struct <- list(L = 1)
@@ -1167,29 +759,12 @@ distances <- data.table(Lew = 2)
 angGen_BT <- fTheta(sol = sol, beta = beta, alpha = alpha,
                     modeTrk = 'horiz', BT = TRUE,
                     struct = struct, dist = distances)
-show(angGen_BT)
+xyplot(angGen_BT)
 \end{lstlisting}
 
-\begin{verbatim}
-		  Dates        Beta     Alpha   cosTheta
-		 <POSc>       <num>     <num>      <num>
- 1: 2024-06-10 05:00:00 0.054868903 -1.570796 0.09738369
- 2: 2024-06-10 06:00:00 0.271972628 -1.570796 0.47678565
- 3: 2024-06-10 07:00:00 0.602487004 -1.570796 0.85598103
- 4: 2024-06-10 08:00:00 0.921160041 -1.570796 0.99945597
- 5: 2024-06-10 09:00:00 0.709555740 -1.570796 0.99662956
- 6: 2024-06-10 10:00:00 0.483954771 -1.570796 0.98540983
- 7: 2024-06-10 11:00:00 0.245151627 -1.570796 0.97424175
- 8: 2024-06-10 12:00:00 0.001753607  1.570796 0.96972767
- 9: 2024-06-10 13:00:00 0.248597042  1.570796 0.97436477
-10: 2024-06-10 14:00:00 0.487239436  1.570796 0.98558683
-11: 2024-06-10 15:00:00 0.712638107  1.570796 0.99674816
-12: 2024-06-10 16:00:00 0.924058412  1.570796 0.99939563
-13: 2024-06-10 17:00:00 0.595256963  1.570796 0.85074877
-14: 2024-06-10 18:00:00 0.268563625  1.570796 0.47136897
-15: 2024-06-10 19:00:00 0.051961679  1.570796 0.09215170
-\end{verbatim}
-
+\begin{center}
+\includegraphics[width=\textwidth]{figuras/codigo-fthetabt.pdf}
+\end{center}
 \item \texttt{fInclin}: la cual, partiendo del resultado de \texttt{fTheta} y de un objeto de clase \texttt{G0}, cálcula la irradiancia solar incidente en una superficie inclinada junto con los efectos del ángulo de incidencia y la suciedad para obtener la irradiancia efectiva.
 Como argumentos principales están:
 \begin{itemize}
@@ -1704,7 +1279,7 @@ Mode of tracking:  horiz
 \end{verbatim}
 
 \section{Producción eléctrica de un SFCR}
-\label{sec:orgd3aabda}
+\label{sec:org62ce1c5}
 \label{produccion-electrica-sfcr}
 Con la radiación efectiva, se puede estimar la producción eléctrica que va a tener un sistema fotovoltaico conectado a red. Esta estimación, se puede calcular mediante la función \texttt{prodGCPV} la cual mediante la función \texttt{fProd} procesa un objeto de clase \texttt{Gef} y obtiene un objeto \texttt{ProdGCPV}.
 
@@ -1805,11 +1380,6 @@ show(prodFixed)
 \end{lstlisting}
 
 \begin{verbatim}
-Avisos:
-1: In iv(vocn, iscn, vmn, imn, module$TONC, module$CoefVT, Ta, Gef,  :
-  Minimum MPP voltage of the inverter has been reached
-2: In iv(vocn, iscn, vmn, imn, module$TONC, module$CoefVT, Ta, Gef,  :
-  Maximum MPP voltage of the inverter has been reached
 Object of class  ProdGCPV 
 
 Source of meteorological information: prom- 
@@ -1818,25 +1388,25 @@ Latitude of source:  37.2 degrees
 Latitude for calculations:  37.2 degrees
 
 Monthly avarages:
-        Dates       Eac        Edc        Yf
-       <char>     <num>      <num>     <num>
- 1: Jan. 2024 1279.0575  8847.1280 0.7843363
- 2: Feb. 2024 1336.2237  9534.3988 0.8193914
- 3: Mar. 2024 1501.8962 10787.4853 0.9209841
- 4: Apr. 2024 1617.2294 12291.1666 0.9917081
- 5: May. 2024 1670.0349 13000.3672 1.0240892
- 6: Jun. 2024 1736.8935 12967.6713 1.0650879
- 7: Jul. 2024 1252.6160  7003.9010 0.7681220
- 8: Aug. 2024  337.0509   803.7692 0.2066844
- 9: Sep. 2024 1422.1577  9693.6980 0.8720874
-10: Oct. 2024 1308.7969  9163.0111 0.8025729
-11: Nov. 2024 1265.5096  8657.4023 0.7760285
-12: Dec. 2024 1036.5903  6634.0963 0.6356519
+        Dates       Eac       Edc       Yf
+       <char>     <num>     <num>    <num>
+ 1: Jan. 2024  6678.640  6978.809 4.095437
+ 2: Feb. 2024  7194.835  7519.763 4.411976
+ 3: Mar. 2024  7843.267  8195.794 4.809603
+ 4: Apr. 2024  8929.962  9336.190 5.475980
+ 5: May. 2024  9484.132  9914.605 5.815805
+ 6: Jun. 2024  9862.108 10309.878 6.047585
+ 7: Jul. 2024 10019.327 10475.108 6.143994
+ 8: Aug. 2024  9703.467 10142.955 5.950304
+ 9: Sep. 2024  8757.170  9151.202 5.370022
+10: Oct. 2024  6908.624  7220.274 4.236467
+11: Nov. 2024  6431.264  6720.101 3.943743
+12: Dec. 2024  5229.190  5463.318 3.206614
 
 Yearly values:
-   Dates      Eac     Edc       Yf
-   <int>    <num>   <num>    <num>
-1:  2024 479971.5 3328228 294.3254
+   Dates     Eac     Edc       Yf
+   <int>   <num>   <num>    <num>
+1:  2024 2959931 3093711 1815.072
 -----------------
 Mode of tracking:  fixed 
     Inclination:  27.2 
@@ -1854,11 +1424,6 @@ show(prod2x)
 \end{lstlisting}
 
 \begin{verbatim}
-Avisos:
-1: In iv(vocn, iscn, vmn, imn, module$TONC, module$CoefVT, Ta, Gef,  :
-  Minimum MPP voltage of the inverter has been reached
-2: In iv(vocn, iscn, vmn, imn, module$TONC, module$CoefVT, Ta, Gef,  :
-  Maximum MPP voltage of the inverter has been reached
 Object of class  ProdGCPV 
 
 Source of meteorological information: prom- 
@@ -1867,25 +1432,25 @@ Latitude of source:  37.2 degrees
 Latitude for calculations:  37.2 degrees
 
 Monthly avarages:
-        Dates       Eac       Edc        Yf
-       <char>     <num>     <num>     <num>
- 1: Jan. 2024 1829.1421 13993.996 1.1216560
- 2: Feb. 2024 1960.5763 14724.330 1.2022533
- 3: Mar. 2024 2107.0772 15660.016 1.2920897
- 4: Apr. 2024 2427.6546 18908.076 1.4886724
- 5: May. 2024 2706.0114 21661.810 1.6593647
- 6: Jun. 2024 2862.9464 22598.516 1.7555995
- 7: Jul. 2024 1899.9978 11153.533 1.1651057
- 8: Aug. 2024  495.2908  1191.801 0.3037194
- 9: Sep. 2024 2028.5846 14444.922 1.2439570
-10: Oct. 2024 1887.0955 13723.573 1.1571938
-11: Nov. 2024 1786.6758 13393.040 1.0956151
-12: Dec. 2024 1480.9283 10327.859 0.9081263
+        Dates       Eac       Edc       Yf
+       <char>     <num>     <num>    <num>
+ 1: Jan. 2024  9725.125 10159.052 5.963585
+ 2: Feb. 2024 10163.306 10616.084 6.232284
+ 3: Mar. 2024 10793.363 11273.933 6.618644
+ 4: Apr. 2024 12779.088 13349.623 7.836319
+ 5: May. 2024 14473.608 15121.428 8.875422
+ 6: Jun. 2024 16252.186 16981.660 9.966072
+ 7: Jul. 2024 15916.049 16632.343 9.759948
+ 8: Aug. 2024 14511.287 15163.412 8.898528
+ 9: Sep. 2024 12350.603 12903.142 7.573565
+10: Oct. 2024  9458.655  9878.812 5.800182
+11: Nov. 2024  9177.823  9586.046 5.627972
+12: Dec. 2024  7284.466  7606.879 4.466938
 
 Yearly values:
-   Dates      Eac     Edc       Yf
-   <int>    <num>   <num>    <num>
-1:  2024 714604.4 5226432 438.2056
+   Dates     Eac     Edc       Yf
+   <int>   <num>   <num>    <num>
+1:  2024 4358566 4553392 2672.735
 -----------------
 Mode of tracking:  two 
     Inclination limit: 90 
@@ -1902,11 +1467,6 @@ show(prodHoriz)
 \end{lstlisting}
 
 \begin{verbatim}
-Avisos:
-1: In iv(vocn, iscn, vmn, imn, module$TONC, module$CoefVT, Ta, Gef,  :
-  Minimum MPP voltage of the inverter has been reached
-2: In iv(vocn, iscn, vmn, imn, module$TONC, module$CoefVT, Ta, Gef,  :
-  Maximum MPP voltage of the inverter has been reached
 Object of class  ProdGCPV 
 
 Source of meteorological information: prom- 
@@ -1915,25 +1475,25 @@ Latitude of source:  37.2 degrees
 Latitude for calculations:  37.2 degrees
 
 Monthly avarages:
-        Dates       Eac       Edc        Yf
-       <char>     <num>     <num>     <num>
- 1: Jan. 2024 1486.0581  9421.710 0.9112720
- 2: Feb. 2024 1718.2118 11403.484 1.0536319
- 3: Mar. 2024 1978.3998 13821.135 1.2131830
- 4: Apr. 2024 2367.7852 17987.013 1.4519596
- 5: May. 2024 2670.3265 21145.726 1.6374823
- 6: Jun. 2024 2822.0712 22058.200 1.7305343
- 7: Jul. 2024 1888.3205 11035.200 1.1579450
- 8: Aug. 2024  493.7619  1186.029 0.3027818
- 9: Sep. 2024 1934.8317 13172.970 1.1864663
-10: Oct. 2024 1689.4313 11072.369 1.0359833
-11: Nov. 2024 1473.9336  9283.631 0.9038371
-12: Dec. 2024 1172.8019  6667.352 0.7191788
+        Dates       Eac       Edc       Yf
+       <char>     <num>     <num>    <num>
+ 1: Jan. 2024  6924.150  7229.414 4.245988
+ 2: Feb. 2024  8189.468  8550.881 5.021898
+ 3: Mar. 2024  9735.624 10166.502 5.970024
+ 4: Apr. 2024 12284.365 12830.972 7.532948
+ 5: May. 2024 14177.629 14811.419 8.693924
+ 6: Jun. 2024 15893.128 16605.974 9.745892
+ 7: Jul. 2024 15610.954 16312.608 9.572859
+ 8: Aug. 2024 14070.093 14700.396 8.627982
+ 9: Sep. 2024 11376.679 11882.179 6.976341
+10: Oct. 2024  7880.437  8228.328 4.832396
+11: Nov. 2024  6695.484  6990.801 4.105766
+12: Dec. 2024  4932.044  5151.002 3.024400
 
 Yearly values:
-   Dates      Eac     Edc       Yf
-   <int>    <num>   <num>    <num>
-1:  2024 660538.9 4510591 405.0519
+   Dates     Eac     Edc       Yf
+   <int>   <num>   <num>    <num>
+1:  2024 3898243 4071863 2390.458
 -----------------
 Mode of tracking:  horiz 
     Inclination limit: 90 
@@ -1945,7 +1505,7 @@ Generator:
 \end{verbatim}
 
 \section{Producción eléctrica de un SFB}
-\label{sec:org4817773}
+\label{sec:org2ea7c7d}
 De igual forma que en el apartado anterior, se puede estimar la producción eléctrica de un sistema fotovoltaico de bombeo.
 
 Como se puede ver en la figura \ref{fig:prodpvps}, \texttt{prodPVPS} funciona gracias a la siguiente función:
@@ -2009,8 +1569,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x000001de48880008>
-<environment: 0x000001de52171da0>
+<bytecode: 0x000001b3d83b3ac0>
+<environment: 0x000001b3d83be0b8>
 \end{verbatim}
 
 \item \texttt{fPb}: función que relaciona la potencia del eje de la bomba con la potencia eléctrica del motor.
@@ -2036,8 +1596,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x000001de48880008>
-<environment: 0x000001de49e3f200>
+<bytecode: 0x000001b3d83b3ac0>
+<environment: 0x000001b3d849d740>
 \end{verbatim}
 
 \item \texttt{fPh}: función que relaciona la potencia hidráulica con la potencia eléctrica del motor.
@@ -2063,8 +1623,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x000001de48880008>
-<environment: 0x000001de4c234340>
+<bytecode: 0x000001b3d83b3ac0>
+<environment: 0x000001b3d84a5e08>
 \end{verbatim}
 
 \item \texttt{fFreq}: función que relaciona la frecuencia con la potencia eléctrica del motor.
@@ -2090,8 +1650,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x000001de48880008>
-<environment: 0x000001de48273fd0>
+<bytecode: 0x000001b3d83b3ac0>
+<environment: 0x000001b3d8486eb8>
 \end{verbatim}
 \end{itemize}
 
@@ -2173,7 +1733,7 @@ Generator (Wp):  4084.218
 \end{itemize}
 
 \section{Optimización de distancias}
-\label{sec:orgb49406f}
+\label{sec:orgf7eeb9c}
 \label{optimizacion-distancias}
 Por último, el paquete \texttt{solaR2} contiene una función que permite calcular un conjunto de combinaciones de distancias entre los elementos de un sistema fotovoltaico conectado a red, con el fin de que el usuario posteriormente pueda optar cual es la opción mas rentable en base a los precios del cableado y de la ocupación del terreno.
 
@@ -2190,7 +1750,6 @@ show(ShdM2x)
 \end{lstlisting}
 
 \begin{verbatim}
-Hubo 42 avisos (use warnings() para verlos)
 Object of class  Shade 
 
 Source of meteorological information: prom- 
@@ -2223,25 +1782,25 @@ Latitude of source:  37.2 degrees
 Latitude for calculations:  37.2 degrees
 
 Monthly avarages:
-        Dates       Eac       Edc        Yf
-       <char>     <num>     <num>     <num>
- 1: Jan. 2024 1829.1421 13993.996 1.1216560
- 2: Feb. 2024 1960.5763 14724.330 1.2022533
- 3: Mar. 2024 2107.0772 15660.016 1.2920897
- 4: Apr. 2024 2427.6546 18908.076 1.4886724
- 5: May. 2024 2706.0114 21661.810 1.6593647
- 6: Jun. 2024 2862.9464 22598.516 1.7555995
- 7: Jul. 2024 1899.9978 11153.533 1.1651057
- 8: Aug. 2024  495.2908  1191.801 0.3037194
- 9: Sep. 2024 2028.5846 14444.922 1.2439570
-10: Oct. 2024 1887.0955 13723.573 1.1571938
-11: Nov. 2024 1786.6758 13393.040 1.0956151
-12: Dec. 2024 1480.9283 10327.859 0.9081263
+        Dates       Eac       Edc       Yf
+       <char>     <num>     <num>    <num>
+ 1: Jan. 2024  9725.125 10159.052 5.963585
+ 2: Feb. 2024 10163.306 10616.084 6.232284
+ 3: Mar. 2024 10793.363 11273.933 6.618644
+ 4: Apr. 2024 12779.088 13349.623 7.836319
+ 5: May. 2024 14473.608 15121.428 8.875422
+ 6: Jun. 2024 16252.186 16981.660 9.966072
+ 7: Jul. 2024 15916.049 16632.343 9.759948
+ 8: Aug. 2024 14511.287 15163.412 8.898528
+ 9: Sep. 2024 12350.603 12903.142 7.573565
+10: Oct. 2024  9458.655  9878.812 5.800182
+11: Nov. 2024  9177.823  9586.046 5.627972
+12: Dec. 2024  7284.466  7606.879 4.466938
 
 Yearly values:
-   Dates      Eac     Edc       Yf
-   <int>    <num>   <num>    <num>
-1:  2024 714604.4 5226432 438.2056
+   Dates     Eac     Edc       Yf
+   <int>   <num>   <num>    <num>
+1:  2024 4358566 4553392 2672.735
 -----------------
 Mode of tracking:  two 
     Inclination limit: 90 
@@ -2252,13 +1811,13 @@ Generator:
     Nominal power (kWp):  1630.8 
 
 Summary of results:
-      Lew             Lns           H           FS               GRR              Yf       
- Min.   :30.00   Min.   :20   Min.   :0   Min.   :0.01803   Min.   :2.649   Min.   :403.6  
- 1st Qu.:33.75   1st Qu.:25   1st Qu.:0   1st Qu.:0.02941   1st Qu.:3.946   1st Qu.:417.5  
- Median :37.50   Median :30   Median :0   Median :0.03592   Median :4.802   Median :422.5  
- Mean   :37.50   Mean   :30   Mean   :0   Mean   :0.04016   Mean   :4.967   Mean   :420.6  
- 3rd Qu.:41.25   3rd Qu.:35   3rd Qu.:0   3rd Qu.:0.04734   3rd Qu.:6.016   3rd Qu.:425.3  
- Max.   :45.00   Max.   :40   Max.   :0   Max.   :0.07901   Max.   :7.948   Max.   :430.3
+      Lew             Lns           H           FS               GRR              Yf      
+ Min.   :30.00   Min.   :20   Min.   :0   Min.   :0.01489   Min.   :2.649   Min.   :2466  
+ 1st Qu.:33.75   1st Qu.:25   1st Qu.:0   1st Qu.:0.02194   1st Qu.:3.946   1st Qu.:2568  
+ Median :37.50   Median :30   Median :0   Median :0.02835   Median :4.802   Median :2597  
+ Mean   :37.50   Mean   :30   Mean   :0   Mean   :0.03437   Mean   :4.967   Mean   :2581  
+ 3rd Qu.:41.25   3rd Qu.:35   3rd Qu.:0   3rd Qu.:0.03903   3rd Qu.:6.016   3rd Qu.:2614  
+ Max.   :45.00   Max.   :40   Max.   :0   Max.   :0.07747   Max.   :7.948   Max.   :2633
 \end{verbatim}
 
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -2275,7 +1834,6 @@ show(Shd12HorizBT)
 \end{lstlisting}
 
 \begin{verbatim}
-Hubo 18 avisos (use warnings() para verlos)
 Object of class  Shade 
 
 Source of meteorological information: prom- 
@@ -2299,25 +1857,25 @@ Latitude of source:  37.2 degrees
 Latitude for calculations:  37.2 degrees
 
 Monthly avarages:
-        Dates       Eac       Edc        Yf
-       <char>     <num>     <num>     <num>
- 1: Jan. 2024 1467.0951  9227.242 0.8996436
- 2: Feb. 2024 1698.8599 11206.579 1.0417651
- 3: Mar. 2024 1960.8211 13645.419 1.2024034
- 4: Apr. 2024 2350.9136 17798.028 1.4416137
- 5: May. 2024 2650.0309 20916.387 1.6250367
- 6: Jun. 2024 2797.2342 21773.741 1.7153039
- 7: Jul. 2024 1877.7800 10935.231 1.1514815
- 8: Aug. 2024  492.8438  1182.679 0.3022188
- 9: Sep. 2024 1919.4779 13011.737 1.1770512
-10: Oct. 2024 1674.5720 10926.355 1.0268714
-11: Nov. 2024 1457.8275  9120.134 0.8939606
-12: Dec. 2024 1164.1709  6587.071 0.7138862
+        Dates       Eac       Edc       Yf
+       <char>     <num>     <num>    <num>
+ 1: Jan. 2024  6789.039  7088.612 4.163135
+ 2: Feb. 2024  8054.032  8409.761 4.938847
+ 3: Mar. 2024  9614.838 10040.667 5.895956
+ 4: Apr. 2024 12160.009 12701.260 7.456691
+ 5: May. 2024 14028.543 14655.892 8.602502
+ 6: Jun. 2024 15691.671 16395.713 9.622356
+ 7: Jul. 2024 15451.474 16145.991 9.475064
+ 8: Aug. 2024 13931.234 14555.274 8.542831
+ 9: Sep. 2024 11241.111 11740.699 6.893209
+10: Oct. 2024  7780.058  8123.781 4.770842
+11: Nov. 2024  6583.802  6874.444 4.037281
+12: Dec. 2024  4875.306  5091.940 2.989607
 
 Yearly values:
-   Dates      Eac     Edc       Yf
-   <int>    <num>   <num>    <num>
-1:  2024 654937.3 4452132 401.6169
+   Dates     Eac     Edc       Yf
+   <int>   <num>   <num>    <num>
+1:  2024 3850450 4022013 2361.151
 -----------------
 Mode of tracking:  horiz 
     Inclination limit: 60 
@@ -2328,13 +1886,13 @@ Generator:
     Nominal power (kWp):  1630.8 
 
 Summary of results:
-      Lew              H           FS               GRR              Yf       
- Min.   : 9.66   Min.   :0   Min.   :0.07667   Min.   :2.000   Min.   :332.0  
- 1st Qu.:13.16   1st Qu.:0   1st Qu.:0.08522   1st Qu.:2.725   1st Qu.:349.5  
- Median :16.66   Median :0   Median :0.11015   Median :3.449   Median :357.4  
- Mean   :16.66   Mean   :0   Mean   :0.11304   Mean   :3.449   Mean   :356.2  
- 3rd Qu.:20.16   3rd Qu.:0   3rd Qu.:0.12973   3rd Qu.:4.174   3rd Qu.:367.4  
- Max.   :23.66   Max.   :0   Max.   :0.17333   Max.   :4.899   Max.   :370.8
+      Lew              H           FS               GRR              Yf      
+ Min.   : 9.66   Min.   :0   Min.   :0.04702   Min.   :2.000   Min.   :2036  
+ 1st Qu.:13.16   1st Qu.:0   1st Qu.:0.05607   1st Qu.:2.725   1st Qu.:2139  
+ Median :16.66   Median :0   Median :0.07152   Median :3.449   Median :2192  
+ Mean   :16.66   Mean   :0   Mean   :0.07933   Mean   :3.449   Mean   :2174  
+ 3rd Qu.:20.16   3rd Qu.:0   3rd Qu.:0.09424   3rd Qu.:4.174   3rd Qu.:2229  
+ Max.   :23.66   Max.   :0   Max.   :0.13783   Max.   :4.899   Max.   :2250
 \end{verbatim}
 
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -2350,7 +1908,6 @@ show(Shd12Fixed)
 \end{lstlisting}
 
 \begin{verbatim}
-Hubo 14 avisos (use warnings() para verlos)
 Object of class  Shade 
 
 Source of meteorological information: prom- 
@@ -2374,25 +1931,25 @@ Latitude of source:  37.2 degrees
 Latitude for calculations:  37.2 degrees
 
 Monthly avarages:
-        Dates       Eac        Edc        Yf
-       <char>     <num>      <num>     <num>
- 1: Jan. 2024 1279.0575  8847.1280 0.7843363
- 2: Feb. 2024 1336.2237  9534.3988 0.8193914
- 3: Mar. 2024 1501.8962 10787.4853 0.9209841
- 4: Apr. 2024 1617.2294 12291.1666 0.9917081
- 5: May. 2024 1670.0349 13000.3672 1.0240892
- 6: Jun. 2024 1736.8935 12967.6713 1.0650879
- 7: Jul. 2024 1252.6160  7003.9010 0.7681220
- 8: Aug. 2024  337.0509   803.7692 0.2066844
- 9: Sep. 2024 1422.1577  9693.6980 0.8720874
-10: Oct. 2024 1308.7969  9163.0111 0.8025729
-11: Nov. 2024 1265.5096  8657.4023 0.7760285
-12: Dec. 2024 1036.5903  6634.0963 0.6356519
+        Dates       Eac       Edc       Yf
+       <char>     <num>     <num>    <num>
+ 1: Jan. 2024  6678.640  6978.809 4.095437
+ 2: Feb. 2024  7194.835  7519.763 4.411976
+ 3: Mar. 2024  7843.267  8195.794 4.809603
+ 4: Apr. 2024  8929.962  9336.190 5.475980
+ 5: May. 2024  9484.132  9914.605 5.815805
+ 6: Jun. 2024  9862.108 10309.878 6.047585
+ 7: Jul. 2024 10019.327 10475.108 6.143994
+ 8: Aug. 2024  9703.467 10142.955 5.950304
+ 9: Sep. 2024  8757.170  9151.202 5.370022
+10: Oct. 2024  6908.624  7220.274 4.236467
+11: Nov. 2024  6431.264  6720.101 3.943743
+12: Dec. 2024  5229.190  5463.318 3.206614
 
 Yearly values:
-   Dates      Eac     Edc       Yf
-   <int>    <num>   <num>    <num>
-1:  2024 479971.5 3328228 294.3254
+   Dates     Eac     Edc       Yf
+   <int>   <num>   <num>    <num>
+1:  2024 2959931 3093711 1815.072
 -----------------
 Mode of tracking:  fixed 
     Inclination:  27.2 
@@ -2404,410 +1961,21 @@ Generator:
     Nominal power (kWp):  1630.8 
 
 Summary of results:
-       D              H           FS                 GRR            Yf       
- Min.   : 5.0   Min.   :0   Min.   :0.000e+00   Min.   :1.0   Min.   :262.2  
- 1st Qu.: 7.5   1st Qu.:0   1st Qu.:3.188e-05   1st Qu.:1.5   1st Qu.:286.3  
- Median :10.0   Median :0   Median :4.113e-03   Median :2.0   Median :293.1  
- Mean   :10.0   Mean   :0   Mean   :2.514e-02   Mean   :2.0   Mean   :286.9  
- 3rd Qu.:12.5   3rd Qu.:0   3rd Qu.:2.711e-02   3rd Qu.:2.5   3rd Qu.:294.3  
- Max.   :15.0   Max.   :0   Max.   :1.092e-01   Max.   :3.0   Max.   :294.3
+       D              H           FS                GRR            Yf      
+ Min.   : 5.0   Min.   :0   Min.   :0.000793   Min.   :1.0   Min.   :1598  
+ 1st Qu.: 7.5   1st Qu.:0   1st Qu.:0.001477   1st Qu.:1.5   1st Qu.:1770  
+ Median :10.0   Median :0   Median :0.003697   Median :2.0   Median :1808  
+ Mean   :10.0   Mean   :0   Mean   :0.026669   Mean   :2.0   Mean   :1767  
+ 3rd Qu.:12.5   3rd Qu.:0   3rd Qu.:0.024700   3rd Qu.:2.5   3rd Qu.:1812  
+ Max.   :15.0   Max.   :0   Max.   :0.119390   Max.   :3.0   Max.   :1814
 \end{verbatim}
-
-\section{Métodos de visualización}
-\label{sec:org86ba7ff}
-\label{sec:metodos-visualizacion}
-Una vez creados todos los objetos, para mejorar la visualización de los mismos, \texttt{solaR2} cuanta con una serie de métodos que ayudan a la compresión de los datos obtenidos.
-
-\subsection{Datos meteorológicos}
-\label{sec:org77b8575}
-La clase \texttt{Meteo} cuenta con un método para \texttt{xyplot}.
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-lat <- 37.2
-G0dm = c(2.766,3.491,4.494,5.912,6.989,7.742,
-         7.919,7.027,5.369,3.562,2.814,2.179) * 1000;
-Ta = c(10, 14.1, 15.6, 17.2, 19.3, 21.2,
-       28.4, 29.9, 24.3, 18.2, 17.2, 15.2)
-BD <- readG0dm(G0dm = G0dm, Ta = Ta, lat = lat)
-show(BD)
-\end{lstlisting}
-
-\begin{verbatim}
-Object of class  Meteo 
-
-Source of meteorological information: prom- 
-Latitude of source:  37.2 degrees
-
-Meteorological Data:
-     Dates                 G0d             Ta       
- Min.   :2024-01-17   Min.   :2179   Min.   :10.00  
- 1st Qu.:2024-04-07   1st Qu.:3322   1st Qu.:15.50  
- Median :2024-06-29   Median :4932   Median :17.70  
- Mean   :2024-07-01   Mean   :5022   Mean   :19.22  
- 3rd Qu.:2024-09-25   3rd Qu.:6998   3rd Qu.:21.98  
- Max.   :2024-12-13   Max.   :7919   Max.   :29.90
-\end{verbatim}
-
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-xyplot(BD)
-\end{lstlisting}
-
-\begin{center}
-\includegraphics[width=0.8\textwidth]{figuras/codigo-meteo.pdf}
-\end{center}
-
-\subsection{Radiación en el plano horizontal}
-\label{sec:org797cca8}
-La clase \texttt{G0} cuenta con un método para \texttt{xyplot}.
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-g0 <- calcG0(lat, dataRad = BD)
-show(g0)
-\end{lstlisting}
-
-\begin{verbatim}
-Object of class  G0 
-
-Source of meteorological information: prom- 
-
-Latitude of source:  37.2 degrees
-Latitude for calculations:  37.2 degrees
-
-Monthly avarages:
-        Dates   G0d      D0d      B0d
-       <char> <num>    <num>    <num>
- 1: Jan. 2024 2.766 0.941698 1.824302
- 2: Feb. 2024 3.491 1.247146 2.243854
- 3: Mar. 2024 4.494 1.671763 2.822237
- 4: Apr. 2024 5.912 1.931146 3.980854
- 5: May. 2024 6.989 2.023364 4.965636
- 6: Jun. 2024 7.742 1.889994 5.852006
- 7: Jul. 2024 7.919 1.624064 6.294936
- 8: Aug. 2024 7.027 1.547591 5.479409
- 9: Sep. 2024 5.369 1.540708 3.828292
-10: Oct. 2024 3.562 1.374513 2.187487
-11: Nov. 2024 2.814 1.006959 1.807041
-12: Dec. 2024 2.179 0.926737 1.252263
-
-Yearly values:
-   Dates      G0d      D0d      B0d
-   <int>    <num>    <num>    <num>
-1:  2024 1839.365 540.6331 1298.732
-\end{verbatim}
-
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-xyplot(g0)
-\end{lstlisting}
-
-\begin{center}
-\includegraphics[width=0.8\textwidth]{figuras/codigo-g0.pdf}
-\end{center}
-
-Y con un método para \texttt{compare}.
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-g02 <- calcG0(lat, dataRad = list(G0dm = G0dm*0.95, Ta = Ta))
-compare(g0, g02)
-\end{lstlisting}
-
-\begin{center}
-\includegraphics[width=0.8\textwidth]{figuras/codigo-g02.pdf}
-\end{center}
-
-\subsection{Radiación efectiva en el plano del generador}
-\label{sec:org3079274}
-La clase \texttt{Gef} cuenta con un método para \texttt{xyplot}.
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-gef <- calcGef(lat, dataRad = BD)
-show(gef)
-\end{lstlisting}
-
-\begin{verbatim}
-Object of class  Gef 
-
-Source of meteorological information: prom- 
-
-Latitude of source:  37.2 degrees
-Latitude for calculations:  37.2 degrees
-
-Monthly avarages:
-        Dates       Bod       Bnd       Gd       Dd       Bd     Gefd     Defd     Befd
-       <char>     <num>     <num>    <num>    <num>    <num>    <num>    <num>    <num>
- 1: Jan. 2024  8.724907  4.924221 4.489744 1.200992 3.258164 4.220907 1.119517 3.080392
- 2: Feb. 2024  9.592013  5.034287 4.919206 1.451954 3.428647 4.628492 1.352529 3.249460
- 3: Mar. 2024 10.281308  5.163713 5.413543 1.779951 3.583896 5.101556 1.657369 3.410070
- 4: Apr. 2024 10.527227  6.408617 6.282631 1.936897 4.280357 5.918787 1.803811 4.070094
- 5: May. 2024 10.431853  7.617499 6.784202 1.937331 4.769584 6.371295 1.802060 4.516177
- 6: Jun. 2024 10.291163  9.102430 7.173475 1.762326 5.325535 6.725684 1.639192 5.027718
- 7: Jul. 2024 10.305302 10.037233 7.511733 1.533887 5.890275 7.058263 1.430322 5.567823
- 8: Aug. 2024 10.394682  8.640959 7.295543 1.545089 5.672747 6.879777 1.443952 5.382478
- 9: Sep. 2024 10.233884  6.698488 6.335591 1.647975 4.628244 5.982520 1.539552 4.402209
-10: Oct. 2024  9.659077  4.546024 4.746760 1.538325 3.169044 4.470026 1.432213 3.010771
-11: Nov. 2024  8.798687  4.638289 4.393712 1.244217 3.118376 4.134590 1.159756 2.953471
-12: Dec. 2024  8.176298  3.439788 3.478125 1.128381 2.325648 3.274677 1.050626 2.207509
-
-Yearly values:
-   Dates      Bod      Bnd       Gd       Dd       Bd     Gefd     Defd     Befd
-   <int>    <num>    <num>    <num>    <num>    <num>    <num>    <num>    <num>
-1:  2024 3580.873 2326.882 2099.528 570.4317 1508.756 1975.745 531.5105 1430.271
------------------
-Mode of tracking:  fixed 
-    Inclination:  27.2 
-    Orientation:  0
-\end{verbatim}
-
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-xyplot(gef)
-\end{lstlisting}
-
-\begin{center}
-\includegraphics[width=0.8\textwidth]{figuras/codigo-gef.pdf}
-\end{center}
-
-Y con un método para \texttt{compare}.
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-gef2x <- calcGef(lat, modeTrk = 'two', dataRad = BD)
-gefhoriz <- calcGef(lat, modeTrk = 'horiz', dataRad = BD)
-compare(gef, gef2x, gefhoriz)
-\end{lstlisting}
-
-\begin{center}
-\includegraphics[width=0.8\textwidth]{figuras/codigo-gef2.pdf}
-\end{center}
-
-
-\subsection{Producción eléctrica de un SFCR}
-\label{sec:org7e3c88c}
-La clase \texttt{ProdGCPV} cuenta con un método para \texttt{xyplot}.
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-prodFixed <- prodGCPV(lat, modeTrk = 'fixed', dataRad = BD)
-show(prodFixed)
-\end{lstlisting}
-
-\begin{verbatim}
-Avisos:
-1: In iv(vocn, iscn, vmn, imn, module$TONC, module$CoefVT, Ta, Gef,  :
-  Minimum MPP voltage of the inverter has been reached
-2: In iv(vocn, iscn, vmn, imn, module$TONC, module$CoefVT, Ta, Gef,  :
-  Maximum MPP voltage of the inverter has been reached
-Object of class  ProdGCPV 
-
-Source of meteorological information: prom- 
-
-Latitude of source:  37.2 degrees
-Latitude for calculations:  37.2 degrees
-
-Monthly avarages:
-        Dates       Eac        Edc        Yf
-       <char>     <num>      <num>     <num>
- 1: Jan. 2024 1279.0575  8847.1280 0.7843363
- 2: Feb. 2024 1336.2237  9534.3988 0.8193914
- 3: Mar. 2024 1501.8962 10787.4853 0.9209841
- 4: Apr. 2024 1617.2294 12291.1666 0.9917081
- 5: May. 2024 1670.0349 13000.3672 1.0240892
- 6: Jun. 2024 1736.8935 12967.6713 1.0650879
- 7: Jul. 2024 1252.6160  7003.9010 0.7681220
- 8: Aug. 2024  337.0509   803.7692 0.2066844
- 9: Sep. 2024 1422.1577  9693.6980 0.8720874
-10: Oct. 2024 1308.7969  9163.0111 0.8025729
-11: Nov. 2024 1265.5096  8657.4023 0.7760285
-12: Dec. 2024 1036.5903  6634.0963 0.6356519
-
-Yearly values:
-   Dates      Eac     Edc       Yf
-   <int>    <num>   <num>    <num>
-1:  2024 479971.5 3328228 294.3254
------------------
-Mode of tracking:  fixed 
-    Inclination:  27.2 
-    Orientation:  0 
------------------
-Generator:
-    Modules in series:  22 
-    Modules in parallel:  130 
-    Nominal power (kWp):  1630.8
-\end{verbatim}
-
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-xyplot(prodFixed)
-\end{lstlisting}
-
-\begin{center}
-\includegraphics[width=0.8\textwidth]{figuras/codigo-prodgcpv.pdf}
-\end{center}
-
-Un método para \texttt{compare}.
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-prod2x <- prodGCPV(lat, modeTrk = 'two', dataRad = BD)
-prodHoriz <- prodGCPV(lat, modeTrk = 'horiz', dataRad = BD)
-compare(prodFixed, prod2x, prodHoriz)
-\end{lstlisting}
-
-\begin{center}
-\includegraphics[width=0.8\textwidth]{figuras/codigo-prodgcpv2.pdf}
-\end{center}
-
-Y un método para \texttt{compareLosses}.
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-compareLosses(prodFixed, prod2x, prodHoriz)
-\end{lstlisting}
-
-\begin{center}
-\includegraphics[width=0.8\textwidth]{figuras/codigo-prodgcpv3.pdf}
-\end{center}
-
-\subsection{Producción electrica de un SFB}
-\label{sec:org943985d}
-La clase \texttt{ProdPVPS} cuenta con un método para \texttt{xyplot}.
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-pump <- prodPVPS(lat, dataRad = BD, pump = CoefSP8A44, H = 40, Pg = 5000)
-show(pump)
-\end{lstlisting}
-
-\begin{verbatim}
-Object of class  ProdPVPS 
-
-Source of meteorological information: prom- 
-
-Latitude of source:  37.2 degrees
-Latitude for calculations:  37.2 degrees
-
-Monthly avarages:
-        Dates      Eac       Qd       Yf
-       <char>    <num>    <num>    <num>
- 1: Jan. 2024 17.22642 59.71506 3.445284
- 2: Feb. 2024 18.89837 64.60949 3.779675
- 3: Mar. 2024 20.81307 70.36542 4.162613
- 4: Apr. 2024 23.73937 79.08382 4.747874
- 5: May. 2024 25.28080 83.74003 5.056160
- 6: Jun. 2024 26.49158 87.02474 5.298315
- 7: Jul. 2024 27.70317 89.81648 5.540633
- 8: Aug. 2024 27.14273 87.89528 5.428546
- 9: Sep. 2024 24.01466 79.04010 4.802932
-10: Oct. 2024 18.26638 63.00860 3.653277
-11: Nov. 2024 17.06794 59.03182 3.413588
-12: Dec. 2024 13.72784 48.99686 2.745567
-
-Yearly values:
-   Dates      Eac       Qd       Yf
-   <int>    <num>    <num>    <num>
-1:  2024 7942.432 26608.76 1588.486
------------------
-Mode of tracking:  fixed 
-    Inclination:  27.2 
-    Orientation:  0 
------------------
-Pump:
-    Qn:  8 
-    Stages:  44 
-Height (m):  40 
-Generator (Wp):  5000
-\end{verbatim}
-
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-xyplot(pump)
-\end{lstlisting}
-
-\begin{center}
-\includegraphics[width=.9\linewidth]{figuras/codigo-prodpvps.pdf}
-\end{center}
-
-\subsection{Optimización de distancias}
-\label{sec:orgaac2891}
-La clase \texttt{Shade} cuenta con un método para \texttt{shadeplot}.
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-struct2x = list(W = 23.11, L = 9.8, Nrow = 2, Ncol = 3)
-dist2x = list(Lew = c(30, 45),Lns = c(20, 40))
-ShdM2x <- optimShd(lat = lat, dataRad = prom, modeTrk = 'two',
-                    modeShd = c('area','prom'),
-                   distances = dist2x, struct = struct2x,
-                   res = 5, prog = FALSE)
-show(ShdM2x)
-\end{lstlisting}
-
-\begin{verbatim}
-Hubo 42 avisos (use warnings() para verlos)
-Object of class  Shade 
-
-Source of meteorological information: prom- 
-
-Latitude of source:  37.2 degrees
-Latitude for calculations:  37.2 degrees
-
-Monthly avarages:
-Dimensions of structure:
-$W
-[1] 23.11
-
-$L
-[1] 9.8
-
-$Nrow
-[1] 2
-
-$Ncol
-[1] 3
-
-Shade calculation mode:
-[1] "area" "prom"
-Productivity without shadows:
-Object of class  ProdGCPV 
-
-Source of meteorological information: prom- 
-
-Latitude of source:  37.2 degrees
-Latitude for calculations:  37.2 degrees
-
-Monthly avarages:
-        Dates       Eac       Edc        Yf
-       <char>     <num>     <num>     <num>
- 1: Jan. 2024 1829.1421 13993.996 1.1216560
- 2: Feb. 2024 1960.5763 14724.330 1.2022533
- 3: Mar. 2024 2107.0772 15660.016 1.2920897
- 4: Apr. 2024 2427.6546 18908.076 1.4886724
- 5: May. 2024 2706.0114 21661.810 1.6593647
- 6: Jun. 2024 2862.9464 22598.516 1.7555995
- 7: Jul. 2024 1899.9978 11153.533 1.1651057
- 8: Aug. 2024  495.2908  1191.801 0.3037194
- 9: Sep. 2024 2028.5846 14444.922 1.2439570
-10: Oct. 2024 1887.0955 13723.573 1.1571938
-11: Nov. 2024 1786.6758 13393.040 1.0956151
-12: Dec. 2024 1480.9283 10327.859 0.9081263
-
-Yearly values:
-   Dates      Eac     Edc       Yf
-   <int>    <num>   <num>    <num>
-1:  2024 714604.4 5226432 438.2056
------------------
-Mode of tracking:  two 
-    Inclination limit: 90 
------------------
-Generator:
-    Modules in series:  22 
-    Modules in parallel:  130 
-    Nominal power (kWp):  1630.8 
-
-Summary of results:
-      Lew             Lns           H           FS               GRR              Yf       
- Min.   :30.00   Min.   :20   Min.   :0   Min.   :0.01803   Min.   :2.649   Min.   :403.6  
- 1st Qu.:33.75   1st Qu.:25   1st Qu.:0   1st Qu.:0.02941   1st Qu.:3.946   1st Qu.:417.5  
- Median :37.50   Median :30   Median :0   Median :0.03592   Median :4.802   Median :422.5  
- Mean   :37.50   Mean   :30   Mean   :0   Mean   :0.04016   Mean   :4.967   Mean   :420.6  
- 3rd Qu.:41.25   3rd Qu.:35   3rd Qu.:0   3rd Qu.:0.04734   3rd Qu.:6.016   3rd Qu.:425.3  
- Max.   :45.00   Max.   :40   Max.   :0   Max.   :0.07901   Max.   :7.948   Max.   :430.3
-\end{verbatim}
-
-\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-shadeplot(ShdM2x)
-\end{lstlisting}
-
-\begin{center}
-\includegraphics[width=0.8\textwidth]{figuras/codigo-optimshd.pdf}
-\end{center}
 
 
 \section{Aspectos técnicos de la elaboración de un paquete en R}
-\label{sec:org637a515}
+\label{sec:orgf3fdf25}
 \label{sec:aspectos-tecnicos}
 \subsection{Estructura básica del paquete}
-\label{sec:orgd913ac3}
+\label{sec:orgd9cd19b}
 \label{subsec:estructura-paquete}
 En la creación de un paquete en \texttt{R}, la estructura de los archivos es clave para asegurar un desarrollo organizado y que \texttt{R} pueda interactuar correctamente con el código y  los datos. Los paquetes de R son esencialmente un conjunto de archivos organizados en un directorio específio. El contenido mínimo requerido incluye:
 \begin{itemize}
@@ -2823,7 +1991,7 @@ En la creación de un paquete en \texttt{R}, la estructura de los archivos es cl
 La estructura básica de un paquete puede generarse fácilmente utilizando la función \texttt{package.skeleton()}, que crea los archivos y carpetas necesarios para empezar a trabajar en el desarrollo.
 
 \subsection{DESCRIPTION}
-\label{sec:orgd372107}
+\label{sec:orgb948486}
 \label{subsec:description}
 El fichero \textbf{DESCRIPTION} es fundamental, ya que incluye la información descriptiva y técnica del paquete, como el nombre, la versión, los autores y las dependencias. Un ejemplo típico de este archivo es el siguiente:
 \begin{examplebox}
@@ -2862,7 +2030,7 @@ Los campos principales de este archivo son:
 
 Este archivo es crucial para que los usuarios y el sistema \texttt{R} identifiquen las características y requisitos del paquete
 \subsection{NAMESPACE}
-\label{sec:orgbfa6444}
+\label{sec:org7ce7e90}
 \label{subsec:namespace}
 El archivo \textbf{NAMESPACE} es el encargado de gestionar el espacio de nombres del paquete, permitiendo definir qué funciones y objetos serán visibles (exportados) y cuáles se mantendrán internos. Además, es útil para definir qué funciones o métodos de otros paquetes serán importados para us uso dentro del paquete.
 
@@ -2893,7 +2061,7 @@ search()
 \end{verbatim}
 
 \subsubsection{Manejo de variables}
-\label{sec:orgb82f3b5}
+\label{sec:orgca39e33}
 \begin{itemize}
 \item Exportar variables:
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -2910,7 +2078,7 @@ importFrom(pkgExt, var1, var2)
 \end{lstlisting}
 \end{itemize}
 \subsubsection{Manejo de clases y métodos}
-\label{sec:org5dcde94}
+\label{sec:org5c67b38}
 \begin{itemize}
 \item Para registrar un \textbf{método} para una \textbf{clase} determinada:
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -2942,7 +2110,7 @@ importClassesFrom(package, ...)
 importMethodsFrom(package, ...)
 \end{lstlisting}
 \subsection{Documentación}
-\label{sec:org7b303b5}
+\label{sec:org66ed4e4}
 \label{subsec:documentacion}
 La documentación en R sigue un formato específico llamado \texttt{Rd} (\emph{R documentation}), que está inspirado en LaTex. Cada función, método o clase del paquete debe tener una página de documentación asociada, que generalmente se encuentra en el subdirectorio \texttt{man/}. Estas páginas incluyen información sobre el uso de la función, argumentos, detalles de la implementación y ejemplos de uso.
 \begin{examplebox}
