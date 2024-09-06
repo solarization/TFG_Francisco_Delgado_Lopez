@@ -451,36 +451,46 @@ file:figuras/calcgef.pdf
 - =fInclin=: la cual, partiendo del resultado de =fTheta= y de un objeto de clase =G0=, cálcula la irradiancia solar incidente en una superficie inclinada junto con los efectos del ángulo de incidencia y la suciedad para obtener la irradiancia efectiva.
   Como argumentos principales están:
   - =iS=: permite seleccionar entre 4 valores del 1 al 4 correspondientes al grado de suciedad del módulo. Siendo 1 limpio y 4 alto y basandose en los valores de la tabla ref:tab:coef-perd calcula la irradiancia efectiva. Por defecto tiene valor 2 (grado de suciedad bajo).
-  #+begin_src R
-  compI <- calcG0(lat, dataRad = prom, keep.night = FALSE)
+  #+begin_src R :results graphics output :file "figuras/codigo-finclinis.pdf" :width 8 :height 6
+  compI <- calcG0(lat, modeRad = 'bd', dataRad = bd[1:31], keep.night = FALSE)
   sol <- calcSol(lat, BTi = indexI(compI))
   angGen <- fTheta(sol = sol, beta = beta, alpha = alpha)
   inclin_limpio <- fInclin(compI = compI, angGen = angGen, iS = 1)
-  show(inclin_limpio)
-  #+end_src
-  #+begin_src R
+  inclin_limpio[, group := 'is = 1']
   inclin_sucio <- fInclin(compI = compI, angGen = angGen, iS = 4)
-  show(inclin_sucio)
+  inclin_sucio[, group := 'is = 4']
+  inclin_is <- rbind(inclin_limpio, inclin_sucio)
+  xyplot(Gef + Def + Bef + Ref ~ Dates, inclin_is,
+	 groups = group, type = 'l', auto.key = TRUE,
+	 par.settings = solaR.theme, scales = list(y = 'free'),
+	 ylab = '', layout = c(2, 2))
   #+end_src
+  #+ATTR_LATEX: :width \textwidth
+  file:figuras/codigo-finclinis.pdf
   - =alb= Correspondiente al coeficiente de reflexión del terreno para la irradiancia de albedo. Por defecto tiene un valor de 0,2 (valor aceptable para un terreno normal).
-  #+begin_src R
+  #+begin_src R :results graphics output :file "figuras/codigo-finclinalb.pdf" :width 8 :height 6
   inclin_alb0 <- fInclin(compI = compI, angGen = angGen, alb = 0)
-  show(inclin_alb0)
-  #+end_src
-  #+begin_src R
+  inclin_alb0[, group := 'alb = 0']
   inclin_alb1 <- fInclin(compI = compI, angGen = angGen, alb = 1)
-  show(inclin_alb1)
+  inclin_alb1[, group := 'alb = 1']
+  inclin_alb <- rbind(inclin_alb0, inclin_alb1)
+  xyplot(Gef + Def + Bef + Ref ~ Dates, inclin_is,
+	 groups = group, type = 'l', auto.key = TRUE,
+	 par.settings = solaR.theme, scales = list(y = 'free'),
+	 ylab = '', layout = c(2, 2))
   #+end_src
+  #+ATTR_LATEX: :width \textwidth
+  file:figuras/codigo-finclinalb.pdf
   Además, cuenta con dos argumentos adicionales, =horizBright=, el cual, cuando su valor es =TRUE= (el que tiene por defecto), realiza una corrección de la radiación difusa cite:REINDL19909, y =HCPV=, es el acrónimo de *High Concentration PV system*[fn:8] (sistema fotovoltaico de alta concentración) que cuando su valor es =TRUE= (por defecto está puesto en =FALSE=), anula los valores de radiación difusa y de albedo.
   #+begin_src R
   inclin_horizBright <- fInclin(compI = compI, angGen = angGen,
 				horizBright = FALSE)
-  show(inclin_horizBright)
+  summary(inclin_horizBright)
   #+end_src
   #+begin_src R
   inclin_HCPV <- fInclin(compI = compI, angGen = angGen,
 			 HCPV = TRUE)
-  show(inclin_HCPV)
+  summary(inclin_HCPV)
   #+end_src
 
 Finalmente, esta función le otorga estos datos a la función =calcGef= para que produzca un objeto de clase =Gef= como resultado. Esta función tiene como argumentos principales los mismos que los que tiene =calcG0= ref:sec:radiacion-plano-horizontal, es decir, =modeRad= y =dataRad=. Y además, como es lógico, con todos los argumentos mencionados con anterioridad en =fTheta= y =fInclin=.
@@ -527,12 +537,14 @@ gef_shdhoriz <- calcGef(lat, modeTrk = 'horiz', dataRad = prom,
                         struct = struct, distances = distances)
 show(gef_shdhoriz)
 #+end_src
-#+begin_src R
+#+begin_src R :results graphics output :file "figuras/codigo-gef.pdf" :width 8 :height 6 
 gef_shdbt <- calcGef(lat, modeTrk = 'horiz', dataRad = prom,
                         modeShd = c('area', 'bt'),
                         struct = struct, distances = distances)
-show(gef_shdbt)
+xyplot(gef_shdbt)
 #+end_src
+#+ATTR_LATEX: :width \textwidth
+file:figuras/codigo-gef.pdf
 * Producción eléctrica de un SFCR
 label:produccion-electrica-sfcr
 Con la radiación efectiva, se puede estimar la producción eléctrica que va a tener un sistema fotovoltaico conectado a red. Esta estimación, se puede calcular mediante la función =prodGCPV= la cual mediante la función =fProd= procesa un objeto de clase =Gef= y obtiene un objeto =ProdGCPV=.
@@ -593,10 +605,12 @@ show(prodFixed)
 prod2x <- prodGCPV(lat, modeTrk = 'two', dataRad = prom)
 show(prod2x)
 #+end_src
-#+begin_src R
+#+begin_src R :results graphics output :file "figuras/codigo-prodgcpv.pdf" :width 8 :height 6
 prodHoriz <- prodGCPV(lat, modeTrk = 'horiz', dataRad = prom)
-show(prodHoriz)
+xyplot(prodHoriz)
 #+end_src
+#+ATTR_LATEX: :width \textwidth
+file:figuras/codigo-prodgcpv.pdf
 
 * Producción eléctrica de un SFB
 De igual forma que en el apartado anterior, se puede estimar la producción eléctrica de un sistema fotovoltaico de bombeo.
@@ -650,18 +664,19 @@ file:figuras/prodpvps.pdf
     show(SP8A44)
   #+end_src
   Está función entrega todos estos resultados a =prodPVPS= la cual calcula los resultados en base a la potencia del generador a simular, y devuleve un objeto de clase =ProdPVPS=.
-  #+begin_src R
-    prodsfb <- prodPVPS(lat, modeTrk = 'fixed', dataRad = prom,
-			pump = CoefSP8A44, H = 40, Pg = SP8A44$Pac[10])
-    show(prodsfb)
+  #+begin_src R :results graphics output :file "figuras/codigo-prodpvps.pdf" :width 8 :height 6
+  prodsfb <- prodPVPS(lat, modeTrk = 'fixed', dataRad = prom,
+		      pump = CoefSP8A44, H = 40, Pg = SP8A44$Pac[10])
+  xyplot(prodsfb)
   #+end_src
-
+  #+ATTR_LATEX: :width \textwidth
+  file:figuras/codigo-prodpvps.pdf
 * Optimización de distancias
 label:optimizacion-distancias
 Por último, el paquete =solaR2= contiene una función que permite calcular un conjunto de combinaciones de distancias entre los elementos de un sistema fotovoltaico conectado a red, con el fin de que el usuario posteriormente pueda optar cual es la opción mas rentable en base a los precios del cableado y de la ocupación del terreno.
 
 Esta función es =optimShd=, la cual en base a una resolución (determinada por el argumento =res=, el cual, indica el incremento de la secuencia de distancias) obtiene la producción de cada combinación y la plasma en un objeto de clase =Shade=.
-#+begin_src R
+#+begin_src R :results graphics output :file "figuras/codigo-optimshd2x.pdf" :width 8 :height 6
 struct2x <- list(W = 23.11, L = 9.8, Nrow = 2, Ncol = 3)
 dist2x <- list(Lew = c(30, 45), Lns = c(20, 40))
 ShdM2x <- optimShd(lat, dataRad = prom, modeTrk = 'two',
@@ -669,9 +684,11 @@ ShdM2x <- optimShd(lat, dataRad = prom, modeTrk = 'two',
 		   distances = dist2x, struct = struct2x,
 		   res = 5,
                    prog = FALSE) #Se quita la barra de progreso
-show(ShdM2x)
+shadeplot(ShdM2x)
 #+end_src
-#+begin_src R
+#+ATTR_LATEX: :width \textwidth
+file:figuras/codigo-optimshd2x.pdf
+#+begin_src R :results graphics output :file "figuras/codigo-optimshdhoriz.pdf" :width 8 :height 6
 structHoriz = list(L = 4.83)
 distHoriz = list(Lew = structHoriz$L * c(2,5))
 Shd12HorizBT <- optimShd(lat = lat, dataRad = prom,
@@ -681,9 +698,11 @@ Shd12HorizBT <- optimShd(lat = lat, dataRad = prom,
 			 struct = structHoriz,
 			 modeShd = 'bt',
 			 prog = FALSE) #Se quita la barra de progreso
-show(Shd12HorizBT)
+shadeplot(Shd12HorizBT)
 #+end_src
-#+begin_src R
+#+ATTR_LATEX: :width \textwidth
+file:figuras/codigo-optimshdhoriz.pdf
+#+begin_src R :results graphics outpur :file "figuras/codigo-optimshdfixed.pdf" :width 8 :height 6
 structFixed = list(L = 5)
 distFixed = list(D = structFixed$L*c(1,3))
 Shd12Fixed <- optimShd(lat = lat, dataRad = prom,
@@ -692,8 +711,10 @@ Shd12Fixed <- optimShd(lat = lat, dataRad = prom,
 		       struct = structFixed,
 		       modeShd = 'area',
 		       prog = FALSE) #Se quita la barra de progreso
-show(Shd12Fixed)
+shadeplot(Shd12Fixed)
 #+end_src
+#+ATTR_LATEX: :width \textwidth
+file:figuras/codigo-optimshdfixed.pdf
 
 
 * Aspectos técnicos de la elaboración de un paquete en R
