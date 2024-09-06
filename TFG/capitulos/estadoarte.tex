@@ -1,7 +1,7 @@
 \chapter{Estado del arte}
 \label{chap:estado-arte}
 \section{Situación actual de la generación fotovoltaica}
-\label{sec:org255f16a}
+\label{sec:org058a481}
 \label{sec:situacion-actual-generacion-fotovoltaica}
 Según el informe anual de 2023 de la UNEF\footnote{UNEF: Unión Española Fotovoltaica.} \cite{unef23} en 2022 la fotovoltaica se posicionó como la tecnología con más crecimiento a nivel internacional, tanto entre las renovables como entre las no renovables. Se instalaron 240 GWp de nueva capacidad fotovoltaica a nivel mundial, suponiendo esto un incremento del 137\% con respecto a 2021.
 
@@ -31,16 +31,90 @@ El sector industrial fotovoltaico nacional tiene una fuerte presencia en España
 
 En definitiva, la fotovoltaica es una tecnología en auge y con perspectivas para ser el pilar de la transición ecológica. Por ello, surge la necesidad de encontrar herramientas que permitan estimar el desempeño que estos sistemas pueden tener a la hora de realizar estudios de viabilidad económica.
 
-\section{Solución actual y sus carencias}
-\label{sec:org03b0c85}
-Como se mencionó en el capitulo \ref{chap:introduccion} este proyecto toma su base en el paquete \texttt{solaR} \cite{perpinan12}, el cual es una herramienta robusta para el cálculo de la radiación solar y el rendimiento de sistemas fotvoltaicos. Este paquete está diseñado utilizando clases \texttt{S4} en \texttt{R}, y su núcleo se basa en series temporales multivariantes almacenadas en objetos de la clase \texttt{zoo}. El paquete permite realizar investigaciones reproducibles sobre el rendimiento de sistemas fotovoltaicos y la radiación solar, proporcionando métodos para calcular la geometría solar, la radiación incidente sobre un generador fotovoltaico, y simular el rendimiento de sistemas fotovoltaicos tanto conectados a la red como de bombeo de agua.
-
-Pese a ser un herramienta muy capaz, \texttt{solaR} presenta una serie de carencias relativas al paquete \texttt{zoo}:
+\section{Soluciones actuales y sus carencias}
+\label{sec:org294cd82}
+Como se mencionó en el capítulo \ref{chap:introduccion}, existen una serie de herramientas que permiten el cálculo y la simulación de instalaciones fotovoltaicas. Todas ellas presentan una serie de ventajas específicas, a cambio de una serie de limitaciones. Estas son:
+\begin{enumerate}
+\item \textbf{PVsyst - Photovoltaic Software} \cite{pvsyst}
+Este software es probablemente el más conocido dentro del ámbito del estudio y la estimación de instalaciones fotovoltaicas. Destaca por la personalización detallada de los componentes de la instalación (módulos, inversores, sombreado, etc.), lo que ermite una simulación precisa a través de datos meteorológicos y parámetros detallados del sistema. Su uso está extendido en proyectos de gran escala y estuidos avanzados de eficiencia.
 \begin{itemize}
-\item \textbf{Eficiencia y rendimiento}: el paquete \texttt{solaR} utiliza \texttt{zoo} para manejar series temporales, lo cual es adecuado para volúmenes de datos moderados. Sin embargo, \texttt{zoo} no está optimizado para operaciones de alta eficiencia en datasets grandes. Por otro lado, \texttt{data.table} está diseñado específicamente para manejar grandes volúmenes de datos de manera eficiente, ofreciendo un rendimiento superior en operaciones de lectura, escritura y manipulación masiva de datos.
-\item \textbf{Escalabilidad}: \texttt{solaR} puede experimentar problemas de escalabilidad al trabajar con datasets extensos, ya que \texttt{zoo} no es tan eficiente en operaciones que requieren manipulación compleja o paralelización. Sin embargo, \texttt{data.table} supera esta limitación al proporcionar una infraestructura altamente optimizada para operaciones en paralelo y manejo de grandes conjuntos de datos, permitiendo que las aplicaciones escalen mejor en entornos de datos intensivos.
-\item \textbf{Manipulación de datos}: \texttt{zoo} es adecuado para manejar series temporales básicas, pero carece de las capacidades avanzadas de manipulación de datos que ofrece \texttt{data.table}, como la indexación rápida, las uniones eficientes, y la capacidad de realizar operaciones complejas de agrupamiento y agregación. Estas características de \texttt{data.table} permiten un manejo de datos más flexible y potente, lo cual es esencial en análisis de datos complejo y en tiempo real.
-\item \textbf{Consumo de memoria}: \texttt{zoo} puede consumir más memoria en comparación con \texttt{data.table} cuando se trabaja con grandes conjuntos de datos. Por otro lado, \texttt{data.table} está optimizado para operaciones en memoria, lo que permite manejar datasets más grandes sin requerir un incremento proporcionla en el uso de recursos, haciendo que las operaciones sean más sostenibles en términos de memoria.
+\item Ventajas:
+\begin{itemize}
+\item \textbf{Completo y profesional}: PVsyst es altamente detallado, permitiendo análisis avanzados para proyectos pequeños y grandes.
+\item \textbf{Base de datos meteorológicos}: Integra datos climáticos de fuentes como Meteonorm \cite{jan20}, lo que mejora la precisión de las simulaciones.
+\item \textbf{Simulaciones avanzadas}: Permite modelar la energía producida por una planta fotovoltaica y calcular las pérdidas debidas a sombreamiento, inclinación, orientaciones y resistencias internas de los módulos.
+\item \textbf{Herramientas de dimensionamiento}: Ofrece módulos específicos para diseñar la configuración de inversores y módulos solares.
+\end{itemize}
+\item Limitaciones:
+\begin{itemize}
+\item \textbf{Costo}: Es un software comercial , con licencias que pueden ser costosas para proyectos pequeños.
+\item \textbf{Curva de aprendizaje}: Su interfaz puede resultar compleja para usuarios nuevos, lo que implica una curva de aprendizaje considerable.
+\item \textbf{Enfoque técnico}: Está más orientado a ingenieros y técnicos, por lo que carece de accedsibilidad para usuarios no especializados.
+\end{itemize}
+\end{itemize}
+\item \textbf{SISIFO} \cite{sisifo}
+Herramienta web diseñada por el \textbf{Grupo de Sistemas Fotovoltaicos del Instituto de Energía Solar de la Universidad Politécnica de Madrid}. Está diseñada para ser accesible y fácil de usar, enfocándose en una audiencia más general, incluyenco ingenieros, pero también técnicos y académicos.
+\begin{itemize}
+\item Ventajas:
+\begin{itemize}
+\item \textbf{Facilidad de uso}: Tiene una interfaz amigable y fácil de utilizar, lo que lohace accesible para usuarios con distintos niveles de experiencia.
+\item \textbf{Open-source}: Al ser de código abierto, permite a los desarrolladores modificar y adaptar el software a sus necesidades específicas.
+\item \textbf{Simulación integrada}: Ofrece la posibilidad de realizar simulaciones basadas en datos meteorológicos, aunque con un nivel de detalle inferior a PVsyst.
+\item \textbf{Soporte comunitario}: Al ser de código abierto, cuenta con una comunidad activa de usuarios y desarrrolladores que colaboran en mejoras y actualizaciones.
+\end{itemize}
+\item Limitaciones:
+\begin{itemize}
+\item \textbf{Menos preciso}: Al compararse con otras herramientas, su precisión puede ser menor en cuanto a modelado y simulación de pérdidas, ya que simplifica varios aspectos del sistema.
+\item \textbf{Limitaciones en grandes proyectos}: No está tan bien adaptado para grandes instalaciones o análisis financieros avanzados.
+\end{itemize}
+\end{itemize}
+\item \textbf{PVGIS} \cite{pvgis}
+Aplicación web desarrolada por el \textbf{European Commission Joint Research Center} desde 2001. Está diseñada para proporcionar estimaciones de producción de energía solar en función de la ubicación geográfica y condiciones meteorológicas históricas.
+\begin{itemize}
+\item Ventajas:
+\begin{itemize}
+\item \textbf{Gratuito y accesible}: Esta herramienta es completamente gratuira y accesible a través de una interfaz web, lo que facilita el uso por parte de cualquier persona.
+\item \textbf{Datos meteorológicos precisos}: Proporciona acceso a datos meteorológicos satelitales y de estaciones terrestres, lo que permite obtener estimaciones razonables de producción de energía.
+\item \textbf{Estudios rápidos}: Es ideal para obtener estimaciones preliminares y estudios de viabilidad de sistemas fotovoltaicos.
+\end{itemize}
+\end{itemize}
+\item \textbf{System Advisor Model} \cite{sam}
+Desarrollado por el \textbf{Laboratorio Nacional de Energías Renovables}, perteneciente al Departamento de energía del gobierno de EE.UU. Está orientada a la modelación tanto técnica como económica de sistemas de energía renovable, incluyendo fotovoltaicos.
+\begin{itemize}
+\item Ventajas:
+\begin{itemize}
+\item \textbf{Modelo económico avanzado}: Integra análisis detalados sobre la viabilidad económica, lo que permite evaluar tanto la producción energética como los costos y benefecios a lo largo de la vida útil del proyecto.
+\item \textbf{Acceso a múltiples tecnologías}: Además de fotovoltaicos, permite modelar otras tecnologías de energía renovable, lo que lo hace más flexible para estuidos multidisciplinares.
+\item \textbf{Integración de bases de datos}: Utiliza datos meteorológicos detallados, lo que mejora la precisión de las simulaciones.
+\end{itemize}
+\item Limitaciones:
+\begin{itemize}
+\item \textbf{Complejidad}: Aunque gratuito, SAM es bastante complejo y técnico, lo que puede limitar su uso a usuarios con experiencia en el modelado de sistemas energéticos.
+\item \textbf{Interfaz no tan intuitiva}: Comparado con otras herramientas, requiere un mayor tiempo de familiarización debido a su enfoque integral y detalle en las simulaciones.
+\end{itemize}
+\end{itemize}
+\end{enumerate}
+
+Como se mencionó en el capitulo \ref{chap:introduccion} este proyecto toma su base en el paquete \texttt{solaR} \cite{perpinan12}, el cual es una herramienta robusta para el cálculo de la radiación solar y el rendimiento de sistemas fotvoltaicos.
+
+Este paquete está diseñado utilizando clases \texttt{S4} en \texttt{R}, y su núcleo se basa en series temporales multivariantes almacenadas en objetos de la clase \texttt{zoo}. Su funcionamiento se basa, al igual que \texttt{solaR2}, en una serie de funciones constructoras que calculan objetos relacionados con cada paso de la simulación de un sistema fotovoltaico. Podemos dividir su funcionamiento en los siguientes grupos:
+\begin{enumerate}
+\item \textbf{Cálculo de la geometría solar}: calcula el movimiento aparente diario (con \texttt{fSolD}) e intradiario (con \texttt{fSolI}) del Sol desde la Tierra. Para ello se vale de la función \texttt{calcSol} la cual devuelve un objeto de clase \texttt{Sol} que contiene todos los ángulos necesarios.
+\item \textbf{Almacenamiento de datos meteorológicos}: se define la clase \texttt{Meteo}, la cual, se construye mediante una serie de funciones (\texttt{readBD}, \texttt{readG0dm}, \texttt{zoo2Meteo}, \texttt{df2Meteo}\ldots{}). Estas funciones toman los datos meteorológicos provenientes de distintas vias (un \texttt{data.frame}, un objeto \texttt{zoo}, un fichero\ldots{}) y los adapta para que puedan ser manipulados por el resto de funciones del paquete.
+\item \textbf{Cálculo de radiación en un plano horizontal}: tomando los objetos anteriores, es capaz de calcular (si no vienen ya dadas) las componentes de la irradiación (con \texttt{fCompD}) y de la irradiancia (con \texttt{fCompI}). La función \texttt{calcG0} devuelve un objeto \texttt{G0} que contiene las anteriores componentes y añade medias mensuales de valores diarios y sumas anuales de la irradiación.
+\item \textbf{Cálculo de radiación en el plano del generador}: toma un objeto \texttt{G0} y lo transforma en un objeto \texttt{Gef} mediante la función \texttt{calcGef}, la cual utilizando las funciones \texttt{fTheta} y \texttt{fInclin} determinan la irradiación y la radiación efectiva al igual que las medias mensuales de la irradiación diaria y sumas anuales.
+\item \textbf{Simulación de sistemas fotovoltaicos conectados a red}: con un objeto \texttt{Gef} y con los parametros del sistema, la función \texttt{prodGCPV}, tomando los resultado de la función \texttt{fProd}, cálcula la producción energética de un SFCR. Devuleve un objeto de clase \texttt{ProdGCPV} que incluye valores de potencias instantaneas y energías diarias, medias mensuales y sumas anuales.
+\item \textbf{Simulación de sistemas fotovoltaicos de bombeo}: toma un objeto \texttt{Gef} y con los paremetros del sistema y de la bomba, la función \texttt{prodPVPS}, tomando los resultados de la función \texttt{fPump}, cálcula la producción energética de un SFB-
+\item \textbf{Optimización de distancias}: es capaz de optimizar las distancias de un sfcr mediante la función \texttt{optimShd}, la cual devuelve un objeto \texttt{Shade} el cual contiene multiples combinaciones de distancias para que el usuario pueda decidir la mejor.
+\item \textbf{Métodos de visualización}: para cada uno de los objetos mencionados existen métodos de visualización gráfica para ayudar a comprender los resultados obtenidos.
+\end{enumerate}
+
+Pese a ser un herramienta muy capaz, \texttt{solaR} presenta una serie de carencias relativas:
+\begin{itemize}
+\item \textbf{Modularidad}: el paquete \texttt{solaR} contiene funciones que realizan muchas operaciones, esto deja poco lugar al usuario para que pueda entender cada componente independientemente.
+\item \textbf{Eficiencia y rendimiento}: el paquete \texttt{solaR} utiliza \texttt{zoo} para manejar series temporales, lo cual es adecuado para volúmenes de datos moderados. Sin embargo, \texttt{zoo} no está optimizado para operaciones de alta eficiencia en datasets grandes.
+\item \textbf{Escalabilidad}: \texttt{solaR} puede experimentar problemas de escalabilidad al trabajar con datasets extensos, ya que \texttt{zoo} no es tan eficiente en operaciones que requieren manipulación compleja o paralelización.
+\item \textbf{Manipulación de datos}: \texttt{zoo} es adecuado para manejar series temporales básicas, pero carece de las capacidades avanzadas de manipulación de datos que ofrecen otros paquetes.
 \end{itemize}
 
-Por lo tanto, al adoptar \texttt{data.table} en \texttt{solaR2}, se abordarían esta limitaciones, proporcionando un paquete más robusto y capaz de manejar los desafíos actuales en el análisis de datos de radiación solar y de producción de sistemas fotovoltaicos.
+En el capitulo \ref{chap:ejemplo-practico-aplicacion} se realizará un ejemplo práctico que compare los resultados entre \texttt{PVsyst}, \texttt{solaR} y \texttt{solaR2}
