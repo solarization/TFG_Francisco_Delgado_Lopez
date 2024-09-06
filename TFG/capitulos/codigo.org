@@ -174,7 +174,7 @@ show(BD)
 #+end_src
   Esta función tiene dos argumentos importantes:
   - =tipo=: La API SIAR[fn:5] permite tener 4 tipos de registros: =Mensuales=, =Semanales=, =Diarios= y =Horarios=.
-  - =n_est=: Con este argumento, la función es capaz de localizar el número seleccionado de estaciones más proximas a la ubicación dada, y obtener los datos individuales de cada una de ellas. Una vez obtenidos estos datos realiza una interpolación de distancia inversa ponderada (IDW) y entrega un solo resultado. Es importante añadir que la API SIAR tiene una limitación a la solicitud de registros que se le hace cada minuto, por lo que esta función cuenta con un comprobante para impedir que el usuario exceda este límite.
+  - =n_est=: Con este argumento, la función es capaz de localizar el número seleccionado de estaciones más proximas a la ubicación dada, y obtener los datos individuales de cada una de ellas. Una vez obtenidos estos datos realiza una interpolación de distancia inversa ponderada (IDW[fn:6]) y entrega un solo resultado. Es importante añadir que la API SIAR tiene una limitación a la solicitud de registros que se le hace cada minuto, por lo que esta función cuenta con un comprobante para impedir que el usuario exceda este límite.
       
 * Radiación en el plano horizontal
 label:sec:radiacion-plano-horizontal
@@ -375,7 +375,7 @@ file:figuras/calcgef.pdf
   inclin_alb1 <- fInclin(compI = compI, angGen = angGen, alb = 1)
   show(inclin_alb1)
   #+end_src
-  Además, cuenta con dos argumentos adicionales, =horizBright=, el cual, cuando su valor es =TRUE= (el que tiene por defecto), realiza una corrección de la radiación difusa cite:REINDL19909, y =HCPV=, es el acrónimo de *High Concentration PV system*[fn:6] (sistema fotovoltaico de alta concentración) que cuando su valor es =TRUE= (por defecto está puesto en =FALSE=), anula los valores de radiación difusa y de albedo.
+  Además, cuenta con dos argumentos adicionales, =horizBright=, el cual, cuando su valor es =TRUE= (el que tiene por defecto), realiza una corrección de la radiación difusa cite:REINDL19909, y =HCPV=, es el acrónimo de *High Concentration PV system*[fn:7] (sistema fotovoltaico de alta concentración) que cuando su valor es =TRUE= (por defecto está puesto en =FALSE=), anula los valores de radiación difusa y de albedo.
   #+begin_src R
   inclin_horizBright <- fInclin(compI = compI, angGen = angGen,
 				horizBright = FALSE)
@@ -766,7 +766,7 @@ El fichero *DESCRIPTION* es fundamental, ya que incluye la información descript
 #+end_export
 Los campos principales de este archivo son:
 - *Package*: Nombre del paquete.
-- *Version*: Versión del paquete. Generalmente sigue un esquema de numeración semántica (=major.minor-patch=)[fn:7].
+- *Version*: Versión del paquete. Generalmente sigue un esquema de numeración semántica (=major.minor-patch=)[fn:8].
 - *Title*: Un título breve pero descriptivo de lo que hace el paquete.
 - *Authors@R*: Especifica el o los autores con sus respectivos roles, como "aut" (autor) y "cre" (creador principal).
 - *Maintainer*: Persona responsable del mantenimiento del paquete, con su correo electrónico.
@@ -896,6 +896,8 @@ Esta estructura de documentación permite a los usuarios comprender rápidamente
 
 [fn:5] La API (Interfaz de Programación de Aplicaciones) que se usa para la función =readSIAR= está proporcionada por la propia red SIAR cite:siar23.
 
-[fn:6] la tencología de concentración fotovoltaica funciona gracias a unos dispositivos ópticos que permiten concentrar la radiación solar sobre una célula fotovoltaica de tamaño reducido pero con una eficiencia muy superior alas células tradicionales. Con ello se consigue emplear menor cantidad de semiconductores reduciendo los costes.
+[fn:6] La interpolación IDW es un método de interpolación que estima el valor de un punto desconocido basodo en los valores conocidos de puntos cercanos. Los puntos más cercanos tienen más peso en la estimación que los más lejanos, utilizando una relación inversa con la distancia.
 
-[fn:7] Un esquema de numeración semántica es un sistema de versiones que sigue un patrón específico para asignar números a las versiones de software. Se utiliza para indicar claramente la magnitud de los cambios realizados y su impacto en la compatibilidad.  Una versión =major= o mayor se refiere a modificaciones grandes o incompatibles con versiones anteriores, =minor= o menor es una versión que incluye mejoras o nuevas funciones compatibles con versiones anteriores y =patch= o parche es una versión que incluye correcciones menores o mejoras que no afectan a la funcionalidad.
+[fn:7] la tencología de concentración fotovoltaica funciona gracias a unos dispositivos ópticos que permiten concentrar la radiación solar sobre una célula fotovoltaica de tamaño reducido pero con una eficiencia muy superior alas células tradicionales. Con ello se consigue emplear menor cantidad de semiconductores reduciendo los costes.
+
+[fn:8] Un esquema de numeración semántica es un sistema de versiones que sigue un patrón específico para asignar números a las versiones de software. Se utiliza para indicar claramente la magnitud de los cambios realizados y su impacto en la compatibilidad.  Una versión =major= o mayor se refiere a modificaciones grandes o incompatibles con versiones anteriores, =minor= o menor es una versión que incluye mejoras o nuevas funciones compatibles con versiones anteriores y =patch= o parche es una versión que incluye correcciones menores o mejoras que no afectan a la funcionalidad.

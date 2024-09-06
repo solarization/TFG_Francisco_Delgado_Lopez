@@ -1,14 +1,14 @@
 \chapter{Desarrollo del código}
 \label{chap:desarrollo-codigo}
-En la figura \ref{fig:orgf772152}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
+En la figura \ref{fig:orgdf6865c}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
 \begin{figure}[htbp]
 \centering
 \includegraphics[keepaspectratio,width=0.8\textwidth,height=0.5\textheight]{figuras/procedure.pdf}
-\caption{\label{fig:orgf772152}Proceso de cálculo de las funciones de \texttt{solaR2}}
+\caption{\label{fig:orgdf6865c}Proceso de cálculo de las funciones de \texttt{solaR2}}
 \end{figure}
 A la hora de estimar la producción, el programa sigue los siguientes procesos\footnote{Todas las funciones recogidas en este capítulo, están descritas en el manual de uso del paquete \texttt{solaR2}, el cual, está disponible en el apendice \ref{chap:manual} de este documento.}:
 \section{Geometría solar}
-\label{sec:orgb67a7d0}
+\label{sec:orga4f15b1}
 \label{sec:geometria-solar}
 Para calcular la geometría que definen las posiciones de la Tierra y el Sol, \texttt{solaR2} se vale de una función constructora, \texttt{calcSol}, la cual mediante las funciones \texttt{fSolD} y \texttt{fSolI} cálcula todos los ángulos y componentes que caracterizan la geometría solar.
 \begin{figure}[htbp]
@@ -286,7 +286,7 @@ Intradaily values:
 \end{verbatim}
 
 \section{Datos meteorológicos}
-\label{sec:orge5f12fb}
+\label{sec:orgccee5f7}
 \label{sec:datos-meteorologicos}
 Para el procesamiento de datos meteorologicos, \texttt{solaR2} provee una serie de funciones que son capaces de leer todo tipo de datos. Estos datos se procesan y se almacenan en un objeto de tipo \texttt{Meteo} tal y como se ve en la figura \ref{fig:meteo}. Estas funciones son:
 \begin{figure}[htbp]
@@ -505,11 +505,11 @@ Meteorological Data:
 Esta función tiene dos argumentos importantes:
 \begin{itemize}
 \item \texttt{tipo}: La API SIAR\footnote{La API (Interfaz de Programación de Aplicaciones) que se usa para la función \texttt{readSIAR} está proporcionada por la propia red SIAR \cite{siar23}.} permite tener 4 tipos de registros: \texttt{Mensuales}, \texttt{Semanales}, \texttt{Diarios} y \texttt{Horarios}.
-\item \texttt{n\_est}: Con este argumento, la función es capaz de localizar el número seleccionado de estaciones más proximas a la ubicación dada, y obtener los datos individuales de cada una de ellas. Una vez obtenidos estos datos realiza una interpolación de distancia inversa ponderada (IDW) y entrega un solo resultado. Es importante añadir que la API SIAR tiene una limitación a la solicitud de registros que se le hace cada minuto, por lo que esta función cuenta con un comprobante para impedir que el usuario exceda este límite.
+\item \texttt{n\_est}: Con este argumento, la función es capaz de localizar el número seleccionado de estaciones más proximas a la ubicación dada, y obtener los datos individuales de cada una de ellas. Una vez obtenidos estos datos realiza una interpolación de distancia inversa ponderada (IDW\footnote{La interpolación IDW es un método de interpolación que estima el valor de un punto desconocido basodo en los valores conocidos de puntos cercanos. Los puntos más cercanos tienen más peso en la estimación que los más lejanos, utilizando una relación inversa con la distancia.}) y entrega un solo resultado. Es importante añadir que la API SIAR tiene una limitación a la solicitud de registros que se le hace cada minuto, por lo que esta función cuenta con un comprobante para impedir que el usuario exceda este límite.
 \end{itemize}
 
 \section{Radiación en el plano horizontal}
-\label{sec:org62ae912}
+\label{sec:org4eee7ba}
 \label{sec:radiacion-plano-horizontal}
 Una vez se ha calculado la geometría solar (sección \ref{sec:geometria-solar}) y se han procesado los datos meteorológicos (sección \ref{sec:datos-meteorologicos}), es necesario calcular la radiación en el plano horizontal. Para ello, \texttt{solaR2} cuenta con la función \texttt{calcG0} la cual mediante las funciones \texttt{fCompD} y \texttt{fCompI} procesan los objetos de clase \texttt{Sol} y clase \texttt{Meteo} para dar un objeto de tipo \texttt{G0}.
 
@@ -958,24 +958,24 @@ Latitude for calculations:  37.2 degrees
 Monthly avarages:
 	Dates   G0d      D0d      B0d
        <char> <num>    <num>    <num>
- 1: Jan. 2024 2.766 1.074389 1.691611
- 2: Feb. 2024 3.491 1.481393 2.009607
- 3: Mar. 2024 4.494 1.943261 2.550739
- 4: Apr. 2024 5.912 2.350714 3.561286
- 5: May. 2024 6.989 2.475692 4.513308
- 6: Jun. 2024 7.742 2.491763 5.250237
- 7: Jul. 2024 7.919 2.274205 5.644795
- 8: Aug. 2024 7.027 2.014195 5.012805
- 9: Sep. 2024 5.369 1.809217 3.559783
-10: Oct. 2024 3.562 1.625923 1.936077
-11: Nov. 2024 2.814 1.232074 1.581926
-12: Dec. 2024 2.179 1.084729 1.094271
+ 1: Jan. 2024 2.766 1.028745 1.737255
+ 2: Feb. 2024 3.491 1.477869 2.013131
+ 3: Mar. 2024 4.494 1.888964 2.605036
+ 4: Apr. 2024 5.912 2.183242 3.728758
+ 5: May. 2024 6.989 2.518761 4.470239
+ 6: Jun. 2024 7.742 2.611160 5.130840
+ 7: Jul. 2024 7.919 2.215045 5.703955
+ 8: Aug. 2024 7.027 2.228269 4.798731
+ 9: Sep. 2024 5.369 1.826842 3.542158
+10: Oct. 2024 3.562 1.672309 1.889691
+11: Nov. 2024 2.814 1.289292 1.524708
+12: Dec. 2024 2.179 1.119428 1.059572
 
 Yearly values:
 Key: <Dates>
    Dates      G0d      D0d      B0d
    <int>    <num>    <num>    <num>
-1:  2024 1839.365 666.7377 1172.627
+1:  2024 1839.365 672.9914 1166.374
 \end{verbatim}
 
 \item Diarios.
@@ -996,24 +996,24 @@ Latitude for calculations:  37.2 degrees
 Monthly avarages:
 	Dates   G0d      D0d      B0d
        <char> <num>    <num>    <num>
- 1: Jan. 2024 2.766 1.074389 1.691611
- 2: Feb. 2024 3.491 1.481393 2.009607
- 3: Mar. 2024 4.494 1.943261 2.550739
- 4: Apr. 2024 5.912 2.350714 3.561286
- 5: May. 2024 6.989 2.475692 4.513308
- 6: Jun. 2024 7.742 2.491763 5.250237
- 7: Jul. 2024 7.919 2.274205 5.644795
- 8: Aug. 2024 7.027 2.014195 5.012805
- 9: Sep. 2024 5.369 1.809217 3.559783
-10: Oct. 2024 3.562 1.625923 1.936077
-11: Nov. 2024 2.814 1.232074 1.581926
-12: Dec. 2024 2.179 1.084729 1.094271
+ 1: Jan. 2024 2.766 1.028745 1.737255
+ 2: Feb. 2024 3.491 1.477869 2.013131
+ 3: Mar. 2024 4.494 1.888964 2.605036
+ 4: Apr. 2024 5.912 2.183242 3.728758
+ 5: May. 2024 6.989 2.518761 4.470239
+ 6: Jun. 2024 7.742 2.611160 5.130840
+ 7: Jul. 2024 7.919 2.215045 5.703955
+ 8: Aug. 2024 7.027 2.228269 4.798731
+ 9: Sep. 2024 5.369 1.826842 3.542158
+10: Oct. 2024 3.562 1.672309 1.889691
+11: Nov. 2024 2.814 1.289292 1.524708
+12: Dec. 2024 2.179 1.119428 1.059572
 
 Yearly values:
 Key: <Dates>
    Dates      G0d      D0d      B0d
    <int>    <num>    <num>    <num>
-1:  2024 1839.365 666.7377 1172.627
+1:  2024 1839.365 672.9914 1166.374
 \end{verbatim}
 
 \item Intradiarios
@@ -1032,31 +1032,31 @@ Latitude of source:  37.2 degrees
 Latitude for calculations:  37.2 degrees
 
 Monthly avarages:
-	Dates   G0d      D0d      B0d
-       <char> <num>    <num>    <num>
- 1: Jan. 2024 2.766 1.043772 1.722228
- 2: Feb. 2024 3.491 1.540259 1.950741
- 3: Mar. 2024 4.494 1.988388 2.505612
- 4: Apr. 2024 5.912 2.355717 3.556283
- 5: May. 2024 6.989 2.310988 4.678012
- 6: Jun. 2024 7.742 2.018162 5.723838
- 7: Jul. 2024 7.919 1.999583 5.919417
- 8: Aug. 2024 7.027 1.982788 5.044212
- 9: Sep. 2024 5.369 1.654032 3.714968
-10: Oct. 2024 3.562 1.600744 1.961256
-11: Nov. 2024 2.814 1.248700 1.565300
-12: Dec. 2024 2.179 1.116547 1.062453
+	Dates      G0d       D0d       B0d
+       <char>    <num>     <num>     <num>
+ 1: Jan. 2024 2.766000 0.9019388 1.8640612
+ 2: Feb. 2024 3.491000 1.4624136 2.0285864
+ 3: Mar. 2024 4.494000 1.8761437 2.6178563
+ 4: Apr. 2024 5.912000 2.1882556 3.7237444
+ 5: May. 2024 6.989000 2.5964783 4.3925217
+ 6: Jun. 2024 7.742000 2.3603457 5.3816543
+ 7: Jul. 2024 7.919000 2.0178533 5.9011467
+ 8: Aug. 2024 6.906902 2.0020696 4.9048322
+ 9: Sep. 2024 5.369000 1.6396363 3.7293637
+10: Oct. 2024 3.562000 1.7077714 1.8542286
+11: Nov. 2024 2.814000 1.3276927 1.4863073
+12: Dec. 2024 2.179000 1.1843816 0.9946184
 
 Yearly values:
 Key: <Dates>
-   Dates      G0d     D0d      B0d
-   <int>    <num>   <num>    <num>
-1:  2024 1839.365 636.293 1203.072
+   Dates      G0d      D0d      B0d
+   <int>    <num>    <num>    <num>
+1:  2024 1835.642 648.7736 1186.868
 \end{verbatim}
 \end{itemize}
 
 \section{Radiación efectiva en el plano del generador}
-\label{sec:org47040ff}
+\label{sec:org26d4467}
 \label{sec:radiacion-efectiva-plano-generador}
 Teniendo la radiación incidente en plano horizontal (sección \ref{sec:radiacion-plano-horizontal}), se puede calcular la radiación efectiva incidente en el plano del generador. Para ello, \texttt{solaR2} cuenta con la función \texttt{calcGef} la cual mediante las funciones \texttt{fInclin} y \texttt{calcShd} procesa un objeto de clase \texttt{G0} para obtener un objeto \texttt{Gef}.
 
@@ -1704,7 +1704,7 @@ Mode of tracking:  horiz
 \end{verbatim}
 
 \section{Producción eléctrica de un SFCR}
-\label{sec:org21e0596}
+\label{sec:orga16f950}
 \label{produccion-electrica-sfcr}
 Con la radiación efectiva, se puede estimar la producción eléctrica que va a tener un sistema fotovoltaico conectado a red. Esta estimación, se puede calcular mediante la función \texttt{prodGCPV} la cual mediante la función \texttt{fProd} procesa un objeto de clase \texttt{Gef} y obtiene un objeto \texttt{ProdGCPV}.
 
@@ -1945,7 +1945,7 @@ Generator:
 \end{verbatim}
 
 \section{Producción eléctrica de un SFB}
-\label{sec:org0a8fe9d}
+\label{sec:orgbaa2091}
 De igual forma que en el apartado anterior, se puede estimar la producción eléctrica de un sistema fotovoltaico de bombeo.
 
 Como se puede ver en la figura \ref{fig:prodpvps}, \texttt{prodPVPS} funciona gracias a la siguiente función:
@@ -2009,8 +2009,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x000001be3f886da0>
-<environment: 0x000001be43072178>
+<bytecode: 0x00000283da685580>
+<environment: 0x00000283da686240>
 \end{verbatim}
 
 \item \texttt{fPb}: función que relaciona la potencia del eje de la bomba con la potencia eléctrica del motor.
@@ -2036,8 +2036,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x000001be3f886da0>
-<environment: 0x000001be452a3878>
+<bytecode: 0x00000283da685580>
+<environment: 0x00000283da71cef0>
 \end{verbatim}
 
 \item \texttt{fPh}: función que relaciona la potencia hidráulica con la potencia eléctrica del motor.
@@ -2063,8 +2063,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x000001be3f886da0>
-<environment: 0x000001be46f30c70>
+<bytecode: 0x00000283da685580>
+<environment: 0x00000283da7354a0>
 \end{verbatim}
 
 \item \texttt{fFreq}: función que relaciona la frecuencia con la potencia eléctrica del motor.
@@ -2090,8 +2090,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x000001be3f886da0>
-<environment: 0x000001be44d16538>
+<bytecode: 0x00000283da685580>
+<environment: 0x00000283da70ee80>
 \end{verbatim}
 \end{itemize}
 
@@ -2173,7 +2173,7 @@ Generator (Wp):  4084.218
 \end{itemize}
 
 \section{Optimización de distancias}
-\label{sec:org12fbd4a}
+\label{sec:org4bde11d}
 \label{optimizacion-distancias}
 Por último, el paquete \texttt{solaR2} contiene una función que permite calcular un conjunto de combinaciones de distancias entre los elementos de un sistema fotovoltaico conectado a red, con el fin de que el usuario posteriormente pueda optar cual es la opción mas rentable en base a los precios del cableado y de la ocupación del terreno.
 
@@ -2414,12 +2414,12 @@ Summary of results:
 \end{verbatim}
 
 \section{Métodos de visualización}
-\label{sec:org479176c}
+\label{sec:org2dddc5b}
 \label{sec:metodos-visualizacion}
 Una vez creados todos los objetos, para mejorar la visualización de los mismos, \texttt{solaR2} cuanta con una serie de métodos que ayudan a la compresión de los datos obtenidos.
 
 \subsection{Datos meteorológicos}
-\label{sec:org97d3f31}
+\label{sec:org4142c87}
 La clase \texttt{Meteo} cuenta con un método para \texttt{xyplot}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 lat <- 37.2
@@ -2456,7 +2456,7 @@ xyplot(BD)
 \end{center}
 
 \subsection{Radiación en el plano horizontal}
-\label{sec:orgf336e92}
+\label{sec:org418a0b9}
 La clase \texttt{G0} cuenta con un método para \texttt{xyplot}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 g0 <- calcG0(lat, dataRad = BD)
@@ -2512,7 +2512,7 @@ compare(g0, g02)
 \end{center}
 
 \subsection{Radiación efectiva en el plano del generador}
-\label{sec:orgc24b295}
+\label{sec:orgf4a5bcb}
 La clase \texttt{Gef} cuenta con un método para \texttt{xyplot}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 gef <- calcGef(lat, dataRad = BD)
@@ -2574,7 +2574,7 @@ compare(gef, gef2x, gefhoriz)
 
 
 \subsection{Producción eléctrica de un SFCR}
-\label{sec:org7b16178}
+\label{sec:org59af46e}
 La clase \texttt{ProdGCPV} cuenta con un método para \texttt{xyplot}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 prodFixed <- prodGCPV(lat, modeTrk = 'fixed', dataRad = BD)
@@ -2654,7 +2654,7 @@ compareLosses(prodFixed, prod2x, prodHoriz)
 \end{center}
 
 \subsection{Producción electrica de un SFB}
-\label{sec:org000ade1}
+\label{sec:orgb9d8a8f}
 La clase \texttt{ProdPVPS} cuenta con un método para \texttt{xyplot}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 pump <- prodPVPS(lat, dataRad = BD, pump = CoefSP8A44, H = 40, Pg = 5000)
@@ -2710,7 +2710,7 @@ xyplot(pump)
 \end{center}
 
 \subsection{Optimización de distancias}
-\label{sec:org3de5909}
+\label{sec:org7e88415}
 La clase \texttt{Shade} cuenta con un método para \texttt{shadeplot}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 struct2x = list(W = 23.11, L = 9.8, Nrow = 2, Ncol = 3)
@@ -2804,10 +2804,10 @@ shadeplot(ShdM2x)
 
 
 \section{Aspectos técnicos de la elaboración de un paquete en R}
-\label{sec:org08f1c37}
+\label{sec:org9930f76}
 \label{sec:aspectos-tecnicos}
 \subsection{Estructura básica del paquete}
-\label{sec:org3834c7d}
+\label{sec:org2b35be0}
 \label{subsec:estructura-paquete}
 En la creación de un paquete en \texttt{R}, la estructura de los archivos es clave para asegurar un desarrollo organizado y que \texttt{R} pueda interactuar correctamente con el código y  los datos. Los paquetes de R son esencialmente un conjunto de archivos organizados en un directorio específio. El contenido mínimo requerido incluye:
 \begin{itemize}
@@ -2823,7 +2823,7 @@ En la creación de un paquete en \texttt{R}, la estructura de los archivos es cl
 La estructura básica de un paquete puede generarse fácilmente utilizando la función \texttt{package.skeleton()}, que crea los archivos y carpetas necesarios para empezar a trabajar en el desarrollo.
 
 \subsection{DESCRIPTION}
-\label{sec:orge02f8ff}
+\label{sec:orgc13e20f}
 \label{subsec:description}
 El fichero \textbf{DESCRIPTION} es fundamental, ya que incluye la información descriptiva y técnica del paquete, como el nombre, la versión, los autores y las dependencias. Un ejemplo típico de este archivo es el siguiente:
 \begin{examplebox}
@@ -2862,7 +2862,7 @@ Los campos principales de este archivo son:
 
 Este archivo es crucial para que los usuarios y el sistema \texttt{R} identifiquen las características y requisitos del paquete
 \subsection{NAMESPACE}
-\label{sec:org24f2469}
+\label{sec:orgf945fa6}
 \label{subsec:namespace}
 El archivo \textbf{NAMESPACE} es el encargado de gestionar el espacio de nombres del paquete, permitiendo definir qué funciones y objetos serán visibles (exportados) y cuáles se mantendrán internos. Además, es útil para definir qué funciones o métodos de otros paquetes serán importados para us uso dentro del paquete.
 
@@ -2893,7 +2893,7 @@ search()
 \end{verbatim}
 
 \subsubsection{Manejo de variables}
-\label{sec:orgc73fed1}
+\label{sec:org25b7e9e}
 \begin{itemize}
 \item Exportar variables:
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -2910,7 +2910,7 @@ importFrom(pkgExt, var1, var2)
 \end{lstlisting}
 \end{itemize}
 \subsubsection{Manejo de clases y métodos}
-\label{sec:orgfcd9f57}
+\label{sec:org236565d}
 \begin{itemize}
 \item Para registrar un \textbf{método} para una \textbf{clase} determinada:
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -2942,7 +2942,7 @@ importClassesFrom(package, ...)
 importMethodsFrom(package, ...)
 \end{lstlisting}
 \subsection{Documentación}
-\label{sec:orgf2c3ba7}
+\label{sec:orgc2c5cd6}
 \label{subsec:documentacion}
 La documentación en R sigue un formato específico llamado \texttt{Rd} (\emph{R documentation}), que está inspirado en LaTex. Cada función, método o clase del paquete debe tener una página de documentación asociada, que generalmente se encuentra en el subdirectorio \texttt{man/}. Estas páginas incluyen información sobre el uso de la función, argumentos, detalles de la implementación y ejemplos de uso.
 \begin{examplebox}
