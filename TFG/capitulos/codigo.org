@@ -77,7 +77,7 @@ show(solD_strous)
   - El coseno del ángulo cenital solar (\(cos(\theta_{zs})\)): obtenida a partir de la función =zenith=.
   - La altura solar (\(\gamma_s\)): obtenida a partir del resultado anterior[fn:3].
   - El ángulo acimutal solar (\(\theta_{zs}\)): calculada mediante la función =azimuth=.
-  - La irradiancia extra-atmosférica (\(B_0(0)\)): calculada mediante el coseno del ángulo cenital, la constante solar (\(B_0\)) y la excentridad (cálculada en =fSolD=) [ecuación ref:eq:irrad_horiz].
+  - La irradiancia extra-atmosférica (\(B_0(0)\)): calculada mediante el coseno del ángulo cenital, la constante solar (\(B_0\)) y la excentridad (cálculada en =fSolD=) [ecuación ref:eq:irradianciaextra].
 #+begin_src R
 solI <- fSolI(solD = solD[1], sample = 'hour') #Computo solo un día a fin mejorar la visualización
 show(solI)
