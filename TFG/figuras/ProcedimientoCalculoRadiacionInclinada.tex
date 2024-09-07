@@ -18,20 +18,20 @@
       B(0) \\
       G(0)
     \end{array}$};
-  \node[draw](Inclin) at (5,2) {$
+  \node[draw](Inclin) at (4,2) {$
     \begin{array}{c}
       D(\beta,\alpha) \\
       B(\beta,\alpha) \\
       G(\beta,\alpha)\\
     \end{array}$};
-  \node[draw](Eff) at (5,-2){$
+  \node[draw](Eff) at (8,2){$
     \begin{array}{c}
       D_{ef}(\beta,\alpha) \\ B_{ef}(\beta,\alpha) \\
       G_{ef}(\beta,\alpha)
     \end{array}$};
-  \node[draw](Pdc) at (10, -2) {$P_{DC}$};
-  \node[draw](Pac) at (10, 2) {$P_{AC}$};
-  \node[draw](Eac) at (10, 5) {$E_{AC}$};
+  \node[draw](Pdc) at (12, 2) {$P_{DC}$};
+  \node[draw](Pac) at (12, 5) {$P_{AC}$};
+  \node[draw](Eac) at (12, 8) {$E_{AC}$};
 
   \draw[->] (Gd) -- (Dd) node[midway, right] {$
     \begin{array}{c}
@@ -45,18 +45,18 @@
       r_D\\
       r_G
     \end{array}$};
-  \draw[->] (G) -- (Inclin) node[midway, below] {$
+  \draw[->] (G) -- (Inclin) node[midway, above] {$
     \begin{array}{c}
       \cos(\theta_{zs})\\
       \cos(\theta_s)
     \end{array}$};
-  \draw[->] (Inclin) -- (Eff) node[midway, right] {$
+  \draw[->] (Inclin) -- (Eff) node[midway, above] {$
     \begin{array}{c}
       \frac{T_{\mathrm{sucio}}(0)}{T_{\mathrm{limpio}}(0)}\\
       FT_D\\
       FT_B
     \end{array}$};
-  \draw[->] (Eff) -- (Pdc) node[midway, below] {$\eta_{FV}$};
+  \draw[->] (Eff) -- (Pdc) node[midway, above] {$\eta_{FV}$};
   \draw[->] (Pdc) -- (Pac) node[midway, left] {$\eta_{Inv}$};
   \draw[->] (Pac) -- (Eac) node[midway, left] {$\int$};
   
