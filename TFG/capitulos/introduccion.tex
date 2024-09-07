@@ -2,17 +2,17 @@
 \label{chap:introduccion}
 
 \section{Objetivos}
-\label{sec:org4cd37d2}
+\label{sec:orga469e6d}
 \label{sec:objetivos}
 El objetivo principal de este proyecto es el desarrollo de un paquete en R \cite{rcoreteam23} con el cual poder realizar estimaciones y representaciones gráficas de la geometría solar, radiación solar en el plano horizontal y del generador, y el funcionamiento de sistemas fotovoltaicos de conexión a red y de bombeo de agua.
 
-Durante el resto del documento, si fuera necesario, se hará referencia al paquete desarrollado en este proyecto con el nombre solaR2 [CITAR SOLAR2].
+Durante el resto del documento, si fuera necesario, se hará referencia al paquete desarrollado en este proyecto con el nombre \href{https://solarization.github.io/solaR2/}{solaR2}.
 
 El usuario puede colocar los datos que considere convenientes (desde una base de datos oficial, una base de datos propia\ldots{} etc.) en cada una de las funciones que ofrece el paquete pudiendo así obtener resultados de la geometría solar, de la radiación horizontal, de la efectiva y hasta de la producción de diferentes tipos de sistemas fotovoltaicos.
 
 El paquete también incluye una serie de funciones que permiten hacer representaciones gráficas de estos resultados con el fin de poder apreciar con más detalle las diferencias entre sistemas y contemplar cual es la mejor opción para el emplazamiento elegido.
 
-Este proyecto toma su origen en el paquete ya existente \texttt{solaR} \cite{perpinan12} el cual desarrolló el tutor de este proyecto en 2010. Esta versión, la 0.14, ha tenido una serie de actualizaciones, siendo la más reciente la 0.46 (en el 2021). Sin embargo, al ser versiones de un software antiguo se propuso la idea de renovarlo teniendo en cuenta el paquete en el que basa su funcionamiento. El paquete \texttt{solaR} basó su funcionamiento en el paquete \texttt{zoo} \cite{zeileis05} el cual proporciona una sólida base para trabajar con series temporales. Sin embargo, como base de \texttt{solaR2} se optó por el paquete \texttt{data.table} \cite{barrett24}. Este paquete ofrece una extensión de los clásicos \texttt{data.frame} de R en los \texttt{data.table}, los cuales pueden trabajar rápidamente con enormes cantidades de datos (por ejemplo, 100 GB de RAM).
+Este proyecto, toma su origen en el paquete ya existente \texttt{solaR} \cite{perpinan12}, el cual, desarrolló el tutor de este proyecto en 2010. Esta versión, la 0.14, ha tenido una serie de actualizaciones, siendo la más reciente la 0.46 (en el 2021). Sin embargo, al ser versiones de un software antiguo se propuso la idea de renovarlo teniendo en cuenta el paquete en el que basa su funcionamiento. El paquete \texttt{solaR} ha basado su funcionamiento en el paquete \texttt{zoo} \cite{zeileis05} el cual proporciona una sólida base para trabajar con series temporales. Sin embargo, como base de \texttt{solaR2} se ha optado por el paquete \texttt{data.table} \cite{barrett24}. Este paquete ofrece una extensión de los clásicos \texttt{data.frame} de R en los \texttt{data.table}, los cuales pueden trabajar rápidamente con enormes cantidades de datos (por ejemplo, 100 GB de RAM).
 
 La clave de ambos proyectos es que al estar basados en R, cualquier usuario puede acceder a ellos de forma gratuita, tan solo necesitas tener instalado R en tu dispositivo.
 
@@ -54,3 +54,21 @@ El paquete \texttt{solaR2} utiliza este paquete para representar de forma visual
 \item Obtener conocimientos teóricos acerca de la radiación solar y de la producción de energía solar mediante sistemas fotovoltaicos y sus diversos tipos.
 Para ello se ha usado en mayor medida el libro ``Energía Solar Fotovoltaica'' \cite{Perpinan2023}.
 \end{itemize}
+
+\section{Análisis previo de soluciones}
+\label{sec:org6caccd2}
+Antes de comenzar el desarrollo del proyecto, se llevó a cabo una revisión de las soluciones de estimaciones de instalaciones fotovoltaicas existentes en el mercado. Algunas de las soluciones encontradas fueron:
+\begin{enumerate}
+\item \textbf{PVSyst- Photovoltaic Software}
+El software PVSyst, desarrollado por la empresa suiza con el mismo nombre es quizá el más conocido dentro del ámbito del estudio y la estimación de instalaciones fotovoltaicas. Ofrece una amplia capacidad de personalización de todos los componentes de la instalación.
+\item \textbf{SISIFO}
+Es una herramienta web diseñada y desarrollada por el Grupo de Sistemas Fotovoltaicos del Instituto de Energía Solar de la Universidad Politécnica de Madrid. Ha sido y es la herramienta interna utilizada por los ingenieros de dicho grupo.
+\item \textbf{PVGIS}
+Aplicación web desarrollada por el European Commission Joint Research Center desde. Su enfoque es asistir en el calculo y estimación de instalaciones fotovoltaicas, ya sean conectadas a red, de seguimiento o de autoconsumo.
+\item \textbf{System Advisor Model}
+System Advisor Model (SAM), desarrollado por el Laboratorio Nacional de Energías Renovables, perteneciente al Departamento de Energía del gobierno americano, es un software técnico-económico gratuito que ayuda a la toma de decisiones en el amplio campo de las energías renovables. Ofrece un conjunto de soluciones muy completas no solamente relacionadas con la energía fotovoltaica, sino también termosolar, eólica, geotermal o biomasa, entre otras.
+\item \textbf{solaR}
+solaR es un paquete de código para el entorno de R, desarrollado por Oscar Perpiñán. Es el antecesor del paquete del que trata este proyecto.
+\end{enumerate}
+
+En el apartado \ref{sec:soluciones-actuales-carencias} se lleva a cabo un desarrollo más detallado de las características de las soluciones mencionadas así como sus ventajas y limitaciones.

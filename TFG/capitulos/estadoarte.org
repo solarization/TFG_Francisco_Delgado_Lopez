@@ -31,6 +31,7 @@ El sector industrial fotovoltaico nacional tiene una fuerte presencia en España
 En definitiva, la fotovoltaica es una tecnología en auge y con perspectivas para ser el pilar de la transición ecológica. Por ello, surge la necesidad de encontrar herramientas que permitan estimar el desempeño que estos sistemas pueden tener a la hora de realizar estudios de viabilidad económica.
 
 * Soluciones actuales y sus carencias
+label:sec:soluciones-actuales-carencias
 Como se mencionó en el capítulo ref:chap:introduccion, existen una serie de herramientas que permiten el cálculo y la simulación de instalaciones fotovoltaicas. Todas ellas presentan una serie de ventajas específicas, a cambio de una serie de limitaciones. Estas son:
 1. *PVsyst - Photovoltaic Software* cite:pvsyst
    Este software es probablemente el más conocido dentro del ámbito del estudio y la estimación de instalaciones fotovoltaicas. Destaca por la personalización detallada de los componentes de la instalación (módulos, inversores, sombreado, etc.), lo que ermite una simulación precisa a través de datos meteorológicos y parámetros detallados del sistema. Su uso está extendido en proyectos de gran escala y estuidos avanzados de eficiencia.

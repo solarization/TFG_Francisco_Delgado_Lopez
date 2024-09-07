@@ -76,7 +76,7 @@ show(solD)
 	   par.settings = solaR.theme, scales = list(y = 'free'),
 	   ylab = '', layout = c(1, 3))
     #+end_src
-    #+ATTR_LATEX: :width \textwidth
+    #+ATTR_LATEX: :width 0.8\textwidth
     file:figuras/codigo-fSolD.pdf
 - =fSolI=: toma los resultados obtenidos en =fSolD= y calcula la geometría a nivel intradiario, es decir, aquella que se puede calcular en unidades de tiempo menores a los días.
   Estas son:
@@ -92,14 +92,14 @@ solD <- solD[1] #Computo solo un día a fin mejorar la visualización
 solI <- fSolI(solD = solD, sample = 'min') 
 xyplot(solI)
 #+end_src
-#+ATTR_LATEX: :width \textwidth
+#+ATTR_LATEX: :width 0.8\textwidth
 file:figuras/codigo-solI.pdf
   Además, como los datos nocturnos aportan poco a los cálculos que atañen a este proyecto, =fSolI= presenta la posibilidad de eliminar estos datos con el argumento =keep.night=.
 #+begin_src R :results graphics output :file "figuras/codigo-solInight.pdf" :width 8 :height 6
 solI_nigth <- fSolI(solD = solD, sample = 'min', keep.night = FALSE)
 xyplot(solI_nigth)
 #+end_src
-#+ATTR_LATEX: :width \textwidth
+#+ATTR_LATEX: :width 0.8\textwidth
 file:figuras/codigo-solInight.pdf
   Aparte, en vez de identificar el intervalo intradiario (con el argumento =sample=), se puede dar directamente la base temporal intradiaria.
 #+begin_src R :results graphics output :file "figuras/codigo-solIBTi.pdf" :width 8 :height 6
@@ -108,14 +108,14 @@ BTi <- fBTi(BTd, sample = 'min')
 solI_BTi <- fSolI(solD, BTi = BTi, keep.night = FALSE)
 xyplot(solI_BTi)
 #+end_src
-#+ATTR_LATEX: :width \textwidth
+#+ATTR_LATEX: :width 0.8\textwidth
 file:figuras/codigo-solIBTi.pdf
   También, se puede indicar que no realice las correcciones de la ecuación del tiempo.
 #+begin_src R :results output graphics :file "figuras/codigo-solIEoT.pdf" :width 8 :height 6
 solI_EoT <- fSolI(solD = solD, BTi = BTi, EoT = FALSE)
 xyplot(solI_EoT)
 #+end_src
-#+ATTR_LATEX: :width \textwidth
+#+ATTR_LATEX: :width 0.8\textwidth
 file:figuras/codigo-solIEoT.pdf
 
 Finalmente, estas dos funciones, como se muestra en la figura ref:fig:calcSol, convergen en la función =calcSol=, dando como resultado un objeto de clase =Sol=. Este objeto muestra un resumen de ambos elementos junto con la latitud de los cálculos. Los argumentos de =calcSol= son las argumentos de las funciones anteriores
@@ -146,7 +146,7 @@ Ta = c(10, 14.1, 15.6, 17.2, 19.3, 21.2,
 BD <- readG0dm(G0dm = G0dm, Ta = Ta, lat = 37.2)
 xyplot(BD)
 #+end_src
-#+ATTR_LATEX: :width \textwidth
+#+ATTR_LATEX: :width 0.8\textwidth
 file:figuras/codigo-readg0dm.pdf
 - =readBD=: Esta familia de funciones puede leer ficheros de datos y transformarlos en un objeto de clase =Meteo=. Se dividen en:
   - =readBDd=: Procesa datos meteorológicos de tipo diarios.
@@ -159,7 +159,7 @@ file:figuras/codigo-readg0dm.pdf
     - =ta.col=: nombre de la columna que contiene los datos de temperatura. Por defecto es 'Ta'.
     - =g0.col=: nombre de la columna que contiene los datos de irradiación. Por defecto es 'G0'.
     - =keep.cols=: si su valor es =TRUE=, mantiene las columnas que no sean importantes para el resto de operaciones.
-  #+begin_src R :results graphics output :file "figuras/codigo-readBD.pdf" :width 8 :height 6
+  #+begin_src R :results graphics output :file "figuras/codigo-readBD.pdf" :width 12 :height 9
   ## Se utiliza un archivo alojado en el
   ## github del tutor de este proyecto 
   myURL <-"https://raw.githubusercontent.com/oscarperpinan/R/master/data/aranjuez.csv"
@@ -170,7 +170,7 @@ file:figuras/codigo-readg0dm.pdf
 		 ta.col = 'TempAvg', g0.col = 'Radiation', keep.cols = TRUE)
   xyplot(BDd)
   #+end_src
-  #+ATTR_LATEX: :width \textwidth
+  #+ATTR_LATEX: :width 0.8\textwidth
   file:figuras/codigo-readBD.pdf
   - =readBDi=: Procesa datos meteorológicos de tipo intradiarios.
     Como argumentos tiene:
@@ -195,7 +195,7 @@ file:figuras/codigo-readg0dm.pdf
 		 keep.cols = TRUE)
   xyplot(BDi)
   #+end_src
-  #+ATTR_LATEX: :width \textwidth
+  #+ATTR_LATEX: :width 0.8\textwidth
   file:figuras/codigo-readBDi.pdf
 - =dt2Meteo=: Transforma un =data.table= o =data.frame= en un objeto de clase =Meteo=.
   Como argumentos tiene:
@@ -209,7 +209,7 @@ names(helios) <- c('Dates', 'G0d', 'TempMax', 'TempMin')
 helios_meteo <- dt2Meteo(file = helios, lat = 40, type = 'bd')
 xyplot(helios_meteo)
 #+end_src
-#+ATTR_LATEX: :width \textwidth
+#+ATTR_LATEX: :width 0.8\textwidth
 file:figuras/codigo-dt2meteo.pdf
 - =zoo2Meteo=: Transforma un objeto de clase =zoo=[fn:4] en un objeto de clase =Meteo=.
   Como argumentos tiene:
@@ -240,7 +240,7 @@ bd_SIAR <- readSIAR(Lat = 40.40596822621351, Lon = -3.70038308516172,
 		    tipo = 'Mensuales', n_est = 3)
 xyplot(bd_SIAR)
 #+end_src
-#+ATTR_LATEX: :width \textwidth
+#+ATTR_LATEX: :width 0.8\textwidth
 file:figuras/codigo-readsiar.pdf
       
 * Radiación en el plano horizontal
@@ -274,7 +274,7 @@ file:figuras/calcg0.pdf
 	   ylab = '', layout = c(1, 3))
 
     #+end_src
-    #+ATTR_LATEX: :width \textwidth
+    #+ATTR_LATEX: :width 0.8\textwidth
     file:figuras/codigo-fcompdmes.pdf
     - Diarios:
     #+begin_src R :results graphics output :file "figuras/codigo-fcompddia.pdf" :width 8 :height 6 
@@ -294,7 +294,7 @@ file:figuras/calcg0.pdf
 	   par.settings = solaR.theme, scales = list(y = 'free'),
 	   ylab = '', layout = c(1, 3))
     #+end_src
-    #+ATTR_LATEX: :width \textwidth
+    #+ATTR_LATEX: :width 0.8\textwidth
     file:figuras/codigo-fcompddia.pdf
     También, se puede aportar una función de correlación propia con el argumento =f=.
     #+begin_src R :results graphics output :file "figuras/codigo-fcompduser.pdf" :width 8 :height 6
@@ -309,7 +309,7 @@ file:figuras/calcg0.pdf
     compD_user <- fCompD(sol = sol, G0d = G0d, corr = 'user', f = f_corrd)
     xyplot(compD_user)
     #+end_src
-    #+ATTR_LATEX: :width \textwidth
+    #+ATTR_LATEX: :width 0.8\textwidth
     file:figuras/codigo-fcompduser.pdf
     Por último, si =G0d= ya contiene todos los componentes, se puede especifica que no haga ninguna correlación.
     #+begin_src R
@@ -327,7 +327,7 @@ file:figuras/calcg0.pdf
   compI <- fCompI(sol = sol, compD = compD)
   xyplot(compI)
   #+end_src
-  #+ATTR_LATEX: :width \textwidth
+  #+ATTR_LATEX: :width 0.8\textwidth
   file:figuras/codigo-fcompicompd.pdf
   - =G0I=: Este argumento recibe datos de irradiancia, para después, poder aplicar las correcciones indicadas en el argumento =corr=.
   #+begin_src R :results graphics output :file "figuras/codigo-compicorr.pdf" :width 8 :height 6
@@ -344,7 +344,7 @@ file:figuras/calcg0.pdf
 	 par.settings= solaR.theme,scales =list(y = 'free'),
 	 ylab = '', layout= c(1,3))
   #+end_src
-  #+ATTR_LATEX: :width \textwidth
+  #+ATTR_LATEX: :width 0.8\textwidth
   Como con =fCompD=, se puede añadir una función correctora propia.
   #+begin_src R
   f_corri <- function(sol, G0i){
@@ -396,7 +396,7 @@ Como argumento más importante está =modeRad=, el cual selecciona el tipo de da
   g0_bdI <- calcG0(lat, modeRad = 'bdI', dataRad = bdI)
   xyplot(g0_bdI)
   #+end_src
-  #+ATTR_LATEX: :width \textwidth
+  #+ATTR_LATEX: :width 0.8\textwidth
   file:figuras/codigo-calcg0.pdf
 
 * Radiación efectiva en el plano del generador
@@ -419,7 +419,7 @@ file:figuras/calcgef.pdf
 			 modeTrk = 'fixed')
   xyplot(angGen_fixed)
   #+end_src
-  #+ATTR_LATEX: :width \textwidth
+  #+ATTR_LATEX: :width 0.8\textwidth
   file:figuras/codigo-fthetafixed.pdf
   - =two=: para sistemas de seguimiento de doble eje.
   #+begin_src R :results graphics output :file "figuras/codigo-fthetatwo.pdf" :width 8 :height 6
@@ -427,7 +427,7 @@ file:figuras/calcgef.pdf
 		       modeTrk = 'two')
   xyplot(angGen_two)
   #+end_src
-  #+ATTR_LATEX: :width \textwidth
+  #+ATTR_LATEX: :width 0.8\textwidth
   file:figuras/codigo-fthetatwo.pdf
   - =horiz=: para sistemas de seguimiento horizontal Norte-Sur.
   #+begin_src R :results graphics output :file "figuras/codigo-fthetahoriz.pdf" :width 8 :height 6 
@@ -435,7 +435,7 @@ file:figuras/calcgef.pdf
 			 modeTrk = 'horiz')
   xyplot(angGen_horiz)
   #+end_src
-  #+ATTR_LATEX: :width \textwidth
+  #+ATTR_LATEX: :width 0.8\textwidth
   file:figuras/codigo-fthetahoriz.pdf
   También, tiene un argumento =BT= que indica cuando se usa la técnica de backtracking para un sistema horizontal Norte-Sur. Para funcionar, necesita de los argumentos =struct=, el cual presenta una lista con la altura de los módulos, y =dist=, el cual presenta un =data.frame= (o =data.table=) con la distancia que separa los módulos en la dirección Este-Oeste.
   #+begin_src R :results graphics output :file "figuras/codigo-fthetabt.pdf" :width 8 :height 6
@@ -446,7 +446,7 @@ file:figuras/calcgef.pdf
 		      struct = struct, dist = distances)
   xyplot(angGen_BT)
   #+end_src
-  #+ATTR_LATEX: :width \textwidth
+  #+ATTR_LATEX: :width 0.8\textwidth
   file:figuras/codigo-fthetabt.pdf
 - =fInclin=: la cual, partiendo del resultado de =fTheta= y de un objeto de clase =G0=, cálcula la irradiancia solar incidente en una superficie inclinada junto con los efectos del ángulo de incidencia y la suciedad para obtener la irradiancia efectiva.
   Como argumentos principales están:
@@ -465,7 +465,7 @@ file:figuras/calcgef.pdf
 	 par.settings = solaR.theme, scales = list(y = 'free'),
 	 ylab = '', layout = c(2, 2))
   #+end_src
-  #+ATTR_LATEX: :width \textwidth
+  #+ATTR_LATEX: :width 0.8\textwidth
   file:figuras/codigo-finclinis.pdf
   - =alb= Correspondiente al coeficiente de reflexión del terreno para la irradiancia de albedo. Por defecto tiene un valor de 0,2 (valor aceptable para un terreno normal).
   #+begin_src R :results graphics output :file "figuras/codigo-finclinalb.pdf" :width 8 :height 6
@@ -474,12 +474,12 @@ file:figuras/calcgef.pdf
   inclin_alb1 <- fInclin(compI = compI, angGen = angGen, alb = 1)
   inclin_alb1[, group := 'alb = 1']
   inclin_alb <- rbind(inclin_alb0, inclin_alb1)
-  xyplot(Gef + Def + Bef + Ref ~ Dates, inclin_is,
+  xyplot(Gef + Def + Bef + Ref ~ Dates, inclin_alb,
 	 groups = group, type = 'l', auto.key = TRUE,
 	 par.settings = solaR.theme, scales = list(y = 'free'),
 	 ylab = '', layout = c(2, 2))
   #+end_src
-  #+ATTR_LATEX: :width \textwidth
+  #+ATTR_LATEX: :width 0.8\textwidth
   file:figuras/codigo-finclinalb.pdf
   Además, cuenta con dos argumentos adicionales, =horizBright=, el cual, cuando su valor es =TRUE= (el que tiene por defecto), realiza una corrección de la radiación difusa cite:REINDL19909, y =HCPV=, es el acrónimo de *High Concentration PV system*[fn:8] (sistema fotovoltaico de alta concentración) que cuando su valor es =TRUE= (por defecto está puesto en =FALSE=), anula los valores de radiación difusa y de albedo.
   #+begin_src R
@@ -543,7 +543,7 @@ gef_shdbt <- calcGef(lat, modeTrk = 'horiz', dataRad = prom,
                         struct = struct, distances = distances)
 xyplot(gef_shdbt)
 #+end_src
-#+ATTR_LATEX: :width \textwidth
+#+ATTR_LATEX: :width 0.8\textwidth
 file:figuras/codigo-gef.pdf
 * Producción eléctrica de un SFCR
 label:produccion-electrica-sfcr
@@ -551,7 +551,7 @@ Con la radiación efectiva, se puede estimar la producción eléctrica que va a 
 
 Como se puede ver en la figura ref:fig:prodgcpv, =prodGCPV= funciona gracias a la siguiente función:
 #+CAPTION: Estimación de la producción eléctrica de un SFCR mediante la función =prodGCPV=, la cual emplea la función =fProd= para el computo de la potencia a la entrada (\(P_{DC}\)), a la salida (\(P_{AC}\)) y el rendimiento (\(\eta_{inv}\)) del inversor. label:fig:prodgcpv
-#+ATTR_LATEX: :width \textwidth :height \textheight :options keepaspectratio
+#+ATTR_LATEX: :width 0.8\textwidth :height \textheight :options keepaspectratio
 file:figuras/prodgcpv.pdf
 - =fProd=: simula el comportamiento de un sistema fotovoltaico conectado a red bajo diferentes condiciones de temperatura e irradiancia. Tiene los siguientes argumentos:
   - =inclin=: puede ser tanto un objeto de clase =Gef= como un =data.frame= (o =data.table=). Sin embargo, si es un =data.frame=, debe contener como mínimo una columna para =Gef= y otra para =Ta=
@@ -609,7 +609,7 @@ show(prod2x)
 prodHoriz <- prodGCPV(lat, modeTrk = 'horiz', dataRad = prom)
 xyplot(prodHoriz)
 #+end_src
-#+ATTR_LATEX: :width \textwidth
+#+ATTR_LATEX: :width 0.8\textwidth
 file:figuras/codigo-prodgcpv.pdf
 
 * Producción eléctrica de un SFB
@@ -617,7 +617,7 @@ De igual forma que en el apartado anterior, se puede estimar la producción elé
 
 Como se puede ver en la figura ref:fig:prodpvps, =prodPVPS= funciona gracias a la siguiente función:
 #+CAPTION: Estimación de la producción eléctrica de un SFB mediante la función =prodPVPS=, la cual emplea la función =fPump= para el computo del rendimiento de las diferentes parte de una bomba centrífuga alimentada por un convertidor de frecuencia. label:fig:prodpvps
-#+ATTR_LATEX: :width \textwidth :height 0.5\textheight :options keepaspectratio
+#+ATTR_LATEX: :width 0.8\textwidth :height 0.5\textheight :options keepaspectratio
 file:figuras/prodpvps.pdf
 - =fPump=: calcula el rendimiento de las diferentes partes de una bomba centrífuga alimentada por un convertidor de frecuencia siguiendo las leyes de afinidad. Tiene solo dos argumentos:
   - =pump=: lista que contiene los parametros de la bomba que va a ser simulada. Puede ser una fila de =pumpCoef=:
@@ -669,7 +669,7 @@ file:figuras/prodpvps.pdf
 		      pump = CoefSP8A44, H = 40, Pg = SP8A44$Pac[10])
   xyplot(prodsfb)
   #+end_src
-  #+ATTR_LATEX: :width \textwidth
+  #+ATTR_LATEX: :width 0.8\textwidth
   file:figuras/codigo-prodpvps.pdf
 * Optimización de distancias
 label:optimizacion-distancias
@@ -686,9 +686,9 @@ ShdM2x <- optimShd(lat, dataRad = prom, modeTrk = 'two',
                    prog = FALSE) #Se quita la barra de progreso
 shadeplot(ShdM2x)
 #+end_src
-#+ATTR_LATEX: :width \textwidth
+#+ATTR_LATEX: :width 0.8\textwidth
 file:figuras/codigo-optimshd2x.pdf
-#+begin_src R :results graphics output :file "figuras/codigo-optimshdhoriz.pdf" :width 8 :height 6
+#+begin_src R 
 structHoriz = list(L = 4.83)
 distHoriz = list(Lew = structHoriz$L * c(2,5))
 Shd12HorizBT <- optimShd(lat = lat, dataRad = prom,
@@ -698,10 +698,8 @@ Shd12HorizBT <- optimShd(lat = lat, dataRad = prom,
 			 struct = structHoriz,
 			 modeShd = 'bt',
 			 prog = FALSE) #Se quita la barra de progreso
-shadeplot(Shd12HorizBT)
+show(Shd12HorizBT)
 #+end_src
-#+ATTR_LATEX: :width \textwidth
-file:figuras/codigo-optimshdhoriz.pdf
 #+begin_src R :results graphics outpur :file "figuras/codigo-optimshdfixed.pdf" :width 8 :height 6
 structFixed = list(L = 5)
 distFixed = list(D = structFixed$L*c(1,3))
@@ -713,7 +711,7 @@ Shd12Fixed <- optimShd(lat = lat, dataRad = prom,
 		       prog = FALSE) #Se quita la barra de progreso
 shadeplot(Shd12Fixed)
 #+end_src
-#+ATTR_LATEX: :width \textwidth
+#+ATTR_LATEX: :width 0.8\textwidth
 file:figuras/codigo-optimshdfixed.pdf
 
 

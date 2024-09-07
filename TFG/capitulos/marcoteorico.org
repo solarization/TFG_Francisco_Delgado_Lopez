@@ -1,14 +1,17 @@
 \chapter{Marco teórico}
 label:chap:marco-teorico
-#+CAPTION:Procedimiento de cálculo. Tomando la irradiación global en el plano horizontal, se pueden calcular las componentes directa y difusa mediante índices de claridad y fracciones de difusa. Con todas las componentes de irradiación, se pueden estimar los valores de irradiancia. A continuación, se trasladan estos valores al plano inclinado para después poder aplicar los facotres por suciedad y sombras y obtener así los valores de irradiancia efectiva. Por ultimo, con la eficiencia del sistema fotovoltaico se puede obtener la potencia en corriente continua, la cual, al pasar por un inversor, se convierte en corriente alterna. Integrando esta potencia se consigue la energía. Figura modificada de la figura 3.3 del libro ESF cite:Perpinan2023. 
+#+CAPTION:El procedimiento de cálculo consiste en obtener la irradiancia efectiva a partir de la irradiación global en un plano horizontal. Primero, se separan las componentes directa y difusa utilizando índices de claridad y fracciones difusas. Luego, se trasladan estos valores al plano inclinado y se ajustan por factores de suciedad y sombras. Con la irradiancia efectiva y la eficiencia del sistema fotovoltaico, se calcula la potencia en corriente continua, que luego se convierte en corriente alterna a través de un inversor. Finalmente, al integrar esta potencia, se obtiene la energía. Figura modificada de la figura 3.3 del libro ESF cite:Perpinan2023. 
 #+NAME: fig:prod-calculo
-#+ATTR_LATEX: :placement [H] :height 0.4\textheight :width 0.8\textwidth :options keepaspectratio
+#+ATTR_LATEX: :placement [H] :width 0.8\textwidth 
 file:figuras/ProcedimientoCalculoRadiacionInclinada.pdf
 
 
 El paquete =solaR2= toma como marco teórico el libro de Oscar Perpiñán, tutor de este trabajo, Energía Solar Fotovoltaica \cite{Perpinan2023} para cada una de las operaciones de cálculo que realizan cada una de las funciones.
 En la figura [[fig:prod-calculo]], se muestra un diagrama que resume los pasos que se siguen a la hora de calcular la producción de sistemas fotovoltaicos.
 
+#+begin_export latex
+\FloatBarrier
+#+end_export
 
 Estos pasos son:
 1. Calcular la geometría que define la posición relativa del Sol desde la Tierra.
@@ -24,7 +27,7 @@ Estos pasos son:
 * Radiación solar
 label:radiacion-solar
 ** Geometría Sol y Tierra
-Como es sabido, el movimiento terrestre se compone de una tralación alrededor del Sol y un giro sobre su eje. En el movimiento de traslación la Tierra se desplaza alrededor del Sol siguiendo una elipse de baja excentricidad en la que el Sol ocupa uno de los focos. La duración de este movimiento define un año. La corrección debida a la excentricidad de la elipse[fn:1] se calcula con: \nomenclature[epsilon0]{$\epsilon_0$}{Corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del Sol}
+Como es sabido, el movimiento terrestre se compone de una traslación alrededor del Sol y un giro sobre su eje. En este movimiento, la Tierra se desplaza alrededor del Sol siguiendo una elipse de baja excentricidad en la que el Sol ocupa uno de los focos. La duración de este movimiento define un año. La corrección debida a la excentricidad de la elipse[fn:1] se calcula con: \nomenclature[epsilon0]{$\epsilon_0$}{Corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del Sol}
 #+begin_export latex
 \begin{equation}
 \epsilon_0=1+0.033\cdot \cos(\frac{2\pi d_n}{365})
@@ -70,7 +73,7 @@ donde:
   #+end_export
 
 ** Radiación fuera de la atmósfera terrestre
-La radiación extra-atmosférica es la radiación directa del Sol que alcanza la superficie de la atmósfera. Ya que la relación entre la distancia con el Sol y tamaño de nuestro planeta, es razonable asumir que su valor es constante en toda la superficie exterior de la atmósfera. Se define la constante solar, $B_0$ como el valor de irradiancia solar incidente en un plano normal al vector Sol-Tierra. Se acepta como representativo el valor promedio de $B_0=1367W/m^2$.
+La radiación extra-atmosférica es la radiación directa del Sol que alcanza la superficie de la atmósfera. El tamaño de la Tierra furente a la distancia que la separa del Sol es muy pequeña, por lo que, es razonable asumir que su valor es constante en toda la superficie exterior de la atmósfera. Se define la constante solar, $B_0$ como el valor de irradiancia solar incidente en un plano normal al vector Sol-Tierra. Se acepta como representativo el valor promedio de $B_0=1367W/m^2$.
 
 Para calcular la irradiancia incidente en una superficie tangente a la atmósfera en una latitud determinada ($B_0(0)$)[fn:7], se toma la siguiente ecuación: \nomenclature[B00]{$B_0(0)$}{Irradiancia extra-atmosférica o extra-terrestre en el plano horizontal}
 #+begin_export latex
@@ -292,7 +295,7 @@ FTB(\theta_s)=\frac{exp(-\frac{cos(\theta_s)}{a_r})-exp(-\frac{1}{a_r})}{1-exp(-
 \label{eq:factor-perdidas-directa}
 \end{equation}
 #+end_export
-Este factor depende el ángulo de incidencia \(theta_s\) y del coeficiente de pérdidas angulares \(a_r\). Cuando la radiación es perpendicular a la superficie ($\theta_s=0$), \(FTB\) es cero. En la figura [[fig:PerdidasAngulares]] se puede observar que las pérdidas angulares son más significativas cuando \(\theta_s\) supera los 60º, y se acentúan con mayor suciedad.
+Este factor depende del ángulo de incidencia, \(\theta_s\), y del coeficiente de pérdidas angulares, \(a_r\). Cuando la radiación es perpendicular a la superficie ($\theta_s=0$), \(FTB\) es cero. En la figura [[fig:PerdidasAngulares]] se puede observar que las pérdidas angulares son más significativas cuando \(\theta_s\) supera los 60º, y se acentúan con mayor suciedad.
 #+NAME: fig:PerdidasAngulares
 #+CAPTION: Pérdidas angulares de un módulo fotovoltaico para diferentes grados de suciedad en función del ángulo de incidencia. Figura 3.7 del libro ESF cite:Perpinan2023.
 #+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio 
@@ -378,7 +381,7 @@ El punto de máxima potencia es aquel situado en la curva de funcionamiento del 
 [[file:figuras/CurvaIV_Ta20_G800.pdf]]
 
 *** Factor de forma y eficiencia
-El área encerrada por el rectángulo definido por el producto $I_{mpp}\cdot V_{mpp}$ es, como e observable en la figura [[fig:iv-20-800]], inferiro a la respresentada por el producto $I_{sc}\cdot V_{oc}$. La relación entre estad dos superficies se cuantifica con el factor de forma:\nomenclature[MPP]{MPP}{Punto de máxima potencia de un dispositivo fotovoltaico}
+El área encerrada por el rectángulo definido por el producto $I_{mpp}\cdot V_{mpp}$ es, como se puede apreciar en la figura [[fig:iv-20-800]], inferiro a la respresentada por el producto $I_{sc}\cdot V_{oc}$. La relación entre estad dos superficies se cuantifica con el factor de forma:\nomenclature[MPP]{MPP}{Punto de máxima potencia de un dispositivo fotovoltaico}
 #+begin_export latex
 \begin{equation}
 FF=\frac{I_{mpp}\cdot V_{mpp}}{I_{sc}\cdot V_{oc}}
@@ -395,7 +398,7 @@ Por otra parte, la calidad de una célula se puede cuantificar con la eficiencia
 \label{eq:efi-cel}
 \end{equation}
 #+end_export
-donde $P_L=A_c\cdot G_{ef}$ representa la potencia luminosa que incide en la célula\nomenclature[Ac]{\(A_c\)}{Área de una célula}.Como es evidente de la ecuación [[ref:eq:efi-cel]], este valor de eficiencia se corresponde al caso en el que el acoplamiento entre la carga y la célula permite a ésta trabajar en el punto de máxima potencia. En la figura [[fig:nrel-cell]] se muestra la evolución temporal del valor de eficiencia de célula de laboratorio para diferentes tecnologías.
+donde $P_L=A_c\cdot G_{ef}$ representa la potencia luminosa que incide en la célula\nomenclature[Ac]{\(A_c\)}{Área de una célula}. Como es evidente de la ecuación [[ref:eq:efi-cel]], este valor de eficiencia se corresponde al caso en el que el acoplamiento entre la carga y la célula permite a esta trabajar en el punto de máxima potencia. En la figura [[fig:nrel-cell]] se muestra la evolución temporal del valor de eficiencia de célula de laboratorio para diferentes tecnologías.
 
 #+CAPTION: Evolución de la eficiencia de células según la tecnología (según el National Renewable Energy Laboratory [[cite:nrel24]] (EEUU)).
 #+NAME: fig:nrel-cell
@@ -407,13 +410,13 @@ La temperatura y la radiación son factores cruciales en el funcionamiento de un
 
 En cuanto a la iluminación, la fotocorriente y la tensíon de circuito abierto son proporcionales a la irradiancia incidente.
 
-Tomando en cuanta estas influencias, se definen una condiciones de funcionamiento, denominadas condiciones estándar de medida(STC)\nomenclature[STC]{STC}{Condiciones estándar de medida de un dispositivo fotovoltaico}, válidas para caracterizar una célula en el entorno de un laboratorio. Estas condiciones vienen determinadas por:
+Tomando en cuenta estas influencias, se definen una condiciones de funcionamiento, denominadas condiciones estándar de medida(STC)\nomenclature[STC]{STC}{Condiciones estándar de medida de un dispositivo fotovoltaico}, válidas para caracterizar una célula en el entorno de un laboratorio. Estas condiciones vienen determinadas por:
 - Irradiancia: $G_{stc}=1000W/m^2$ con incidencia normal.
   #+begin_export latex
   \nomenclature[GSTC]{\(G_{STC}\)}{Irradiancia incidente en condiciones estandar de medida}
   #+end_export
 - Temperatura de célula: $T_c^*=25^\circ C$.\nomenclature[TC*]{\(T_c^*\)}{Temperatura de célula en condiciones estándar de medida}
-- Masa de aire: $AM=1,5$.[fn:18]\nomenclature[AM]{\(AM\)}{Masa de aire}
+- Masa de aire: $AM=1,5$.[fn:18]
 Frecuentemente los fabricantes informan de los valores de las tensiones $V_{oc}^*$ y $V_{mpp}^*$ y las corrientes $I_{sc}^*$ y $I_{mpp}^*$[fn:19]. A partir de estos valores es posible referir a estas condiciones:
 - La potencia: $P_{mpp}^*=I_{mpp}^*\cdot V_{mpp}^*$
 - El factor de forma: $FF^*=\frac{P_{mpp}^*}{I_{sc}^*\cdot V_{oc}^*}$
@@ -424,9 +427,9 @@ label:subsec:funcionamiento-modulo-fotovoltaico
 *** Comportamiento térmico de un módulo
 La mayoría de las ecuaciones que definen el comportamiento de un módulo fotovoltaico[fn:20] se establecen en lo que se conocen como condiciones estándar de funcionamiento. En estas condiciones, la temperatura de la célula es de $25^\circ C$. Sin embargo, la temperatura de operación de la célula es diferente y depende directamente de la radiación que recibe el módulo en cada momento.
 
-El módulo recibe una cantidad de radiación dada, absorbiendo la fracción de ésta que no se refleja al exterior. De dicha fracción, parte de ella es transformada en energía eléctrica mientras que el resto se entrega en forma de calor al entorno.
+El módulo recibe una cantidad de radiación dada, absorbiendo la fracción de esta que no se refleja al exterior. De dicha fracción, parte de ella es transformada en energía eléctrica mientras que el resto se entrega en forma de calor al entorno.
 
-Para simplificar, se puede asumir que el incremento de la temperatura de la célula respecto de la temperatura ambiente depende linealmente de la irradiancia incidente en ésta. El coeficiente de proporcionalidad depende de muchos factores, tales como el modo de instalación del módulo, la velocidad del viento, la humedad ambiente y las características constructivas del laminado.
+Para simplificar, se puede asumir que el incremento de la temperatura de la célula respecto de la temperatura ambiente depende linealmente de la irradiancia incidente en esta. El coeficiente de proporcionalidad depende de muchos factores, tales como el modo de instalación del módulo, la velocidad del viento, la humedad ambiente y las características constructivas del laminado.
 
 Estos factores quedan recogidos en un valor único representado por la temperatura de operación nominal de célula (NOCT o TONC)\nomenclature[TONC]{\(TONC\)}{Temperatura de operación nominal de célula}, definida como aquella que alcanza una /célula/ cuando su /módulo/ trabaja en las siguientes condiciones:
 - Irradiancia: $G=800W/m^2$.
@@ -461,7 +464,7 @@ I_{sc}=G_{ef}\cdot \frac{I_{sc}^*}{G^*}
 *** Factor de forma variable
 Una vez obtenidos los valores de $V_{oc}$ y $I_{sc}$, el siguiente paso ha de ser calcular los valores de tensión y corriente en el punto de máxima potencia, pues es donde el generador estará entregando su máxima potencia, como su propio nombre indica, y por tanto es un punto de interés para el cálculo.
 
-Existen dos metodologías de cálculo de dicho punto, uno de ellos significantemente más sencillo que el otro. Éste consiste en suponer que el Factor de Forma, definido en la expresión [[ref:eq:factor-forma]] es constante.
+Existen dos metodologías de cálculo de dicho punto, uno de ellos significantemente más sencillo que el otro. este consiste en suponer que el Factor de Forma, definido en la expresión [[ref:eq:factor-forma]] es constante.
 
 Si suponemos que FF es constante, se podrían extraer los valores de tensión y corriente en el punto de máxima potencia ya que si
 #+begin_export latex
@@ -503,7 +506,7 @@ Sin embargo, este suposición da resultados alejados a una estimación acertada.
   \end{equation}
   #+end_export
 
-Con éstos cálculos previos, éste método propone localizar el punto de máxima potencia de forma aprodimada mediante la ecuaciones:
+Con estos cálculos previos, este método propone localizar el punto de máxima potencia de forma aprodimada mediante la ecuaciones:
 #+begin_export latex
 \begin{equation}
 i_{mpp}=1-\frac{D_M}{k_{oc}}
@@ -533,7 +536,7 @@ P_{mpp}=I_{mpp}\cdot V_{mpp}
 
 ** Cálculo de potencias y energías de un sistema fotovoltaico conectado a la red
 label:subsec:calculo-potencias-energias
-La potencia obtenida en el paso anterior es la de un solo módulo. Para conocer la potencia que va a ser capaz de entregar un sfcr, se debe tener en cuenta su configuración de módulos en serie y en paralelo[fn:21].
+La potencia obtenida en el paso anterior es la de un solo módulo. Para conocer la potencia que va a ser capaz de entregar un SFCR, se debe tener en cuenta su configuración de módulos en serie y en paralelo[fn:21].
 #+begin_export latex
 \begin{equation}
 P_g^*=N_s\cdot N_p\cdot P_m^*
@@ -675,7 +678,7 @@ Para calcular esta altura total equivalente, se debe suponer que:
   - Caudal de ensayo, $Q_t$. \nomenclature[Qt]{$Q_t$}{Caudal de ensayo de un pozo}
 - Que se ha realizado el ensayo de bombeo para caracterizar los pozos con bomba portátil empleando el caudal máximo del pozo, $Q_{max}$ ($Q_t=Q_{max}$).
   #+begin_export latex
-  \nomenclature[Qman]{$Q_{max}$}{caudal máximo del pozo}
+  \nomenclature[Qman]{$Q_{max}$}{Caudal máximo del pozo}
   #+end_export
 
 Con estas suposiciones se puede llegar a la expresión:
@@ -786,13 +789,13 @@ Debido a la complicación del cálculo del dimensionamiento de los sistemas foto
 Al diseñar una central fotovoltaica se debe decidir la ubicación de las diferentes partes del generador resolviendo un compromiso entre la mejor ocupación del terreno disponible y la minimización del impacto de sombras mutuas arrojadas entre los módulos[fn:23].
 
 Este factor de sombras implica un nivel de ocupación de terreno que depende del modo de seguimiento del generador. La ocupación del terreno se puede medir con dos métricas:
-- Relación de ocupación del terreno (/Ground Coverage Ratio/, $GCR$): es la relación entre el área del generador, $A_G$, y el área del terreno ocupado, $A_T$ (por tanto, siempre será GCR < 1). \nomenclature[AG]{$A_G$}{Área de un generador fotovoltáico} \nomenclature[GCR]{$GCR$}{Ground coverage ratio}
+- *Relación de ocupación del terreno* (/Ground Coverage Ratio/, $GCR$): es la relación entre el área del generador, $A_G$, y el área del terreno ocupado, $A_T$ (por tanto, siempre será GCR < 1). \nomenclature[AG]{$A_G$}{Área de un generador fotovoltáico} \nomenclature[GCR]{$GCR$}{Ground coverage ratio}
   #+begin_export latex
   \begin{equation}
   GCR = \frac{A_G}{A_T}
   \end{equation}
   #+end_export
-- Ratio de ocupación del terreno ($ROT$, o /Ground Requirement Ratio/, $GRR$): es el inverso del GCR, la relación entre el área de terreno ocupado, $A_T$, y el área del generador, $A_G$. \nomenclature[ROT]{$ROT$}{Ratio de ocupación del terreno}
+- *Ratio de ocupación del terreno* ($ROT$, o /Ground Requirement Ratio/, $GRR$): es el inverso del GCR, la relación entre el área de terreno ocupado, $A_T$, y el área del generador, $A_G$. \nomenclature[ROT]{$ROT$}{Ratio de ocupación del terreno}
   #+begin_export latex
   \begin{equation}
   ROT = \frac{A_T}{A_G}
@@ -800,7 +803,7 @@ Este factor de sombras implica un nivel de ocupación de terreno que depende del
   #+end_export
 
 ** Sistemas estáticos
-Las filas que componen el generador arojan sombras unas sobre otras en determinados momentos del días y año. Como recomendación general, es de uso común respetar un mínimo de 4 horas de sol en torno al mediodía del solsticio de invierno libres de sombra. La longitud de la sombra de un obstáculo se mide con:
+Las filas que componen el generador arrojan sombras unas sobre otras en determinados momentos del días y año. Como recomendación general, es de uso común respetar un mínimo de 4 horas de sol en torno al mediodía del solsticio de invierno libres de sombra. La longitud de la sombra de un obstáculo se mide con:
 #+begin_export latex
 \begin{equation}
 d = \frac{h}{tan\gamma_s}
