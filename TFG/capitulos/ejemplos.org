@@ -14,12 +14,15 @@ Se empieza inicilizando el paquete:
   library(solaR)
 #+end_src
 
-En el estudio anterior, se recopilaron datos intradiarios de irradiación los cuales fueron almacenados en archivos.
-#+begin_src R :session solaR
-enemar13 <- readBDi(file = 'TFG/data/ETSIDI/etsidi/EneMar2013_1.csv',
-                    lat = 40.4, time.col = 'Fecha')
-show(enemar13)
+En el estudio anterior, se recopilaron datos intradiarios de irradiación intradiaria. Sin embargo, estos datos fueron tomados en un plano inclinado, por lo que ni =solaR=, ni =solaR2= son capaces de interpretarlos correctamente. En su lugar, para este ejemplo se van a tomar datos horarios de la plataforma =PVGIS= cite:pvgis de los años 2013, 2014 y 2015 en la localización de la ETSIDI.
+#+begin_src R :session solaR :results graphics output :file "TFG/figuras/ejemplos1.pdf" :width 8 :height 6
+etsidi_1315 <- readBDi(file = 'TFG/data/PVGIS_1315.csv',
+                       lat = 40.4, time.col = 'Dates',
+                       format = '%Y-%m-%d %H:%M:%S')
+xyplot(etsidi_1315)
 #+end_src
+#+ATTR_LATEX: :width \textwidth
+file:figuras/ejemplos1.pdf
 
 Una vez se tienen estos datos, se puede calcular la producción que van a tener los diferentes sistemas fotovoltaicos.
 
@@ -131,22 +134,27 @@ Se almacena esta información en otra lista:
 
 Una vez recopilada toda la información (la información que falta se deja sin añadir para que el propio paquete añada sus valores por defecto), se puede calcular la producción que tuvieron los sistemas:
 
-#+begin_src R :session solaR
+#+begin_src R :session solaR :results graphics :file "TFG/figuras/ejemplos2.pdf" :width 8 :height 6
 prod1 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
-		  dataRad = enemar13,
-		  beta = 30, alfa = -19, iS = 1,
+		  dataRad = etsidi_1315,
+		  beta = 30, alfa = -19, 
 		  module = module1, generator = generator1,
 		  inverter = inverter)
-show(prod1)
-#+end_src
-#+begin_src R :session solaR
 prod2 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
-		  dataRad = enemar13,
-		  beta = 30, alfa = -19, iS = 1,
+		  dataRad = etsidi_1315,
+		  beta = 30, alfa = -19, 
 		  module = module2, generator = generator2,
 		  inverter = inverter)
-show(prod2)
+compare(prod1, prod2)
 #+end_src
+#+ATTR_LATEX: :width \textwidth
+#+begin_src R :session solaR
+show(as.zooY(prod1))
+#+end_src
+#+begin_src R :session solaR
+show(as.zooY(prod2))
+#+end_src
+file:figuras/ejemplos2.pdf
 * =PVsyst=
 Con la herramienta =PVsyst=, se ha generado un año promedio de datos de irradiación en la localización y con estos datos se han obtenido dos informes (uno por cada sistema).
 
@@ -190,97 +198,78 @@ En las tablas ref:tab:pvsyst1 y ref:tab:pvsyst2 se tienen los resultados de la s
 label:sec:solaR2
 Con los datos obtenidos en la sección ref:sec:solaR, hacemos la misma operación pero con el paquete =solaR2=.
 #+begin_src R :session solaR :exports none
-  save(module1, module2, generator1,
-       generator2, inverter,
-       file = 'TFG/data/ejemplos.RData')
+save(module1, module2, generator1,
+     generator2, inverter,
+     file = 'TFG/data/ejemplos.RData')
 #+end_src
 #+begin_src R :session solaR2
 library(solaR2)
 #+end_src
 
 Para ello importamos de la misma manera los datos de radiación.
-#+begin_src R :session solaR2
-enemar13 <- readBDi(file = 'TFG/data/ETSIDI/etsidi/EneMar2013_1.csv',
-                    lat = 40.4, dates.col = 'Fecha')
-show(enemar13)
+#+begin_src R :session solaR2 :results graphics output :file "TFG/figuras/ejemplos3.pdf" :width 8 :height 6
+etsidi_1315 <- readBDi(file = 'TFG/data/PVGIS_1315.csv',
+                       lat = 40.4, dates.col = 'Dates',
+                       format = '%Y-%m-%d %H:%M:%S')
+xyplot(etsidi_1315)
 #+end_src
+#+ATTR_LATEX: :width \textwidth
+file:figuras/ejemplos3.pdf
 #+begin_src R :session solaR2 :exports none
   load('TFG/data/ejemplos.RData')
 #+end_src
 
 Con estos datos se procede al cálculo de la producción (los datos de los componentes del sistema son los mismos que los realizados en la sección ref:sec:solaR).
-#+begin_src R :session solaR2
+#+begin_src R :session solaR2 :results graphics output :file "TFG/figuras/ejemplos4.pdf" :width 8 :height 6
 prod1 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
-		  dataRad = enemar13,
-		  beta = 30, alfa = -19, iS = 1,
+		  dataRad = etsidi_1315,
+		  beta = 30, alpha = -19, 
 		  module = module1, generator = generator1,
 		  inverter = inverter)
-show(prod1)
-#+end_src
-#+begin_src R :session solaR2
 prod2 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
-		  dataRad = enemar13,
-		  beta = 30, alfa = -19, iS = 1,
+		  dataRad = etsidi_1315,
+		  beta = 30, alpha = -19, 
 		  module = module2, generator = generator2,
 		  inverter = inverter)
-show(prod2)
+compare(prod1, prod2)
+#+end_src
+#+ATTR_LATEX: :width \textwidth
+file:figuras/ejemplos4.pdf
+#+begin_src R :session solaR2
+show(as.data.tableY(prod1))
+#+end_src
+#+begin_src R :session solaR2
+show(as.data.tableY(prod2))
 #+end_src
 
 * Comparación y conclusiones
 label:sec:comparacion-conclusiones
 Como se puede observar en las secciones anteriores, tanto el paquete =solaR= como el paquete =solaR2= ofrecen los mismos resultados ya que toman las mismas referencias y estudios para realizar los cáculos. Sin embargo, el paquete =solaR2=, a parte de la corrección de algunos erores, presenta unas claras ventajas frente a su antecesor. Estas son:
+- *Modularidad*: el paquete =solaR2= presenta muchas funciones que son capaces de realizar pequeñas operaciones, al contrario que =solaR=, que no permite esto.
 - *Eficiencia*: al estar basado en =data.table=, el paquete gana eficiencia en operaciones complejas. Para mostrar esto vamos a utilizar el paquete =microbenchmark=.
   #+begin_src R :session solaR
   ## Con el paquete solaR
   library(microbenchmark)
+  ## se recortan los datos a un solo año
+  etsidi_13 <- etsidi_1315[as.Date('2013-01-01'), as.Date('2013-12-31')]
   prodGCPVcustom <- function(){  
     prod1 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
-		      dataRad = enemar13, beta = 30, alfa =-19,
-		      iS = 1, module = module1,
-		      generator = generator1, inverter = inverter)
+		      dataRad = etsidi_13, beta = 30, alfa =-19,
+		      module = module1, generator = generator1,
+		      inverter = inverter)
   }
-  microbenchmark(prodGCPVcustom(), times = 50)
+  microbenchmark(prodGCPVcustom(), times = 20)
   #+end_src
   #+begin_src R :session solaR2
   ## Con el paquete solaR2
   library(microbenchmark)
+  etsidi_13 <- etsidi_1315[as.Date('2013-01-01'), as.Date('2013-12-31')]
   prodGCPVcustom <- function(){  
     prod1 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
-		      dataRad = enemar13, beta = 30, alfa =-19,
-		      iS = 1, module = module1,
-		      generator = generator1, inverter = inverter)
+		      dataRad = etsidi_13, beta = 30, alpha =-19,
+		      module = module1, generator = generator1,
+		      inverter = inverter)
   }
-  microbenchmark(prodGCPVcustom(), times = 50)
-  #+end_src
-  Aquí se puede ver que la eficiencia mejora. Sin embargo, suponiendo que en vez de un sistema fijo, tuvieramos un sistema de seguimiento de doble eje y quisieramos optener la mejor combinación de distancias, se podría utilizar la función =optimShd=, la cual al ser una tarea muy exigente se aprecia con más detalle las virtudes del paquete =solaR2= gracias al uso de =data.table=.
-  #+begin_src R :session solaR
-  ## Con el paquete solaR
-  struct2x <- list(W = 23.11, L = 9.8, Nrow = 2, Ncol = 3)
-  dist2x <- list(Lew = c(30, 45),Lns = c(20, 40))
-  optimShdcustom <- function(){  
-    optim <- optimShd(lat = 40.4, modeTrk = 'two', modeRad = 'bdI',
-		      dataRad = enemar13, beta = 30, alfa =-19,
-		      iS = 1, module = module1,
-		      generator = generator1, inverter = inverter,
-		      modeShd = c('area', 'prom'),
-		      distances = dist2x, struct = struct2x,
-		      res = 5, prog = FALSE)
-  }
-  microbenchmark(optimShdcustom(), times = 20)
-  #+end_src
-  #+begin_src R :session solaR2
-  ## Con el paquete solaR2
-  struct2x <- list(W = 23.11, L = 9.8, Nrow = 2, Ncol = 3)
-  dist2x <- list(Lew = c(30, 45),Lns = c(20, 40))
-  optimShdcustom <- function(){  
-    optim <- optimShd(lat = 40.4, modeTrk = 'two', modeRad = 'bdI',
-		      dataRad = enemar13, beta = 30, alfa =-19,
-		      iS = 1, module = module1,
-		      generator = generator1, inverter = inverter,
-		      modeShd = c('area', 'prom'),
-		      distances = dist2x, struct = struct2x,
-		      res = 5, prog = FALSE)
-  }
-  microbenchmark(optimShdcustom(), times = 20)
+  microbenchmark(prodGCPVcustom(), times = 20)
   #+end_src
   
