@@ -445,7 +445,58 @@ T_c=T_a+G_{ef}\cdot \frac{NOCT-20}{800}
 \label{eq:temp-cel}
 \end{equation}
 #+end_export
-Para la simulación del funcionmaiento de un módulo fotovoltaico en condiciones de operación real, es necesario contar con secuencias de valores de temperatura ambiente. Si no se dispone de información detallada, se puede asumir un valor constante de $T_a=25^\circ C$ para simulaciones anuales. Sin embargo, si se conocen los valores máximos y mínimos diarios de la temperatura ambiente, se puede generar una secuencia intradiaria usando una combinación de funciones coseno.
+Para la simulación del funcionmaiento de un módulo fotovoltaico en condiciones de operación real, es necesario contar con secuencias de valores de temperatura ambiente. Si no se dispone de información detallada, se puede asumir un valor constante de $T_a=25^\circ C$ para simulaciones anuales. Sin embargo, si se conocen los valores máximos y mínimos diarios de la temperatura ambiente, se puede generar una secuencia intradiaria usando una combinación de funciones coseno:
+1. *Calcular los valores de* $T_m$ *y* $T_r$: Se definen los valores de la temperatura media diaria, $T_m$ simplemente como la media entre la $T_{max}$ y la $T_{min}$:
+   #+begin_export latex
+   \nomenclature[Tmax]{$T_{max}$}{Temperatura máxima en un día}
+   \nomenclature[Tmin]{$T_{min}$}{Temperatura mínima en un día}
+   #+end_export
+   #+begin_export latex
+   \begin{equation}
+   T_m=\frac{T_{max}+T_{min}}{2}
+   \end{equation}
+   #+end_export
+   y la mitad de la amplitud de temperaturas, $T_r$:
+   #+begin_export latex
+   \begin{equation}
+   T_r=\frac{T_{max}-T_{min}}{2}
+   \end{equation}
+   #+end_export
+2. *Calcular la matriz de* $T_a$: Una vez obtenidos los valores de $T_m$ y $T_r$, el siguiente paso es calcular la matriz de valores de temperatura ambiental $T_a$ para cada hora. Para ello, se deben calcular 3 valores auxiliares:
+   #+begin_export latex
+   \nomenclature[Ta]{Ta}{Temperatura ambiente}
+   \begin{equation}
+   a_1=\frac{12\pi \cdot (\omega_s-\omega)}{21\pi+12\cdot \omega_s}
+   \end{equation}
+   \begin{equation}
+   a_2=\frac{\pi \cdot (3\pi -12\omega)}{3\pi - 12\omega}
+   \end{equation}
+   \begin{equation}
+   a_3=\frac{\pi (24\pi + 12 \cdot (\omega_s - \omega))}{21 \cdot \pi + 12 \cdot \omega_s}
+   \end{equation}
+   #+end_export
+   Con estos tres valores se pueden calcular la terna de temperaturas $T_1$, $T_2$, $T_3$:
+   #+begin_export latex
+   \begin{equation}
+   T_1 = T_m-T_r\cdot\cos(a_1)
+   \end{equation}
+   \begin{equation}
+   T_2 = T_m+T_r\cdot\cos(a_2)
+   \end{equation}
+   \begin{equation}
+   T_3=T_m-T_r\cdot\cos(a_3)
+   \end{equation}
+   #+end_export
+3. *Selección del valor clave*: Se selecciona el valor adecuado de $T_a$ en base al siguiente criterio:
+   #+begin_export latex
+   \begin{equation}
+   T_a = \begin{cases}
+   T_1& \text{si $\omega \leq \omega_s$}\\
+   T_2& \text{si $\omega_s < \omega \leq \frac{\pi}{4}$}\\
+   T_3& \text{si $\omega > \frac{\pi}{4}$}
+   \end{cases}
+   \end{equation}
+   #+end_export
 *** Cálculo de $V_{oc}$ y $I_{sc}$
 Conociendo ya los valores horarios de temperatura de la célula, se puede calcular $V_{oc}$ utilizando la ecuación [[ref:eq:ten-ca]]. Y, por último, mediante la ecuación [[ref:eq:int-cc]] se puede calcular $I_{sc}$.
 #+begin_export latex
