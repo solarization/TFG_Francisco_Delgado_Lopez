@@ -1010,11 +1010,11 @@ ecuación que debe aplicarse sólo cuando $l_{eo} \cdot \cos(\beta_0) \leq 1$. E
 
 [fn:6] Correspondiente a la función =eot=.
 
-[fn:7] Este cálculo, junto con el de la hora solar, $\omega$, el coseno del ángulo cenital, $theta_{zs}$ y  el ángulo azimutal, $\psi_s$, se pueden calcular mediante la función =fSolI=, haciendo uso de sus respectivas funciones.
+[fn:7] Este cálculo, junto con el de la hora solar, $\omega$, el coseno del ángulo cenital, $\theta_{zs}$ y  el ángulo azimutal, $\psi_s$, se pueden calcular mediante la función =fSolI=, haciendo uso de sus respectivas funciones.
 
 [fn:8] Correspondiente a la función =zenith=.
 
-[fn:9] El ángulo cenital, $theta_{zs}$, es el complementario de la áltura solar, $gamma_s$.
+[fn:9] El ángulo cenital, $\theta_{zs}$, es el complementario de la áltura solar, $\gamma_s$.
 
 [fn:10] Correspondiente a la función =azimuth=.
 

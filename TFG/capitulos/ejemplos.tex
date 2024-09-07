@@ -7,12 +7,26 @@ Se tomará de base un estudio realizado por profesores de la escuela \cite{adrad
 En este ejemplo se realizará el mismo análisis tomando tres herramientas distintas: \texttt{solaR}, para poder tomar como referencia el paquete del que sale para poder apreciar las mejoras del programa, \texttt{PVSyst}, ya que es uno de los softwares más usados en el ámbito de la fotovoltaica y puede servir como punto de referencia, y por último \texttt{solaR2}.
 
 \section{\texttt{solaR}}
-\label{sec:orge8d62b7}
+\label{sec:org0112fbf}
 \label{sec:solaR}
 Se empieza inicilizando el paquete:
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 library(solaR)
 \end{lstlisting}
+
+\begin{verbatim}
+Cargando paquete requerido: zoo
+
+Adjuntando el paquete: 'zoo'
+
+The following objects are masked from 'package:base':
+
+    as.Date, as.Date.numeric
+
+Cargando paquete requerido: lattice
+Cargando paquete requerido: latticeExtra
+Time Zone set to UTC.
+\end{verbatim}
 
 En el estudio anterior, se recopilaron datos intradiarios de irradiación intradiaria. Sin embargo, estos datos fueron tomados en un plano inclinado, por lo que ni \texttt{solaR}, ni \texttt{solaR2} son capaces de interpretarlos correctamente. En su lugar, para este ejemplo se van a tomar datos horarios de la plataforma \texttt{PVGIS} \cite{pvgis} de los años 2013, 2014 y 2015 en la localización de la ETSIDI.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -123,9 +137,11 @@ Una vez se tienen todos los parémtros del sistema fotovoltaico, se requieren lo
 
 Se almacena esta información en otra lista:
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-inverter <- list(Pinv = 1200,
+inverter <- list(Ki = c(0.002, 0.005, 0.008),
+                 Pinv = 1200,
                  Vmin = 100,
-                 Vmax = 320)
+                 Vmax = 320,
+                 Gumb = 20)
 \end{lstlisting}
 
 Una vez recopilada toda la información (la información que falta se deja sin añadir para que el propio paquete añada sus valores por defecto), se puede calcular la producción que tuvieron los sistemas:
@@ -150,9 +166,9 @@ show(as.zooY(prod1))
 
 \begin{verbatim}
           Eac      Edc       Yf
-2013 1583.545 1757.235 1265.505
-2014 1600.589 1775.426 1279.126
-2015 1648.836 1828.569 1317.683
+2013 1681.077 1757.235 1343.449
+2014 1698.613 1775.426 1357.463
+2015 1749.536 1828.569 1398.158
 \end{verbatim}
 
 
@@ -162,9 +178,9 @@ show(as.zooY(prod2))
 
 \begin{verbatim}
           Eac      Edc       Yf
-2013 1367.625 1517.779 1242.674
-2014 1379.995 1530.833 1253.914
-2015 1419.956 1574.704 1290.224
+2013 1451.873 1517.779 1319.225
+2014 1464.483 1530.833 1330.683
+2015 1506.544 1574.704 1368.901
 \end{verbatim}
 
 
@@ -172,7 +188,7 @@ show(as.zooY(prod2))
 \includegraphics[width=.9\linewidth]{figuras/ejemplos2.pdf}
 \end{center}
 \section{\texttt{PVsyst}}
-\label{sec:orgffea938}
+\label{sec:org4da5687}
 Con la herramienta \texttt{PVsyst}, se ha generado un año promedio de datos de irradiación en la localización y con estos datos se han obtenido dos informes (uno por cada sistema).
 
 Por comodidad, en este documento se van a extraer solo unas tablas con los resultados principales, sin embargo los informes completos están disponibles en el \href{https://github.com/solarization/TFG\_Francisco\_Delgado\_Lopez}{github} del documento.
@@ -208,12 +224,21 @@ En las tablas \ref{tab:pvsyst1} y \ref{tab:pvsyst2} se tienen los resultados de 
 
 
 \section{\texttt{solaR2}}
-\label{sec:org0613f49}
+\label{sec:orgc0117f6}
 \label{sec:solaR2}
 Con los datos obtenidos en la sección \ref{sec:solaR}, hacemos la misma operación pero con el paquete \texttt{solaR2}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 library(solaR2)
 \end{lstlisting}
+
+\begin{verbatim}
+Cargando paquete requerido: data.table
+data.table 1.15.4 using 6 threads (see ?getDTthreads).  Latest news: r-datatable.com
+Cargando paquete requerido: lattice
+Cargando paquete requerido: latticeExtra
+Time Zone set to UTC.
+\end{verbatim}
+
 
 Para ello importamos de la misma manera los datos de radiación.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -270,7 +295,7 @@ show(as.data.tableY(prod2))
 \end{verbatim}
 
 \section{Comparación y conclusiones}
-\label{sec:org1768c74}
+\label{sec:org59a9db7}
 \label{sec:comparacion-conclusiones}
 Como se puede observar en las secciones anteriores, tanto el paquete \texttt{solaR} como el paquete \texttt{solaR2} ofrecen los mismos resultados ya que toman las mismas referencias y estudios para realizar los cáculos. Sin embargo, el paquete \texttt{solaR2}, a parte de la corrección de algunos erores, presenta unas claras ventajas frente a su antecesor. Estas son:
 \begin{itemize}
@@ -292,8 +317,8 @@ microbenchmark(prodGCPVcustom(), times = 20)
 
 \begin{verbatim}
 Unit: milliseconds
-             expr      min       lq     mean   median       uq     max neval
- prodGCPVcustom() 758.3203 769.8908 777.2625 779.0366 784.3147 791.931    20
+             expr      min       lq    mean  median       uq      max neval
+ prodGCPVcustom() 780.2404 789.0165 808.183 799.089 828.5233 844.0191    20
 \end{verbatim}
 
 
@@ -312,7 +337,7 @@ microbenchmark(prodGCPVcustom(), times = 20)
 
 \begin{verbatim}
 Unit: milliseconds
-             expr      min       lq     mean   median       uq      max neval
- prodGCPVcustom() 520.3954 530.1572 536.8405 534.1607 539.0759 573.3836    20
+             expr      min      lq     mean  median       uq      max neval
+ prodGCPVcustom() 528.6198 534.433 539.8981 536.553 542.0865 579.2807    20
 \end{verbatim}
 \end{itemize}

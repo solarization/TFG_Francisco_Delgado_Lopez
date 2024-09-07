@@ -1,14 +1,14 @@
 \chapter{Desarrollo del código}
 \label{chap:desarrollo-codigo}
-En la figura \ref{fig:org25b93f6}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
+En la figura \ref{fig:org7d59dd3}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
 \begin{figure}[htbp]
 \centering
 \includegraphics[keepaspectratio,width=0.8\textwidth,height=0.43\textheight]{figuras/procedure.pdf}
-\caption{\label{fig:org25b93f6}Proceso de cálculo de las funciones de \texttt{solaR2}}
+\caption{\label{fig:org7d59dd3}Proceso de cálculo de las funciones de \texttt{solaR2}}
 \end{figure}
 A la hora de estimar la producción, el programa sigue los siguientes procesos\footnote{Todas las funciones recogidas en este capítulo, están descritas en el manual de uso del paquete \texttt{solaR2}, el cual, está disponible en el apendice \ref{chap:manual} de este documento.}:
 \section{Geometría solar}
-\label{sec:orgfbbab7c}
+\label{sec:org9ce6107}
 \label{sec:geometria-solar}
 Para calcular la geometría que definen las posiciones de la Tierra y el Sol, \texttt{solaR2} se vale de una función constructora, \texttt{calcSol}, la cual mediante las funciones \texttt{fSolD} y \texttt{fSolI} cálcula todos los ángulos y componentes que caracterizan la geometría solar.
 \begin{figure}[htbp]
@@ -179,7 +179,7 @@ Intradaily values:
 
 
 \section{Datos meteorológicos}
-\label{sec:orgb95d316}
+\label{sec:orgd55e9da}
 \label{sec:datos-meteorologicos}
 Para el procesamiento de datos meteorologicos, \texttt{solaR2} provee una serie de funciones que son capaces de leer todo tipo de datos. Estos datos se procesan y se almacenan en un objeto de tipo \texttt{Meteo} tal y como se ve en la figura \ref{fig:meteo}. Estas funciones son:
 \begin{figure}[htbp]
@@ -360,7 +360,7 @@ xyplot(bd_SIAR)
 \end{center}
 
 \section{Radiación en el plano horizontal}
-\label{sec:org3d1d929}
+\label{sec:org0b7f666}
 \label{sec:radiacion-plano-horizontal}
 Una vez se ha calculado la geometría solar (sección \ref{sec:geometria-solar}) y se han procesado los datos meteorológicos (sección \ref{sec:datos-meteorologicos}), es necesario calcular la radiación en el plano horizontal. Para ello, \texttt{solaR2} cuenta con la función \texttt{calcG0} la cual mediante las funciones \texttt{fCompD} y \texttt{fCompI} procesan los objetos de clase \texttt{Sol} y clase \texttt{Meteo} para dar un objeto de tipo \texttt{G0}.
 
@@ -626,26 +626,26 @@ Latitude of source:  37.2 degrees
 Latitude for calculations:  37.2 degrees
 
 Monthly avarages:
-	Dates   G0d      D0d       B0d
-       <char> <num>    <num>     <num>
- 1: Jan. 2024 2.766 1.087364 1.6786361
- 2: Feb. 2024 3.491 1.494382 1.9966179
- 3: Mar. 2024 4.494 2.073641 2.4203594
- 4: Apr. 2024 5.912 2.373542 3.5384577
- 5: May. 2024 6.989 2.431924 4.5570759
- 6: Jun. 2024 7.742 2.429454 5.3125465
- 7: Jul. 2024 7.919 2.311353 5.6076467
- 8: Aug. 2024 7.027 2.175663 4.8513370
- 9: Sep. 2024 5.369 1.880376 3.4886244
-10: Oct. 2024 3.562 1.787310 1.7746900
-11: Nov. 2024 2.814 1.315495 1.4985053
-12: Dec. 2024 2.179 1.188310 0.9906898
+	Dates   G0d      D0d      B0d
+       <char> <num>    <num>    <num>
+ 1: Jan. 2024 2.766 1.105173 1.660827
+ 2: Feb. 2024 3.491 1.378966 2.112034
+ 3: Mar. 2024 4.494 2.058036 2.435964
+ 4: Apr. 2024 5.912 2.239053 3.672947
+ 5: May. 2024 6.989 2.388730 4.600270
+ 6: Jun. 2024 7.742 2.381936 5.360064
+ 7: Jul. 2024 7.919 2.171184 5.747816
+ 8: Aug. 2024 7.027 2.132916 4.894084
+ 9: Sep. 2024 5.369 1.951992 3.417008
+10: Oct. 2024 3.562 1.697085 1.864915
+11: Nov. 2024 2.814 1.337218 1.476782
+12: Dec. 2024 2.179 1.054982 1.124018
 
 Yearly values:
 Key: <Dates>
    Dates      G0d      D0d      B0d
    <int>    <num>    <num>    <num>
-1:  2024 1839.365 688.0256 1151.339
+1:  2024 1839.365 668.1473 1171.218
 \end{verbatim}
 
 \item Diarios.
@@ -664,26 +664,26 @@ Latitude of source:  37.2 degrees
 Latitude for calculations:  37.2 degrees
 
 Monthly avarages:
-	Dates   G0d      D0d       B0d
-       <char> <num>    <num>     <num>
- 1: Jan. 2024 2.766 1.087364 1.6786361
- 2: Feb. 2024 3.491 1.494382 1.9966179
- 3: Mar. 2024 4.494 2.073641 2.4203594
- 4: Apr. 2024 5.912 2.373542 3.5384577
- 5: May. 2024 6.989 2.431924 4.5570759
- 6: Jun. 2024 7.742 2.429454 5.3125465
- 7: Jul. 2024 7.919 2.311353 5.6076467
- 8: Aug. 2024 7.027 2.175663 4.8513370
- 9: Sep. 2024 5.369 1.880376 3.4886244
-10: Oct. 2024 3.562 1.787310 1.7746900
-11: Nov. 2024 2.814 1.315495 1.4985053
-12: Dec. 2024 2.179 1.188310 0.9906898
+	Dates   G0d      D0d      B0d
+       <char> <num>    <num>    <num>
+ 1: Jan. 2024 2.766 1.105173 1.660827
+ 2: Feb. 2024 3.491 1.378966 2.112034
+ 3: Mar. 2024 4.494 2.058036 2.435964
+ 4: Apr. 2024 5.912 2.239053 3.672947
+ 5: May. 2024 6.989 2.388730 4.600270
+ 6: Jun. 2024 7.742 2.381936 5.360064
+ 7: Jul. 2024 7.919 2.171184 5.747816
+ 8: Aug. 2024 7.027 2.132916 4.894084
+ 9: Sep. 2024 5.369 1.951992 3.417008
+10: Oct. 2024 3.562 1.697085 1.864915
+11: Nov. 2024 2.814 1.337218 1.476782
+12: Dec. 2024 2.179 1.054982 1.124018
 
 Yearly values:
 Key: <Dates>
    Dates      G0d      D0d      B0d
    <int>    <num>    <num>    <num>
-1:  2024 1839.365 688.0256 1151.339
+1:  2024 1839.365 668.1473 1171.218
 \end{verbatim}
 
 \item Intradiarios
@@ -699,7 +699,7 @@ xyplot(g0_bdI)
 \end{itemize}
 
 \section{Radiación efectiva en el plano del generador}
-\label{sec:org5fd0d3b}
+\label{sec:org9a956ea}
 \label{sec:radiacion-efectiva-plano-generador}
 Teniendo la radiación incidente en plano horizontal (sección \ref{sec:radiacion-plano-horizontal}), se puede calcular la radiación efectiva incidente en el plano del generador. Para ello, \texttt{solaR2} cuenta con la función \texttt{calcGef} la cual mediante las funciones \texttt{fInclin} y \texttt{calcShd} procesa un objeto de clase \texttt{G0} para obtener un objeto \texttt{Gef}.
 
@@ -814,34 +814,34 @@ summary(inclin_horizBright)
 \end{lstlisting}
 
 \begin{verbatim}
-    Dates                              Bo               Bn               G            
-Min.   :2024-01-01 08:00:00.00   Min.   :   0.0   Min.   :   0.0   Min.   :   0.5136  
-1st Qu.:2024-01-09 09:45:00.00   1st Qu.: 642.2   1st Qu.: 169.8   1st Qu.: 210.0040  
-Median :2024-01-17 09:30:00.00   Median :1005.1   Median : 479.6   Median : 396.1338  
-Mean   :2024-01-16 21:56:08.92   Mean   : 898.5   Mean   : 460.0   Mean   : 449.8593  
-3rd Qu.:2024-01-24 13:15:00.00   3rd Qu.:1152.8   3rd Qu.: 740.8   3rd Qu.: 690.5324  
-Max.   :2024-01-31 17:00:00.00   Max.   :1248.5   Max.   :1160.8   Max.   :1310.8339  
-      D                 Di                Dc               B                 R         
-Min.   :  0.488   Min.   :  0.488   Min.   :  0.00   Min.   :   0.00   Min.   :0.0256  
-1st Qu.: 78.878   1st Qu.: 37.375   1st Qu.: 20.83   1st Qu.:  92.56   1st Qu.:1.3883  
-Median :146.779   Median : 49.931   Median : 61.33   Median : 259.38   Median :3.0191  
-Mean   :137.317   Mean   : 72.930   Mean   : 64.39   Mean   : 309.34   Mean   :3.2034  
-3rd Qu.:182.864   3rd Qu.:107.437   3rd Qu.:101.46   3rd Qu.: 493.70   3rd Qu.:4.8652  
-Max.   :275.542   Max.   :202.142   Max.   :243.53   Max.   :1025.81   Max.   :9.4826  
+    Dates                              Bo               Bn              G           
+Min.   :2024-01-01 08:00:00.00   Min.   :   0.0   Min.   :  0.0   Min.   :   0.495  
+1st Qu.:2024-01-09 09:45:00.00   1st Qu.: 642.2   1st Qu.:236.6   1st Qu.: 227.202  
+Median :2024-01-17 09:30:00.00   Median :1005.1   Median :488.9   Median : 427.445  
+Mean   :2024-01-16 21:56:08.92   Mean   : 898.5   Mean   :449.6   Mean   : 446.933  
+3rd Qu.:2024-01-24 13:15:00.00   3rd Qu.:1152.8   3rd Qu.:664.6   3rd Qu.: 670.760  
+Max.   :2024-01-31 17:00:00.00   Max.   :1248.5   Max.   :947.9   Max.   :1045.575  
+      D                 Di                Dc               B               R          
+Min.   :  0.472   Min.   :  0.472   Min.   :  0.00   Min.   :  0.0   Min.   :0.02124  
+1st Qu.: 86.744   1st Qu.: 42.787   1st Qu.: 30.56   1st Qu.:114.4   1st Qu.:1.49042  
+Median :146.273   Median : 58.066   Median : 64.55   Median :257.4   Median :3.08080  
+Mean   :139.047   Mean   : 74.679   Mean   : 64.37   Mean   :304.7   Mean   :3.20341  
+3rd Qu.:185.281   3rd Qu.:103.318   3rd Qu.:100.06   3rd Qu.:476.3   3rd Qu.:4.75065  
+Max.   :256.205   Max.   :200.258   Max.   :157.61   Max.   :833.6   Max.   :7.59959  
      FTb                FTd               FTr              Dief               Dcef       
-Min.   :0.005218   Min.   :0.06474   Min.   :0.2995   Min.   :  0.4473   Min.   :  0.00  
-1st Qu.:0.010325   1st Qu.:0.06474   1st Qu.:0.2995   1st Qu.: 34.2567   1st Qu.: 17.18  
-Median :0.022076   Median :0.06474   Median :0.2995   Median : 45.7645   Median : 57.12  
-Mean   :0.062300   Mean   :0.06474   Mean   :0.2995   Mean   : 66.8449   Mean   : 61.11  
-3rd Qu.:0.096613   3rd Qu.:0.06474   3rd Qu.:0.2995   3rd Qu.: 98.4721   3rd Qu.: 98.16  
-Max.   :0.344085   Max.   :0.06474   Max.   :0.2995   Max.   :185.2752   Max.   :237.38  
+Min.   :0.005218   Min.   :0.06474   Min.   :0.2995   Min.   :  0.4326   Min.   :  0.00  
+1st Qu.:0.010325   1st Qu.:0.06474   1st Qu.:0.2995   1st Qu.: 39.2169   1st Qu.: 27.26  
+Median :0.022076   Median :0.06474   Median :0.2995   Median : 53.2206   Median : 60.39  
+Mean   :0.062300   Mean   :0.06474   Mean   :0.2995   Mean   : 68.4476   Mean   : 61.12  
+3rd Qu.:0.096613   3rd Qu.:0.06474   3rd Qu.:0.2995   3rd Qu.: 94.6967   3rd Qu.: 96.25  
+Max.   :0.344085   Max.   :0.06474   Max.   :0.2995   Max.   :183.5484   Max.   :153.59  
      Gef                 Def                Bef              Ref         
-Min.   :   0.4648   Min.   :  0.4473   Min.   :  0.00   Min.   :0.01757  
-1st Qu.: 194.5664   1st Qu.: 70.5638   1st Qu.: 72.15   1st Qu.:0.95309  
-Median : 373.7350   Median :138.0750   Median :231.53   Median :2.07262  
-Mean   : 423.5878   Mean   :127.9551   Mean   :293.43   Mean   :2.19917  
-3rd Qu.: 661.6426   3rd Qu.:173.7286   3rd Qu.:477.84   3rd Qu.:3.33998  
-Max.   :1273.1481   Max.   :266.7237   Max.   :999.91   Max.   :6.50988
+Min.   :   0.4484   Min.   :  0.4326   Min.   :  0.00   Min.   :0.01458  
+1st Qu.: 204.4836   1st Qu.: 78.8173   1st Qu.: 99.24   1st Qu.:1.02319  
+Median : 398.0284   Median :136.8652   Median :238.29   Median :2.11500  
+Mean   : 420.9455   Mean   :129.5723   Mean   :289.17   Mean   :2.19917  
+3rd Qu.: 643.4682   3rd Qu.:175.0373   3rd Qu.:461.69   3rd Qu.:3.26136  
+Max.   :1014.0147   Max.   :239.6164   Max.   :812.36   Max.   :5.21719
 \end{verbatim}
 
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -851,34 +851,34 @@ summary(inclin_HCPV)
 \end{lstlisting}
 
 \begin{verbatim}
-    Dates                              Bo               Bn               G            
-Min.   :2024-01-01 08:00:00.00   Min.   :   0.0   Min.   :   0.0   Min.   :   0.5187  
-1st Qu.:2024-01-09 09:45:00.00   1st Qu.: 642.2   1st Qu.: 169.8   1st Qu.: 210.6989  
-Median :2024-01-17 09:30:00.00   Median :1005.1   Median : 479.6   Median : 397.2931  
-Mean   :2024-01-16 21:56:08.92   Mean   : 898.5   Mean   : 460.0   Mean   : 450.4220  
-3rd Qu.:2024-01-24 13:15:00.00   3rd Qu.:1152.8   3rd Qu.: 740.8   3rd Qu.: 691.1490  
-Max.   :2024-01-31 17:00:00.00   Max.   :1248.5   Max.   :1160.8   Max.   :1311.2006  
-      D                  Di                 Dc               B                 R         
-Min.   :  0.4931   Min.   :  0.4931   Min.   :  0.00   Min.   :   0.00   Min.   :0.0256  
-1st Qu.: 79.1629   1st Qu.: 37.7934   1st Qu.: 20.83   1st Qu.:  92.56   1st Qu.:1.3883  
-Median :147.4695   Median : 50.2948   Median : 61.33   Median : 259.38   Median :3.0191  
-Mean   :137.8795   Mean   : 73.4931   Mean   : 64.39   Mean   : 309.34   Mean   :3.2034  
-3rd Qu.:183.4776   3rd Qu.:108.2063   3rd Qu.:101.46   3rd Qu.: 493.70   3rd Qu.:4.8652  
-Max.   :275.9089   Max.   :203.4060   Max.   :243.53   Max.   :1025.81   Max.   :9.4826  
+    Dates                              Bo               Bn              G            
+Min.   :2024-01-01 08:00:00.00   Min.   :   0.0   Min.   :  0.0   Min.   :   0.4999  
+1st Qu.:2024-01-09 09:45:00.00   1st Qu.: 642.2   1st Qu.:236.6   1st Qu.: 227.8710  
+Median :2024-01-17 09:30:00.00   Median :1005.1   Median :488.9   Median : 428.3916  
+Mean   :2024-01-16 21:56:08.92   Mean   : 898.5   Mean   :449.6   Mean   : 447.5429  
+3rd Qu.:2024-01-24 13:15:00.00   3rd Qu.:1152.8   3rd Qu.:664.6   3rd Qu.: 671.6499  
+Max.   :2024-01-31 17:00:00.00   Max.   :1248.5   Max.   :947.9   Max.   :1046.1123  
+      D                  Di                 Dc               B               R          
+Min.   :  0.4769   Min.   :  0.4769   Min.   :  0.00   Min.   :  0.0   Min.   :0.02124  
+1st Qu.: 87.1039   1st Qu.: 43.2604   1st Qu.: 30.56   1st Qu.:114.4   1st Qu.:1.49042  
+Median :146.9410   Median : 58.2405   Median : 64.55   Median :257.4   Median :3.08080  
+Mean   :139.6576   Mean   : 75.2893   Mean   : 64.37   Mean   :304.7   Mean   :3.20341  
+3rd Qu.:185.9127   3rd Qu.:103.5791   3rd Qu.:100.06   3rd Qu.:476.3   3rd Qu.:4.75065  
+Max.   :257.6635   Max.   :201.5256   Max.   :157.61   Max.   :833.6   Max.   :7.59959  
      FTb                FTd               FTr              Dief        Dcef        Gef        
 Min.   :0.005218   Min.   :0.06474   Min.   :0.2995   Min.   :0   Min.   :0   Min.   :  0.00  
-1st Qu.:0.010325   1st Qu.:0.06474   1st Qu.:0.2995   1st Qu.:0   1st Qu.:0   1st Qu.: 72.15  
-Median :0.022076   Median :0.06474   Median :0.2995   Median :0   Median :0   Median :231.53  
-Mean   :0.062300   Mean   :0.06474   Mean   :0.2995   Mean   :0   Mean   :0   Mean   :293.43  
-3rd Qu.:0.096613   3rd Qu.:0.06474   3rd Qu.:0.2995   3rd Qu.:0   3rd Qu.:0   3rd Qu.:477.84  
-Max.   :0.344085   Max.   :0.06474   Max.   :0.2995   Max.   :0   Max.   :0   Max.   :999.91  
+1st Qu.:0.010325   1st Qu.:0.06474   1st Qu.:0.2995   1st Qu.:0   1st Qu.:0   1st Qu.: 99.24  
+Median :0.022076   Median :0.06474   Median :0.2995   Median :0   Median :0   Median :238.29  
+Mean   :0.062300   Mean   :0.06474   Mean   :0.2995   Mean   :0   Mean   :0   Mean   :289.17  
+3rd Qu.:0.096613   3rd Qu.:0.06474   3rd Qu.:0.2995   3rd Qu.:0   3rd Qu.:0   3rd Qu.:461.69  
+Max.   :0.344085   Max.   :0.06474   Max.   :0.2995   Max.   :0   Max.   :0   Max.   :812.36  
      Def         Bef              Ref   
 Min.   :0   Min.   :  0.00   Min.   :0  
-1st Qu.:0   1st Qu.: 72.15   1st Qu.:0  
-Median :0   Median :231.53   Median :0  
-Mean   :0   Mean   :293.43   Mean   :0  
-3rd Qu.:0   3rd Qu.:477.84   3rd Qu.:0  
-Max.   :0   Max.   :999.91   Max.   :0
+1st Qu.:0   1st Qu.: 99.24   1st Qu.:0  
+Median :0   Median :238.29   Median :0  
+Mean   :0   Mean   :289.17   Mean   :0  
+3rd Qu.:0   3rd Qu.:461.69   3rd Qu.:0  
+Max.   :0   Max.   :812.36   Max.   :0
 \end{verbatim}
 \end{itemize}
 
@@ -1147,7 +1147,7 @@ xyplot(gef_shdbt)
 \includegraphics[width=0.8\textwidth]{figuras/codigo-gef.pdf}
 \end{center}
 \section{Producción eléctrica de un SFCR}
-\label{sec:org08954cc}
+\label{sec:orgb5d7e67}
 \label{produccion-electrica-sfcr}
 Con la radiación efectiva, se puede estimar la producción eléctrica que va a tener un sistema fotovoltaico conectado a red. Esta estimación, se puede calcular mediante la función \texttt{prodGCPV} la cual mediante la función \texttt{fProd} procesa un objeto de clase \texttt{Gef} y obtiene un objeto \texttt{ProdGCPV}.
 
@@ -1199,11 +1199,11 @@ Como se puede ver en la figura \ref{fig:prodgcpv}, \texttt{prodGCPV} funciona gr
 \end{itemize}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 inclin <- calcGef(lat, dataRad = prom, keep.night = FALSE)
-module <- list(Vocn=57.6, Iscn=4.7, Vmn=46.08, Imn=4.35,
-               Ncs=96, Ncp=1, CoefVT=0.0023, TONC=47)
-generator <- list(Nms=12, Nmp=11)
-inverter <- list(Ki=c(0.01, 0.025, 0.05), Pinv=25000,
-                 Vmin=420, Vmax=750, Gumb=20)
+module <- list(Vocn=51.91, Iscn=14.07, Vmn=43.76, Imn=13.03,
+               Ncs=24, Ncp=6, CoefVT=0.0049, TONC=45)
+generator <- list(Nms=22, Nmp=130)
+inverter <- list(Ki=c(0.002, 0.005, 0.008), Pinv=1.5e6,
+                 Vmin=822, Vmax=1300, Gumb=20)
 effSys <- list(ModQual=3, ModDisp=2, OhmDC=1.5, OhmAC=1.5,
                MPP=1, TrafoMT=1, Disp=0.5)
 prod <- fProd(inclin = inclin, module = module,
@@ -1213,32 +1213,32 @@ show(prod)
 \end{lstlisting}
 
 \begin{verbatim}
-                   Dates       Tc      Voc       Isc     Vmpp      Impp      Vdc       Idc       Pac
-                  <POSc>    <num>    <num>     <num>    <num>     <num>    <num>     <num>     <num>
-  1: 2024-01-17 08:00:00 15.27689 716.9624  8.083413 607.4640  7.620135 607.4640  7.620135  3796.209
-  2: 2024-01-17 09:00:00 21.43284 700.6516 17.513415 583.9663 16.433741 583.9663 16.433741  8053.912
-  3: 2024-01-17 10:00:00 27.23609 685.2753 26.403138 562.0190 24.658263 562.0190 24.658263 11650.920
-  4: 2024-01-17 11:00:00 31.48724 674.0114 32.915263 546.0746 30.625265 546.0746 30.625265 14041.629
-  5: 2024-01-17 12:00:00 33.33104 669.1261 35.739693 539.1958 33.196772 539.1958 33.196772 15016.481
- ---                                                                                                
-141: 2024-12-13 12:00:00 33.94967 667.4869 28.721724 542.4718 26.706186 542.4718 26.706186 12177.570
-142: 2024-12-13 13:00:00 32.55186 671.1906 26.580476 547.6944 24.746716 547.6944 24.746716 11395.331
-143: 2024-12-13 14:00:00 29.08872 680.3665 21.275466 560.6878 19.868077 560.6878 19.868077  9362.088
-144: 2024-12-13 15:00:00 24.29331 693.0724 13.929608 578.8034 13.059814 578.8034 13.059814  6316.091
-145: 2024-12-13 16:00:00 19.21305 706.5331  6.147403 598.1441  5.786102 598.1441  5.786102  2784.663
+                   Dates       Tc      Voc       Isc      Vmpp      Impp       Vdc       Idc       Pac
+                  <POSc>    <num>    <num>     <num>     <num>     <num>     <num>     <num>     <num>
+  1: 2024-01-17 08:00:00 14.88601 1168.187  285.9840 1077.0286  281.5825 1077.0286  281.5825  268123.4
+  2: 2024-01-17 09:00:00 20.58596 1153.440  619.6090 1036.1564  609.2849 1036.1564  609.2849  560379.6
+  3: 2024-01-17 10:00:00 25.95934 1139.538  934.1195  997.7254  917.3608  997.7254  917.3608  812614.5
+  4: 2024-01-17 11:00:00 29.89559 1129.354 1164.5127  969.6380 1142.4697  969.6380 1142.4697  983223.3
+  5: 2024-01-17 12:00:00 31.60281 1124.937 1264.4385  957.4740 1239.9440  957.4740 1239.9440 1053527.7
+ ---                                                                                                  
+141: 2024-12-13 12:00:00 32.56081 1122.459 1016.1490  973.6793  996.9651  973.6793  996.9651  861789.2
+142: 2024-12-13 13:00:00 31.26654 1125.807  940.3936  982.9069  922.9524  982.9069  922.9524  805430.9
+143: 2024-12-13 14:00:00 28.05993 1134.103  752.7071 1005.7948  739.3506 1005.7948  739.3506  660234.0
+144: 2024-12-13 15:00:00 23.61973 1145.591  492.8171 1037.5473  484.5958 1037.5473  484.5958  445987.5
+145: 2024-12-13 16:00:00 18.91579 1157.761  217.4896 1071.2575  214.0935 1071.2575  214.0935  202135.8
            Pdc      EffI
          <num>     <num>
-  1:  4290.940 0.9118076
-  2:  8895.974 0.9330800
-  3: 12846.437 0.9347232
-  4: 15502.477 0.9335163
-  5: 16592.492 0.9327431
+  1:  281126.7 0.9829651
+  2:  585214.4 0.9868993
+  3:  848438.6 0.9871193
+  4: 1026889.1 0.9868113
+  5: 1100520.9 0.9866274
  ---                    
-141: 13429.451 0.9345615
-142: 12563.918 0.9347755
-143: 10326.335 0.9343983
-144:  7007.083 0.9290019
-145:  3208.198 0.8945754
+141:  899839.7 0.9870551
+142:  840932.1 0.9871267
+143:  689333.0 0.9871299
+144:  466076.0 0.9862145
+145:  212601.6 0.9799008
 \end{verbatim}
 
 Esta función brinda estos datos a la función \texttt{prodGCPV} para que produzca un objeto de clase \texttt{ProdGCPV} como resultado. Esta función tiene como argumentos principales los mismo que \texttt{calcGef}, ya que parte de un objeto tipo \texttt{Gef}, y los argumentos de la función \texttt{fProd}.
@@ -1339,7 +1339,7 @@ xyplot(prodHoriz)
 \end{center}
 
 \section{Producción eléctrica de un SFB}
-\label{sec:org24597b0}
+\label{sec:org56002c4}
 De igual forma que en el apartado anterior, se puede estimar la producción eléctrica de un sistema fotovoltaico de bombeo.
 
 Como se puede ver en la figura \ref{fig:prodpvps}, \texttt{prodPVPS} funciona gracias a la siguiente función:
@@ -1403,8 +1403,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x000002d6fbeb1468>
-<environment: 0x000002d6fb151f98>
+<bytecode: 0x0000024305c37938>
+<environment: 0x0000024305c3e240>
 \end{verbatim}
 
 \item \texttt{fPb}: función que relaciona la potencia del eje de la bomba con la potencia eléctrica del motor.
@@ -1430,8 +1430,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x000002d6fbeb1468>
-<environment: 0x000002d6fb136550>
+<bytecode: 0x0000024305c37938>
+<environment: 0x0000024305c599b0>
 \end{verbatim}
 
 \item \texttt{fPh}: función que relaciona la potencia hidráulica con la potencia eléctrica del motor.
@@ -1457,8 +1457,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x000002d6fbeb1468>
-<environment: 0x000002d6fb1315b8>
+<bytecode: 0x0000024305c37938>
+<environment: 0x0000024305c6fb38>
 \end{verbatim}
 
 \item \texttt{fFreq}: función que relaciona la frecuencia con la potencia eléctrica del motor.
@@ -1484,8 +1484,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x000002d6fbeb1468>
-<environment: 0x000002d6fb150d60>
+<bytecode: 0x0000024305c37938>
+<environment: 0x0000024305c4ee08>
 \end{verbatim}
 \end{itemize}
 
@@ -1530,7 +1530,7 @@ xyplot(prodsfb)
 \end{center}
 \end{itemize}
 \section{Optimización de distancias}
-\label{sec:orgd5f1334}
+\label{sec:org0f15b40}
 \label{optimizacion-distancias}
 Por último, el paquete \texttt{solaR2} contiene una función que permite calcular un conjunto de combinaciones de distancias entre los elementos de un sistema fotovoltaico conectado a red, con el fin de que el usuario posteriormente pueda optar cual es la opción mas rentable en base a los precios del cableado y de la ocupación del terreno.
 
@@ -1642,10 +1642,10 @@ shadeplot(Shd12Fixed)
 
 
 \section{Aspectos técnicos de la elaboración de un paquete en R}
-\label{sec:orgf07702d}
+\label{sec:org0f4230a}
 \label{sec:aspectos-tecnicos}
 \subsection{Estructura básica del paquete}
-\label{sec:org37ba668}
+\label{sec:orgc01cf25}
 \label{subsec:estructura-paquete}
 En la creación de un paquete en \texttt{R}, la estructura de los archivos es clave para asegurar un desarrollo organizado y que \texttt{R} pueda interactuar correctamente con el código y  los datos. Los paquetes de R son esencialmente un conjunto de archivos organizados en un directorio específio. El contenido mínimo requerido incluye:
 \begin{itemize}
@@ -1661,7 +1661,7 @@ En la creación de un paquete en \texttt{R}, la estructura de los archivos es cl
 La estructura básica de un paquete puede generarse fácilmente utilizando la función \texttt{package.skeleton()}, que crea los archivos y carpetas necesarios para empezar a trabajar en el desarrollo.
 
 \subsection{DESCRIPTION}
-\label{sec:org6387016}
+\label{sec:org58fc01e}
 \label{subsec:description}
 El fichero \textbf{DESCRIPTION} es fundamental, ya que incluye la información descriptiva y técnica del paquete, como el nombre, la versión, los autores y las dependencias. Un ejemplo típico de este archivo es el siguiente:
 \begin{examplebox}
@@ -1700,7 +1700,7 @@ Los campos principales de este archivo son:
 
 Este archivo es crucial para que los usuarios y el sistema \texttt{R} identifiquen las características y requisitos del paquete
 \subsection{NAMESPACE}
-\label{sec:org3f06ff6}
+\label{sec:org748e973}
 \label{subsec:namespace}
 El archivo \textbf{NAMESPACE} es el encargado de gestionar el espacio de nombres del paquete, permitiendo definir qué funciones y objetos serán visibles (exportados) y cuáles se mantendrán internos. Además, es útil para definir qué funciones o métodos de otros paquetes serán importados para us uso dentro del paquete.
 
@@ -1731,7 +1731,7 @@ search()
 \end{verbatim}
 
 \subsubsection{Manejo de variables}
-\label{sec:org528e86a}
+\label{sec:org30b1ac3}
 \begin{itemize}
 \item Exportar variables:
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -1748,7 +1748,7 @@ importFrom(pkgExt, var1, var2)
 \end{lstlisting}
 \end{itemize}
 \subsubsection{Manejo de clases y métodos}
-\label{sec:org951e5fd}
+\label{sec:org167a613}
 \begin{itemize}
 \item Para registrar un \textbf{método} para una \textbf{clase} determinada:
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -1780,7 +1780,7 @@ importClassesFrom(package, ...)
 importMethodsFrom(package, ...)
 \end{lstlisting}
 \subsection{Documentación}
-\label{sec:org320d332}
+\label{sec:org7bbbf51}
 \label{subsec:documentacion}
 La documentación en R sigue un formato específico llamado \texttt{Rd} (\emph{R documentation}), que está inspirado en LaTex. Cada función, método o clase del paquete debe tener una página de documentación asociada, que generalmente se encuentra en el subdirectorio \texttt{man/}. Estas páginas incluyen información sobre el uso de la función, argumentos, detalles de la implementación y ejemplos de uso.
 \begin{examplebox}

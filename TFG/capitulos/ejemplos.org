@@ -127,9 +127,11 @@ Una vez se tienen todos los parémtros del sistema fotovoltaico, se requieren lo
 
 Se almacena esta información en otra lista:
 #+begin_src R :session solaR
-  inverter <- list(Pinv = 1200,
+  inverter <- list(Ki = c(0.002, 0.005, 0.008),
+                   Pinv = 1200,
 		   Vmin = 100,
-		   Vmax = 320)
+		   Vmax = 320,
+                   Gumb = 20)
 #+end_src
 
 Una vez recopilada toda la información (la información que falta se deja sin añadir para que el propio paquete añada sus valores por defecto), se puede calcular la producción que tuvieron los sistemas:
