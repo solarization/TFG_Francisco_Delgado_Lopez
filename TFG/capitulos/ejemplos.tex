@@ -7,26 +7,12 @@ Se tomará de base un estudio realizado por profesores de la escuela \cite{adrad
 En este ejemplo se realizará el mismo análisis tomando tres herramientas distintas: \texttt{solaR}, para poder tomar como referencia el paquete del que sale, apreciando las mejoras del programa. \texttt{PVSyst}, ya que es uno de los softwares más usados en el ámbito de la fotovoltaica y puede servir como punto de referencia. Y, por último, \texttt{solaR2}.
 
 \section{\texttt{solaR}}
-\label{sec:orgf0b76bb}
+\label{sec:org8e38186}
 \label{sec:solaR}
 Se empieza inicilizando el paquete:
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 library(solaR)
 \end{lstlisting}
-
-\begin{verbatim}
-Cargando paquete requerido: zoo
-
-Adjuntando el paquete: 'zoo'
-
-The following objects are masked from 'package:base':
-
-    as.Date, as.Date.numeric
-
-Cargando paquete requerido: lattice
-Cargando paquete requerido: latticeExtra
-Time Zone set to UTC.
-\end{verbatim}
 
 En el estudio anterior, se recopilaron datos intradiarios de irradiación intradiaria. Sin embargo, estos datos fueron tomados en un plano inclinado, por lo que ni \texttt{solaR}, ni \texttt{solaR2} son capaces de interpretarlos correctamente. En su lugar, para este ejemplo se van a tomar datos horarios de la plataforma \texttt{PVGIS} \cite{pvgis} de los años 2013, 2014 y 2015 en la localización de la ETSIDI.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -91,7 +77,7 @@ module2 <- list(Vocn = 36.5,
 Una vez se tiene la información de cada tipo de módulo, en la tabla \ref{tab:sistemas-fotovoltaicos} se pueden ver la información de la agrupación de cada sistema.
 \begin{center}
 {\footnotesize }%
-\begin{table}
+\begin{table}[h]
 {\scriptsize \caption{Sistemas fotovoltaicos.\label{tab:sistemas-fotovoltaicos}}}
 \centering{}{\scriptsize }\begin{tabular}{*{7}{>{\centering}m{1.85cm}}}
 \toprule 
@@ -188,57 +174,35 @@ show(as.zooY(prod2))
 \includegraphics[width=.9\linewidth]{figuras/ejemplos2.pdf}
 \end{center}
 \section{\texttt{PVsyst}}
-\label{sec:org3232024}
+\label{sec:orgbc183ba}
 Con la herramienta \texttt{PVsyst}, se ha generado un año promedio de datos de irradiación en la localización y con estos datos se han obtenido dos informes (uno por cada sistema).
 
 Por comodidad, en este documento se van a extraer solo unas tablas con los resultados principales. Sin embargo, los informes completos están disponibles en el \href{https://github.com/solarization/TFG\_Francisco\_Delgado\_Lopez}{github} del documento.
 
-En las tablas \ref{tab:pvsyst1} y \ref{tab:pvsyst2} se tienen los resultados de la simulación de los sistemas.
+En las tabla \ref{tab:pvsyst} se tienen los resultados de la simulación de los sistemas.
 \begin{center}
 {\footnotesize }%
-\begin{table}
-{\scriptsize \caption{Energía media mensual estimada por \texttt{PVSyst} en $KWh$ del sistema 1.\label{tab:pvsyst1}}}
-\centering{}{\scriptsize }\begin{tabular}{*{13}{>{\centering}m{0.75cm}}}
+\begin{table}[H]
+{\scriptsize \caption{Energía media mensual estimada por \texttt{PVSyst} en $KWh$.\label{tab:pvsyst}}}
+\centering{}{\scriptsize }\begin{tabular}{*{3}{>{\centering}m{2cm}}}
 \toprule 
-{\scriptsize \textbf{Ene}} & {\scriptsize \textbf{Feb}} & {\scriptsize \textbf{Mar}} & {\scriptsize \textbf{Abr}} & {\scriptsize \textbf{May}} & {\scriptsize \textbf{Jun}} & {\scriptsize \textbf{Jul}} & {\scriptsize \textbf{Ago}} & {\scriptsize \textbf{Sep}} & {\scriptsize \textbf{Oct}} & {\scriptsize \textbf{Nov}} & {\scriptsize \textbf{Dic}} & {\scriptsize \textbf{Total}}\tabularnewline
+{\scriptsize} & {\scriptsize \textbf{$E_{AC}$}} & {\scriptsize \textbf{$Y_f$}}\tabularnewline
 \midrule
-{\scriptsize 3,7} & {\scriptsize 4,0} & {\scriptsize 5,6} & {\scriptsize 5,3} & {\scriptsize 6,7} & {\scriptsize 6,7} & {\scriptsize 7,9} & {\scriptsize 7,2} & {\scriptsize 6,4} & {\scriptsize 4,8} & {\scriptsize 3,5} & {\scriptsize 3,6} & {\scriptsize 1941,1} \tabularnewline
+{\scriptsize \textbf{mc-Si}} & {\scriptsize 1704.2} & {\scriptsize 1363}\tabularnewline
+{\scriptsize \textbf{pc-Si}} & {\scriptsize 1464.5} & {\scriptsize 1331}\tabularnewline
 \bottomrule
 \end{tabular}
 \end{table}
 \end{center}
-\begin{center}
-{\footnotesize }%
-\begin{table}
-{\scriptsize \caption{Energía media mensual estimada por \texttt{PVSyst} en $KWh$ del sistema 2.\label{tab:pvsyst2}}}
-\centering{}{\scriptsize }\begin{tabular}{*{13}{>{\centering}m{0.75cm}}}
-\toprule 
-{\scriptsize \textbf{Ene}} & {\scriptsize \textbf{Feb}} & {\scriptsize \textbf{Mar}} & {\scriptsize \textbf{Abr}} & {\scriptsize \textbf{May}} & {\scriptsize \textbf{Jun}} & {\scriptsize \textbf{Jul}} & {\scriptsize \textbf{Ago}} & {\scriptsize \textbf{Sep}} & {\scriptsize \textbf{Oct}} & {\scriptsize \textbf{Nov}} & {\scriptsize \textbf{Dic}} & {\scriptsize \textbf{Total}}\tabularnewline
-\midrule
-{\scriptsize 4,3} & {\scriptsize 4,6} & {\scriptsize 6,4} & {\scriptsize 6,1} & {\scriptsize 7,3} & {\scriptsize 7,3} & {\scriptsize 8,3} & {\scriptsize 7,7} & {\scriptsize 6,9} & {\scriptsize 5,4} & {\scriptsize 4,1} & {\scriptsize 4,4} & {\scriptsize 2213,7} \tabularnewline
-\bottomrule
-\end{tabular}
-\end{table}
-\end{center}
-
 
 
 \section{\texttt{solaR2}}
-\label{sec:org7295038}
+\label{sec:orgbcb3476}
 \label{sec:solaR2}
 Con los datos obtenidos en la sección \ref{sec:solaR}, hacemos la misma operación pero con el paquete \texttt{solaR2}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 library(solaR2)
 \end{lstlisting}
-
-\begin{verbatim}
-Cargando paquete requerido: data.table
-data.table 1.15.4 using 6 threads (see ?getDTthreads).  Latest news: r-datatable.com
-Cargando paquete requerido: lattice
-Cargando paquete requerido: latticeExtra
-Time Zone set to UTC.
-\end{verbatim}
-
 
 Para ello importamos de la misma manera los datos de radiación.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -295,7 +259,7 @@ show(as.data.tableY(prod2))
 \end{verbatim}
 
 \section{Comparación y conclusiones}
-\label{sec:org4b6368f}
+\label{sec:orgb20842c}
 \label{sec:comparacion-conclusiones}
 Como se puede observar en las secciones anteriores, tanto el paquete \texttt{solaR} como el paquete \texttt{solaR2} ofrecen los mismos resultados, ya que toman las mismas referencias y estudios para realizar los cáculos. Sin embargo, el paquete \texttt{solaR2}, aparte de la corrección de algunos erores, presenta unas claras ventajas frente a su antecesor. Estas son:
 \begin{itemize}
@@ -317,8 +281,8 @@ microbenchmark(prodGCPVcustom(), times = 20)
 
 \begin{verbatim}
 Unit: milliseconds
-             expr      min       lq     mean  median       uq      max neval
- prodGCPVcustom() 768.0936 781.2883 796.9569 790.474 814.2017 826.2135    20
+             expr      min       lq     mean   median       uq      max neval
+ prodGCPVcustom() 758.4317 764.3084 776.2658 767.5088 779.8397 832.6161    20
 \end{verbatim}
 
 
@@ -337,7 +301,7 @@ microbenchmark(prodGCPVcustom(), times = 20)
 
 \begin{verbatim}
 Unit: milliseconds
-             expr      min       lq     mean   median       uq      max neval
- prodGCPVcustom() 522.1656 528.3605 535.2899 531.2649 537.8075 572.8096    20
+             expr      min       lq     mean   median    uq      max neval
+ prodGCPVcustom() 520.1082 523.0395 527.6185 526.2238 532.8 537.7892    20
 \end{verbatim}
 \end{itemize}

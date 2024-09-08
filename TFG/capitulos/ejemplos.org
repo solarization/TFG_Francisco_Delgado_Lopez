@@ -78,7 +78,7 @@ Una vez se tiene la información de cada tipo de módulo, en la tabla ref:tab:si
 #+begin_export latex
 \begin{center}
 {\footnotesize }%
-\begin{table}
+\begin{table}[h]
 {\scriptsize \caption{Sistemas fotovoltaicos.\label{tab:sistemas-fotovoltaicos}}}
 \centering{}{\scriptsize }\begin{tabular}{*{7}{>{\centering}m{1.85cm}}}
 \toprule 
@@ -162,38 +162,23 @@ Con la herramienta =PVsyst=, se ha generado un año promedio de datos de irradia
 
 Por comodidad, en este documento se van a extraer solo unas tablas con los resultados principales. Sin embargo, los informes completos están disponibles en el [[https://github.com/solarization/TFG_Francisco_Delgado_Lopez][github]] del documento.
 
-En las tablas ref:tab:pvsyst1 y ref:tab:pvsyst2 se tienen los resultados de la simulación de los sistemas.
+En las tabla ref:tab:pvsyst se tienen los resultados de la simulación de los sistemas.
 #+begin_export latex
 \begin{center}
 {\footnotesize }%
-\begin{table}
-{\scriptsize \caption{Energía media mensual estimada por \texttt{PVSyst} en $KWh$ del sistema 1.\label{tab:pvsyst1}}}
-\centering{}{\scriptsize }\begin{tabular}{*{13}{>{\centering}m{0.75cm}}}
+\begin{table}[H]
+{\scriptsize \caption{Energía media mensual estimada por \texttt{PVSyst} en $KWh$.\label{tab:pvsyst}}}
+\centering{}{\scriptsize }\begin{tabular}{*{3}{>{\centering}m{2cm}}}
 \toprule 
-{\scriptsize \textbf{Ene}} & {\scriptsize \textbf{Feb}} & {\scriptsize \textbf{Mar}} & {\scriptsize \textbf{Abr}} & {\scriptsize \textbf{May}} & {\scriptsize \textbf{Jun}} & {\scriptsize \textbf{Jul}} & {\scriptsize \textbf{Ago}} & {\scriptsize \textbf{Sep}} & {\scriptsize \textbf{Oct}} & {\scriptsize \textbf{Nov}} & {\scriptsize \textbf{Dic}} & {\scriptsize \textbf{Total}}\tabularnewline
+{\scriptsize} & {\scriptsize \textbf{$E_{AC}$}} & {\scriptsize \textbf{$Y_f$}}\tabularnewline
 \midrule
-{\scriptsize 3,7} & {\scriptsize 4,0} & {\scriptsize 5,6} & {\scriptsize 5,3} & {\scriptsize 6,7} & {\scriptsize 6,7} & {\scriptsize 7,9} & {\scriptsize 7,2} & {\scriptsize 6,4} & {\scriptsize 4,8} & {\scriptsize 3,5} & {\scriptsize 3,6} & {\scriptsize 1941,1} \tabularnewline
+{\scriptsize \textbf{mc-Si}} & {\scriptsize 1704.2} & {\scriptsize 1363}\tabularnewline
+{\scriptsize \textbf{pc-Si}} & {\scriptsize 1464.5} & {\scriptsize 1331}\tabularnewline
 \bottomrule
 \end{tabular}
 \end{table}
 \end{center}
 #+end_export
-#+begin_export latex
-\begin{center}
-{\footnotesize }%
-\begin{table}
-{\scriptsize \caption{Energía media mensual estimada por \texttt{PVSyst} en $KWh$ del sistema 2.\label{tab:pvsyst2}}}
-\centering{}{\scriptsize }\begin{tabular}{*{13}{>{\centering}m{0.75cm}}}
-\toprule 
-{\scriptsize \textbf{Ene}} & {\scriptsize \textbf{Feb}} & {\scriptsize \textbf{Mar}} & {\scriptsize \textbf{Abr}} & {\scriptsize \textbf{May}} & {\scriptsize \textbf{Jun}} & {\scriptsize \textbf{Jul}} & {\scriptsize \textbf{Ago}} & {\scriptsize \textbf{Sep}} & {\scriptsize \textbf{Oct}} & {\scriptsize \textbf{Nov}} & {\scriptsize \textbf{Dic}} & {\scriptsize \textbf{Total}}\tabularnewline
-\midrule
-{\scriptsize 4,3} & {\scriptsize 4,6} & {\scriptsize 6,4} & {\scriptsize 6,1} & {\scriptsize 7,3} & {\scriptsize 7,3} & {\scriptsize 8,3} & {\scriptsize 7,7} & {\scriptsize 6,9} & {\scriptsize 5,4} & {\scriptsize 4,1} & {\scriptsize 4,4} & {\scriptsize 2213,7} \tabularnewline
-\bottomrule
-\end{tabular}
-\end{table}
-\end{center}
-#+end_export
-
 
 
 * =solaR2=
