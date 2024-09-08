@@ -157,17 +157,25 @@
 }
 \makeatother
 
+% \makeatletter
+% \renewenvironment{table}[1][htpb]{%
+%       	 \@float{table}%
+% 		\postcaption{\rule{\linewidth}{0.4pt}\par}%En las tablas el caption va encima
+% 		\centering
+%    	 \end@float	
+% }
+% \makeatother
+
 \makeatletter
-\renewenvironment{table}[1][]{%
-      	\@float{table}%
-		%\begin{framed}    
-		\postcaption{\rule{\linewidth}{0.4pt}\par}%En las tablas el caption va encima
-		\centering
-		  }{%
-		%\end{framed}
-    	\end@float	
+\renewenvironment{table}[1][h]{%
+    \@float{table}[#1]%
+    \postcaption{\rule{\linewidth}{0.4pt}}
+    \centering
+    }{
+    \end@float
 }
 \makeatother
+
 
 % footnotes
 \usepackage[bottom]{footmisc}

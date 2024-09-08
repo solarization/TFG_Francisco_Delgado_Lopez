@@ -3,20 +3,20 @@
 \nomgroup{A}
   \item [{\(A_c\)}]\begingroup Área de una célula\nomeqref {3.33}\nompageref{21}
   \item [{$A_G$}]\begingroup Área de un generador fotovoltáico\nomeqref {3.87}\nompageref{29}
-  \item [{\(\alpha\)}]\begingroup Ángulo de orientación de un sistema fotovoltaico\nomeqref {3.20}\nompageref{16}
+  \item [{\(\alpha\)}]\begingroup Ángulo de orientación de un sistema fotovoltaico\nomeqref {3.20}\nompageref{17}
   \item [{$AM$}]\begingroup Masa de aire\nomeqref {3.9}\nompageref{14}
   \item [{$AO$}]\begingroup Adelanto oficial durante el horario de invierno\nomeqref {3.4}\nompageref{13}
 \nomgroup{B}
-  \item [{$B$}]\begingroup Radiación directa\nomeqref {3.10}\nompageref{15}
+  \item [{$B$}]\begingroup Radiación directa\nomeqref {3.10}\nompageref{14}
   \item [{$B_0(0)$}]\begingroup Irradiancia extra-atmosférica o extra-terrestre en el plano horizontal\nomeqref {3.5}\nompageref{13}
   \item [{$B_{0d}(0)$}]\begingroup Irradiación diaria extra-atmosférica en el plano horizontal\nomeqref {3.8}\nompageref{14}
-  \item [{\(\beta\)}]\begingroup Ángulo de inclinación de un sistema fotovoltaico\nomeqref {3.28}\nompageref{18}
+  \item [{\(\beta\)}]\begingroup Ángulo de inclinación de un sistema fotovoltaico\nomeqref {3.28}\nompageref{19}
 \nomgroup{D}
   \item [{\(D\)}]\begingroup Radiación difusa\nomeqref {3.10}\nompageref{15}
-  \item [{\(D^C\)}]\begingroup Radiación difusa circunsolar\nomeqref {3.20}\nompageref{16}
+  \item [{\(D^C\)}]\begingroup Radiación difusa circunsolar\nomeqref {3.20}\nompageref{17}
   \item [{$\delta$}]\begingroup Declinación\nomeqref {3.1}\nompageref{12}
   \item [{$\Delta \lambda$}]\begingroup Diferencia entre la longitud local y la longitud del huso horario\nomeqref {3.4}\nompageref{13}
-  \item [{\(D^I\)}]\begingroup Radiación difusa isotrópica\nomeqref {3.20}\nompageref{16}
+  \item [{\(D^I\)}]\begingroup Radiación difusa isotrópica\nomeqref {3.20}\nompageref{17}
   \item [{$d_{min}$}]\begingroup Distancia mínima entre hileras de un generador para evitar el sombreado\nomeqref {3.90}\nompageref{29}
   \item [{$d_n$}]\begingroup Día del año\nomeqref {3.1}\nompageref{12}
 \nomgroup{E}
@@ -34,14 +34,14 @@
   \item [{$g$}]\begingroup Aceleración de la gravedad\nomeqref {3.65}\nompageref{26}
   \item [{\(G\)}]\begingroup Radiación global\nomeqref {3.10}\nompageref{15}
   \item [{$GCR$}]\begingroup Ground coverage ratio\nomeqref {3.87}\nompageref{29}
-  \item [{\(G_{STC}\)}]\begingroup Irradiancia incidente en condiciones estandar de medida\nomeqref {3.33}\nompageref{22}
+  \item [{\(G_{STC}\)}]\begingroup Irradiancia incidente en condiciones estandar de medida\nomeqref {3.33}\nompageref{21}
 \nomgroup{H}
   \item [{$H_{dt}$}]\begingroup Nivel dinámico de un pozo\nomeqref {3.72}\nompageref{27}
   \item [{$H_f$}]\begingroup Altura asociada a las pérdidas de frición en una tubería\nomeqref {3.67}\nompageref{26}
   \item [{$H_{OT}$}]\begingroup Diferencia de cotas entre la salida de agua y la entrada en el depósito\nomeqref {3.73}\nompageref{27}
   \item [{$H_{st}$}]\begingroup Nivel estático de un pozo\nomeqref {3.72}\nompageref{27}
   \item [{$H_T$}]\begingroup Altura total incluyendo las pérdidas de fricción de la tubería\nomeqref {3.67}\nompageref{26}
-  \item [{$H_{TE}$}]\begingroup Altura total equivalente de un sistema de bombeo\nomeqref {3.71}\nompageref{27}
+  \item [{$H_{TE}$}]\begingroup Altura total equivalente de un sistema de bombeo\nomeqref {3.71}\nompageref{26}
   \item [{$H_v$}]\begingroup Altura vertical aparente\nomeqref {3.65}\nompageref{26}
 \nomgroup{I}
   \item [{$I_{mpp}$}]\begingroup Corriente de una célula en el punto de máxima potencia\nomeqref {3.31}\nompageref{20}
@@ -54,10 +54,10 @@
   \item [{$L_{eo}$}]\begingroup Separación entre seguidores en sentido Este-Oeste\nomeqref {3.92}\nompageref{30}
   \item [{$L_{ns}$}]\begingroup Separación entre seguidores en sentido Norte-Sur\nomeqref {3.92}\nompageref{30}
 \nomgroup{M}
-  \item [{MPP}]\begingroup Punto de máxima potencia de un dispositivo fotovoltaico\nomeqref {3.31}\nompageref{21}
+  \item [{MPP}]\begingroup Punto de máxima potencia de un dispositivo fotovoltaico\nomeqref {3.31}\nompageref{20}
 \nomgroup{O}
   \item [{$\omega$}]\begingroup Hora solar o tiempo solar verdadero\nomeqref {3.3}\nompageref{13}
-  \item [{$\omega_s$}]\begingroup Ángulo del amanecer\nomeqref {3.2}\nompageref{13}
+  \item [{$\omega_s$}]\begingroup Ángulo del amanecer\nomeqref {3.2}\nompageref{12}
 \nomgroup{P}
   \item [{$P_{el}$}]\begingroup Potencia eléctrica necesaria en la entrada de una motobomba\nomeqref {3.68}\nompageref{26}
   \item [{$P_f$}]\begingroup Pérdidas de frición en la tubería de un sistema de bombeo\nomeqref {3.67}\nompageref{26}
@@ -65,7 +65,7 @@
   \item [{$P_H$}]\begingroup Potencia hidráulica\nomeqref {3.65}\nompageref{26}
   \item [{$\phi$}]\begingroup Latitud\nomeqref {3.3}\nompageref{13}
   \item [{\(P_{inv}\)}]\begingroup Potencia nominal de un inversor\nomeqref {3.57}\nompageref{25}
-  \item [{$\psi_s$}]\begingroup Ángulo acimutal solar\nomeqref {3.7}\nompageref{14}
+  \item [{$\psi_s$}]\begingroup Ángulo acimutal solar\nomeqref {3.7}\nompageref{13}
 \nomgroup{Q}
   \item [{$Q$}]\begingroup Caudal de agua\nomeqref {3.65}\nompageref{26}
   \item [{$Q_{max}$}]\begingroup Caudal máximo del pozo\nomeqref {3.72}\nompageref{27}
@@ -77,12 +77,12 @@
   \item [{\(\rho\)}]\begingroup Coeficiente de reflexión del terreno para la irradiancia de albedo\nomeqref {3.23}\nompageref{17}
   \item [{$ROT$}]\begingroup Ratio de ocupación del terreno\nomeqref {3.88}\nompageref{29}
 \nomgroup{S}
-  \item [{STC}]\begingroup Condiciones estándar de medida de un dispositivo fotovoltaico\nomeqref {3.33}\nompageref{22}
+  \item [{STC}]\begingroup Condiciones estándar de medida de un dispositivo fotovoltaico\nomeqref {3.33}\nompageref{21}
 \nomgroup{T}
   \item [{Ta}]\begingroup Temperatura ambiente\nomeqref {3.36}\nompageref{23}
-  \item [{\(T_c^*\)}]\begingroup Temperatura de célula en condiciones estándar de medida\nomeqref {3.33}\nompageref{22}
+  \item [{\(T_c^*\)}]\begingroup Temperatura de célula en condiciones estándar de medida\nomeqref {3.33}\nompageref{21}
   \item [{\(T_c\)}]\begingroup Temperatura de célula\nomeqref {3.33}\nompageref{21}
-  \item [{\(\theta_s\)}]\begingroup Ángulo de incidencia o ángulo entre el vector solar y el vector director de una superficie\nomeqref {3.24}\nompageref{17}
+  \item [{\(\theta_s\)}]\begingroup Ángulo de incidencia o ángulo entre el vector solar y el vector director de una superficie\nomeqref {3.24}\nompageref{18}
   \item [{$\theta_{zs}$}]\begingroup Ángulo cenital solar\nomeqref {3.6}\nompageref{13}
   \item [{$T_{max}$}]\begingroup Temperatura máxima en un día\nomeqref {3.34}\nompageref{23}
   \item [{$T_{min}$}]\begingroup Temperatura mínima en un día\nomeqref {3.34}\nompageref{23}

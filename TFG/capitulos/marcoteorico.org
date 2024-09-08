@@ -9,10 +9,6 @@ file:figuras/ProcedimientoCalculoRadiacionInclinada.pdf
 El paquete =solaR2= toma como marco teórico el libro de Oscar Perpiñán, tutor de este trabajo, Energía Solar Fotovoltaica \cite{Perpinan2023} para cada una de las operaciones de cálculo que realizan cada una de las funciones.
 En la figura [[fig:prod-calculo]], se muestra un diagrama que resume los pasos que se siguen a la hora de calcular la producción de sistemas fotovoltaicos.
 
-#+begin_export latex
-\FloatBarrier
-#+end_export
-
 Estos pasos son:
 1. Calcular la geometría que define la posición relativa del Sol desde la Tierra.
 2. Obtener la irradiación global diaria en el plano horizontal.
@@ -114,7 +110,7 @@ Es posible demostrar que el promedio mensual de esta irradiación diaria coincid
 #+begin_export latex
 \begin{center}
 {\footnotesize }%
-\begin{table}[h]
+\begin{table}
 {\footnotesize \caption{Valor $d_{n}$ correspondiente a los doce días promedio.\label{tab:DiasPromedio}}
 }{\footnotesize \par}
 
@@ -126,7 +122,6 @@ $d_{n}$ & {\footnotesize 17} & {\footnotesize 45} & {\footnotesize 74} & {\footn
 \bottomrule
 \end{tabular}
 \end{table}
-
 \par\end{center}{\footnotesize \par}
 #+end_export
 
@@ -318,18 +313,27 @@ donde:
 - Ángulo de inclinación del generador (en radianes): \(\beta\). \nomenclature[beta]{\(\beta\)}{Ángulo de inclinación de un sistema fotovoltaico}
 - Coeficiente de pérdidas angulares: \(a_r\).
 - Coeficientes de ajuste: \(c_1\) y \(c_2\) (en la tabla [[ref:tab:coef-perd]] se recogen algunos valores característicos de un módulo de silicio monocristalino convencional para diferentes grados de suciedad).
-#+CAPTION: Valores del coeficiente de pérdidas angulares y transmitancia relativa en incidencia normal para diferentes tipos de suciedad. label:tab:coef-perd
-|-------------------+--------------------------------------+------+--------|
-| Grado de suciedad | $\frac{T_{sucio}(0)}{T_{limpio}(0)}$ |  a_r |    c_2 |
-|-------------------+--------------------------------------+------+--------|
-| Limpio            |                                    1 | 0.17 | -0.069 |
-|-------------------+--------------------------------------+------+--------|
-| Bajo              |                                 0.98 | 0.20 | -0.054 |
-|-------------------+--------------------------------------+------+--------|
-| Medio             |                                 0.97 | 0.21 | -0.049 |
-|-------------------+--------------------------------------+------+--------|
-| Alto              |                                 0.92 | 0.27 | -0.023 |
-|-------------------+--------------------------------------+------+--------|
+#+begin_export latex
+\begin{table}
+\caption{Valores del coeficiente de pérdidas angulares y transmitancia relativa
+en incidencia normal para diferentes tipos de suciedad.\label{tab:coef-perd}}
+
+\begin{tabular}{cccc}
+\toprule 
+Grado de Suciedad & $\frac{T_{sucio}(0)}{T_{limpio}(0)}$ & $a_{r}$ & $c_{2}$\tabularnewline
+\midrule
+\midrule 
+Limpio & 1 & 0.17 & -0.069\tabularnewline
+\midrule 
+Bajo & 0.98 & 0.20 & -0.054\tabularnewline
+\midrule 
+Medio & 0.97 & 0.21 & -0.049\tabularnewline
+\midrule 
+Alto & 0.92 & 0.27 & -0.023\tabularnewline
+\bottomrule
+\end{tabular}
+\end{table}
+#+end_export
 
 Para estas componenetes el cálculo de irradiancia efectiva es similar al de la irradiancia directa (ecuaciones [[ref:eq:dif-ef-iso]] y [[ref:eq:alb-ef]]). Para la componente difusa circunsolar, se empleará el factor de pérdidas angulares de la irradiancia efectiva(ecuacion [[ref:eq:dif-ef-cir]]):
 #+begin_export latex
