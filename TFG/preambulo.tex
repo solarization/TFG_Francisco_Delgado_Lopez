@@ -69,7 +69,6 @@
 \definecolor{red6}{rgb}{0.753, 0.224, 0.169}
 
 \lstset{
-  language = R,
   backgroundcolor=\color{lightgrey},
   basicstyle=\fontsize{11}{12}\selectfont\ttfamily,
   breakatwhitespace=false,
@@ -109,6 +108,8 @@
            {“}{{\textquotedbl}}1{”}{{\textquotedbl}}1
 }
 
+
+
 %captions de listings
 \renewcommand{\lstlistingname}{Extracto de código}
 
@@ -141,33 +142,18 @@
 %\captionstyle{\centering}
 \hangcaption
 
-%Centra las figuras en los flotantes y los enmarca
 \makeatletter
 \renewenvironment{figure}[1][]{%
      	\@float{figure}%
-		%\begin{framed}    
 		\precaption{\rule{\linewidth}{0.4pt}\par}%En las figuras el caption va debajo
-		%\hrule\vspace{\onelineskip}
 		\centering
 		  }{%
-		%\end{framed}
-		%\postcaption{\rule{\linewidth}{0.4pt}}
-		%\vspace{\onelineskip}\hrule
     	\end@float	
 }
 \makeatother
 
-% \makeatletter
-% \renewenvironment{table}[1][htpb]{%
-%       	 \@float{table}%
-% 		\postcaption{\rule{\linewidth}{0.4pt}\par}%En las tablas el caption va encima
-% 		\centering
-%    	 \end@float	
-% }
-% \makeatother
-
 \makeatletter
-\renewenvironment{table}[1][h]{%
+\renewenvironment{table}[1][]{%
     \@float{table}[#1]%
     \postcaption{\rule{\linewidth}{0.4pt}}
     \centering

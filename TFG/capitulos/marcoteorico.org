@@ -110,7 +110,7 @@ Es posible demostrar que el promedio mensual de esta irradiación diaria coincid
 #+begin_export latex
 \begin{center}
 {\footnotesize }%
-\begin{table}
+\begin{table}[h]
 {\footnotesize \caption{Valor $d_{n}$ correspondiente a los doce días promedio.\label{tab:DiasPromedio}}
 }{\footnotesize \par}
 
@@ -231,9 +231,12 @@ donde:
 Es importante resaltar que estos perfiles proceden de medias sobre largos períodos, de ahí que, como es observable en la figura [[fig:Perfil-de-irradiancia]], las fluctuaciones propias del movimiento de nubes a lo largo del día queden atenuadas y se obtenga una curva sin alteraciones.
 #+NAME: fig:Perfil-de-irradiancia
 #+CAPTION: Perfil de irradiancia difusa y global obtenido a partir del generador empírico de [[cite:Collares-Pereira.Rabl1979]] para valores de irradiancia tomadas cada 10 minutos. Figura 3.4 del libro ESF cite:Perpinan2023.
-#+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio
+#+ATTR_LATEX: :scale 0.85
 [[file:figuras/RgRd.pdf]]
 
+#+begin_export latex
+\FloatBarrier
+#+end_export
 ** Transformación al plano del generador
 label:subsec:transformación-plano-generador
 Una vez otenidos los valores de irradiancia en el plano horizontal, se traspone al plano del generador:
@@ -270,8 +273,12 @@ Una vez otenidos los valores de irradiancia en el plano horizontal, se traspone 
   #+end_export
   #+NAME: fig:AnguloVisionCielo
   #+CAPTION: Ángulo de visión del cielo. Figura 3.5 del libro ESF cite:Perpinan2023.
-  #+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio
+  #+ATTR_LATEX: :scale 1.1
   [[file:figuras/AnguloVisionCielo.pdf]]
+
+#+begin_export latex
+\FloatBarrier
+#+end_export
 
 ** Ángulo de incidencia y suciedad
 label:subsec-angulo-incidencia-suciedad
@@ -293,7 +300,7 @@ FTB(\theta_s)=\frac{exp(-\frac{cos(\theta_s)}{a_r})-exp(-\frac{1}{a_r})}{1-exp(-
 Este factor depende del ángulo de incidencia, \(\theta_s\), y del coeficiente de pérdidas angulares, \(a_r\). Cuando la radiación es perpendicular a la superficie ($\theta_s=0$), \(FTB\) es cero. En la figura [[fig:PerdidasAngulares]] se puede observar que las pérdidas angulares son más significativas cuando \(\theta_s\) supera los 60º, y se acentúan con niveles mayores de suciedad.
 #+NAME: fig:PerdidasAngulares
 #+CAPTION: Pérdidas angulares de un módulo fotovoltaico para diferentes grados de suciedad en función del ángulo de incidencia. Figura 3.7 del libro ESF cite:Perpinan2023.
-#+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio 
+#+ATTR_LATEX: :scale 0.71
 [[file:figuras/Suciedad.pdf]]
 
 Para calcular las componente de radiación difusa isotrópica y de albedo, se utilizan las ecuaciones[fn:15] [[ref:eq:FTD]] y [[ref:eq:FTR]]:
@@ -903,6 +910,7 @@ file:figuras/Sombras2X.pdf
 #+CAPTION:Dimensiones de un seguidor a doble eje y longitud de su sombra arrojada. Figura 6.12 del libro ESF cite:Perpinan2023. label:fig:dimensiones-sombras-doble
 #+ATTR_LATEX: :height 0.2\textheight
 file:figuras/DimensionesSeguidorSombra.pdf
+
 #+CAPTION:Posibles sombras en un conjunto de seis seguidores. Figura 6.13 del libro ESF cite:Perpinan2023. label:fig:conjunto-seis-seguidores
 #+ATTR_LATEX: :height 0.2\textheight
 file:figuras/SixTrackerShadow.pdf
@@ -957,13 +965,13 @@ FS_{d} & =\frac{\left[s-\left(l_{eo}\cdot\sin(\psi_{s})+l_{ns}\cos(\psi_{s})\rig
 
 Realizando la simulación de este sistema, incluyendo el cálculo de sombras y repitiendo la simulación para varias combinaciones (Lns, Leo) pueden elaborarse gráficos de nivel como el de la figura ref:fig:abaco-sombras. En estas, se recoge el ratio entre la energía anual producida por un seguidor /promedio/ incluyendo el efecto de por sombras mutuas[fn:24] y la energía anual producida por un seguidor sin sombreado.
 #+CAPTION: Ábaco para planta de seguimiento a doble eje. Recoge el ratio entre la energía anual producida por un seguidor afectado por sombras mutuas ($E_{acS}$) y la producida por un seguidor sin sombreado ($E_{ac0}$). Las curvas de color negro representan la fracción de energía no afectada por sombras. Las curvas de puntos representan el valor del ROT. Figura 6.14 del libro ESF cite:Perpinan2023. label:fig:abaco-sombras
-#+ATTR_LATEX: :height 0.4\textheight
+#+ATTR_LATEX: :scale 0.6
 file:figuras/AbacoSombras.pdf
 
 ** Sistemas de seguimiento de eje horizontal
 Se considera que los seguidores son de longitud infinita en sentido Norte-Sur (se desprecia el efecto de borde). Así, los parámetros que determinan el diseño de este tipo de sistema son (figura ref:fig:SeguidorEjeHorizontalSombras):
 #+CAPTION: Dimensiones básicas en sistemas con seguidores de eje horizontal. Figura 6.16 del libro ESF cite:Perpinan2023. label:fig:SeguidorEjeHorizontalSombras
-#+ATTR_LATEX: :scale 0.9
+#+ATTR_LATEX: :scale 1
 file:figuras/SombrasHoriz.pdf
 1. La inclinación del generador fotovoltaico, $\beta$, (coincidente con el ángulo $\psi_{ns}$).
 2. La dimensión en sentido Este-Oeste del campo generador, L.
