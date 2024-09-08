@@ -9,7 +9,7 @@ En la figura [[fig:prod-solar2]], se muestra el proceso de cálculo que sigue el
 A la hora de estimar la producción, el programa sigue los siguientes procesos[fn:1]:
 * Geometría solar
 label:sec:geometria-solar
-Para calcular la geometría que definen las posiciones de la Tierra y el Sol, =solaR2= se vale de una función constructora, =calcSol=, la cual mediante las funciones =fSolD= y =fSolI= cálcula todos los ángulos y componentes que caracterizan la geometría solar.
+Para calcular la geometría que definen las posiciones de la Tierra y el Sol, =solaR2= se vale de una función constructora, =calcSol=, la cual calcula mediante las funciones =fSolD= y =fSolI= todos los ángulos y componentes que caracterizan la geometría solar.
 #+CAPTION: Cálculo de la geometría solar mediante la función =calcSol=, la cual unifica las funciones =fSolD= y =fSolI= resultando en un objeto clase =Sol= el cual contiene toda la información geométrica necesaria para realizar las siguientes estimaciones. label:fig:calcSol
 #+ATTR_LATEX: :height 0.5\textheight :width \textwidth :options keepaspectratio
 [[file:figuras/calcSol.pdf]]
@@ -136,7 +136,7 @@ file:figuras/meteo.pdf
   - =G0dm=: vector con medias mensuales de irradiación global horizontal.
   - =Ta=: vector con la temperatura ambiente.
   - =lat=: latitud en grados.
-  - =year=: año de los datos. Por defecto presenta el año actual.
+  - =year=: año de los datos. Por defecto, presenta el año actual.
   - =source=: información de la fuente de los datos.
 #+begin_src R :results graphics output :file "figuras/codigo-readg0dm.pdf" :width 8 :height 6
 G0dm = c(2.766,3.491,4.494,5.912,6.989,7.742,
@@ -155,9 +155,9 @@ file:figuras/codigo-readg0dm.pdf
     - =lat=: latitud en grados.
     - =format=: formato de los datos de fechas.
     - =header=, =fill=, =dec=, =sep=: argumentos para [[https://search.r-project.org/CRAN/refmans/data.table/html/fread.html][=fread=]].
-    - =dates.col=: nombre de la columna que contiene los datos de fechas. Por defecto es 'Dates'.
-    - =ta.col=: nombre de la columna que contiene los datos de temperatura. Por defecto es 'Ta'.
-    - =g0.col=: nombre de la columna que contiene los datos de irradiación. Por defecto es 'G0'.
+    - =dates.col=: nombre de la columna que contiene los datos de fechas. Por defecto, es 'Dates'.
+    - =ta.col=: nombre de la columna que contiene los datos de temperatura. Por defecto, es 'Ta'.
+    - =g0.col=: nombre de la columna que contiene los datos de irradiación. Por defecto, es 'G0'.
     - =keep.cols=: si su valor es =TRUE=, mantiene las columnas que no sean importantes para el resto de operaciones.
   #+begin_src R :results graphics output :file "figuras/codigo-readBD.pdf" :width 12 :height 9
   ## Se utiliza un archivo alojado en el
@@ -172,16 +172,16 @@ file:figuras/codigo-readg0dm.pdf
   #+end_src
   #+ATTR_LATEX: :width 0.8\textwidth
   file:figuras/codigo-readBD.pdf
-  - =readBDi=: Procesa datos meteorológicos de tipo intradiarios.
+  - =readBDi=: procesa datos meteorológicos de tipo intradiarios.
     Como argumentos tiene:
     - =file=: nombre del archivo que contiene los datos.
     - =lat=: latitud en grados.
     - =format=: formato de los datos de fechas.
     - =header=, =fill=, =dec=, =sep=: argumentos para [[https://search.r-project.org/CRAN/refmans/data.table/html/fread.html][=fread=]].
-    - =dates.col=: nombre de la columna que contiene los datos de fechas y/o tiempos. Por defecto es 'Dates'.
+    - =dates.col=: nombre de la columna que contiene los datos de fechas y/o tiempos. Por defecto, es 'Dates'.
     - =times.col=: nombre de la columna que contiene los datos de tiempos en caso de que =dates.col= no los incluyera.
-    - =ta.col=: nombre de la columna que contiene los datos de temperatura. Por defecto es 'Ta'.
-    - =g0.col=: nombre de la columna que contiene los datos de irradiancia. Por defecto es 'G0'.
+    - =ta.col=: nombre de la columna que contiene los datos de temperatura. Por defecto, es 'Ta'.
+    - =g0.col=: nombre de la columna que contiene los datos de irradiancia. Por defecto, es 'G0'.
     - =keep.cols=: si su valor es =TRUE=, mantiene las columnas que no sean importantes para el resto de operaciones.
   #+begin_src R :results graphics output :file "figuras/codigo-readBDi.pdf" :width 8 :height 6
   myURL <- "https://raw.githubusercontent.com/oscarperpinan/R/master/data/NREL-Hawaii.csv"
@@ -197,7 +197,7 @@ file:figuras/codigo-readg0dm.pdf
   #+end_src
   #+ATTR_LATEX: :width 0.8\textwidth
   file:figuras/codigo-readBDi.pdf
-- =dt2Meteo=: Transforma un =data.table= o =data.frame= en un objeto de clase =Meteo=.
+- =dt2Meteo=: transforma un =data.table= o =data.frame= en un objeto de clase =Meteo=.
   Como argumentos tiene:
   - =file=: =data.table= que contiene los datos.
   - =lat=: latitud en grados.
@@ -211,7 +211,7 @@ xyplot(helios_meteo)
 #+end_src
 #+ATTR_LATEX: :width 0.8\textwidth
 file:figuras/codigo-dt2meteo.pdf
-- =zoo2Meteo=: Transforma un objeto de clase =zoo=[fn:4] en un objeto de clase =Meteo=.
+- =zoo2Meteo=: transforma un objeto de clase =zoo=[fn:4] en un objeto de clase =Meteo=.
   Como argumentos tiene:
   - =file=: =data.table= que contiene los datos.
   - =lat=: latitud en grados.
@@ -222,14 +222,14 @@ bd_zoo <- read.csv.zoo('data/aranjuez.csv')
 BD_zoo <- zoo2Meteo(file = bd_zoo, lat = 40)
 show(BD_zoo)
 #+end_src
-- =readSIAR=: Esta función es capaz de extraer información de la red SIAR[fn:5] y transformarlo en un objeto de clase =Meteo=.
+- =readSIAR=: esta función es capaz de extraer información de la red SIAR[fn:5] y transformarlo en un objeto de clase =Meteo=.
   Como argumentos tiene:
-  - =Lon=: Longitud en grados.
-  - =Lat=: Latitud en grados.
-  - =inicio=: Primer día de los registros.
-  - =final=: Último día de los registros.
-  - =tipo=: La API SIAR[fn:6] permite tener 4 tipos de registros: =Mensuales=, =Semanales=, =Diarios= y =Horarios=.
-  - =n_est=: Con este argumento, la función es capaz de localizar el número seleccionado de estaciones más proximas a la ubicación dada, y obtener los datos individuales de cada una de ellas. Una vez obtenidos estos datos realiza una interpolación de distancia inversa ponderada (IDW[fn:7]) y entrega un solo resultado. Es importante añadir que la API SIAR tiene una limitación a la solicitud de registros que se le hace cada minuto, por lo que esta función cuenta con un comprobante para impedir que el usuario exceda este límite.
+  - =Lon=: longitud en grados.
+  - =Lat=: latitud en grados.
+  - =inicio=: primer día de los registros.
+  - =final=: último día de los registros.
+  - =tipo=: la API SIAR[fn:6] permite tener 4 tipos de registros: =Mensuales=, =Semanales=, =Diarios= y =Horarios=.
+  - =n_est=: con este argumento, la función es capaz de localizar el número seleccionado de estaciones más proximas a la ubicación dada, y obtener los datos individuales de cada una de ellas. Una vez obtenidos estos datos realiza una interpolación de distancia inversa ponderada (IDW[fn:7]) y entrega un solo resultado. Es importante añadir que la API SIAR tiene una limitación a la solicitud de registros que se le hace cada minuto, por lo que esta función cuenta con un comprobante para impedir que el usuario exceda este límite.
 #+begin_src R :results graphics :file "figuras/codigo-readsiar.pdf" :width 8 :height 6
 library(httr2)
 library(jsonlite)
@@ -251,11 +251,11 @@ Como se puede ver en la figura ref:fig:calcg0, =calcG0= funciona gracias a las s
 #+CAPTION: Cálculo de la radiación incidente en el plano horizontal mediante la función =calcG0=, la cual procesa un objeto clase =Sol= y otro clase =Meteo= mediante las funciones =fCompD= y =fCompI= resultando en un objeto clase =G0=. :label:fig:calcg0
 #+ATTR_LATEX: :width \textwidth :height 0.5\textheight :options keepaspectratio
 file:figuras/calcg0.pdf
-- =fCompD=: La cual calcula todas las componentes de la irradiación diaria en una superficie horizontal mediante regresiones entre los parámetros del índice de claridad y la fracción difusa.
+- =fCompD=: la cual calcula todas las componentes de la irradiación diaria en una superficie horizontal mediante regresiones entre los parámetros del índice de claridad y la fracción difusa.
   Tiene los siguientes argumentos:
-  - =sol=: Un objeto de clase =Sol=.
-  - =G0d=: Un objeto clase =Meteo= o un =data.table= con datos de irradiación diaria en una superficie horizontal.
-  - =corr=: A elegir el tipo de correlación entre la fracción de difusa y el índice de claridad.
+  - =sol=: un objeto de clase =Sol=.
+  - =G0d=: un objeto clase =Meteo= o un =data.table= con datos de irradiación diaria en una superficie horizontal.
+  - =corr=: a elegir el tipo de correlación entre la fracción de difusa y el índice de claridad.
     Dependiendo del tipo de datos:
     - Mensuales:
     #+begin_src R :results graphics output :file "figuras/codigo-fcompdmes.pdf" :width 8 :height 6
@@ -317,7 +317,7 @@ file:figuras/calcg0.pdf
     compD_none
     #+end_src
 - =fCompI=: calcula, en base a los valores de irradiación diaria, todas las componentes de irradiancia. Se vale de dos procedimientos en base al tipo de argumentos que toma:
-  - =compD=: Si recibe un =data.table= resultado de =fCompD=, calcula las relaciones entre las componentes de irradiancia e irradiación de las componentes de difusa y global, obteniendo con ellas un perfil de irradiancias [ref:sec:radiacion-superficies-inclinadas] (las irradiancias global y difusa salen de estas relaciones, mientras que la directa surge por diferencia entre las dos).
+  - =compD=: si recibe un =data.table= resultado de =fCompD=, calcula las relaciones entre las componentes de irradiancia e irradiación de las componentes de difusa y global, obteniendo con ellas un perfil de irradiancias [ref:sec:radiacion-superficies-inclinadas] (las irradiancias global y difusa salen de estas relaciones, mientras que la directa surge por diferencia entre las dos).
   #+begin_src R :results graphics output :file "figuras/codigo-fcompicompd.pdf" :width 8 :height 6
   sol <- calcSol(lat = 37.2, BTd = fBTd(mode = 'prom'),
 		 sample = 'hour', keep.night = FALSE)
@@ -329,7 +329,7 @@ file:figuras/calcg0.pdf
   #+end_src
   #+ATTR_LATEX: :width 0.8\textwidth
   file:figuras/codigo-fcompicompd.pdf
-  - =G0I=: Este argumento recibe datos de irradiancia, para después, poder aplicar las correcciones indicadas en el argumento =corr=.
+  - =G0I=: este argumento recibe datos de irradiancia, para después, poder aplicar las correcciones indicadas en el argumento =corr=.
   #+begin_src R :results graphics output :file "figuras/codigo-compicorr.pdf" :width 8 :height 6
   G0I <- compI$G0
   compI_ekdh <- fCompI(sol = sol, G0I = G0I, corr = 'EKDh')
@@ -364,7 +364,7 @@ file:figuras/calcg0.pdf
   compI_none <- fCompI(sol = sol, G0I = G0I, corr = 'none')
   show(compI_none)
   #+end_src
-  Por útlimo, esta función incluye un argumento extra, =filterG0= que cuando su valor es =TRUE=, elimina todos aquellos valores de irradiancia que son mayores que la irradiancia extra-atmosfércia (ya que es incoherente que la irradiancia terrestre sea mayor que la extra-terrestre)
+  Por útlimo, esta función incluye un argumento extra, =filterG0= que cuando su valor es =TRUE=, elimina todos aquellos valores de irradiancia que son mayores que la irradiancia extra-atmosfércia (ya que es incoherente que la irradiancia terrestre sea mayor que la extra-terrestre).
 
 Estas dos funciones, como se muestra en la figura ref:fig:calcg0, convergen en la función constructora =calcG0=, dando como resultado un objeto de clase =G0=. Este objeto muestra la media mensual de la irradiación diaria y la irradiación anual. Aparte, incluye los resultados de =fCompD= y =fCompI= y los objetos =Sol= y =Meteo= de los que parte.
 
@@ -448,9 +448,9 @@ file:figuras/calcgef.pdf
   #+end_src
   #+ATTR_LATEX: :width 0.8\textwidth
   file:figuras/codigo-fthetabt.pdf
-- =fInclin=: la cual, partiendo del resultado de =fTheta= y de un objeto de clase =G0=, cálcula la irradiancia solar incidente en una superficie inclinada junto con los efectos del ángulo de incidencia y la suciedad para obtener la irradiancia efectiva.
+- =fInclin=: la cual, partiendo del resultado de =fTheta= y de un objeto de clase =G0=, calcula la irradiancia solar incidente en una superficie inclinada junto con los efectos del ángulo de incidencia y la suciedad para obtener la irradiancia efectiva.
   Como argumentos principales están:
-  - =iS=: permite seleccionar entre 4 valores del 1 al 4 correspondientes al grado de suciedad del módulo. Siendo 1 limpio y 4 alto y basandose en los valores de la tabla ref:tab:coef-perd calcula la irradiancia efectiva. Por defecto tiene valor 2 (grado de suciedad bajo).
+  - =iS=: permite seleccionar entre 4 valores del 1 al 4 correspondientes al grado de suciedad del módulo. Siendo 1 limpio y 4 alto y basandose en los valores de la tabla ref:tab:coef-perd calcula la irradiancia efectiva. Por defecto, tiene valor 2 (grado de suciedad bajo).
   #+begin_src R :results graphics output :file "figuras/codigo-finclinis.pdf" :width 8 :height 6
   compI <- calcG0(lat, modeRad = 'bd', dataRad = bd[1:31], keep.night = FALSE)
   sol <- calcSol(lat, BTi = indexI(compI))
@@ -467,7 +467,7 @@ file:figuras/calcgef.pdf
   #+end_src
   #+ATTR_LATEX: :width 0.8\textwidth
   file:figuras/codigo-finclinis.pdf
-  - =alb= Correspondiente al coeficiente de reflexión del terreno para la irradiancia de albedo. Por defecto tiene un valor de 0,2 (valor aceptable para un terreno normal).
+  - =alb=: correspondiente al coeficiente de reflexión del terreno para la irradiancia de albedo. Por defecto, tiene un valor de 0,2 (valor aceptable para un terreno normal).
   #+begin_src R :results graphics output :file "figuras/codigo-finclinalb.pdf" :width 8 :height 6
   inclin_alb0 <- fInclin(compI = compI, angGen = angGen, alb = 0)
   inclin_alb0[, group := 'alb = 0']
@@ -502,7 +502,7 @@ gef_prom <- calcGef(lat = lat, modeTrk = 'two', modeRad = 'prom',
                     horizBright = TRUE, HCPV = FALSE)
 show(gef_prom)
 #+end_src
-Sin embargo, como argumento importante está =modeShd=, el cual permite incluir el efecto de las sombras entre módulos al objeto =Gef= mediante el uso de la función =calcShd=. Esta opción añade las variables =Gef0=, =Def0= y =Bef0= las cuales son las componentes de radiación efectiva previas a aplicar el efecto de las sombras con el fin de poder comparar.
+Sin embargo, como argumento importante está =modeShd=, el cual permite incluir el efecto de las sombras entre módulos al objeto =Gef= mediante el uso de la función =calcShd=. Esta opción añade las variables =Gef0=, =Def0= y =Bef0=, las cuales son las componentes de radiación efectiva previas a aplicar el efecto de las sombras con el fin de poder comparar.
 #+begin_src R
 struct <- list(W=23.11, L=9.8, Nrow=2, Ncol=8)
 distances <- data.table(Lew=40, Lns=30, H=0)
@@ -547,14 +547,14 @@ xyplot(gef_shdbt)
 file:figuras/codigo-gef.pdf
 * Producción eléctrica de un SFCR
 label:produccion-electrica-sfcr
-Con la radiación efectiva, se puede estimar la producción eléctrica que va a tener un sistema fotovoltaico conectado a red. Esta estimación, se puede calcular mediante la función =prodGCPV= la cual mediante la función =fProd= procesa un objeto de clase =Gef= y obtiene un objeto =ProdGCPV=.
+Con la radiación efectiva, se puede estimar la producción eléctrica que va a tener un sistema fotovoltaico conectado a red. Esta estimación se puede calcular mediante la función =prodGCPV=, la cual mediante la función =fProd= procesa un objeto de clase =Gef= y obtiene un objeto =ProdGCPV=.
 
 Como se puede ver en la figura ref:fig:prodgcpv, =prodGCPV= funciona gracias a la siguiente función:
 #+CAPTION: Estimación de la producción eléctrica de un SFCR mediante la función =prodGCPV=, la cual emplea la función =fProd= para el computo de la potencia a la entrada (\(P_{DC}\)), a la salida (\(P_{AC}\)) y el rendimiento (\(\eta_{inv}\)) del inversor. label:fig:prodgcpv
 #+ATTR_LATEX: :width 0.8\textwidth :height \textheight :options keepaspectratio
 file:figuras/prodgcpv.pdf
 - =fProd=: simula el comportamiento de un sistema fotovoltaico conectado a red bajo diferentes condiciones de temperatura e irradiancia. Tiene los siguientes argumentos:
-  - =inclin=: puede ser tanto un objeto de clase =Gef= como un =data.frame= (o =data.table=). Sin embargo, si es un =data.frame=, debe contener como mínimo una columna para =Gef= y otra para =Ta=
+  - =inclin=: puede ser tanto un objeto de clase =Gef= como un =data.frame= (o =data.table=). Sin embargo, si es un =data.frame=, debe contener como mínimo una columna para =Gef= y otra para =Ta=.
   - =module=: una lista de valores numéricos con la información sobre el módulo fotovoltaico:
     - =Vocn=: tensión de circuito abierto en STC (\(V_{oc}^*\))(condiciones estandar de médida). Por defecto, tiene un valor de \(57.2V\).
     - =Iscn=: corriente de cortocircuito en STC (\(I_{sc}^*\)). Por defecto, tiene un valor de \(4.7A\).
@@ -596,7 +596,7 @@ prod <- fProd(inclin = inclin, module = module,
 show(prod)
 #+end_src
 
-Esta función brinda estos datos a la función =prodGCPV= para que produzca un objeto de clase =ProdGCPV= como resultado. Esta función tiene como argumentos principales los mismo que =calcGef=, ya que parte de un objeto tipo =Gef=, y los argumentos de la función =fProd=.
+Esta función brinda tales datos a la función =prodGCPV= para que produzca un objeto de clase =ProdGCPV= como resultado. Esta función tiene como argumentos principales los mismo que =calcGef=, ya que parte de un objeto tipo =Gef=, y los argumentos de la función =fProd=.
 #+begin_src R
 prodFixed <- prodGCPV(lat, modeTrk = 'fixed', dataRad = prom)
 show(prodFixed)
@@ -663,7 +663,7 @@ file:figuras/prodpvps.pdf
       result = data.table(Q,Pac,Pb,Ph,etam,etab,f)})
     show(SP8A44)
   #+end_src
-  Está función entrega todos estos resultados a =prodPVPS= la cual calcula los resultados en base a la potencia del generador a simular, y devuleve un objeto de clase =ProdPVPS=.
+  Esta función entrega todos estos resultados a =prodPVPS=, la cual calcula los resultados en base a la potencia del generador a simular y devuelve un objeto de clase =ProdPVPS=.
   #+begin_src R :results graphics output :file "figuras/codigo-prodpvps.pdf" :width 8 :height 6
   prodsfb <- prodPVPS(lat, modeTrk = 'fixed', dataRad = prom,
 		      pump = CoefSP8A44, H = 40, Pg = SP8A44$Pac[10])
@@ -673,7 +673,7 @@ file:figuras/prodpvps.pdf
   file:figuras/codigo-prodpvps.pdf
 * Optimización de distancias
 label:optimizacion-distancias
-Por último, el paquete =solaR2= contiene una función que permite calcular un conjunto de combinaciones de distancias entre los elementos de un sistema fotovoltaico conectado a red, con el fin de que el usuario posteriormente pueda optar cual es la opción mas rentable en base a los precios del cableado y de la ocupación del terreno.
+Por último, el paquete =solaR2= contiene una función que permite calcular un conjunto de combinaciones de distancias entre los elementos de un sistema fotovoltaico conectado a red, con el fin de que el usuario posteriormente pueda valorar cuál es la opción mas rentable en base a los precios del cableado y de la ocupación del terreno.
 
 Esta función es =optimShd=, la cual en base a una resolución (determinada por el argumento =res=, el cual, indica el incremento de la secuencia de distancias) obtiene la producción de cada combinación y la plasma en un objeto de clase =Shade=.
 #+begin_src R :results graphics output :file "figuras/codigo-optimshd2x.pdf" :width 8 :height 6
@@ -723,10 +723,10 @@ En la creación de un paquete en =R=, la estructura de los archivos es clave par
 - Un archivo *DESCRIPTION*, que proporciona la información esencial del paquete.
 - Un archivo *NAMESPACE*, que controla qué funciones y objetos son visibles fuera del paquete.
 - Subdirectoriso como =R/= y =man/=:
-  - =R/=: Contiene los archivos de codigo =.R=, que son las funciones, clases y métodos definidos en el paquete.
-  - =man/=: Contiene las páginas de ayuda y documentación para las funciones, métodos y clases del paqeute.
+  - =R/=: contiene los archivos de codigo =.R=, que son las funciones, clases y métodos definidos en el paquete.
+  - =man/=: contiene las páginas de ayuda y documentación para las funciones, métodos y clases del paqeute.
 
-La estructura básica de un paquete puede generarse fácilmente utilizando la función =package.skeleton()=, que crea los archivos y carpetas necesarios para empezar a trabajar en el desarrollo.
+La estructura básica de un paquete puede generarse con =package.skeleton()=, una función que crea los archivos y carpetas necesarios para empezar a trabajar en el desarrollo.
 
 ** DESCRIPTION
 label:subsec:description
@@ -757,20 +757,20 @@ El fichero *DESCRIPTION* es fundamental, ya que incluye la información descript
 \end{examplebox}
 #+end_export
 Los campos principales de este archivo son:
-- *Package*: Nombre del paquete.
-- *Version*: Versión del paquete. Generalmente sigue un esquema de numeración semántica (=major.minor-patch=)[fn:9].
-- *Title*: Un título breve pero descriptivo de lo que hace el paquete.
-- *Authors@R*: Especifica el o los autores con sus respectivos roles, como "aut" (autor) y "cre" (creador principal).
-- *Maintainer*: Persona responsable del mantenimiento del paquete, con su correo electrónico.
-- *Depends*: Lista de dependencias, es decir, otros paquetes de los que depende el correcto funcionamiento del paquete.
-- *Suggests*: Lista de paqeute que no son obligatorios, pero que pueden ser útiles.
-- *Description*: Una breve descripción del propósito del paquete.
-- *License:* Tipo de licencia bajo la cual se distribuye el paquete (GPL, MIT, etc.).
+- *Package*: nombre del paquete.
+- *Version*: versión del paquete. Generalmente sigue un esquema de numeración semántica (=major.minor-patch=)[fn:9].
+- *Title*: un título breve pero descriptivo de lo que hace el paquete.
+- *Authors@R*: especifica el o los autores con sus respectivos roles, como "aut" (autor) y "cre" (creador principal).
+- *Maintainer*: persona responsable del mantenimiento del paquete, con su correo electrónico.
+- *Depends*: lista de dependencias, es decir, otros paquetes de los que depende el correcto funcionamiento del paquete.
+- *Suggests*: lista de paqeute que no son obligatorios, pero que pueden ser útiles.
+- *Description*: una breve descripción del propósito del paquete.
+- *License:* tipo de licencia bajo la cual se distribuye el paquete (GPL, MIT, etc.).
 
 Este archivo es crucial para que los usuarios y el sistema =R= identifiquen las características y requisitos del paquete
 ** NAMESPACE
 label:subsec:namespace
-El archivo *NAMESPACE* es el encargado de gestionar el espacio de nombres del paquete, permitiendo definir qué funciones y objetos serán visibles (exportados) y cuáles se mantendrán internos. Además, es útil para definir qué funciones o métodos de otros paquetes serán importados para us uso dentro del paquete.
+El archivo *NAMESPACE* es el encargado de gestionar el espacio de nombres del paquete, permitiendo definir qué funciones y objetos serán visibles (exportados) y cuáles se mantendrán internos. Además, es útil para definir qué funciones o métodos de otros paquetes serán importados para su uso dentro del paquete.
 
 =R= usa un sistema de gestión de *espacio de nombres* que permite al autor del paquete especificar:
 - Las *variables* del paquete que se *exportan* (y son, por tanto, accesibles a los usuarios).
@@ -865,26 +865,26 @@ La documentación en R sigue un formato específico llamado =Rd= (/R documentati
 #+end_export
 
 El formato tiene varios componentes:
-- *name*: El nombre de la función.
-- *alias*: Nombres alternativos o alias de la función.
-- *title*: Título breve que describe la función.
-- *description*: Una descripción de lo que hace la función.
-- *usage*: La sintaxis de la función de lo que hace la función.
-- *arguments*: Explicación de los argumentos que recibe la función.
-- *seealso*: Enlaces a funciones relacionadas.
-- *examples*: Ejemplos de cómo utilizar la función.
+- *name*: el nombre de la función.
+- *alias*: mombres alternativos o alias de la función.
+- *title*: título breve que describe la función.
+- *description*: una descripción de lo que hace la función.
+- *usage*: la sintaxis de la función de lo que hace la función.
+- *arguments*: explicación de los argumentos que recibe la función.
+- *seealso*: enlaces a funciones relacionadas.
+- *examples*: ejemplos de cómo utilizar la función.
 
 Esta estructura de documentación permite a los usuarios comprender rápidamente cómo utilizar las funciones del paquete y verificar su funcionalidad con ejemplos prácticos.
 
 * Footnotes
 
-[fn:1] Todas las funciones recogidas en este capítulo, están descritas en el manual de uso del paquete =solaR2=, el cual, está disponible en el apendice ref:chap:manual de este documento.
+[fn:1] Todas las funciones recogidas en este capítulo están descritas en el manual de uso del paquete =solaR2=, el cual, está disponible en el apéndice ref:chap:manual de este documento.
 
 [fn:2] Cuando la hora solar verdadera excede los ángulos en los que amanece y anochece ($|\omega|>=|\omega_s|$), el Sol queda por debajo de la línea del horizonte, por lo que es de noche.
 
 [fn:3] $\gamma_s=asin(cos(\theta_s))$.
 
-[fn:4] Pese a que este proyecto trate de "desligarse" del paquete =zoo=, sigue siendo un paquete muy extendido. Por lo que es interesante tener una función así para que los usuarios tengan una mayor flexibilidad.
+[fn:4] Pese a que este proyecto trate de "desligarse" del paquete =zoo=, sigue siendo un paquete muy extendido. Por ello, es interesante tener una función así para que los usuarios tengan una mayor flexibilidad.
 
 [fn:5] La red SiAR (Sistema de Información Agroclimática para el Regadio) es una infraestructura que captura, registra y divulga los datos climáticos necesarios para el cálculo de la demanda hídrica en las zonas de riego cite:siar23.
 
@@ -892,6 +892,6 @@ Esta estructura de documentación permite a los usuarios comprender rápidamente
 
 [fn:7] La interpolación IDW es un método de interpolación que estima el valor de un punto desconocido basado en los valores conocidos de puntos cercanos. Los puntos más cercanos tienen más peso en la estimación que los más lejanos, utilizando una relación inversa con la distancia.
 
-[fn:8] la tencología de concentración fotovoltaica funciona gracias a unos dispositivos ópticos que permiten concentrar la radiación solar sobre una célula fotovoltaica de tamaño reducido pero con una eficiencia muy superior alas células tradicionales. Con ello se consigue emplear menor cantidad de semiconductores reduciendo los costes.
+[fn:8] La tencología de concentración fotovoltaica funciona gracias a unos dispositivos ópticos que permiten concentrar la radiación solar sobre una célula fotovoltaica de tamaño reducido pero con una eficiencia muy superior a las células tradicionales. Con ello, se consigue emplear una menor cantidad de semiconductores, reduciendo los costes.
 
-[fn:9] Un esquema de numeración semántica es un sistema de versiones que sigue un patrón específico para asignar números a las versiones de software. Se utiliza para indicar claramente la magnitud de los cambios realizados y su impacto en la compatibilidad.  Una versión =major= o mayor se refiere a modificaciones grandes o incompatibles con versiones anteriores, =minor= o menor es una versión que incluye mejoras o nuevas funciones compatibles con versiones anteriores y =patch= o parche es una versión que incluye correcciones menores o mejoras que no afectan a la funcionalidad.
+[fn:9] Un esquema de numeración semántica es un sistema de versiones que sigue un patrón específico para asignar números a las versiones de software. Se utiliza para indicar claramente la magnitud de los cambios realizados y su impacto en la compatibilidad.  Una versión =major= o mayor se refiere a modificaciones grandes o incompatibles con versiones anteriores; =minor= o menor es una versión que incluye mejoras o nuevas funciones compatibles con versiones anteriores y =patch= o parche es una versión que incluye correcciones menores o mejoras que no afectan a la funcionalidad.

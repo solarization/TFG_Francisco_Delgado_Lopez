@@ -15,27 +15,27 @@ En la figura [[fig:prod-calculo]], se muestra un diagrama que resume los pasos q
 
 Estos pasos son:
 1. Calcular la geometría que define la posición relativa del Sol desde la Tierra.
-2. Obtener la irradiación global diaria en el plano horizontal
+2. Obtener la irradiación global diaria en el plano horizontal.
 3. A partir de la irradiación global, obtener las componentes de difusa y directa.
-4. Se trasladan estos valores de irradiación a valores de irradiancia.
-5. Integrando estos valores se pueden obtener las estimaciones irradiación diaria difusa, directa y global
+4. Trasladar estos valores de irradiación a valores de irradiancia.
+5. Integrando estos valores, obtener las estimaciones irradiación diaria difusa, directa y global.
 6. El generador fotovoltaico produce una potencia en corriente continua dependiente del rendimiento del mismo.
-7. Se transforma en potencia en corriente alterna mediante un inversor que tiene una eficiencia asociada.
-8. Integrando esta potencia se puede obtener la energía que produce el generador en un tiempo determinado.
+7. Un inversor, el cual tiene una efciencia asociada, convierte esta potencia en corriente alterna.
+8. Integrar esta potencia para obtener la energía que produce el generador en un tiempo determinado.
 
 
 * Radiación solar
 label:radiacion-solar
 ** Geometría Sol y Tierra
-Como es sabido, el movimiento terrestre se compone de una traslación alrededor del Sol y un giro sobre su eje. En este movimiento, la Tierra se desplaza alrededor del Sol siguiendo una elipse de baja excentricidad en la que el Sol ocupa uno de los focos. La duración de este movimiento define un año. La corrección debida a la excentricidad de la elipse[fn:1] se calcula con: \nomenclature[epsilon0]{$\epsilon_0$}{Corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del Sol}
+Como es sabido, el movimiento terrestre se compone de una traslación alrededor del Sol y un giro sobre su eje. En este movimiento, la Tierra se desplaza alrededor del Sol siguiendo una elipse de baja excentricidad en la que el Sol ocupa uno de los focos. La duración de este movimiento define el concepto de año. La corrección debida a la excentricidad de la elipse[fn:1] se calcula con: \nomenclature[epsilon0]{$\epsilon_0$}{Corrección debida a la excentricidad de la elipse de la trayectoria terrestre alrededor del Sol}
 #+begin_export latex
 \begin{equation}
 \epsilon_0=1+0.033\cdot \cos(\frac{2\pi d_n}{365})
 \end{equation}
 #+end_export
-donde $d_n$ es el número de día del año (siendo $d_n=1$ el 1 de Enero). \nomenclature[dn]{$d_n$}{Día del año}
+donde $d_n$ es el número de día del año (siendo $d_n=1$ el 1 de enero). \nomenclature[dn]{$d_n$}{Día del año}
 
-El movimiento que describe la Tierra al girar alrededor del Sol, está contenido en un plano conocido como /plano de la eclíptica/, el cual, entre este y el eje polar (línea imaginaria que uno los dos polos de la Tierra) se forma un ángulo conocido como declinación[fn:2], el cual se puede aproximar de forma sencilla de la siguiente manera[fn:3]: \nomenclature[delta]{$\delta$}{Declinación}
+El movimiento que describe la Tierra al girar alrededor del Sol, está contenido en un plano conocido como /plano de la eclíptica/, el cual, entre este y el eje polar (línea imaginaria que uno los dos polos de la Tierra), se forma un ángulo conocido como declinación[fn:2], el cual se puede aproximar de forma sencilla de la siguiente manera[fn:3]: \nomenclature[delta]{$\delta$}{Declinación}
 #+begin_export latex
 \begin{equation}
 \delta=23.45^\circ \cdot \sin(\frac{2\pi \cdot (d_n+284)}{365})
@@ -43,7 +43,7 @@ El movimiento que describe la Tierra al girar alrededor del Sol, está contenido
 #+end_export
 
 ** Movimiento aparente del sol 
-Las variaciones en la declinación hacen que los días fluctuen su duración. Esta duración se puede calcular mediante el ángulo del amanecer[fn:4] ($\omega_s$), el cúal determina la diferencia angular entre el mediodía solar y el momento en el que amanece. Por lo tango un día durará $2\cdot |\omega_s|$ (ya que es el ángulo entre el amanecer y el mediodía, y el mediodía y el anochecer). Se puede calcular el ángulo del amanecer de la siguiente manera: \nomenclature[omegas]{$\omega_s$}{Ángulo del amanecer}
+Las variaciones en la declinación hacen que los días fluctúen su duración. Esta duración se puede calcular mediante el ángulo del amanecer[fn:4] ($\omega_s$), el cual determina la diferencia angular entre el mediodía solar y el momento en el que amanece. Por lo tanto, un día durará $2\cdot |\omega_s|$ (ya que es el ángulo entre el amanecer y el mediodía, y el mediodía y el anochecer). Se puede calcular el ángulo del amanecer de la siguiente manera: \nomenclature[omegas]{$\omega_s$}{Ángulo del amanecer}
 #+begin_export latex
 \begin{equation}
   \omega_s=\begin{cases}
@@ -53,9 +53,9 @@ Las variaciones en la declinación hacen que los días fluctuen su duración. Es
   \end{cases}
 \end{equation}
 #+end_export
-donde, $\phi$ corresponde a la latitud (positiva al norte y negativa al sur). \nomenclature[phi]{$\phi$}{Latitud}
+donde $\phi$ corresponde a la latitud (positiva al norte y negativa al sur). \nomenclature[phi]{$\phi$}{Latitud}
 
-Sin embargo, cada localización tiene una hora oficial, $TO$, la cual no se corresponde con el ángulo que forma el Sol a lo largo del día, por lo que resulta necesario calcular esta hora solar verdadera ($\omega$)[fn:5]: \nomenclature[TO]{$TO$}{Hora oficial} \nomenclature[omega]{$\omega$}{Hora solar o tiempo solar verdadero}
+Sin embargo, cada localización tiene una hora oficial, $TO$, la cual no se corresponde con el ángulo que forma el Sol a lo largo del día, por lo que resulta necesario calcular la hora solar verdadera ($\omega$)[fn:5]: \nomenclature[TO]{$TO$}{Hora oficial} \nomenclature[omega]{$\omega$}{Hora solar o tiempo solar verdadero}
 #+begin_export latex
 \begin{equation}
 \omega = 15 \cdot (TO-AO-12)+\Delta \lambda + \frac{EoT}{4}
@@ -73,7 +73,7 @@ donde:
   #+end_export
 
 ** Radiación fuera de la atmósfera terrestre
-La radiación extra-atmosférica es la radiación directa del Sol que alcanza la superficie de la atmósfera. El tamaño de la Tierra furente a la distancia que la separa del Sol es muy pequeña, por lo que, es razonable asumir que su valor es constante en toda la superficie exterior de la atmósfera. Se define la constante solar, $B_0$ como el valor de irradiancia solar incidente en un plano normal al vector Sol-Tierra. Se acepta como representativo el valor promedio de $B_0=1367W/m^2$.
+La radiación extra-atmosférica es la radiación directa del Sol que alcanza la superficie de la atmósfera. El tamaño de la Tierra frente a la distancia que la separa del Sol es muy pequeña, por lo que es razonable asumir que su valor es constante en toda la superficie exterior de la atmósfera. Se define la constante solar $B_0$ como el valor de irradiancia solar incidente en un plano normal al vector Sol-Tierra. Se acepta como representativo el valor promedio de $B_0=1367W/m^2$.
 
 Para calcular la irradiancia incidente en una superficie tangente a la atmósfera en una latitud determinada ($B_0(0)$)[fn:7], se toma la siguiente ecuación: \nomenclature[B00]{$B_0(0)$}{Irradiancia extra-atmosférica o extra-terrestre en el plano horizontal}
 #+begin_export latex
@@ -82,7 +82,7 @@ B_0(0)=B_0 \cdot \epsilon_0 \cdot \cos(\theta_{zs})
 \label{eq:irradianciaextra}
 \end{equation}
 #+end_export
-donde, $\cos(\theta_{zs})$[fn:8] es el coseno del ángulo cenital solar[fn:9], y se calcula de la siguiente manera:
+donde, $\cos(\theta_{zs})$[fn:8] es el coseno del ángulo cenital solar[fn:9], que se calcula de la siguiente manera:
 #+begin_export latex
 \nomenclature[thetazs]{$\theta_{zs}$}{Ángulo cenital solar}
 #+end_export
@@ -92,7 +92,7 @@ cos(\theta_{zs})=cos(\delta)cos(\omega)cos(\phi)+sin(\delta)+sin(\phi)
 \end{equation}
 #+end_export
 
-Es importate añadir, que con el ángulo cenital, se puede obtener otro ángulo relevante en la geometría solar, se trata del ángulo azimutal, $\psi_s$[fn:10], el cual, es el ángulo formado por el meridiano solar y el meridiano del lugar (Sur en el hemisferio Norte y viceversa). \nomenclature[psis]{$\psi_s$}{Ángulo acimutal solar}
+Es importate añadir que, con el ángulo cenital, se puede obtener otro ángulo relevante en la geometría solar. Se trata del ángulo azimutal, $\psi_s$[fn:10], el cual es el ángulo formado por el meridiano solar y el meridiano del lugar (Sur en el hemisferio Norte y viceversa). \nomenclature[psis]{$\psi_s$}{Ángulo acimutal solar}
 #+begin_export latex
 \begin{equation}
 \cos(\psi_s)=signo(\phi)\cdot \frac{\cos(\delta)\cos(\omega)\cos(\phi)-\cos(\phi)\sin(\delta)}{\sin(\theta_{zs})}
@@ -110,7 +110,7 @@ B_{0d}(0)=-\frac{24}{\pi}B_0\epsilon_0(\omega_s sin\phi sin\delta + cos\phi cos\
 \end{equation}
 #+end_export
 
-Es posible demostrar que el promedio mensual de esta irradiación diaria coincide numéricamente con el valor de irradiación diaria correspondiente a los denominados "días promedios", días en los que la declinación correpondiente coincide con el promedio mensual (tabla [[ref:tab:DiasPromedio]])
+Es posible demostrar que el promedio mensual de esta irradiación diaria coincide numéricamente con el valor de irradiación diaria correspondiente a los denominados "días promedios", días en los que la declinación correpondiente coincide con el promedio mensual (tabla [[ref:tab:DiasPromedio]]).
 #+begin_export latex
 \begin{center}
 {\footnotesize }%
@@ -130,13 +130,13 @@ $d_{n}$ & {\footnotesize 17} & {\footnotesize 45} & {\footnotesize 74} & {\footn
 \par\end{center}{\footnotesize \par}
 #+end_export
 
-Todas estas ecuaciones, están recogidas en la función =calcSol=, la cual computa todos los ángulos solares, diarios e intradiarios, necesarios para la simulación de sistemas fotovoltaicos.
+Todas estas ecuaciones están recogidas en la función =calcSol=, la cual computa todos los ángulos solares, diarios e intradiarios, necesarios para la simulación de sistemas fotovoltaicos.
 
 ** Influencia de la atmósfera
 La radiación solar, al atravesar la atmósfera, es afectada por reflexión, atenuación y difusión, lo que altera sus características. La reflexión en las nubes reduce la radiación que llega a la Tierra, mientras que la absorción por vapor de agua, ozono y $CO_2$ cambia el espectro de la radiación. Además, la dispersión por partículas afecta la distribución espacial. Existen tres tipos de difusión según el tamaño de las partículas en interacción:
-- *Difusión de Rayleigh*: La longitud de onda esmayor que el tamaño de la partícula, ocurre en las capas altas y causa el color azul del cielo.
-- *Difusión de Mie*: La longitud de onda es similar al tamaño de la partícula, ocurre en las capas bajas.
-- *Difusión no selectiva*: La longitud de onda es menor que el tamaño de la partícula.
+- *Difusión de Rayleigh*: la longitud de onda esmayor que el tamaño de la partícula, ocurre en las capas altas y causa el color azul del cielo.
+- *Difusión de Mie*: la longitud de onda es similar al tamaño de la partícula, ocurre en las capas bajas.
+- *Difusión no selectiva*: la longitud de onda es menor que el tamaño de la partícula.
 
 Resulta útil definir la masa de aire ($AM$, /air mass/) como la relación entre el camino recorrido por los rayos directos del Sol a través de la atmósfera hasta la superficie receptora y el que recorerían en caso de incidencia vertical. Se puede aproximar de la siguiente manera: \nomenclature[AM]{$AM$}{Masa de aire}
 #+begin_export latex
@@ -145,10 +145,10 @@ AM = 1/\cos(\theta_{zs})
 \end{equation}
 #+end_export
 
-Para el cálculo de la irradiancia solar que finalmente incide en una superficie arbitraria localizada en corteza terrestre será útil distinguir tres contribuciones diferentes. Estas contribuciones, comúnmente denominadas componentes, son:
+Para el cálculo de la irradiancia solar que finalmente incide en una superficie arbitraria localizada en corteza terrestre, será útil distinguir tres contribuciones diferentes. Estas contribuciones, comúnmente denominadas /componentes/, son:
 - *Radiación Directa*, $B$: representa la fracción de irradiación procendente en línea recta del Sol. \nomenclature[B]{$B$}{Radiación directa}
-- *Radiación Difusa*, D\nomenclature[D]{\(D\)}{Radiación difusa}: fracción de radiación que procede de todo el cielo, excepto del Sol. Son todos aquellos rayos que dispersa la atmósfera.
-- *Radiación del albedo*, R\nomenclature[R]{\(R\)}{Radiación del albedo}: parte de la radiación procedente de la reflexión con el suelo.
+- *Radiación Difusa*, $D$ \nomenclature[D]{\(D\)}{Radiación difusa}: fracción de radiación que procede de todo el cielo, excepto del Sol. Son todos aquellos rayos que dispersa la atmósfera.
+- *Radiación del albedo*, $R$ \nomenclature[R]{\(R\)}{Radiación del albedo}: parte de la radiación procedente de la reflexión con el suelo.
 La suma de las tres componentes constituye la denominada radiación global: \nomenclature[G]{\(G\)}{Radiación global}
 #+begin_export latex  
 \begin{equation}
@@ -187,7 +187,7 @@ Una vez se tiene el índice de claridad, se puede calcular la fracción de radia
 F_{Dm}=1-1,13\cdot K_{Tm}
 \end{equation}
 #+end_export
-Donde:
+donde:
 - Fracción de radiación difusa: $F_D=\frac{D(0)}{G(0)}$ \nomenclature[FD]{\(F_D\)}{Fracción de difusa}
   #+begin_export latex
   \nomenclature[FDd]{\(F_{Dd}\)}{Fracción de difusa diaria} \nomenclature[FDm]{\(F_{Dm}\)}{Fracción de difusa mensual}
@@ -204,11 +204,11 @@ B_d(0)=G_d(0)-D_d(0)
 \end{equation}
 #+end_export
 
-Estas expresiones, se recogen en la función =calcG0=, la cual, calcula las componentes de la irradiancia intradiaria y la irradiación diaria (además de medias mensuales de estas y sumas anuales). Se vale de las funciones =fCompD=, para la irradiación, y =fCompI=, para la irradiancia. 
+Estas expresiones se recogen en la función =calcG0=, la cual calcula las componentes de la irradiancia intradiaria y la irradiación diaria (además de medias mensuales de estas y sumas anuales). Se vale de las funciones =fCompD=, para la irradiación, y =fCompI=, para la irradiancia. 
 
 * Radiación en superficies inclinadas
 label:sec:radiacion-superficies-inclinadas
-Dados los valores de irradiación diaria difusa, directa y global en el plano horizontal se puede realizar la transformación al plano inclinado. Para ello, es necesario estimar el perfil de irradiancia correspondiente a cada valor de irradiación. dado que la variación solar durante una hora es baja, podemos suponer que el valor medio de la irradiancia durante esa hora coincide numéricamente con la irradiación horaria. Por otra parte, el análisis de valores /medios/  en /largas/ series temporales ha mostrado que la relación entre la irradiancia y la irradiación extra-atmosférica [[cite:Collares-Pereira.Rabl1979]] ([[ref:eq:rel-dif]]):
+Dados los valores de irradiación diaria difusa, directa y global en el plano horizontal se puede realizar la transformación al plano inclinado. Para ello, es necesario estimar el perfil de irradiancia correspondiente a cada valor de irradiación. Dado que la variación solar durante una hora es baja, podemos suponer que el valor medio de la irradiancia durante esa hora coincide numéricamente con la irradiación horaria. Por otra parte, el análisis de valores medios en largas series temporales ha mostrado que la relación entre la irradiancia y la irradiación extra-atmosférica [[cite:Collares-Pereira.Rabl1979]] ([[ref:eq:rel-dif]]):
 #+begin_export latex
 \begin{equation}
 r_D=\frac{D(0)}{D_d(0)}=\frac{B_0(0)}{B_{0d}(0)}
@@ -229,11 +229,11 @@ r_G=\frac{G(0)}{G_d(0)}=r_D\cdot(a+b\cdot cos(w))
 \label{eq:rel-glo}
 \end{equation}
 #+end_export
-Donde:
+donde:
 - $a=0,409-0,5016\cdot sin(\omega_s+\frac{\pi}{3})$
 - $b=0,6609+0,4767\cdot sin(\omega_s+\frac{\pi}{3})$
 
-Es importante resaltar que estos perfiles proceden de medias sobre largos períodos, y de ahí que, como es observable en la figura [[fig:Perfil-de-irradiancia]], las fluctuaciones propias del movimiento de nubes a lo largo del día queden atenuadas y se obtenga una curva sin alteraciones.
+Es importante resaltar que estos perfiles proceden de medias sobre largos períodos, de ahí que, como es observable en la figura [[fig:Perfil-de-irradiancia]], las fluctuaciones propias del movimiento de nubes a lo largo del día queden atenuadas y se obtenga una curva sin alteraciones.
 #+NAME: fig:Perfil-de-irradiancia
 #+CAPTION: Perfil de irradiancia difusa y global obtenido a partir del generador empírico de [[cite:Collares-Pereira.Rabl1979]] para valores de irradiancia tomadas cada 10 minutos. Figura 3.4 del libro ESF cite:Perpinan2023.
 #+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio
@@ -242,7 +242,7 @@ Es importante resaltar que estos perfiles proceden de medias sobre largos perío
 ** Transformación al plano del generador
 label:subsec:transformación-plano-generador
 Una vez otenidos los valores de irradiancia en el plano horizontal, se traspone al plano del generador:
-- *Irradiancia Directa* $B(\beta ,\alpha)$: Ecuación basada en geometría solar (ángulo zenital) y del generador (ángulo de incidencia).
+- *Irradiancia Directa* $B(\beta ,\alpha)$: ecuación basada en geometría solar (ángulo zenital) y del generador (ángulo de incidencia).
   #+begin_export latex
   \begin{equation}
   B(\beta ,\alpha)=B(0)\cdot \frac{max(0,cos(\theta_s))}{cos(\theta_{zs})}
@@ -252,7 +252,7 @@ Una vez otenidos los valores de irradiancia en el plano horizontal, se traspone 
   donde:
   - Ángulo de inclinación: \(\beta\).
   - Ángulo de orientación: \(\alpha\). \nomenclature[alpha]{\(\alpha\)}{Ángulo de orientación de un sistema fotovoltaico}
-- *Irradiancia Difusa* $D(\beta ,\alpha)$: Utilizando el modelo de cielo anisotrópico [[cite:Perpinan2023]], se distinguen dos componentes de la irradiancia difusa, denominados /circunsolar/ e /isotrópica/. \nomenclature[DI]{\(D^I\)}{Radiación difusa isotrópica} \nomenclature[DC]{\(D^C\)}{Radiación difusa circunsolar}
+- *Irradiancia Difusa* $D(\beta ,\alpha)$: utilizando el modelo de cielo anisotrópico [[cite:Perpinan2023]], se distinguen dos componentes de la irradiancia difusa, denominados /circunsolar/ e /isotrópica/. \nomenclature[DI]{\(D^I\)}{Radiación difusa isotrópica} \nomenclature[DC]{\(D^C\)}{Radiación difusa circunsolar}
   #+begin_export latex
   \begin{equation}
   D(\beta ,\alpha)=D^I(\beta ,\alpha)+D^C(\beta ,\alpha)
@@ -264,9 +264,9 @@ Una vez otenidos los valores de irradiancia en el plano horizontal, se traspone 
   D^C(\beta, \alpha)=D(0)\cdot k_1\cdot \frac{max(0,cos(\theta_s))}{cos(\theta_{zs})}
   \end{equation}
   #+end_export
-  Donde:
+  donde:
   - $k_1=\frac{B(n)}{B_0\cdot \epsilon_0}=\frac{B(0)}{B_0(0)}$
-- *Irradiancia de albedo* $R(\beta ,\alpha)$: Se considera isotrópica debido a su baja contribución a la radiación global. Se calcula a partir de la irradiancia global en el plano horizontal usando un coeficiente de reflexión, \(\rho\)\nomenclature[rho]{\(\rho\)}{Coeficiente de reflexión del terreno para la irradiancia de albedo}, que depende del terreno. En la ecuación [[ref:eq:albedo-plano-generador]], se utiliza el factor $\frac{1-cos(\beta)}{2}$, complemetario al factor de visión de la difusa isotrópica (figura [[fig:AnguloVisionCielo]])
+- *Irradiancia de albedo* $R(\beta ,\alpha)$: se considera isotrópica debido a su baja contribución a la radiación global. Se calcula a partir de la irradiancia global en el plano horizontal usando un coeficiente de reflexión, \(\rho\)\nomenclature[rho]{\(\rho\)}{Coeficiente de reflexión del terreno para la irradiancia de albedo}, que depende del terreno. En la ecuación [[ref:eq:albedo-plano-generador]], se utiliza el factor $\frac{1-cos(\beta)}{2}$, complemetario al factor de visión de la difusa isotrópica (figura [[fig:AnguloVisionCielo]])
   #+begin_export latex
   \begin{equation}
   R(\beta ,\alpha)=\rho \cdot G(0)\cdot \frac{1 - cos(\beta)}{2}
@@ -295,13 +295,13 @@ FTB(\theta_s)=\frac{exp(-\frac{cos(\theta_s)}{a_r})-exp(-\frac{1}{a_r})}{1-exp(-
 \label{eq:factor-perdidas-directa}
 \end{equation}
 #+end_export
-Este factor depende del ángulo de incidencia, \(\theta_s\), y del coeficiente de pérdidas angulares, \(a_r\). Cuando la radiación es perpendicular a la superficie ($\theta_s=0$), \(FTB\) es cero. En la figura [[fig:PerdidasAngulares]] se puede observar que las pérdidas angulares son más significativas cuando \(\theta_s\) supera los 60º, y se acentúan con mayor suciedad.
+Este factor depende del ángulo de incidencia, \(\theta_s\), y del coeficiente de pérdidas angulares, \(a_r\). Cuando la radiación es perpendicular a la superficie ($\theta_s=0$), \(FTB\) es cero. En la figura [[fig:PerdidasAngulares]] se puede observar que las pérdidas angulares son más significativas cuando \(\theta_s\) supera los 60º, y se acentúan con niveles mayores de suciedad.
 #+NAME: fig:PerdidasAngulares
 #+CAPTION: Pérdidas angulares de un módulo fotovoltaico para diferentes grados de suciedad en función del ángulo de incidencia. Figura 3.7 del libro ESF cite:Perpinan2023.
 #+ATTR_LATEX: :height 0.5\textheight :width 0.8\textwidth :options keepaspectratio 
 [[file:figuras/Suciedad.pdf]]
 
-Para calcular las componente de radiación difusa isotrópica y de albedo se utilizan las ecuaciones[fn:15] [[ref:eq:FTD]] y [[ref:eq:FTR]]:
+Para calcular las componente de radiación difusa isotrópica y de albedo, se utilizan las ecuaciones[fn:15] [[ref:eq:FTD]] y [[ref:eq:FTR]]:
 #+begin_export latex
 \begin{equation}
 \text{FTD}(\beta) \approx exp[-\frac{1}{a_r}\cdot (c_1\cdot (sin\beta +\frac{\pi -\beta - sin\beta}{1+cos\beta})+c_2\cdot (sin\beta +\frac{\pi -\beta -sin\beta}{1+cos\beta})^2)]
@@ -314,10 +314,10 @@ Para calcular las componente de radiación difusa isotrópica y de albedo se uti
 \end{equation}
 \label{eq:FTR}
 #+end_export
-Donde:
-- Ángulo de inclinación del generador (en radianes): \(\beta\) \nomenclature[beta]{\(\beta\)}{Ángulo de inclinación de un sistema fotovoltaico}
-- Coeficiente de pérdidas angulares: \(a_r\)
-- Coeficientes de ajuste: \(c_1\) y \(c_2\) (en la tabla [[ref:tab:coef-perd]] se recogen algunos valores característicos de un módulo de silicio monocristalino convencional para diferentes grados de suciedad)
+donde:
+- Ángulo de inclinación del generador (en radianes): \(\beta\). \nomenclature[beta]{\(\beta\)}{Ángulo de inclinación de un sistema fotovoltaico}
+- Coeficiente de pérdidas angulares: \(a_r\).
+- Coeficientes de ajuste: \(c_1\) y \(c_2\) (en la tabla [[ref:tab:coef-perd]] se recogen algunos valores característicos de un módulo de silicio monocristalino convencional para diferentes grados de suciedad).
 #+CAPTION: Valores del coeficiente de pérdidas angulares y transmitancia relativa en incidencia normal para diferentes tipos de suciedad. label:tab:coef-perd
 |-------------------+--------------------------------------+------+--------|
 | Grado de suciedad | $\frac{T_{sucio}(0)}{T_{limpio}(0)}$ |  a_r |    c_2 |
@@ -331,7 +331,7 @@ Donde:
 | Alto              |                                 0.92 | 0.27 | -0.023 |
 |-------------------+--------------------------------------+------+--------|
 
-Para estas componenetes el cálculo de irradiancia efectiva es similar al de la irradiancia directa (ecuaciones [[ref:eq:dif-ef-iso]] y [[ref:eq:alb-ef]]). Para la componente difusa circunsolar emplearemos el factor de pérdidas angulares de la irradiancia efectiva(ecuacion [[ref:eq:dif-ef-cir]]):
+Para estas componenetes el cálculo de irradiancia efectiva es similar al de la irradiancia directa (ecuaciones [[ref:eq:dif-ef-iso]] y [[ref:eq:alb-ef]]). Para la componente difusa circunsolar, se empleará el factor de pérdidas angulares de la irradiancia efectiva(ecuacion [[ref:eq:dif-ef-cir]]):
 #+begin_export latex
 \begin{equation}
 D_{ef}^I(\beta ,\alpha)=D^I(\beta ,\alpha)\cdot[\frac{T_{sucio}(0)}{T_{limpio}(0)}]\cdot (1-FT_D(\beta))
@@ -381,7 +381,7 @@ El punto de máxima potencia es aquel situado en la curva de funcionamiento del 
 [[file:figuras/CurvaIV_Ta20_G800.pdf]]
 
 *** Factor de forma y eficiencia
-El área encerrada por el rectángulo definido por el producto $I_{mpp}\cdot V_{mpp}$ es, como se puede apreciar en la figura [[fig:iv-20-800]], inferiro a la respresentada por el producto $I_{sc}\cdot V_{oc}$. La relación entre estad dos superficies se cuantifica con el factor de forma:\nomenclature[MPP]{MPP}{Punto de máxima potencia de un dispositivo fotovoltaico}
+El área encerrada por el rectángulo definido por el producto $I_{mpp}\cdot V_{mpp}$ es, como se puede apreciar en la figura [[fig:iv-20-800]], inferior a la respresentada por el producto $I_{sc}\cdot V_{oc}$. La relación entre estas dos superficies se cuantifica con el factor de forma:\nomenclature[MPP]{MPP}{Punto de máxima potencia de un dispositivo fotovoltaico}
 #+begin_export latex
 \begin{equation}
 FF=\frac{I_{mpp}\cdot V_{mpp}}{I_{sc}\cdot V_{oc}}
@@ -389,7 +389,7 @@ FF=\frac{I_{mpp}\cdot V_{mpp}}{I_{sc}\cdot V_{oc}}
 \end{equation}
 #+end_export
 
-Conociendo los valores de $I_{sc}$ y $V_{oc}$ es posible calcular la potencia en el punto de máxima potencia, dado que $P_{mpp}=FF\cdot I_{sc}\cdot V_{oc}$.
+Conocidos los valores de $I_{sc}$ y $V_{oc}$, es posible calcular la potencia en el punto de máxima potencia, dado que $P_{mpp}=FF\cdot I_{sc}\cdot V_{oc}$.
 
 Por otra parte, la calidad de una célula se puede cuantificar con la eficiencia de conversión (ecuación ref:eq:efi-cel).
 #+begin_export latex
@@ -406,17 +406,17 @@ donde $P_L=A_c\cdot G_{ef}$ representa la potencia luminosa que incide en la cé
 [[file:figuras/cell-efficiencies.pdf]]
 
 *** Influencia de la temperatura y la radiación
-La temperatura y la radiación son factores cruciales en el funcionamiento de una célula solar. El aumento de la temperatura ambiente reduce la tensión de circuito abierto según la relación $dV_{oc}/dT_c$, \nomenclature[Tc]{\(T_c\)}{Temperatura de célula}, que para células de silicio cristalino es de$-2,3\frac{mV}{^\circ C}$. Además, disminuye la eficiencia de la célula solar con $\frac{d\eta}{dT_c}=-0,4\%/^\circ C$.
+La temperatura y la radiación son factores cruciales en el funcionamiento de una célula solar. El aumento de la temperatura ambiente reduce la tensión de circuito abierto según la relación $dV_{oc}/dT_c$, \nomenclature[Tc]{\(T_c\)}{Temperatura de célula} que para células de silicio cristalino es de$-2,3\frac{mV}{^\circ C}$. Además, disminuye la eficiencia de la célula solar con $\frac{d\eta}{dT_c}=-0,4\%/^\circ C$.
 
-En cuanto a la iluminación, la fotocorriente y la tensíon de circuito abierto son proporcionales a la irradiancia incidente.
+En cuanto a la iluminación, la fotocorriente y la tensión de circuito abierto son proporcionales a la irradiancia incidente.
 
-Tomando en cuenta estas influencias, se definen una condiciones de funcionamiento, denominadas condiciones estándar de medida(STC)\nomenclature[STC]{STC}{Condiciones estándar de medida de un dispositivo fotovoltaico}, válidas para caracterizar una célula en el entorno de un laboratorio. Estas condiciones vienen determinadas por:
-- Irradiancia: $G_{stc}=1000W/m^2$ con incidencia normal.
+Tomando en cuenta estas influencias, se definen una condiciones de funcionamiento, denominadas condiciones estándar de medida (STC)\nomenclature[STC]{STC}{Condiciones estándar de medida de un dispositivo fotovoltaico}, válidas para caracterizar una célula en el entorno de un laboratorio. Estas condiciones vienen determinadas por:
+- Irradiancia: $G_{stc}=1000W/m^2$ con incidencia normal
   #+begin_export latex
   \nomenclature[GSTC]{\(G_{STC}\)}{Irradiancia incidente en condiciones estandar de medida}
   #+end_export
-- Temperatura de célula: $T_c^*=25^\circ C$.\nomenclature[TC*]{\(T_c^*\)}{Temperatura de célula en condiciones estándar de medida}
-- Masa de aire: $AM=1,5$.[fn:18]
+- Temperatura de célula: $T_c^*=25^\circ C$ \nomenclature[TC*]{\(T_c^*\)}{Temperatura de célula en condiciones estándar de medida}
+- Masa de aire: $AM=1,5$[fn:18]
 Frecuentemente los fabricantes informan de los valores de las tensiones $V_{oc}^*$ y $V_{mpp}^*$ y las corrientes $I_{sc}^*$ y $I_{mpp}^*$[fn:19]. A partir de estos valores es posible referir a estas condiciones:
 - La potencia: $P_{mpp}^*=I_{mpp}^*\cdot V_{mpp}^*$
 - El factor de forma: $FF^*=\frac{P_{mpp}^*}{I_{sc}^*\cdot V_{oc}^*}$
@@ -425,18 +425,18 @@ Frecuentemente los fabricantes informan de los valores de las tensiones $V_{oc}^
 ** Funcionamiento de un módulo fotovoltaico
 label:subsec:funcionamiento-modulo-fotovoltaico
 *** Comportamiento térmico de un módulo
-La mayoría de las ecuaciones que definen el comportamiento de un módulo fotovoltaico[fn:20] se establecen en lo que se conocen como condiciones estándar de funcionamiento. En estas condiciones, la temperatura de la célula es de $25^\circ C$. Sin embargo, la temperatura de operación de la célula es diferente y depende directamente de la radiación que recibe el módulo en cada momento.
+La mayoría de las ecuaciones que definen el comportamiento de un módulo fotovoltaico[fn:20] se establecen en lo que se conoce como condiciones estándar de funcionamiento. En estas condiciones, la temperatura de la célula es de $25^\circ C$. Sin embargo, la temperatura de operación de la célula es diferente y depende directamente de la radiación que recibe el módulo en cada momento.
 
-El módulo recibe una cantidad de radiación dada, absorbiendo la fracción de esta que no se refleja al exterior. De dicha fracción, parte de ella es transformada en energía eléctrica mientras que el resto se entrega en forma de calor al entorno.
+El módulo recibe una cantidad de radiación dada, absorbiendo la fracción de esta que no se refleja al exterior. De dicha fracción, parte de ella es transformada en energía eléctrica, mientras que el resto se entrega en forma de calor al entorno.
 
 Para simplificar, se puede asumir que el incremento de la temperatura de la célula respecto de la temperatura ambiente depende linealmente de la irradiancia incidente en esta. El coeficiente de proporcionalidad depende de muchos factores, tales como el modo de instalación del módulo, la velocidad del viento, la humedad ambiente y las características constructivas del laminado.
 
 Estos factores quedan recogidos en un valor único representado por la temperatura de operación nominal de célula (NOCT o TONC)\nomenclature[TONC]{\(TONC\)}{Temperatura de operación nominal de célula}, definida como aquella que alcanza una /célula/ cuando su /módulo/ trabaja en las siguientes condiciones:
-- Irradiancia: $G=800W/m^2$.
-- Masa de aire: $AM= 1,5$.
-- Irradiancia normal.
-- Temperatura /ambiente/: $T_a=20^\circ C$.
-- Velocidad de viento: $v_v=1m/s$.
+- Irradiancia: $G=800W/m^2$
+- Masa de aire: $AM= 1,5$
+- Irradiancia normal
+- Temperatura /ambiente/: $T_a=20^\circ C$
+- Velocidad de viento: $v_v=1m/s$
 
 La ecuación [[ref:eq:temp-cel]] expresa una aproximación aceptable del comportamiento térmico de una célula integrada en un módulo en base a las consideraciones previas:
 #+begin_export latex
@@ -498,7 +498,7 @@ Para la simulación del funcionmaiento de un módulo fotovoltaico en condiciones
    \end{equation}
    #+end_export
 *** Cálculo de $V_{oc}$ y $I_{sc}$
-Conociendo ya los valores horarios de temperatura de la célula, se puede calcular $V_{oc}$ utilizando la ecuación [[ref:eq:ten-ca]]. Y, por último, mediante la ecuación [[ref:eq:int-cc]] se puede calcular $I_{sc}$.
+Conocidos los valores horarios de temperatura de la célula, se puede calcular $V_{oc}$ utilizando la ecuación [[ref:eq:ten-ca]]. Y, por último, mediante la ecuación [[ref:eq:int-cc]] se puede calcular $I_{sc}$.
 #+begin_export latex
 \begin{equation}
 V_{oc}(T_c)=V_{oc}^*+(T_c-T_c^*)\cdot \frac{dV_{oc}}{dT_c}\cdot N_{cs}
@@ -513,11 +513,11 @@ I_{sc}=G_{ef}\cdot \frac{I_{sc}^*}{G^*}
 #+end_export
 
 *** Factor de forma variable
-Una vez obtenidos los valores de $V_{oc}$ y $I_{sc}$, el siguiente paso ha de ser calcular los valores de tensión y corriente en el punto de máxima potencia, pues es donde el generador estará entregando su máxima potencia, como su propio nombre indica, y por tanto es un punto de interés para el cálculo.
+Una vez obtenidos los valores de $V_{oc}$ y $I_{sc}$, el siguiente paso ha de ser calcular los valores de tensión y corriente en el punto de máxima potencia, pues es donde el generador estará entregando su máxima potencia, como su propio nombre indica. Por tanto, es un punto de interés para el cálculo.
 
-Existen dos metodologías de cálculo de dicho punto, uno de ellos significantemente más sencillo que el otro. este consiste en suponer que el Factor de Forma, definido en la expresión [[ref:eq:factor-forma]] es constante.
+Existen dos metodologías de cálculo de dicho punto, uno de ellos significantemente más sencillo que el otro. Este consiste en suponer que el Factor de Forma, definido en la expresión [[ref:eq:factor-forma]], es constante.
 
-Si suponemos que FF es constante, se podrían extraer los valores de tensión y corriente en el punto de máxima potencia ya que si
+Si suponemos que FF es constante, se podrían extraer los valores de tensión y corriente en el punto de máxima potencia, ya que si
 #+begin_export latex
 \begin{equation}
 FF=FF^*
@@ -532,32 +532,32 @@ entonces
 pudiendo así obtener los valores de $I_{mpp}$ y $V_{vmmp}$.
 
 Sin embargo, este suposición da resultados alejados a una estimación acertada. Por ello, se tendrá en cuenta la variación del factor de forma:
-- *Cálculo de la tensión termica, $V_t$, a temperatura de la célula*: Se calculará el valor de $V_t$ a 25ºC con la expresión:
+- *Cálculo de la tensión termica, $V_t$, a temperatura de la célula*: se calculará el valor de $V_t$ a 25ºC con la expresión:
   #+begin_export latex
   \begin{equation}
   V_{tn}=\frac{V_t\cdot (273+25)}{300}
   \end{equation}
   #+end_export
-- *Cálculo de $R_s^*$*: El segundo paso consiste en calcular el valor de resistencia en serie con los valores STC:
+- *Cálculo de $R_s^*$*: el segundo paso consiste en calcular el valor de resistencia en serie con los valores STC:
   #+begin_export latex
   \begin{equation}
   R_s^*=\frac{\frac{V_{oc}^*}{N_{cs}}-\frac{V_{mpp}^*}{N_{cs}}+m\cdot V_{tn}\cdot ln(1-\frac{I_{mpp}^*}{I_{sc}^*})}{\frac{I_{mpp}^*}{N_{cp}}}
   \end{equation}
   #+end_export
-- *Cálculo de $r_s$*: Utilizando el valors de $R_s^*$ calculado en el paso anterior junto con los valores de $V_{oc}$ y $I_{sc}$ podemos calcular $r_s$ que se utilizará más adelante en el proceso.
+- *Cálculo de $r_s$*: utilizando el valors de $R_s^*$, calculado en el paso anterior junto con los valores de $V_{oc}$ y $I_{sc}$, podemos calcular $r_s$ que se utilizará más adelante en el proceso.
   #+begin_export latex
   \begin{equation}
   r_s=R_s^*\cdot (\frac{N_{cs}}{N_{cp}}\cdot \frac{I_{sc}}{V_{oc}})
   \end{equation}
   #+end_export
-- *Cálculo de $k_{oc}$*: A continuación, utilizando los valores de temperatura ambiente obtenidos con anterioridad junto con la tensión de circuito abierto, se calcula $k_{oc}$ mediante la expresión:
+- *Cálculo de $k_{oc}$*: a continuación, utilizando los valores de temperatura ambiente obtenidos con anterioridad junto con la tensión de circuito abierto, se calcula $k_{oc}$ mediante la expresión:
   #+begin_export latex
   \begin{equation}
   k_{oc}=\frac{V_{oc}/N_{cs}}{m\cdot V_t \cdot \frac{T_c+273}{300}}
   \end{equation}
   #+end_export
 
-Con estos cálculos previos, este método propone localizar el punto de máxima potencia de forma aprodimada mediante la ecuaciones:
+Con los cálculos previos, este método propone localizar el punto de máxima potencia de forma aproximada mediante las ecuaciones:
 #+begin_export latex
 \begin{equation}
 i_{mpp}=1-\frac{D_M}{k_{oc}}
@@ -576,7 +576,7 @@ D_{M0}=\frac{k_{oc}-1}{k_{oc}-lnk_{oc}}
 \end{equation}
 #+end_export
 
-Por último, multiplicando los valores de $i_{mpp}$ y $v_{mpp}$ por $I_{sc}$ y $V_{oc}$ respectivamente, se obtienen los valores de $I_{mpp}$ y $V_{mpp}$ que serán los que se utilicen para calcular la potencia entregada por el generador en el punto de máxima potencia.
+Por último, multiplicando los valores de $i_{mpp}$ y $v_{mpp}$ por $I_{sc}$ y $V_{oc}$ respectivamente, se obtienen los valores de $I_{mpp}$ y $V_{mpp}$, que serán los que se utilicen para calcular la potencia entregada por el generador en el punto de máxima potencia.
 
 Teniendo estos valores se puede obtener:
 #+begin_export latex
@@ -595,7 +595,7 @@ P_g^*=N_s\cdot N_p\cdot P_m^*
 #+end_export
 Con este paso se obtiene la potencia horaria entregada por el generador fotovoltaico. El siguiente paso será pasar esa potencia a través del inversor y calcular la potencia a la salida de este.
 
-Primero, se esteblecen las expresiones de las potencias normalizadas. Siendo $P_{inv}$ la potencia nominal del inversor:
+Primero, se esteblecen las expresiones de las potencias normalizadas, siendo $P_{inv}$ la potencia nominal del inversor:
 #+begin_export latex
 \nomenclature[Pinv]{\(P_{inv}\)}{Potencia nominal de un inversor}
 #+end_export
@@ -629,14 +629,14 @@ k_2p_o^2+(k_1+1)p_o+(k_0-p_i)=0
 \end{equation}
 #+end_export
 
-Por último, volviendo a las primeras expresiones se puede obtener la potencia en corriente alterna:
+Por último, volviendo a las primeras expresiones, se puede obtener la potencia en corriente alterna:
 #+begin_export latex
 \begin{equation}
 P_{AC}=p_o\cdot P_{inv}
 \end{equation}
 #+end_export
 
-Con esta potencia, integrando en función del tiempo se puede obtener la energía que genera el sistema
+Con esta potencia, integrando en función del tiempo, se puede obtener la energía que genera el sistema
 #+begin_export latex
 \begin{equation}
 E_{AC}=\int_{T} P_{AC} \,dt
@@ -651,7 +651,7 @@ Y_f=\frac{E_{ac}}{P_g^*}
 
 ** Cálculo de potencias y energías de un sistema fovoltaico de bombeo
 *** Potencia hidráulica
-La potencia hidráulica, $P_H$ \nomenclature[PH]{$P_H$}{Potencia hidráulica}, necesaria para bombear agua es función de,
+La potencia hidráulica, $P_H$ \nomenclature[PH]{$P_H$}{Potencia hidráulica}, necesaria para bombear agua es función de:
 - La altura vertical aparente, $H_v$ \nomenclature[Hv]{$H_v$}{Altura vertical aparente}
 - El caudal de agua, $Q$ \nomenclature[Q]{$Q$}{Caudal de agua} \nomenclature[g]{$g$}{Aceleración de la gravedad} \nomenclature[rho]{$\rho$}{Densidad del agua}
 #+begin_export latex
@@ -667,7 +667,7 @@ P_H=2.725\cdot Q \cdot H_v
 \end{equation}
 #+end_export
 
-Asumiendo que el agua bombeado sale por el coducto a baja velocidad, la potencia de salida de la bomba necesita satisfacer $P_H$ \nomenclature[PH]{$P_H$}{Potencia hidraúlica necesaria en un sistema de bombeo de agua} más las pérdidas de fricción en la tubería, $P_f$ \nomenclature[Pf]{$P_f$}{Pérdidas de frición en la tubería de un sistema de bombeo}. Este valor se asimila a una altura equivalente $H_f$ \nomenclature[Hf]{$H_f$}{Altura asociada a las pérdidas de frición en una tubería} asociado a un caudal determinado: \nomenclature[HT]{$H_T$}{Altura total incluyendo las pérdidas de fricción de la tubería}
+Asumiendo que el agua bombeado sale por el coducto a baja velocidad, la potencia de salida de la bomba necesita satisfacer $P_H$ \nomenclature[PH]{$P_H$}{Potencia hidraúlica necesaria en un sistema de bombeo de agua}, más las pérdidas de fricción en la tubería, $P_f$ \nomenclature[Pf]{$P_f$}{Pérdidas de frición en la tubería de un sistema de bombeo}. Este valor se asimila a una altura equivalente $H_f$, \nomenclature[Hf]{$H_f$}{Altura asociada a las pérdidas de frición en una tubería} asociado a un caudal determinado: \nomenclature[HT]{$H_T$}{Altura total incluyendo las pérdidas de fricción de la tubería}
 #+begin_export latex
 \begin{equation}
 H_T=H_v+H_f
@@ -714,19 +714,19 @@ Se puede definir una altura total equivalente, $H_{TE}$, con las siguientes supo
 Q_d = \frac{P^*_g}{2.725 \cdot G^* \cdot H_{TE}} \int \left( \frac{G}{\eta_{ig}^{*} \eta_{m}^{*} \eta_{inv} \eta_{mp}} \right) dt
 \end{equation}
 #+end_export
-Ahora el cálculo en la integral sólo depende de la radiación, temperatura, y equipos.
+Ahora el cálculo en la integral solo depende de la radiación, temperatura, y equipos.
 
 Para calcular esta altura total equivalente, se debe suponer que:
 - El pozo está caracterizado con tres parámetros:
-  - Nivel estático, $H_{st}$.
+  - Nivel estático, $H_{st}$
     #+begin_export latex
     \nomenclature[Hst]{$H_{st}$}{Nivel estático de un pozo}
     #+end_export
-  - Nivel dinámico, $H_{dt}$.
+  - Nivel dinámico, $H_{dt}$
     #+begin_export latex
     \nomenclature[Hdt]{$H_{dt}$}{Nivel dinámico de un pozo}
     #+end_export
-  - Caudal de ensayo, $Q_t$. \nomenclature[Qt]{$Q_t$}{Caudal de ensayo de un pozo}
+  - Caudal de ensayo, $Q_t$ \nomenclature[Qt]{$Q_t$}{Caudal de ensayo de un pozo}
 - Que se ha realizado el ensayo de bombeo para caracterizar los pozos con bomba portátil empleando el caudal máximo del pozo, $Q_{max}$ ($Q_t=Q_{max}$).
   #+begin_export latex
   \nomenclature[Qman]{$Q_{max}$}{Caudal máximo del pozo}
@@ -823,7 +823,7 @@ Debido a la complicación del cálculo del dimensionamiento de los sistemas foto
  G = G_{max} \cdot \cos\left(\frac{t}{t_0} \cdot \frac{\pi}{2}\right) \cdot \left[1 + s \cdot \left(1 - \cos\left(\frac{t}{t_0} \cdot \frac{\pi}{2}\right)\right)\right]
  \end{equation}
  #+end_export
- donde G es la irradiancia ($W/m^2$) en la hora $t$, $G_{max}$ es el valor máximo de irradiancia ($W/m^2$) dureante el día en cuestión, y $s$ es el facotor de forma definido por:
+ donde G es la irradiancia ($W/m^2$) en la hora $t$, $G_{max}$ es el valor máximo de irradiancia ($W/m^2$) durante el día en cuestión y $s$ es el factor de forma definido por:
  #+begin_export latex
  \begin{equation}
  s = \frac{d \cdot \frac{\pi}{2} - 1}{1 - \frac{\pi}{4}}
@@ -860,11 +860,11 @@ Las filas que componen el generador arrojan sombras unas sobre otras en determin
 d = \frac{h}{tan\gamma_s}
 \end{equation}
 #+end_export
-siendo $h$ la altura de la fila adyacente, $h=L\cdot sin(\beta)$ y $L$ la longitud del generador, según se indica en la figura ref:fig:sombras-estaticos.
+siendo $h$ la altura de la fila adyacente, $h=L\cdot sin(\beta)$, y $L$ la longitud del generador, según se indica en la figura ref:fig:sombras-estaticos.
 #+CAPTION: Dimensiones y distancias entre filas de un sistema estático. Figura 6.10 del libro ESF cite:Perpinan2023. label:fig:sombras-estaticos
 file:figuras/SombrasEstaticas.pdf
 
-En el mediodía del solsticio de invierno la altura solar es $\gamma_s = 90^\circ - 23.45^\circ - |\phi| \simeq 67^\circ - |\phi|$. Por tanto, la distancia mínima que permite 4 horas libres de sombra alrededor del mediodía es:
+En el mediodía del solsticio de invierno, la altura solar es $\gamma_s = 90^\circ - 23.45^\circ - |\phi| \simeq 67^\circ - |\phi|$. Por tanto, la distancia mínima que permite 4 horas libres de sombra alrededor del mediodía es:
 #+begin_export latex
 \nomenclature[dmin]{$d_{min}$}{Distancia mínima entre hileras de un generador para evitar el sombreado}
 #+end_export
@@ -904,7 +904,7 @@ file:figuras/DimensionesSeguidorSombra.pdf
 file:figuras/SixTrackerShadow.pdf
 
   
-El sistema se modela como un grupo de seis seguidores en una matriz de dos filas en dirección Norte-Sur (figura ref:fig:conjunto-seis-seguidores), representando tres situaciones de sombra: lateral (Este-Oeste), frontal (Norte-Sur) y diagonal, caracterizados por los factores de sombra $FS_{xx}$, definidos como la relación entre el área sombreada y el área total del generador. Las ecuaciones para estos factores son, en las que se emplean los valores normalizados de las distancias, $l_{eo}=\frac{L_{eo}}{W}$ y $l_{ns}=\frac{L_{ns}}{W}$:
+El sistema se modela como un grupo de seis seguidores en una matriz de dos filas en dirección Norte-Sur (figura ref:fig:conjunto-seis-seguidores), representando tres situaciones de sombra: lateral (Este-Oeste), frontal (Norte-Sur) y diagonal, caracterizados por los factores de sombra $FS_{xx}$ (definidos como la relación entre el área sombreada y el área total del generador). Las ecuaciones para estos factores son, en las que se emplean los valores normalizados de las distancias, $l_{eo}=\frac{L_{eo}}{W}$ y $l_{ns}=\frac{L_{ns}}{W}$:
 #+begin_export latex
 \begin{equation}
 \begin{array}{c}
@@ -942,7 +942,7 @@ s_{2} & =\frac{b\cdot\sin(\beta)}{\vert\tan(\gamma_{s})\vert}
 \end{align}
 #+end_export
 El factor $\frac{\sin(\gamma_{s})}{\sin(\gamma_{s}+\beta)}$ representa 
-la proyección de sombra existente en el suelo sobre el plano del generador, y por tanto, el porcentaje de área sombreada que debe ser eliminado de la radiación directa. Desarrollando este factor se obtiene una formulación alternativa que puede facilitar el cálculo de los tres factores:
+la proyección de sombra existente en el suelo sobre el plano del generador, y por tanto, el porcentaje de área sombreada que debe ser eliminado de la radiación directa. Desarrollando este factor, se obtiene una formulación alternativa que puede facilitar el cálculo de los tres factores:
 #+begin_export latex
 \begin{align}
 FS_{eo} & =\frac{(1-l_{eo}\cos(\psi_{s}))\cdot(s-l_{eo}\sin(\psi_{s}))}{s}\\
@@ -951,7 +951,7 @@ FS_{d} & =\frac{\left[s-\left(l_{eo}\cdot\sin(\psi_{s})+l_{ns}\cos(\psi_{s})\rig
 \end{align}
 #+end_export
 
-Realizando la simulación de este sistema incluyendo el cálculo de sombras, y repitiendo la simulación para varias combinaciones (Lns, Leo) pueden elaborarse gráficos de nivel como el de la figura ref:fig:abaco-sombras, donde se recoge el ratio entre la energía anual producida por un seguidor /promedio/ incluyendo el efecto de por sombras mutuas[fn:24] y la energía anual producida por un seguidor sin sombreado.
+Realizando la simulación de este sistema, incluyendo el cálculo de sombras y repitiendo la simulación para varias combinaciones (Lns, Leo) pueden elaborarse gráficos de nivel como el de la figura ref:fig:abaco-sombras. En estas, se recoge el ratio entre la energía anual producida por un seguidor /promedio/ incluyendo el efecto de por sombras mutuas[fn:24] y la energía anual producida por un seguidor sin sombreado.
 #+CAPTION: Ábaco para planta de seguimiento a doble eje. Recoge el ratio entre la energía anual producida por un seguidor afectado por sombras mutuas ($E_{acS}$) y la producida por un seguidor sin sombreado ($E_{ac0}$). Las curvas de color negro representan la fracción de energía no afectada por sombras. Las curvas de puntos representan el valor del ROT. Figura 6.14 del libro ESF cite:Perpinan2023. label:fig:abaco-sombras
 #+ATTR_LATEX: :height 0.4\textheight
 file:figuras/AbacoSombras.pdf
@@ -979,7 +979,7 @@ FS_{eo} & =\frac{s-l_{eo}}{s}\nonumber \\
 *** Limitación de ángulo y retroseguimeitno
 En seguidores de eje horizontal se puede evitar la incidencia de sombras en cualquier en cualquier instante mediante algoritmos de /backtracking/ o retroseguimiento cite:Panico.Garvison.ea1991. Esta técnia provoca el desvío del seguidor de su posición óptima en los instantes en los que se produce la sombra entre seguidores, evitando el impacto de sombras pero con la consiguiente reducción en energía producida pro alejamiento del apuntamiento óptimo.
 
-Para evitar la aparición de sombras, el ángulo de inclinación de los seguidores debe ser tal que la longitud de la sombra sea igual a la distancia entre seguidores. Siendo, $\beta$ el ángulo de inclinación con retroseguimiento, y, $\beta_0$ el ángulo de inclinación original, de la ecuación ref:eq:FSeoHorizontal se deduce que sólo será necesario aplicar esta técnica cuando $l_{eo}\cdot cos(\beta_0) \leq 1$. El triángulo definido por el rayo solar, el seguidro y la sombra debe cumplir la siguiente condición, basada en el teorema de los senos:
+Para evitar la aparición de sombras, el ángulo de inclinación de los seguidores debe ser tal que la longitud de la sombra sea igual a la distancia entre seguidores. Siendo $\beta$ el ángulo de inclinación con retroseguimiento, y $\beta_0$ el ángulo de inclinación original. De la ecuación ref:eq:FSeoHorizontal se deduce que sólo será necesario aplicar esta técnica cuando $l_{eo}\cdot cos(\beta_0) \leq 1$. El triángulo definido por el rayo solar, el seguidor y la sombra debe cumplir la siguiente condición, basada en el teorema de los senos:
 #+begin_export latex
 \begin{equation}
 \label{eq:BT_senos}
@@ -987,14 +987,14 @@ Para evitar la aparición de sombras, el ángulo de inclinación de los seguidor
 \end{equation}
 #+end_export
 
-Por tanto, el ángulo de inclinación que grantiza la ausencia de sombras a costa de apartarse de la condición de seguimiento es:
+Por tanto, el ángulo de inclinación que garantiza la ausencia de sombras a costa de apartarse de la condición de seguimiento es:
 #+begin_export latex
 \begin{equation}
 \label{eq:retroseguimiento}
 \beta=\beta_0-\arccos(l_{eo}\cdot\cos{\beta_0})  
 \end{equation}
 #+end_export
-ecuación que debe aplicarse sólo cuando $l_{eo} \cdot \cos(\beta_0) \leq 1$. En caso contrario $\beta = \beta_0$.
+ecuación que debe aplicarse solo cuando $l_{eo} \cdot \cos(\beta_0) \leq 1$. En caso contrario, $\beta = \beta_0$.
 
 * Footnotes
 
@@ -1030,7 +1030,7 @@ ecuación que debe aplicarse sólo cuando $l_{eo} \cdot \cos(\beta_0) \leq 1$. E
 
 [fn:16] Correpondiente a la función =calcGef=.
 
-[fn:17] Los cálculos de este apartado, quedan recogidos en la función =fProd=.
+[fn:17] Los cálculos de este apartado quedan recogidos en la función =fProd=.
 
 [fn:18] Relación entre el camino recorrido por los rayos directos del Sol a través de la atmósfera hasta la superficie receptora y el que recorrerían en caso de incidencia vertical ($AM=1/cos\theta_{zs}$).
 
@@ -1044,4 +1044,4 @@ ecuación que debe aplicarse sólo cuando $l_{eo} \cdot \cos(\beta_0) \leq 1$. E
 
 [fn:23] Correpondiente a las funciones =calcShd= (cálculo de sombras) y =optimShd= (optimización de distancias).
 
-[fn:24] En el cálculo de la producción del seguidor afectado por sombras mutuas se considera que la reducción en potencia está exclusivamente relacionada con el área sombreada, por tanto, no se tienen en cuenta las conexiones eléctricas entre módulos.
+[fn:24] En el cálculo de la producción del seguidor afectado por sombras mutuas, se considera que la reducción en potencia está exclusivamente relacionada con el área sombreada, por tanto, no se tienen en cuenta las conexiones eléctricas entre módulos.

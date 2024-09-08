@@ -1,16 +1,16 @@
 \chapter{Desarrollo del código}
 \label{chap:desarrollo-codigo}
-En la figura \ref{fig:org7d59dd3}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
+En la figura \ref{fig:org093ef10}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
 \begin{figure}[htbp]
 \centering
 \includegraphics[keepaspectratio,width=0.8\textwidth,height=0.43\textheight]{figuras/procedure.pdf}
-\caption{\label{fig:org7d59dd3}Proceso de cálculo de las funciones de \texttt{solaR2}}
+\caption{\label{fig:org093ef10}Proceso de cálculo de las funciones de \texttt{solaR2}}
 \end{figure}
-A la hora de estimar la producción, el programa sigue los siguientes procesos\footnote{Todas las funciones recogidas en este capítulo, están descritas en el manual de uso del paquete \texttt{solaR2}, el cual, está disponible en el apendice \ref{chap:manual} de este documento.}:
+A la hora de estimar la producción, el programa sigue los siguientes procesos\footnote{Todas las funciones recogidas en este capítulo están descritas en el manual de uso del paquete \texttt{solaR2}, el cual, está disponible en el apéndice \ref{chap:manual} de este documento.}:
 \section{Geometría solar}
-\label{sec:org9ce6107}
+\label{sec:org5bd5d41}
 \label{sec:geometria-solar}
-Para calcular la geometría que definen las posiciones de la Tierra y el Sol, \texttt{solaR2} se vale de una función constructora, \texttt{calcSol}, la cual mediante las funciones \texttt{fSolD} y \texttt{fSolI} cálcula todos los ángulos y componentes que caracterizan la geometría solar.
+Para calcular la geometría que definen las posiciones de la Tierra y el Sol, \texttt{solaR2} se vale de una función constructora, \texttt{calcSol}, la cual calcula mediante las funciones \texttt{fSolD} y \texttt{fSolI} todos los ángulos y componentes que caracterizan la geometría solar.
 \begin{figure}[htbp]
 \centering
 \includegraphics[keepaspectratio,width=\textwidth,height=0.5\textheight]{figuras/calcSol.pdf}
@@ -179,7 +179,7 @@ Intradaily values:
 
 
 \section{Datos meteorológicos}
-\label{sec:orgd55e9da}
+\label{sec:org1afc895}
 \label{sec:datos-meteorologicos}
 Para el procesamiento de datos meteorologicos, \texttt{solaR2} provee una serie de funciones que son capaces de leer todo tipo de datos. Estos datos se procesan y se almacenan en un objeto de tipo \texttt{Meteo} tal y como se ve en la figura \ref{fig:meteo}. Estas funciones son:
 \begin{figure}[htbp]
@@ -194,7 +194,7 @@ Como argumentos tiene:
 \item \texttt{G0dm}: vector con medias mensuales de irradiación global horizontal.
 \item \texttt{Ta}: vector con la temperatura ambiente.
 \item \texttt{lat}: latitud en grados.
-\item \texttt{year}: año de los datos. Por defecto presenta el año actual.
+\item \texttt{year}: año de los datos. Por defecto, presenta el año actual.
 \item \texttt{source}: información de la fuente de los datos.
 \end{itemize}
 \end{itemize}
@@ -220,9 +220,9 @@ Como argumentos tiene:
 \item \texttt{lat}: latitud en grados.
 \item \texttt{format}: formato de los datos de fechas.
 \item \texttt{header}, \texttt{fill}, \texttt{dec}, \texttt{sep}: argumentos para \href{https://search.r-project.org/CRAN/refmans/data.table/html/fread.html}{\texttt{fread}}.
-\item \texttt{dates.col}: nombre de la columna que contiene los datos de fechas. Por defecto es 'Dates'.
-\item \texttt{ta.col}: nombre de la columna que contiene los datos de temperatura. Por defecto es 'Ta'.
-\item \texttt{g0.col}: nombre de la columna que contiene los datos de irradiación. Por defecto es 'G0'.
+\item \texttt{dates.col}: nombre de la columna que contiene los datos de fechas. Por defecto, es 'Dates'.
+\item \texttt{ta.col}: nombre de la columna que contiene los datos de temperatura. Por defecto, es 'Ta'.
+\item \texttt{g0.col}: nombre de la columna que contiene los datos de irradiación. Por defecto, es 'G0'.
 \item \texttt{keep.cols}: si su valor es \texttt{TRUE}, mantiene las columnas que no sean importantes para el resto de operaciones.
 \end{itemize}
 \end{itemize}
@@ -242,17 +242,17 @@ xyplot(BDd)
 \includegraphics[width=0.8\textwidth]{figuras/codigo-readBD.pdf}
 \end{center}
 \begin{itemize}
-\item \texttt{readBDi}: Procesa datos meteorológicos de tipo intradiarios.
+\item \texttt{readBDi}: procesa datos meteorológicos de tipo intradiarios.
 Como argumentos tiene:
 \begin{itemize}
 \item \texttt{file}: nombre del archivo que contiene los datos.
 \item \texttt{lat}: latitud en grados.
 \item \texttt{format}: formato de los datos de fechas.
 \item \texttt{header}, \texttt{fill}, \texttt{dec}, \texttt{sep}: argumentos para \href{https://search.r-project.org/CRAN/refmans/data.table/html/fread.html}{\texttt{fread}}.
-\item \texttt{dates.col}: nombre de la columna que contiene los datos de fechas y/o tiempos. Por defecto es 'Dates'.
+\item \texttt{dates.col}: nombre de la columna que contiene los datos de fechas y/o tiempos. Por defecto, es 'Dates'.
 \item \texttt{times.col}: nombre de la columna que contiene los datos de tiempos en caso de que \texttt{dates.col} no los incluyera.
-\item \texttt{ta.col}: nombre de la columna que contiene los datos de temperatura. Por defecto es 'Ta'.
-\item \texttt{g0.col}: nombre de la columna que contiene los datos de irradiancia. Por defecto es 'G0'.
+\item \texttt{ta.col}: nombre de la columna que contiene los datos de temperatura. Por defecto, es 'Ta'.
+\item \texttt{g0.col}: nombre de la columna que contiene los datos de irradiancia. Por defecto, es 'G0'.
 \item \texttt{keep.cols}: si su valor es \texttt{TRUE}, mantiene las columnas que no sean importantes para el resto de operaciones.
 \end{itemize}
 \end{itemize}
@@ -272,7 +272,7 @@ xyplot(BDi)
 \begin{center}
 \includegraphics[width=0.8\textwidth]{figuras/codigo-readBDi.pdf}
 \end{center}
-\item \texttt{dt2Meteo}: Transforma un \texttt{data.table} o \texttt{data.frame} en un objeto de clase \texttt{Meteo}.
+\item \texttt{dt2Meteo}: transforma un \texttt{data.table} o \texttt{data.frame} en un objeto de clase \texttt{Meteo}.
 Como argumentos tiene:
 \begin{itemize}
 \item \texttt{file}: \texttt{data.table} que contiene los datos.
@@ -292,7 +292,7 @@ xyplot(helios_meteo)
 \includegraphics[width=0.8\textwidth]{figuras/codigo-dt2meteo.pdf}
 \end{center}
 \begin{itemize}
-\item \texttt{zoo2Meteo}: Transforma un objeto de clase \texttt{zoo}\footnote{Pese a que este proyecto trate de ``desligarse'' del paquete \texttt{zoo}, sigue siendo un paquete muy extendido. Por lo que es interesante tener una función así para que los usuarios tengan una mayor flexibilidad.} en un objeto de clase \texttt{Meteo}.
+\item \texttt{zoo2Meteo}: transforma un objeto de clase \texttt{zoo}\footnote{Pese a que este proyecto trate de ``desligarse'' del paquete \texttt{zoo}, sigue siendo un paquete muy extendido. Por ello, es interesante tener una función así para que los usuarios tengan una mayor flexibilidad.} en un objeto de clase \texttt{Meteo}.
 Como argumentos tiene:
 \begin{itemize}
 \item \texttt{file}: \texttt{data.table} que contiene los datos.
@@ -333,15 +333,15 @@ Meteorological Data:
 \end{verbatim}
 
 \begin{itemize}
-\item \texttt{readSIAR}: Esta función es capaz de extraer información de la red SIAR\footnote{La red SiAR (Sistema de Información Agroclimática para el Regadio) es una infraestructura que captura, registra y divulga los datos climáticos necesarios para el cálculo de la demanda hídrica en las zonas de riego \cite{siar23}.} y transformarlo en un objeto de clase \texttt{Meteo}.
+\item \texttt{readSIAR}: esta función es capaz de extraer información de la red SIAR\footnote{La red SiAR (Sistema de Información Agroclimática para el Regadio) es una infraestructura que captura, registra y divulga los datos climáticos necesarios para el cálculo de la demanda hídrica en las zonas de riego \cite{siar23}.} y transformarlo en un objeto de clase \texttt{Meteo}.
 Como argumentos tiene:
 \begin{itemize}
-\item \texttt{Lon}: Longitud en grados.
-\item \texttt{Lat}: Latitud en grados.
-\item \texttt{inicio}: Primer día de los registros.
-\item \texttt{final}: Último día de los registros.
-\item \texttt{tipo}: La API SIAR\footnote{La API (Interfaz de Programación de Aplicaciones) que se usa para la función \texttt{readSIAR} está proporcionada por la propia red SIAR \cite{siar23}.} permite tener 4 tipos de registros: \texttt{Mensuales}, \texttt{Semanales}, \texttt{Diarios} y \texttt{Horarios}.
-\item \texttt{n\_est}: Con este argumento, la función es capaz de localizar el número seleccionado de estaciones más proximas a la ubicación dada, y obtener los datos individuales de cada una de ellas. Una vez obtenidos estos datos realiza una interpolación de distancia inversa ponderada (IDW\footnote{La interpolación IDW es un método de interpolación que estima el valor de un punto desconocido basado en los valores conocidos de puntos cercanos. Los puntos más cercanos tienen más peso en la estimación que los más lejanos, utilizando una relación inversa con la distancia.}) y entrega un solo resultado. Es importante añadir que la API SIAR tiene una limitación a la solicitud de registros que se le hace cada minuto, por lo que esta función cuenta con un comprobante para impedir que el usuario exceda este límite.
+\item \texttt{Lon}: longitud en grados.
+\item \texttt{Lat}: latitud en grados.
+\item \texttt{inicio}: primer día de los registros.
+\item \texttt{final}: último día de los registros.
+\item \texttt{tipo}: la API SIAR\footnote{La API (Interfaz de Programación de Aplicaciones) que se usa para la función \texttt{readSIAR} está proporcionada por la propia red SIAR \cite{siar23}.} permite tener 4 tipos de registros: \texttt{Mensuales}, \texttt{Semanales}, \texttt{Diarios} y \texttt{Horarios}.
+\item \texttt{n\_est}: con este argumento, la función es capaz de localizar el número seleccionado de estaciones más proximas a la ubicación dada, y obtener los datos individuales de cada una de ellas. Una vez obtenidos estos datos realiza una interpolación de distancia inversa ponderada (IDW\footnote{La interpolación IDW es un método de interpolación que estima el valor de un punto desconocido basado en los valores conocidos de puntos cercanos. Los puntos más cercanos tienen más peso en la estimación que los más lejanos, utilizando una relación inversa con la distancia.}) y entrega un solo resultado. Es importante añadir que la API SIAR tiene una limitación a la solicitud de registros que se le hace cada minuto, por lo que esta función cuenta con un comprobante para impedir que el usuario exceda este límite.
 \end{itemize}
 \end{itemize}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -360,7 +360,7 @@ xyplot(bd_SIAR)
 \end{center}
 
 \section{Radiación en el plano horizontal}
-\label{sec:org0b7f666}
+\label{sec:orgef7dbf5}
 \label{sec:radiacion-plano-horizontal}
 Una vez se ha calculado la geometría solar (sección \ref{sec:geometria-solar}) y se han procesado los datos meteorológicos (sección \ref{sec:datos-meteorologicos}), es necesario calcular la radiación en el plano horizontal. Para ello, \texttt{solaR2} cuenta con la función \texttt{calcG0} la cual mediante las funciones \texttt{fCompD} y \texttt{fCompI} procesan los objetos de clase \texttt{Sol} y clase \texttt{Meteo} para dar un objeto de tipo \texttt{G0}.
 
@@ -371,12 +371,12 @@ Como se puede ver en la figura \ref{fig:calcg0}, \texttt{calcG0} funciona gracia
 \caption{Cálculo de la radiación incidente en el plano horizontal mediante la función \texttt{calcG0}, la cual procesa un objeto clase \texttt{Sol} y otro clase \texttt{Meteo} mediante las funciones \texttt{fCompD} y \texttt{fCompI} resultando en un objeto clase \texttt{G0}. :\label{fig:calcg0}}
 \end{figure}
 \begin{itemize}
-\item \texttt{fCompD}: La cual calcula todas las componentes de la irradiación diaria en una superficie horizontal mediante regresiones entre los parámetros del índice de claridad y la fracción difusa.
+\item \texttt{fCompD}: la cual calcula todas las componentes de la irradiación diaria en una superficie horizontal mediante regresiones entre los parámetros del índice de claridad y la fracción difusa.
 Tiene los siguientes argumentos:
 \begin{itemize}
-\item \texttt{sol}: Un objeto de clase \texttt{Sol}.
-\item \texttt{G0d}: Un objeto clase \texttt{Meteo} o un \texttt{data.table} con datos de irradiación diaria en una superficie horizontal.
-\item \texttt{corr}: A elegir el tipo de correlación entre la fracción de difusa y el índice de claridad.
+\item \texttt{sol}: un objeto de clase \texttt{Sol}.
+\item \texttt{G0d}: un objeto clase \texttt{Meteo} o un \texttt{data.table} con datos de irradiación diaria en una superficie horizontal.
+\item \texttt{corr}: a elegir el tipo de correlación entre la fracción de difusa y el índice de claridad.
 Dependiendo del tipo de datos:
 \begin{itemize}
 \item Mensuales:
@@ -475,7 +475,7 @@ Key: <Dates>
 
 \item \texttt{fCompI}: calcula, en base a los valores de irradiación diaria, todas las componentes de irradiancia. Se vale de dos procedimientos en base al tipo de argumentos que toma:
 \begin{itemize}
-\item \texttt{compD}: Si recibe un \texttt{data.table} resultado de \texttt{fCompD}, calcula las relaciones entre las componentes de irradiancia e irradiación de las componentes de difusa y global, obteniendo con ellas un perfil de irradiancias [\ref{sec:radiacion-superficies-inclinadas}] (las irradiancias global y difusa salen de estas relaciones, mientras que la directa surge por diferencia entre las dos).
+\item \texttt{compD}: si recibe un \texttt{data.table} resultado de \texttt{fCompD}, calcula las relaciones entre las componentes de irradiancia e irradiación de las componentes de difusa y global, obteniendo con ellas un perfil de irradiancias [\ref{sec:radiacion-superficies-inclinadas}] (las irradiancias global y difusa salen de estas relaciones, mientras que la directa surge por diferencia entre las dos).
 \end{itemize}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 sol <- calcSol(lat = 37.2, BTd = fBTd(mode = 'prom'),
@@ -491,7 +491,7 @@ xyplot(compI)
 \includegraphics[width=0.8\textwidth]{figuras/codigo-fcompicompd.pdf}
 \end{center}
 \begin{itemize}
-\item \texttt{G0I}: Este argumento recibe datos de irradiancia, para después, poder aplicar las correcciones indicadas en el argumento \texttt{corr}.
+\item \texttt{G0I}: este argumento recibe datos de irradiancia, para después, poder aplicar las correcciones indicadas en el argumento \texttt{corr}.
 \end{itemize}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 G0I <- compI$G0
@@ -563,7 +563,7 @@ Key: <Dates>
 145: 2024-12-13 16:00:00 0.8099691 0.3973283  63.15968  51.15739  12.00229
 \end{verbatim}
 
-Por útlimo, esta función incluye un argumento extra, \texttt{filterG0} que cuando su valor es \texttt{TRUE}, elimina todos aquellos valores de irradiancia que son mayores que la irradiancia extra-atmosfércia (ya que es incoherente que la irradiancia terrestre sea mayor que la extra-terrestre)
+Por útlimo, esta función incluye un argumento extra, \texttt{filterG0} que cuando su valor es \texttt{TRUE}, elimina todos aquellos valores de irradiancia que son mayores que la irradiancia extra-atmosfércia (ya que es incoherente que la irradiancia terrestre sea mayor que la extra-terrestre).
 \end{itemize}
 
 Estas dos funciones, como se muestra en la figura \ref{fig:calcg0}, convergen en la función constructora \texttt{calcG0}, dando como resultado un objeto de clase \texttt{G0}. Este objeto muestra la media mensual de la irradiación diaria y la irradiación anual. Aparte, incluye los resultados de \texttt{fCompD} y \texttt{fCompI} y los objetos \texttt{Sol} y \texttt{Meteo} de los que parte.
@@ -628,24 +628,24 @@ Latitude for calculations:  37.2 degrees
 Monthly avarages:
 	Dates   G0d      D0d      B0d
        <char> <num>    <num>    <num>
- 1: Jan. 2024 2.766 1.105173 1.660827
- 2: Feb. 2024 3.491 1.378966 2.112034
- 3: Mar. 2024 4.494 2.058036 2.435964
- 4: Apr. 2024 5.912 2.239053 3.672947
- 5: May. 2024 6.989 2.388730 4.600270
- 6: Jun. 2024 7.742 2.381936 5.360064
- 7: Jul. 2024 7.919 2.171184 5.747816
- 8: Aug. 2024 7.027 2.132916 4.894084
- 9: Sep. 2024 5.369 1.951992 3.417008
-10: Oct. 2024 3.562 1.697085 1.864915
-11: Nov. 2024 2.814 1.337218 1.476782
-12: Dec. 2024 2.179 1.054982 1.124018
+ 1: Jan. 2024 2.766 1.128342 1.637658
+ 2: Feb. 2024 3.491 1.503687 1.987313
+ 3: Mar. 2024 4.494 2.130246 2.363754
+ 4: Apr. 2024 5.912 2.264793 3.647207
+ 5: May. 2024 6.989 2.322846 4.666154
+ 6: Jun. 2024 7.742 2.519177 5.222823
+ 7: Jul. 2024 7.919 2.238833 5.680167
+ 8: Aug. 2024 7.027 2.091969 4.935031
+ 9: Sep. 2024 5.369 1.910453 3.458547
+10: Oct. 2024 3.562 1.661002 1.900998
+11: Nov. 2024 2.814 1.283809 1.530191
+12: Dec. 2024 2.179 1.019766 1.159234
 
 Yearly values:
 Key: <Dates>
    Dates      G0d      D0d      B0d
    <int>    <num>    <num>    <num>
-1:  2024 1839.365 668.1473 1171.218
+1:  2024 1839.365 673.3369 1166.028
 \end{verbatim}
 
 \item Diarios.
@@ -666,24 +666,24 @@ Latitude for calculations:  37.2 degrees
 Monthly avarages:
 	Dates   G0d      D0d      B0d
        <char> <num>    <num>    <num>
- 1: Jan. 2024 2.766 1.105173 1.660827
- 2: Feb. 2024 3.491 1.378966 2.112034
- 3: Mar. 2024 4.494 2.058036 2.435964
- 4: Apr. 2024 5.912 2.239053 3.672947
- 5: May. 2024 6.989 2.388730 4.600270
- 6: Jun. 2024 7.742 2.381936 5.360064
- 7: Jul. 2024 7.919 2.171184 5.747816
- 8: Aug. 2024 7.027 2.132916 4.894084
- 9: Sep. 2024 5.369 1.951992 3.417008
-10: Oct. 2024 3.562 1.697085 1.864915
-11: Nov. 2024 2.814 1.337218 1.476782
-12: Dec. 2024 2.179 1.054982 1.124018
+ 1: Jan. 2024 2.766 1.128342 1.637658
+ 2: Feb. 2024 3.491 1.503687 1.987313
+ 3: Mar. 2024 4.494 2.130246 2.363754
+ 4: Apr. 2024 5.912 2.264793 3.647207
+ 5: May. 2024 6.989 2.322846 4.666154
+ 6: Jun. 2024 7.742 2.519177 5.222823
+ 7: Jul. 2024 7.919 2.238833 5.680167
+ 8: Aug. 2024 7.027 2.091969 4.935031
+ 9: Sep. 2024 5.369 1.910453 3.458547
+10: Oct. 2024 3.562 1.661002 1.900998
+11: Nov. 2024 2.814 1.283809 1.530191
+12: Dec. 2024 2.179 1.019766 1.159234
 
 Yearly values:
 Key: <Dates>
    Dates      G0d      D0d      B0d
    <int>    <num>    <num>    <num>
-1:  2024 1839.365 668.1473 1171.218
+1:  2024 1839.365 673.3369 1166.028
 \end{verbatim}
 
 \item Intradiarios
@@ -699,7 +699,7 @@ xyplot(g0_bdI)
 \end{itemize}
 
 \section{Radiación efectiva en el plano del generador}
-\label{sec:org9a956ea}
+\label{sec:orgad7a6c4}
 \label{sec:radiacion-efectiva-plano-generador}
 Teniendo la radiación incidente en plano horizontal (sección \ref{sec:radiacion-plano-horizontal}), se puede calcular la radiación efectiva incidente en el plano del generador. Para ello, \texttt{solaR2} cuenta con la función \texttt{calcGef} la cual mediante las funciones \texttt{fInclin} y \texttt{calcShd} procesa un objeto de clase \texttt{G0} para obtener un objeto \texttt{Gef}.
 
@@ -765,10 +765,10 @@ xyplot(angGen_BT)
 \begin{center}
 \includegraphics[width=0.8\textwidth]{figuras/codigo-fthetabt.pdf}
 \end{center}
-\item \texttt{fInclin}: la cual, partiendo del resultado de \texttt{fTheta} y de un objeto de clase \texttt{G0}, cálcula la irradiancia solar incidente en una superficie inclinada junto con los efectos del ángulo de incidencia y la suciedad para obtener la irradiancia efectiva.
+\item \texttt{fInclin}: la cual, partiendo del resultado de \texttt{fTheta} y de un objeto de clase \texttt{G0}, calcula la irradiancia solar incidente en una superficie inclinada junto con los efectos del ángulo de incidencia y la suciedad para obtener la irradiancia efectiva.
 Como argumentos principales están:
 \begin{itemize}
-\item \texttt{iS}: permite seleccionar entre 4 valores del 1 al 4 correspondientes al grado de suciedad del módulo. Siendo 1 limpio y 4 alto y basandose en los valores de la tabla \ref{tab:coef-perd} calcula la irradiancia efectiva. Por defecto tiene valor 2 (grado de suciedad bajo).
+\item \texttt{iS}: permite seleccionar entre 4 valores del 1 al 4 correspondientes al grado de suciedad del módulo. Siendo 1 limpio y 4 alto y basandose en los valores de la tabla \ref{tab:coef-perd} calcula la irradiancia efectiva. Por defecto, tiene valor 2 (grado de suciedad bajo).
 \end{itemize}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 compI <- calcG0(lat, modeRad = 'bd', dataRad = bd[1:31], keep.night = FALSE)
@@ -789,7 +789,7 @@ xyplot(Gef + Def + Bef + Ref ~ Dates, inclin_is,
 \includegraphics[width=0.8\textwidth]{figuras/codigo-finclinis.pdf}
 \end{center}
 \begin{itemize}
-\item \texttt{alb} Correspondiente al coeficiente de reflexión del terreno para la irradiancia de albedo. Por defecto tiene un valor de 0,2 (valor aceptable para un terreno normal).
+\item \texttt{alb}: correspondiente al coeficiente de reflexión del terreno para la irradiancia de albedo. Por defecto, tiene un valor de 0,2 (valor aceptable para un terreno normal).
 \end{itemize}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 inclin_alb0 <- fInclin(compI = compI, angGen = angGen, alb = 0)
@@ -806,7 +806,7 @@ xyplot(Gef + Def + Bef + Ref ~ Dates, inclin_alb,
 \begin{center}
 \includegraphics[width=0.8\textwidth]{figuras/codigo-finclinalb.pdf}
 \end{center}
-Además, cuenta con dos argumentos adicionales, \texttt{horizBright}, el cual, cuando su valor es \texttt{TRUE} (el que tiene por defecto), realiza una corrección de la radiación difusa \cite{REINDL19909}, y \texttt{HCPV}, es el acrónimo de \textbf{High Concentration PV system}\footnote{la tencología de concentración fotovoltaica funciona gracias a unos dispositivos ópticos que permiten concentrar la radiación solar sobre una célula fotovoltaica de tamaño reducido pero con una eficiencia muy superior alas células tradicionales. Con ello se consigue emplear menor cantidad de semiconductores reduciendo los costes.} (sistema fotovoltaico de alta concentración) que cuando su valor es \texttt{TRUE} (por defecto está puesto en \texttt{FALSE}), anula los valores de radiación difusa y de albedo.
+Además, cuenta con dos argumentos adicionales, \texttt{horizBright}, el cual, cuando su valor es \texttt{TRUE} (el que tiene por defecto), realiza una corrección de la radiación difusa \cite{REINDL19909}, y \texttt{HCPV}, es el acrónimo de \textbf{High Concentration PV system}\footnote{La tencología de concentración fotovoltaica funciona gracias a unos dispositivos ópticos que permiten concentrar la radiación solar sobre una célula fotovoltaica de tamaño reducido pero con una eficiencia muy superior a las células tradicionales. Con ello, se consigue emplear una menor cantidad de semiconductores, reduciendo los costes.} (sistema fotovoltaico de alta concentración) que cuando su valor es \texttt{TRUE} (por defecto está puesto en \texttt{FALSE}), anula los valores de radiación difusa y de albedo.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 inclin_horizBright <- fInclin(compI = compI, angGen = angGen,
                               horizBright = FALSE)
@@ -815,33 +815,33 @@ summary(inclin_horizBright)
 
 \begin{verbatim}
     Dates                              Bo               Bn              G           
-Min.   :2024-01-01 08:00:00.00   Min.   :   0.0   Min.   :  0.0   Min.   :   0.495  
-1st Qu.:2024-01-09 09:45:00.00   1st Qu.: 642.2   1st Qu.:236.6   1st Qu.: 227.202  
-Median :2024-01-17 09:30:00.00   Median :1005.1   Median :488.9   Median : 427.445  
-Mean   :2024-01-16 21:56:08.92   Mean   : 898.5   Mean   :449.6   Mean   : 446.933  
-3rd Qu.:2024-01-24 13:15:00.00   3rd Qu.:1152.8   3rd Qu.:664.6   3rd Qu.: 670.760  
-Max.   :2024-01-31 17:00:00.00   Max.   :1248.5   Max.   :947.9   Max.   :1045.575  
-      D                 Di                Dc               B               R          
-Min.   :  0.472   Min.   :  0.472   Min.   :  0.00   Min.   :  0.0   Min.   :0.02124  
-1st Qu.: 86.744   1st Qu.: 42.787   1st Qu.: 30.56   1st Qu.:114.4   1st Qu.:1.49042  
-Median :146.273   Median : 58.066   Median : 64.55   Median :257.4   Median :3.08080  
-Mean   :139.047   Mean   : 74.679   Mean   : 64.37   Mean   :304.7   Mean   :3.20341  
-3rd Qu.:185.281   3rd Qu.:103.318   3rd Qu.:100.06   3rd Qu.:476.3   3rd Qu.:4.75065  
-Max.   :256.205   Max.   :200.258   Max.   :157.61   Max.   :833.6   Max.   :7.59959  
+Min.   :2024-01-01 08:00:00.00   Min.   :   0.0   Min.   :  0.0   Min.   :  0.4644  
+1st Qu.:2024-01-09 09:45:00.00   1st Qu.: 642.2   1st Qu.:261.5   1st Qu.:241.0570  
+Median :2024-01-17 09:30:00.00   Median :1005.1   Median :468.9   Median :433.9855  
+Mean   :2024-01-16 21:56:08.92   Mean   : 898.5   Mean   :445.4   Mean   :445.8438  
+3rd Qu.:2024-01-24 13:15:00.00   3rd Qu.:1152.8   3rd Qu.:639.6   3rd Qu.:653.0312  
+Max.   :2024-01-31 17:00:00.00   Max.   :1248.5   Max.   :912.4   Max.   :962.4321  
+      D                  Di                 Dc               B               R          
+Min.   :  0.4402   Min.   :  0.4402   Min.   :  0.00   Min.   :  0.0   Min.   :0.02417  
+1st Qu.: 87.7596   1st Qu.: 43.7023   1st Qu.: 31.70   1st Qu.:114.4   1st Qu.:1.60563  
+Median :149.4905   Median : 65.6835   Median : 64.87   Median :273.8   Median :3.16487  
+Mean   :141.8711   Mean   : 76.3467   Mean   : 65.52   Mean   :300.8   Mean   :3.20341  
+3rd Qu.:190.0728   3rd Qu.:106.6447   3rd Qu.:103.19   3rd Qu.:459.5   3rd Qu.:4.69123  
+Max.   :260.8244   Max.   :194.8056   Max.   :133.24   Max.   :780.1   Max.   :6.86791  
      FTb                FTd               FTr              Dief               Dcef       
-Min.   :0.005218   Min.   :0.06474   Min.   :0.2995   Min.   :  0.4326   Min.   :  0.00  
-1st Qu.:0.010325   1st Qu.:0.06474   1st Qu.:0.2995   1st Qu.: 39.2169   1st Qu.: 27.26  
-Median :0.022076   Median :0.06474   Median :0.2995   Median : 53.2206   Median : 60.39  
-Mean   :0.062300   Mean   :0.06474   Mean   :0.2995   Mean   : 68.4476   Mean   : 61.12  
-3rd Qu.:0.096613   3rd Qu.:0.06474   3rd Qu.:0.2995   3rd Qu.: 94.6967   3rd Qu.: 96.25  
-Max.   :0.344085   Max.   :0.06474   Max.   :0.2995   Max.   :183.5484   Max.   :153.59  
-     Gef                 Def                Bef              Ref         
-Min.   :   0.4484   Min.   :  0.4326   Min.   :  0.00   Min.   :0.01458  
-1st Qu.: 204.4836   1st Qu.: 78.8173   1st Qu.: 99.24   1st Qu.:1.02319  
-Median : 398.0284   Median :136.8652   Median :238.29   Median :2.11500  
-Mean   : 420.9455   Mean   :129.5723   Mean   :289.17   Mean   :2.19917  
-3rd Qu.: 643.4682   3rd Qu.:175.0373   3rd Qu.:461.69   3rd Qu.:3.26136  
-Max.   :1014.0147   Max.   :239.6164   Max.   :812.36   Max.   :5.21719
+Min.   :0.005218   Min.   :0.06474   Min.   :0.2995   Min.   :  0.4035   Min.   :  0.00  
+1st Qu.:0.010325   1st Qu.:0.06474   1st Qu.:0.2995   1st Qu.: 40.0558   1st Qu.: 27.91  
+Median :0.022076   Median :0.06474   Median :0.2995   Median : 60.2028   Median : 60.20  
+Mean   :0.062300   Mean   :0.06474   Mean   :0.2995   Mean   : 69.9763   Mean   : 62.21  
+3rd Qu.:0.096613   3rd Qu.:0.06474   3rd Qu.:0.2995   3rd Qu.: 97.7461   3rd Qu.: 99.50  
+Max.   :0.344085   Max.   :0.06474   Max.   :0.2995   Max.   :178.5507   Max.   :129.63  
+     Gef                Def                Bef             Ref         
+Min.   :  0.4201   Min.   :  0.4035   Min.   :  0.0   Min.   :0.01659  
+1st Qu.:206.7988   1st Qu.: 79.0877   1st Qu.:101.1   1st Qu.:1.10228  
+Median :404.3015   Median :141.0409   Median :258.0   Median :2.17271  
+Mean   :419.8527   Mean   :132.1902   Mean   :285.5   Mean   :2.19917  
+3rd Qu.:624.7071   3rd Qu.:178.6869   3rd Qu.:440.4   3rd Qu.:3.22057  
+Max.   :932.0654   Max.   :244.0411   Max.   :759.0   Max.   :4.71488
 \end{verbatim}
 
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -851,34 +851,34 @@ summary(inclin_HCPV)
 \end{lstlisting}
 
 \begin{verbatim}
-    Dates                              Bo               Bn              G            
-Min.   :2024-01-01 08:00:00.00   Min.   :   0.0   Min.   :  0.0   Min.   :   0.4999  
-1st Qu.:2024-01-09 09:45:00.00   1st Qu.: 642.2   1st Qu.:236.6   1st Qu.: 227.8710  
-Median :2024-01-17 09:30:00.00   Median :1005.1   Median :488.9   Median : 428.3916  
-Mean   :2024-01-16 21:56:08.92   Mean   : 898.5   Mean   :449.6   Mean   : 447.5429  
-3rd Qu.:2024-01-24 13:15:00.00   3rd Qu.:1152.8   3rd Qu.:664.6   3rd Qu.: 671.6499  
-Max.   :2024-01-31 17:00:00.00   Max.   :1248.5   Max.   :947.9   Max.   :1046.1123  
+    Dates                              Bo               Bn              G           
+Min.   :2024-01-01 08:00:00.00   Min.   :   0.0   Min.   :  0.0   Min.   :  0.4691  
+1st Qu.:2024-01-09 09:45:00.00   1st Qu.: 642.2   1st Qu.:261.5   1st Qu.:241.7309  
+Median :2024-01-17 09:30:00.00   Median :1005.1   Median :468.9   Median :434.6429  
+Mean   :2024-01-16 21:56:08.92   Mean   : 898.5   Mean   :445.4   Mean   :446.4869  
+3rd Qu.:2024-01-24 13:15:00.00   3rd Qu.:1152.8   3rd Qu.:639.6   3rd Qu.:653.9372  
+Max.   :2024-01-31 17:00:00.00   Max.   :1248.5   Max.   :912.4   Max.   :962.9223  
       D                  Di                 Dc               B               R          
-Min.   :  0.4769   Min.   :  0.4769   Min.   :  0.00   Min.   :  0.0   Min.   :0.02124  
-1st Qu.: 87.1039   1st Qu.: 43.2604   1st Qu.: 30.56   1st Qu.:114.4   1st Qu.:1.49042  
-Median :146.9410   Median : 58.2405   Median : 64.55   Median :257.4   Median :3.08080  
-Mean   :139.6576   Mean   : 75.2893   Mean   : 64.37   Mean   :304.7   Mean   :3.20341  
-3rd Qu.:185.9127   3rd Qu.:103.5791   3rd Qu.:100.06   3rd Qu.:476.3   3rd Qu.:4.75065  
-Max.   :257.6635   Max.   :201.5256   Max.   :157.61   Max.   :833.6   Max.   :7.59959  
-     FTb                FTd               FTr              Dief        Dcef        Gef        
-Min.   :0.005218   Min.   :0.06474   Min.   :0.2995   Min.   :0   Min.   :0   Min.   :  0.00  
-1st Qu.:0.010325   1st Qu.:0.06474   1st Qu.:0.2995   1st Qu.:0   1st Qu.:0   1st Qu.: 99.24  
-Median :0.022076   Median :0.06474   Median :0.2995   Median :0   Median :0   Median :238.29  
-Mean   :0.062300   Mean   :0.06474   Mean   :0.2995   Mean   :0   Mean   :0   Mean   :289.17  
-3rd Qu.:0.096613   3rd Qu.:0.06474   3rd Qu.:0.2995   3rd Qu.:0   3rd Qu.:0   3rd Qu.:461.69  
-Max.   :0.344085   Max.   :0.06474   Max.   :0.2995   Max.   :0   Max.   :0   Max.   :812.36  
-     Def         Bef              Ref   
-Min.   :0   Min.   :  0.00   Min.   :0  
-1st Qu.:0   1st Qu.: 99.24   1st Qu.:0  
-Median :0   Median :238.29   Median :0  
-Mean   :0   Mean   :289.17   Mean   :0  
-3rd Qu.:0   3rd Qu.:461.69   3rd Qu.:0  
-Max.   :0   Max.   :812.36   Max.   :0
+Min.   :  0.4449   Min.   :  0.4449   Min.   :  0.00   Min.   :  0.0   Min.   :0.02417  
+1st Qu.: 88.1852   1st Qu.: 44.1823   1st Qu.: 31.70   1st Qu.:114.4   1st Qu.:1.60563  
+Median :150.0239   Median : 66.3383   Median : 64.87   Median :273.8   Median :3.16487  
+Mean   :142.5141   Mean   : 76.9898   Mean   : 65.52   Mean   :300.8   Mean   :3.20341  
+3rd Qu.:191.0574   3rd Qu.:107.2965   3rd Qu.:103.19   3rd Qu.:459.5   3rd Qu.:4.69123  
+Max.   :262.3132   Max.   :195.9901   Max.   :133.24   Max.   :780.1   Max.   :6.86791  
+     FTb                FTd               FTr              Dief        Dcef        Gef       
+Min.   :0.005218   Min.   :0.06474   Min.   :0.2995   Min.   :0   Min.   :0   Min.   :  0.0  
+1st Qu.:0.010325   1st Qu.:0.06474   1st Qu.:0.2995   1st Qu.:0   1st Qu.:0   1st Qu.:101.1  
+Median :0.022076   Median :0.06474   Median :0.2995   Median :0   Median :0   Median :258.0  
+Mean   :0.062300   Mean   :0.06474   Mean   :0.2995   Mean   :0   Mean   :0   Mean   :285.5  
+3rd Qu.:0.096613   3rd Qu.:0.06474   3rd Qu.:0.2995   3rd Qu.:0   3rd Qu.:0   3rd Qu.:440.4  
+Max.   :0.344085   Max.   :0.06474   Max.   :0.2995   Max.   :0   Max.   :0   Max.   :759.0  
+     Def         Bef             Ref   
+Min.   :0   Min.   :  0.0   Min.   :0  
+1st Qu.:0   1st Qu.:101.1   1st Qu.:0  
+Median :0   Median :258.0   Median :0  
+Mean   :0   Mean   :285.5   Mean   :0  
+3rd Qu.:0   3rd Qu.:440.4   3rd Qu.:0  
+Max.   :0   Max.   :759.0   Max.   :0
 \end{verbatim}
 \end{itemize}
 
@@ -925,7 +925,7 @@ Mode of tracking:  two
     Inclination limit: 90
 \end{verbatim}
 
-Sin embargo, como argumento importante está \texttt{modeShd}, el cual permite incluir el efecto de las sombras entre módulos al objeto \texttt{Gef} mediante el uso de la función \texttt{calcShd}. Esta opción añade las variables \texttt{Gef0}, \texttt{Def0} y \texttt{Bef0} las cuales son las componentes de radiación efectiva previas a aplicar el efecto de las sombras con el fin de poder comparar.
+Sin embargo, como argumento importante está \texttt{modeShd}, el cual permite incluir el efecto de las sombras entre módulos al objeto \texttt{Gef} mediante el uso de la función \texttt{calcShd}. Esta opción añade las variables \texttt{Gef0}, \texttt{Def0} y \texttt{Bef0}, las cuales son las componentes de radiación efectiva previas a aplicar el efecto de las sombras con el fin de poder comparar.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 struct <- list(W=23.11, L=9.8, Nrow=2, Ncol=8)
 distances <- data.table(Lew=40, Lns=30, H=0)
@@ -1147,9 +1147,9 @@ xyplot(gef_shdbt)
 \includegraphics[width=0.8\textwidth]{figuras/codigo-gef.pdf}
 \end{center}
 \section{Producción eléctrica de un SFCR}
-\label{sec:orgb5d7e67}
+\label{sec:orgd14d003}
 \label{produccion-electrica-sfcr}
-Con la radiación efectiva, se puede estimar la producción eléctrica que va a tener un sistema fotovoltaico conectado a red. Esta estimación, se puede calcular mediante la función \texttt{prodGCPV} la cual mediante la función \texttt{fProd} procesa un objeto de clase \texttt{Gef} y obtiene un objeto \texttt{ProdGCPV}.
+Con la radiación efectiva, se puede estimar la producción eléctrica que va a tener un sistema fotovoltaico conectado a red. Esta estimación se puede calcular mediante la función \texttt{prodGCPV}, la cual mediante la función \texttt{fProd} procesa un objeto de clase \texttt{Gef} y obtiene un objeto \texttt{ProdGCPV}.
 
 Como se puede ver en la figura \ref{fig:prodgcpv}, \texttt{prodGCPV} funciona gracias a la siguiente función:
 \begin{figure}[htbp]
@@ -1160,7 +1160,7 @@ Como se puede ver en la figura \ref{fig:prodgcpv}, \texttt{prodGCPV} funciona gr
 \begin{itemize}
 \item \texttt{fProd}: simula el comportamiento de un sistema fotovoltaico conectado a red bajo diferentes condiciones de temperatura e irradiancia. Tiene los siguientes argumentos:
 \begin{itemize}
-\item \texttt{inclin}: puede ser tanto un objeto de clase \texttt{Gef} como un \texttt{data.frame} (o \texttt{data.table}). Sin embargo, si es un \texttt{data.frame}, debe contener como mínimo una columna para \texttt{Gef} y otra para \texttt{Ta}
+\item \texttt{inclin}: puede ser tanto un objeto de clase \texttt{Gef} como un \texttt{data.frame} (o \texttt{data.table}). Sin embargo, si es un \texttt{data.frame}, debe contener como mínimo una columna para \texttt{Gef} y otra para \texttt{Ta}.
 \item \texttt{module}: una lista de valores numéricos con la información sobre el módulo fotovoltaico:
 \begin{itemize}
 \item \texttt{Vocn}: tensión de circuito abierto en STC (\(V_{oc}^*\))(condiciones estandar de médida). Por defecto, tiene un valor de \(57.2V\).
@@ -1241,7 +1241,7 @@ show(prod)
 145:  212601.6 0.9799008
 \end{verbatim}
 
-Esta función brinda estos datos a la función \texttt{prodGCPV} para que produzca un objeto de clase \texttt{ProdGCPV} como resultado. Esta función tiene como argumentos principales los mismo que \texttt{calcGef}, ya que parte de un objeto tipo \texttt{Gef}, y los argumentos de la función \texttt{fProd}.
+Esta función brinda tales datos a la función \texttt{prodGCPV} para que produzca un objeto de clase \texttt{ProdGCPV} como resultado. Esta función tiene como argumentos principales los mismo que \texttt{calcGef}, ya que parte de un objeto tipo \texttt{Gef}, y los argumentos de la función \texttt{fProd}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 prodFixed <- prodGCPV(lat, modeTrk = 'fixed', dataRad = prom)
 show(prodFixed)
@@ -1339,7 +1339,7 @@ xyplot(prodHoriz)
 \end{center}
 
 \section{Producción eléctrica de un SFB}
-\label{sec:org56002c4}
+\label{sec:orgfe4c545}
 De igual forma que en el apartado anterior, se puede estimar la producción eléctrica de un sistema fotovoltaico de bombeo.
 
 Como se puede ver en la figura \ref{fig:prodpvps}, \texttt{prodPVPS} funciona gracias a la siguiente función:
@@ -1403,8 +1403,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x0000024305c37938>
-<environment: 0x0000024305c3e240>
+<bytecode: 0x000002089c53a978>
+<environment: 0x000002089c53ee80>
 \end{verbatim}
 
 \item \texttt{fPb}: función que relaciona la potencia del eje de la bomba con la potencia eléctrica del motor.
@@ -1430,8 +1430,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x0000024305c37938>
-<environment: 0x0000024305c599b0>
+<bytecode: 0x000002089c53a978>
+<environment: 0x000002089c566660>
 \end{verbatim}
 
 \item \texttt{fPh}: función que relaciona la potencia hidráulica con la potencia eléctrica del motor.
@@ -1457,8 +1457,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x0000024305c37938>
-<environment: 0x0000024305c6fb38>
+<bytecode: 0x000002089c53a978>
+<environment: 0x000002089c56ee40>
 \end{verbatim}
 
 \item \texttt{fFreq}: función que relaciona la frecuencia con la potencia eléctrica del motor.
@@ -1484,8 +1484,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x0000024305c37938>
-<environment: 0x0000024305c4ee08>
+<bytecode: 0x000002089c53a978>
+<environment: 0x000002089c55e190>
 \end{verbatim}
 \end{itemize}
 
@@ -1518,7 +1518,7 @@ show(SP8A44)
 10: 12.0000000 4084.2179 3203.2578 1308.00000 0.7843014 0.4083343 45.47737
 \end{verbatim}
 
-Está función entrega todos estos resultados a \texttt{prodPVPS} la cual calcula los resultados en base a la potencia del generador a simular, y devuleve un objeto de clase \texttt{ProdPVPS}.
+Esta función entrega todos estos resultados a \texttt{prodPVPS}, la cual calcula los resultados en base a la potencia del generador a simular y devuelve un objeto de clase \texttt{ProdPVPS}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 prodsfb <- prodPVPS(lat, modeTrk = 'fixed', dataRad = prom,
                     pump = CoefSP8A44, H = 40, Pg = SP8A44$Pac[10])
@@ -1530,9 +1530,9 @@ xyplot(prodsfb)
 \end{center}
 \end{itemize}
 \section{Optimización de distancias}
-\label{sec:org0f15b40}
+\label{sec:org5874512}
 \label{optimizacion-distancias}
-Por último, el paquete \texttt{solaR2} contiene una función que permite calcular un conjunto de combinaciones de distancias entre los elementos de un sistema fotovoltaico conectado a red, con el fin de que el usuario posteriormente pueda optar cual es la opción mas rentable en base a los precios del cableado y de la ocupación del terreno.
+Por último, el paquete \texttt{solaR2} contiene una función que permite calcular un conjunto de combinaciones de distancias entre los elementos de un sistema fotovoltaico conectado a red, con el fin de que el usuario posteriormente pueda valorar cuál es la opción mas rentable en base a los precios del cableado y de la ocupación del terreno.
 
 Esta función es \texttt{optimShd}, la cual en base a una resolución (determinada por el argumento \texttt{res}, el cual, indica el incremento de la secuencia de distancias) obtiene la producción de cada combinación y la plasma en un objeto de clase \texttt{Shade}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -1642,10 +1642,10 @@ shadeplot(Shd12Fixed)
 
 
 \section{Aspectos técnicos de la elaboración de un paquete en R}
-\label{sec:org0f4230a}
+\label{sec:orgfd7c4fc}
 \label{sec:aspectos-tecnicos}
 \subsection{Estructura básica del paquete}
-\label{sec:orgc01cf25}
+\label{sec:orgd735576}
 \label{subsec:estructura-paquete}
 En la creación de un paquete en \texttt{R}, la estructura de los archivos es clave para asegurar un desarrollo organizado y que \texttt{R} pueda interactuar correctamente con el código y  los datos. Los paquetes de R son esencialmente un conjunto de archivos organizados en un directorio específio. El contenido mínimo requerido incluye:
 \begin{itemize}
@@ -1653,15 +1653,15 @@ En la creación de un paquete en \texttt{R}, la estructura de los archivos es cl
 \item Un archivo \textbf{NAMESPACE}, que controla qué funciones y objetos son visibles fuera del paquete.
 \item Subdirectoriso como \texttt{R/} y \texttt{man/}:
 \begin{itemize}
-\item \texttt{R/}: Contiene los archivos de codigo \texttt{.R}, que son las funciones, clases y métodos definidos en el paquete.
-\item \texttt{man/}: Contiene las páginas de ayuda y documentación para las funciones, métodos y clases del paqeute.
+\item \texttt{R/}: contiene los archivos de codigo \texttt{.R}, que son las funciones, clases y métodos definidos en el paquete.
+\item \texttt{man/}: contiene las páginas de ayuda y documentación para las funciones, métodos y clases del paqeute.
 \end{itemize}
 \end{itemize}
 
-La estructura básica de un paquete puede generarse fácilmente utilizando la función \texttt{package.skeleton()}, que crea los archivos y carpetas necesarios para empezar a trabajar en el desarrollo.
+La estructura básica de un paquete puede generarse con \texttt{package.skeleton()}, una función que crea los archivos y carpetas necesarios para empezar a trabajar en el desarrollo.
 
 \subsection{DESCRIPTION}
-\label{sec:org58fc01e}
+\label{sec:orga3d2260}
 \label{subsec:description}
 El fichero \textbf{DESCRIPTION} es fundamental, ya que incluye la información descriptiva y técnica del paquete, como el nombre, la versión, los autores y las dependencias. Un ejemplo típico de este archivo es el siguiente:
 \begin{examplebox}
@@ -1687,22 +1687,22 @@ URL: http://www.r-project.org, http://www.another.url
 \end{examplebox}
 Los campos principales de este archivo son:
 \begin{itemize}
-\item \textbf{Package}: Nombre del paquete.
-\item \textbf{Version}: Versión del paquete. Generalmente sigue un esquema de numeración semántica (\texttt{major.minor-patch})\footnote{Un esquema de numeración semántica es un sistema de versiones que sigue un patrón específico para asignar números a las versiones de software. Se utiliza para indicar claramente la magnitud de los cambios realizados y su impacto en la compatibilidad.  Una versión \texttt{major} o mayor se refiere a modificaciones grandes o incompatibles con versiones anteriores, \texttt{minor} o menor es una versión que incluye mejoras o nuevas funciones compatibles con versiones anteriores y \texttt{patch} o parche es una versión que incluye correcciones menores o mejoras que no afectan a la funcionalidad.}.
-\item \textbf{Title}: Un título breve pero descriptivo de lo que hace el paquete.
-\item \textbf{Authors@R}: Especifica el o los autores con sus respectivos roles, como ``aut'' (autor) y ``cre'' (creador principal).
-\item \textbf{Maintainer}: Persona responsable del mantenimiento del paquete, con su correo electrónico.
-\item \textbf{Depends}: Lista de dependencias, es decir, otros paquetes de los que depende el correcto funcionamiento del paquete.
-\item \textbf{Suggests}: Lista de paqeute que no son obligatorios, pero que pueden ser útiles.
-\item \textbf{Description}: Una breve descripción del propósito del paquete.
-\item \textbf{License:} Tipo de licencia bajo la cual se distribuye el paquete (GPL, MIT, etc.).
+\item \textbf{Package}: nombre del paquete.
+\item \textbf{Version}: versión del paquete. Generalmente sigue un esquema de numeración semántica (\texttt{major.minor-patch})\footnote{Un esquema de numeración semántica es un sistema de versiones que sigue un patrón específico para asignar números a las versiones de software. Se utiliza para indicar claramente la magnitud de los cambios realizados y su impacto en la compatibilidad.  Una versión \texttt{major} o mayor se refiere a modificaciones grandes o incompatibles con versiones anteriores; \texttt{minor} o menor es una versión que incluye mejoras o nuevas funciones compatibles con versiones anteriores y \texttt{patch} o parche es una versión que incluye correcciones menores o mejoras que no afectan a la funcionalidad.}.
+\item \textbf{Title}: un título breve pero descriptivo de lo que hace el paquete.
+\item \textbf{Authors@R}: especifica el o los autores con sus respectivos roles, como ``aut'' (autor) y ``cre'' (creador principal).
+\item \textbf{Maintainer}: persona responsable del mantenimiento del paquete, con su correo electrónico.
+\item \textbf{Depends}: lista de dependencias, es decir, otros paquetes de los que depende el correcto funcionamiento del paquete.
+\item \textbf{Suggests}: lista de paqeute que no son obligatorios, pero que pueden ser útiles.
+\item \textbf{Description}: una breve descripción del propósito del paquete.
+\item \textbf{License:} tipo de licencia bajo la cual se distribuye el paquete (GPL, MIT, etc.).
 \end{itemize}
 
 Este archivo es crucial para que los usuarios y el sistema \texttt{R} identifiquen las características y requisitos del paquete
 \subsection{NAMESPACE}
-\label{sec:org748e973}
+\label{sec:org2ce6b5d}
 \label{subsec:namespace}
-El archivo \textbf{NAMESPACE} es el encargado de gestionar el espacio de nombres del paquete, permitiendo definir qué funciones y objetos serán visibles (exportados) y cuáles se mantendrán internos. Además, es útil para definir qué funciones o métodos de otros paquetes serán importados para us uso dentro del paquete.
+El archivo \textbf{NAMESPACE} es el encargado de gestionar el espacio de nombres del paquete, permitiendo definir qué funciones y objetos serán visibles (exportados) y cuáles se mantendrán internos. Además, es útil para definir qué funciones o métodos de otros paquetes serán importados para su uso dentro del paquete.
 
 \texttt{R} usa un sistema de gestión de \textbf{espacio de nombres} que permite al autor del paquete especificar:
 \begin{itemize}
@@ -1731,7 +1731,7 @@ search()
 \end{verbatim}
 
 \subsubsection{Manejo de variables}
-\label{sec:org30b1ac3}
+\label{sec:orgb14ccca}
 \begin{itemize}
 \item Exportar variables:
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -1748,7 +1748,7 @@ importFrom(pkgExt, var1, var2)
 \end{lstlisting}
 \end{itemize}
 \subsubsection{Manejo de clases y métodos}
-\label{sec:org167a613}
+\label{sec:orgf9c7736}
 \begin{itemize}
 \item Para registrar un \textbf{método} para una \textbf{clase} determinada:
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -1780,7 +1780,7 @@ importClassesFrom(package, ...)
 importMethodsFrom(package, ...)
 \end{lstlisting}
 \subsection{Documentación}
-\label{sec:org7bbbf51}
+\label{sec:org70fea23}
 \label{subsec:documentacion}
 La documentación en R sigue un formato específico llamado \texttt{Rd} (\emph{R documentation}), que está inspirado en LaTex. Cada función, método o clase del paquete debe tener una página de documentación asociada, que generalmente se encuentra en el subdirectorio \texttt{man/}. Estas páginas incluyen información sobre el uso de la función, argumentos, detalles de la implementación y ejemplos de uso.
 \begin{examplebox}
@@ -1820,14 +1820,14 @@ La documentación en R sigue un formato específico llamado \texttt{Rd} (\emph{R
 
 El formato tiene varios componentes:
 \begin{itemize}
-\item \textbf{name}: El nombre de la función.
-\item \textbf{alias}: Nombres alternativos o alias de la función.
-\item \textbf{title}: Título breve que describe la función.
-\item \textbf{description}: Una descripción de lo que hace la función.
-\item \textbf{usage}: La sintaxis de la función de lo que hace la función.
-\item \textbf{arguments}: Explicación de los argumentos que recibe la función.
-\item \textbf{seealso}: Enlaces a funciones relacionadas.
-\item \textbf{examples}: Ejemplos de cómo utilizar la función.
+\item \textbf{name}: el nombre de la función.
+\item \textbf{alias}: mombres alternativos o alias de la función.
+\item \textbf{title}: título breve que describe la función.
+\item \textbf{description}: una descripción de lo que hace la función.
+\item \textbf{usage}: la sintaxis de la función de lo que hace la función.
+\item \textbf{arguments}: explicación de los argumentos que recibe la función.
+\item \textbf{seealso}: enlaces a funciones relacionadas.
+\item \textbf{examples}: ejemplos de cómo utilizar la función.
 \end{itemize}
 
 Esta estructura de documentación permite a los usuarios comprender rápidamente cómo utilizar las funciones del paquete y verificar su funcionalidad con ejemplos prácticos.
