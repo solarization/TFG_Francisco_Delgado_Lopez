@@ -7,12 +7,26 @@ Se tomará de base un estudio realizado por profesores de la escuela \cite{adrad
 En este ejemplo se realizará el mismo análisis tomando tres herramientas distintas: \texttt{solaR}, para poder tomar como referencia el paquete del que sale, apreciando las mejoras del programa. \texttt{PVSyst}, ya que es uno de los softwares más usados en el ámbito de la fotovoltaica y puede servir como punto de referencia. Y, por último, \texttt{solaR2}.
 
 \section{\texttt{solaR}}
-\label{sec:org8e38186}
+\label{sec:orgb6ba0d4}
 \label{sec:solaR}
 Se empieza inicilizando el paquete:
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 library(solaR)
 \end{lstlisting}
+
+\begin{verbatim}
+Cargando paquete requerido: zoo
+
+Adjuntando el paquete: 'zoo'
+
+The following objects are masked from 'package:base':
+
+    as.Date, as.Date.numeric
+
+Cargando paquete requerido: lattice
+Cargando paquete requerido: latticeExtra
+Time Zone set to UTC.
+\end{verbatim}
 
 En el estudio anterior, se recopilaron datos intradiarios de irradiación intradiaria. Sin embargo, estos datos fueron tomados en un plano inclinado, por lo que ni \texttt{solaR}, ni \texttt{solaR2} son capaces de interpretarlos correctamente. En su lugar, para este ejemplo se van a tomar datos horarios de la plataforma \texttt{PVGIS} \cite{pvgis} de los años 2013, 2014 y 2015 en la localización de la ETSIDI.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -22,9 +36,11 @@ etsidi_1315 <- readBDi(file = 'TFG/data/PVGIS_1315.csv',
 xyplot(etsidi_1315)
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=\textwidth]{figuras/ejemplos1.pdf}
-\end{center}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{figuras/ejemplos1.pdf}
+\caption{Representación gráfica de un objeto \texttt{Meteo} formado con la información meteorológica de la azotea de la ETSIDI entre los años 2013 y 2015 (información horaria).}
+\end{figure}
 
 Una vez se tienen estos datos, se puede calcular la producción que van a tener los diferentes sistemas fotovoltaicos.
 
@@ -120,6 +136,7 @@ Una vez se tienen todos los parámetros del sistema fotovoltaico, se requieren l
 \end{tabular}
 \end{table}
 \end{center}
+\FloatBarrier
 
 Se almacena esta información en otra lista:
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -143,7 +160,7 @@ prod2 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
                   beta = 30, alfa = -19, 
                   module = module2, generator = generator2,
                   inverter = inverter)
-compare(prod1, prod2)
+
 \end{lstlisting}
 
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -170,11 +187,19 @@ show(as.zooY(prod2))
 \end{verbatim}
 
 
-\begin{center}
-\includegraphics[width=.9\linewidth]{figuras/ejemplos2.pdf}
-\end{center}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+compare(prod1, prod2)
+\end{lstlisting}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{figuras/ejemplos2.pdf}
+\caption{Comparación gráfica entre las productividades de los sistemas.}
+\end{figure}
+
+
 \section{\texttt{PVsyst}}
-\label{sec:orgbc183ba}
+\label{sec:org520b683}
 Con la herramienta \texttt{PVsyst}, se ha generado un año promedio de datos de irradiación en la localización y con estos datos se han obtenido dos informes (uno por cada sistema).
 
 Por comodidad, en este documento se van a extraer solo unas tablas con los resultados principales. Sin embargo, los informes completos están disponibles en el \href{https://github.com/solarization/TFG\_Francisco\_Delgado\_Lopez}{github} del documento.
@@ -197,12 +222,21 @@ En las tabla \ref{tab:pvsyst} se tienen los resultados de la simulación de los 
 
 
 \section{\texttt{solaR2}}
-\label{sec:orgbcb3476}
+\label{sec:orgbedef1d}
 \label{sec:solaR2}
 Con los datos obtenidos en la sección \ref{sec:solaR}, hacemos la misma operación pero con el paquete \texttt{solaR2}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 library(solaR2)
 \end{lstlisting}
+
+\begin{verbatim}
+Cargando paquete requerido: data.table
+data.table 1.15.4 using 6 threads (see ?getDTthreads).  Latest news: r-datatable.com
+Cargando paquete requerido: lattice
+Cargando paquete requerido: latticeExtra
+Time Zone set to UTC.
+\end{verbatim}
+
 
 Para ello importamos de la misma manera los datos de radiación.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -212,10 +246,13 @@ etsidi_1315 <- readBDi(file = 'TFG/data/PVGIS_1315.csv',
 xyplot(etsidi_1315)
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=\textwidth]{figuras/ejemplos3.pdf}
-\end{center}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{figuras/ejemplos3.pdf}
+\caption{Representación gráfica de un objeto \texttt{Meteo} formado con la información meteorológica de la azotea de la ETSIDI entre los años 2013 y 2015 (horaria).}
+\end{figure}
 Con estos datos se procede al cálculo de la producción (los datos de los componentes del sistema son los mismos que los realizados en la sección \ref{sec:solaR}).
+
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 prod1 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
                   dataRad = etsidi_1315,
@@ -227,12 +264,8 @@ prod2 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
                   beta = 30, alpha = -19, 
                   module = module2, generator = generator2,
                   inverter = inverter)
-compare(prod1, prod2)
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=\textwidth]{figuras/ejemplos4.pdf}
-\end{center}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 show(as.data.tableY(prod1))
 \end{lstlisting}
@@ -258,8 +291,20 @@ show(as.data.tableY(prod2))
 3:  2015 1506.544 1574.704 1368.901
 \end{verbatim}
 
+
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+compare(prod1, prod2)
+\end{lstlisting}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{figuras/ejemplos4.pdf}
+\caption{Comparación gráfica entre las productividades de los sistemas.}
+\end{figure}
+
+
 \section{Comparación y conclusiones}
-\label{sec:orgb20842c}
+\label{sec:org032a66a}
 \label{sec:comparacion-conclusiones}
 Como se puede observar en las secciones anteriores, tanto el paquete \texttt{solaR} como el paquete \texttt{solaR2} ofrecen los mismos resultados, ya que toman las mismas referencias y estudios para realizar los cáculos. Sin embargo, el paquete \texttt{solaR2}, aparte de la corrección de algunos erores, presenta unas claras ventajas frente a su antecesor. Estas son:
 \begin{itemize}
@@ -282,7 +327,7 @@ microbenchmark(prodGCPVcustom(), times = 20)
 \begin{verbatim}
 Unit: milliseconds
              expr      min       lq     mean   median       uq      max neval
- prodGCPVcustom() 758.4317 764.3084 776.2658 767.5088 779.8397 832.6161    20
+ prodGCPVcustom() 788.9492 804.9692 826.0515 816.6483 851.8184 860.1984    20
 \end{verbatim}
 
 
@@ -301,7 +346,7 @@ microbenchmark(prodGCPVcustom(), times = 20)
 
 \begin{verbatim}
 Unit: milliseconds
-             expr      min       lq     mean   median    uq      max neval
- prodGCPVcustom() 520.1082 523.0395 527.6185 526.2238 532.8 537.7892    20
+             expr      min       lq     mean   median       uq      max neval
+ prodGCPVcustom() 538.4099 546.6735 562.1812 552.9084 571.2363 638.0682    20
 \end{verbatim}
 \end{itemize}
