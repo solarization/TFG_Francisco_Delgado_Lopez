@@ -39,6 +39,8 @@
 
 \include{capitulos/ejemplos}
 
+\include{capitulos/conclusion}
+
 \appendix
 
 \include{capitulos/apendice}
