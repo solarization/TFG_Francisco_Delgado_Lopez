@@ -14,7 +14,7 @@ file:figuras/blame-fCompD.pdf
 - Después, se puede tener acceso al /blame prior/, en el cual se puede ver cómo era el resto del archivo cuando se realizó ese /commit/.
 - Por último, se muestra el número de línea y su contenido.
 
-Este análisis resulta revelador a la hora de comprender los aprotes de este proyecto, ya que se pueden entender los cambios que se han hecho y comprenderlos en el contexto de cada momento del proyecto.
+Este análisis resulta revelador a la hora de comprender los aportes de este proyecto, ya que se pueden entender los cambios que se han hecho y comprenderlos en el contexto de cada momento del proyecto.
 
 ** Insights
 GitHub también cuenta con una serie de herramientas y características que proporcionan información detallada y análisis sobre el rendimiento, la actividad y la salud de un repositorio. Entre ellas, se encuentra /contributors/. Esta herramienta muestra información sobre las contribuciones individuales de los miembros del equipo. Con ella, se puede ver el número de líneas añadidas y eliminadas y el número de /commits/ realizado por cada miembro (ref:fig:contributors).
@@ -43,24 +43,20 @@ profvis({prodFixed <- prodGCPV(lat = lat, dataRad = prom,
 #+BEGIN_EXPORT latex
 \begin{figure}[h!]
   \centering
-  \begin{minipage}[b]{0.5\textwidth}
-    \centering
     \includegraphics[width=\textwidth]{figuras/data.png}
-    \label{fig:data}
-  \end{minipage}%
-  \begin{minipage}[b]{0.5\textwidth}
-    \centering
     \includegraphics[width=\textwidth]{figuras/flamegraph.png}
-    \label{fig:flamegraph}
-  \end{minipage}
-  \caption{Resultado de rendimiento de la función \texttt{prodGCPV} obtenidos con la función \texttt{profvis}. A la izquierda, la pestaña \textit{Data}; y a la derecha, la pestaña \textit{Flame Graph}}
+  \caption{Resultado de rendimiento de la función \texttt{prodGCPV} obtenidos con la función \texttt{profvis}. Arriba, la pestaña \textit{Data}; y abajo, la pestaña \textit{Flame Graph}}
 \end{figure}
 #+END_EXPORT
+
+#+begin_export latex
+\FloatBarrier
+#+end_export
 
 * Desarrollo futuro
 Pese a que =solaR2= ya es un paquete muy capaz, aún quedan varios puntos a mejorar:
 - *Interfaz de usuario*: el lenguaje =R= es un lenguaje orientado a objetos, por lo que un paquete basado en este, puede entorpecer a los usuarios menos entendidos en este lenguaje. Por ello, cabe la posibilidad de añadir al paquete una interfaz de usuario que permita a los usuarios introducir sus datos de forma guiada.
-- *Mejora de funciones*: muchas funciones pueden seguir desarrollandose, mejorando su eficiencia o simplemente incluyendo nuevas funcionalidades.
+- *Mejora de funciones*: muchas funciones pueden seguir desarrollándose, mejorando su eficiencia o simplemente incluyendo nuevas funcionalidades.
 - *Toma de datos*: Aunque =solaR2= ya cuente con la función =readSIAR=, mejoraría notablemente incorporando una función que sea capaz de obtener datos meteorológicos de forma ilimitada (la función =readSIAR= tiene un límite de 100 registros por minuto).
 - *Uso de paquetes especializados en datos espaciales*: Paquetes como =terra= cite:hijmans24 podrían ser útiles para aumentar la eficiencia y rapidez de =solaR2=.
 * Footnotes

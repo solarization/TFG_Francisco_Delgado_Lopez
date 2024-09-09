@@ -41,14 +41,14 @@
 
 \include{capitulos/conclusion}
 
-\appendix
-
-\include{capitulos/apendice}
-
-\backmatter
+# \backmatter
 
 # genera doble hoja en blanco
 \cleardoublepage
 
 # se incluye la bibliografía. Archivo de tipo .bib (bibtex)
 \printbibliography
+
+\appendix
+
+\include{capitulos/apendice}

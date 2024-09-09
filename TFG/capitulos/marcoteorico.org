@@ -129,7 +129,7 @@ Todas estas ecuaciones están recogidas en la función =calcSol=, la cual comput
 
 ** Influencia de la atmósfera
 La radiación solar, al atravesar la atmósfera, es afectada por reflexión, atenuación y difusión, lo que altera sus características. La reflexión en las nubes reduce la radiación que llega a la Tierra, mientras que la absorción por vapor de agua, ozono y $CO_2$ cambia el espectro de la radiación. Además, la dispersión por partículas afecta la distribución espacial. Existen tres tipos de difusión según el tamaño de las partículas en interacción:
-- *Difusión de Rayleigh*: la longitud de onda esmayor que el tamaño de la partícula, ocurre en las capas altas y causa el color azul del cielo.
+- *Difusión de Rayleigh*: la longitud de onda es mayor que el tamaño de la partícula, ocurre en las capas altas y causa el color azul del cielo.
 - *Difusión de Mie*: la longitud de onda es similar al tamaño de la partícula, ocurre en las capas bajas.
 - *Difusión no selectiva*: la longitud de onda es menor que el tamaño de la partícula.
 

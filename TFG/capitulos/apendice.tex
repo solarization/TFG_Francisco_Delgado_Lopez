@@ -1,4 +1,5 @@
 \chapter{Manual de referencia de \texttt{solaR2}}
+\settocdepth{chapter}      
 \label{chap:manual}
 En este apéndice se incluye el manual de referencia del paquete solaR2. Este manual se genera en base a los archivos de documentación (\texttt{.Rd}) propios de un paquete de R, y en el cual se recoge la información de todas las funciones, objetos y set de datos que contiene el paquete.
 
@@ -10,3 +11,4054 @@ Se distribuye siguiendo la siguiente nomenclatura:
 \item \textbf{Métodos}: métodos para los objetos definidos en el paquete. Como identificador, se añade la letra \textbf{D} antes del nombre.
 \end{itemize}
 \includepdf[pages=-, pagecommand={}]{../../solaR2.Rcheck/solaR2-manual.pdf}
+
+\chapter{Código completo}
+\label{chap:codigo}
+En este apéndice se incluye el código completo. Todo el código aquí mostrado está disponible en \href{https://github.com/solarization/solaR2}{GitHub}. Para facilitar la consulta, se va a seguir el mismo orden que en el manual de referencia (apéndice \ref{chap:manual}).
+
+\section{calcSol}
+\label{sec:org1d76a44}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+calcSol <- function(lat, BTd,
+                    sample = 'hour', BTi,
+                    EoT = TRUE,
+                    keep.night = TRUE,
+                    method = 'michalsky')
+{
+  if(missing(BTd)) BTd <- truncDay(BTi)
+  solD <- fSolD(lat, BTd, method = method) 
+  solI <- fSolI(solD = solD, sample = sample, 
+                BTi = BTi, keep.night = keep.night,
+                EoT = EoT, method = method)
+
+  if(!missing(BTi)){
+    sample <- median(diff(solI$Dates))
+    sample <- format(sample)
+  }
+
+  solD[, lat := NULL]
+  solI[, lat := NULL]
+  result <- new('Sol',
+                lat = lat,
+                solD = solD,
+                solI = solI,
+                sample = sample,
+                method = method)
+  return(result)
+}
+\end{lstlisting}
+\section{calcG0}
+\label{sec:orgc080919}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+calcG0 <- function(lat,
+                   modeRad = 'prom',
+                   dataRad,
+                   sample = 'hour',
+                   keep.night = TRUE,
+                   sunGeometry = 'michalsky',
+                   corr, f, ...)
+{
+
+  if (missing(lat)) stop('lat missing. You must provide a latitude value.')
+
+  stopifnot(modeRad nilinnil c('prom', 'aguiar','bd', 'bdI'))
+
+  if (missing(corr)){
+    corr = switch(modeRad,
+                  bd = 'CPR', 
+                  aguiar = 'CPR', 
+                  prom = 'Page',  
+                  bdI = 'BRL'     
+                  )
+  }
+
+  if(is(dataRad, 'Meteo')){BD <- dataRad}
+  else{
+    BD <- switch(modeRad,
+                 bd = {
+                   if (!is.list(dataRad)||is.data.frame(dataRad)){
+                     dataRad <- list(file = dataRad)
+                   }
+                   switch(class(dataRad$file)[1],
+                          character = {
+                            bd.default = list(file = '', lat = lat)
+                            bd = modifyList(bd.default, dataRad)
+                            res <- do.call('readBDd', bd)
+                            res
+                          },
+                          data.table = ,
+                          data.frame = {
+                            bd.default = list(file = '', lat = lat)
+                            bd = modifyList(bd.default, dataRad)
+                            res <- do.call('dt2Meteo', bd)
+                            res
+                          },
+                          zoo = {
+                            bd.default = list(file = '', lat = lat,
+                                              source = '')
+                            bd = modifyList(bd.default, dataRad)
+                            res <- do.call('zoo2Meteo', bd)
+                            res
+                          })
+                 }, 
+                 prom = {
+                   if (!is.list(dataRad)) dataRad <- list(G0dm = dataRad)
+                   prom.default <- list(G0dm = numeric(), lat = lat)
+                   prom = modifyList(prom.default, dataRad)
+                   res <- do.call('readG0dm', prom)
+                 }, 
+                 aguiar = {
+                   if (is.list(dataRad)) dataRad <- dataRad$G0dm
+                   BTd <- fBTd(mode = 'serie')
+                   solD <- fSolD(lat, BTd)
+                   G0d <- markovG0(dataRad, solD)
+                   res <- dt2Meteo(G0d, lat = lat, source = 'aguiar')
+                 }, 
+                 bdI = {
+                   if (!is.list(dataRad) || is.data.frame(dataRad)){
+                     dataRad <- list(file = dataRad)
+                   }
+                   switch(class(dataRad$file)[1],
+                          character = {
+                            bdI.default <- list(file = '', lat = lat)
+                            bdI <- modifyList(bdI.default, dataRad)
+                            res <- do.call('readBDi', bdI)
+                            res
+                          },
+                          data.table = ,
+                          data.frame = {
+                            bdI.default <- list(file = '', lat = lat)
+                            bdI <- modifyList(bdI.default, dataRad)
+                            res <- do.call('dt2Meteo', bdI)
+                            res
+                          },
+                          zoo = {
+                            bdI.default <- list(file = '', lat = lat,
+                                                source = '')
+                            bdI <- modifyList(bdI.default, dataRad)
+                            res <- do.call('zoo2Meteo', bdI)
+                            res
+                          },
+                          stop('dataRad$file should be a character,
+a data.table, a data.frame or a zoo.')
+)} 
+)             
+  }
+
+
+  if (modeRad == 'bdI') {
+    sol <- calcSol(lat, sample = sample,
+                   BTi = indexD(BD),
+                   keep.night = keep.night, method = sunGeometry)
+    compI <- fCompI(sol = sol, G0I = BD, corr = corr, f = f, ...)
+    compD <- compI[, lapply(.SD, P2E, sol@sample),
+                   .SDcols = c('G0', 'D0', 'B0'),
+                   by = truncDay(Dates)]
+    names(compD)[1] <- 'Dates'
+    names(compD)[-1] <- paste(names(compD)[-1], 'd', sep = '')
+    compD$Fd <- compD$D0d/compD$G0d
+    compD$Kt <- compD$G0d/as.data.tableD(sol)$Bo0d
+  } else { 
+    sol <- calcSol(lat, indexD(BD), sample = sample,
+                   keep.night = keep.night, method = sunGeometry)
+    compD <- fCompD(sol = sol, G0d = BD, corr = corr, f, ...)
+    compI <- fCompI(sol = sol, compD = compD, ...)
+  }
+
+  Ta = switch(modeRad,
+              bd = {
+                if (all(c("TempMax","TempMin") nilinnil names(BD@data))) {
+                  fTemp(sol, BD)
+                } else {
+                  if ("Ta" nilinnil names(getData(BD))) {
+                    data.table(Dates = indexD(sol),
+                               Ta = getData(BD)$Ta)
+                  } else {
+                    warning('No temperature information available!')
+                  }
+                }
+              },
+              bdI = {
+                if ("Ta" nilinnil names(getData(BD))) {
+                  data.table(Dates = indexI(sol),
+                             Ta = getData(BD)$Ta)
+                } else {
+                  warning('No temperature information available!')
+                }
+              },
+              prom = {
+                if ("Ta" nilinnil names(getData(BD))) {
+                  data.table(Dates = indexD(sol),
+                             Ta = getData(BD)$Ta)
+                } else {
+                  warning('No temperature information available!')
+                }                  
+              },
+              aguiar = {
+                Dates<-indexI(sol)	
+                x <- as.Date(Dates)
+                ind.rep <- cumsum(c(1, diff(x) != 0))
+                data.table(Dates = Dates,
+                           Ta = getData(BD)$Ta[ind.rep])
+              }
+              )
+
+  nms <- c('G0d', 'D0d', 'B0d')
+  G0dm <- compD[, lapply(.SD/1000, mean, na.rm = TRUE),
+                .SDcols = nms,
+                by = .(month(Dates), year(Dates))]
+
+  if(modeRad == 'prom'){
+    G0dm[, DayOfMonth := DOM(G0dm)]
+    G0y <- G0dm[, lapply(.SD*DayOfMonth, sum, na.rm = TRUE),
+                .SDcols = nms,
+                by = .(Dates = year)]
+    G0dm[, DayOfMonth := NULL]        
+  } else{
+    G0y <- compD[, lapply(.SD/1000, sum, na.rm = TRUE),
+                 .SDcols = nms,
+                 by = .(Dates = year(Dates))]
+  }
+  promDays = c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
+  G0dm[, Dates := as.Date(paste(year, month,
+                                promDays[month], sep = '-'))]
+  G0dm[, c('month', 'year') := NULL]
+  setcolorder(G0dm, 'Dates')
+
+  result <- new(Class = 'G0',
+                BD,        
+                sol,       
+                G0D = compD, 
+                G0dm = G0dm, 
+                G0y = G0y,   
+                G0I = compI, 
+                Ta = Ta      
+                )
+  return(result)
+}
+\end{lstlisting}
+\section{calcGef}
+\label{sec:org979716a}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+calcGef<-function(lat,
+                  modeTrk = 'fixed',      
+                  modeRad = 'prom', 
+                  dataRad,
+                  sample = 'hour',
+                  keep.night = TRUE,
+                  sunGeometry = 'michalsky',
+                  corr, f,
+                  betaLim = 90, beta = abs(lat)-10, alpha = 0,
+                  iS = 2, alb = 0.2, horizBright = TRUE, HCPV = FALSE,
+                  modeShd = '',    
+                  struct = list(), 
+                  distances = data.table(),
+                  ...){
+
+  stopifnot(is.list(struct), is.data.frame(distances))
+
+  if (('bt' nilinnil modeShd) & (modeTrk!='horiz')) {
+    modeShd[which(modeShd=='bt')] = 'area'
+    warning('backtracking is only implemented for modeTrk = horiz')}
+
+  if (modeRad!='prev'){ 
+    radHoriz <- calcG0(lat = lat, modeRad = modeRad,
+                       dataRad = dataRad,
+                       sample = sample, keep.night = keep.night,
+                       sunGeometry = sunGeometry,
+                       corr = corr, f = f, ...)
+  } else {                          
+    radHoriz <- as(dataRad, 'G0') 
+  } 
+
+  BT = ("bt" nilinnil modeShd) 
+  angGen <- fTheta(radHoriz, beta, alpha, modeTrk,
+                   betaLim, BT, struct, distances)
+  inclin <- fInclin(radHoriz, angGen, iS, alb, horizBright, HCPV)
+
+  by <- radHoriz@sample
+  nms <- c('Bo', 'Bn', 'G', 'D', 'B', 'Gef', 'Def', 'Bef')
+  nmsd <- paste(nms, 'd', sep = '')
+
+
+  if(radHoriz@type == 'prom'){
+    Gefdm <- inclin[, lapply(.SD/1000, P2E, by),
+                    .SDcols = nms,
+                    by = .(month(Dates), year(Dates))]
+    names(Gefdm)[-c(1,2)] <- nmsd
+    GefD <- Gefdm[, .SD*1000,
+                  .SDcols = nmsd,
+                  by = .(Dates = indexD(radHoriz))]
+
+    Gefdm[, DayOfMonth := DOM(Gefdm)]
+    Gefy <- Gefdm[, lapply(.SD*DayOfMonth, sum, na.rm = TRUE),
+                  .SDcols = nmsd,
+                  by = .(Dates = year)]
+    Gefdm[, DayOfMonth := NULL]
+  } else{
+    GefD <- inclin[, lapply(.SD, P2E, by),
+                   .SDcols = nms,
+                   by = .(Dates = truncDay(Dates))]
+    names(GefD)[-1] <- nmsd
+
+    Gefdm <- GefD[, lapply(.SD/1000, mean, na.rm = TRUE),
+                  .SDcols = nmsd,
+                  by = .(month(indexD(radHoriz)), year(indexD(radHoriz)))]
+    Gefy <- GefD[, lapply(.SD/1000, sum, na.rm = TRUE),
+                 .SDcols = nmsd,
+                 by = .(Dates = year(indexD(radHoriz)))]
+  }
+
+  promDays = c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
+  Gefdm[, Dates := as.Date(paste(year, month,
+                                 promDays[month], sep = '-'))]
+  Gefdm[, c('month', 'year') := NULL]
+  setcolorder(Gefdm, 'Dates')
+
+  result0 = new('Gef',
+                radHoriz,                           
+                Theta = angGen,
+                GefD = GefD,
+                Gefdm = Gefdm,
+                Gefy = Gefy,
+                GefI = inclin,
+                iS = iS,
+                alb = alb,
+                modeTrk = modeTrk,
+                modeShd = modeShd,
+                angGen = list(alpha = alpha, beta = beta, betaLim = betaLim),
+                struct = struct,
+                distances = distances
+                )
+
+  if (isTRUE(modeShd == "") ||        
+      ('bt' nilinnil modeShd)) {            
+    return(result0)
+  } else {
+    result <- calcShd(result0, modeShd, struct, distances)
+    return(result)
+  }
+}
+\end{lstlisting}
+\section{prodGCPV}
+\label{sec:org666dfcc}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+prodGCPV<-function(lat,
+                   modeTrk = 'fixed', 
+                   modeRad = 'prom',
+                   dataRad,
+                   sample = 'hour',
+                   keep.night = TRUE,
+                   sunGeometry = 'michalsky',
+                   corr, f,
+                   betaLim = 90, beta = abs(lat)-10, alpha = 0,
+                   iS = 2, alb = 0.2, horizBright = TRUE, HCPV = FALSE,
+                   module = list(), 
+                   generator = list(),
+                   inverter = list(), 
+                   effSys = list(), 
+                   modeShd = '',    
+                   struct = list(), 
+                   distances = data.table(),
+                   ...){
+
+  stopifnot(is.list(module),
+            is.list(generator),
+            is.list(inverter),
+            is.list(effSys),
+            is.list(struct),
+            is.data.table(distances))
+
+  if (('bt' nilinnil modeShd) & (modeTrk!='horiz')) {
+    modeShd[which(modeShd=='bt')] = 'area'
+    warning('backtracking is only implemented for modeTrk = horiz')}
+
+  if (modeRad!='prev'){ 
+
+    radEf <- calcGef(lat = lat, modeTrk = modeTrk, modeRad = modeRad,
+                     dataRad = dataRad,
+                     sample = sample, keep.night = keep.night,
+                     sunGeometry = sunGeometry,
+                     corr = corr, f = f,
+                     betaLim = betaLim, beta = beta, alpha = alpha,
+                     iS = iS, alb = alb, horizBright = horizBright, HCPV = HCPV,
+                     modeShd = modeShd, struct = struct,
+                     distances = distances, ...)
+
+  } else { 
+
+    stopifnot(class(dataRad) nilinnil c('G0', 'Gef', 'ProdGCPV'))
+    radEf <- switch(class(dataRad),
+                    G0 = calcGef(lat = lat,
+                                 modeTrk = modeTrk, modeRad = 'prev',
+                                 dataRad = dataRad,
+                                 betaLim = betaLim, beta = beta, alpha = alpha,
+                                 iS = iS, alb = alb, horizBright = horizBright,
+                                 HCPV = HCPV, modeShd = modeShd, struct = struct,
+                                 distances = distances, ...),
+                    Gef = dataRad,
+                    ProdGCPV = as(dataRad, 'Gef')
+                    )
+  }
+
+
+
+  prodI <- fProd(radEf,module,generator,inverter,effSys)
+  module <- attr(prodI, 'module')
+  generator <- attr(prodI, 'generator')
+  inverter <- attr(prodI, 'inverter')
+  effSys <- attr(prodI, 'effSys')
+
+
+  Pg <- generator$Pg 
+
+  by <- radEf@sample
+  nms1 <- c('Pac', 'Pdc')
+  nms2 <- c('Eac', 'Edc', 'Yf')
+
+
+  if(radEf@type == 'prom'){
+    prodDm <- prodI[, lapply(.SD/1000, P2E, by),
+                    .SDcols = nms1,
+                    by = .(month(Dates), year(Dates))]
+    names(prodDm)[-c(1,2)] <- nms2[-3]
+    prodDm[, Yf := Eac/(Pg/1000)]
+    prodD <- prodDm[, .SD*1000,
+                    .SDcols = nms2,
+                    by = .(Dates = indexD(radEf))]
+    prodD[, Yf := Yf/1000]
+
+    prodDm[, DayOfMonth := DOM(prodDm)]
+    prody <- prodDm[, lapply(.SD*DayOfMonth, sum, na.rm = TRUE),
+                    .SDcols = nms2,
+                    by = .(Dates = year)]
+    prodDm[, DayOfMonth := NULL]
+  } else {
+    prodD <- prodI[, lapply(.SD, P2E, by),
+                   .SDcols = nms1,
+                   by = .(Dates = truncDay(Dates))]
+    names(prodD)[-1] <- nms2[-3]
+    prodD[, Yf := Eac/Pg]
+
+    prodDm <- prodD[, lapply(.SD/1000, mean, na.rm = TRUE),
+                    .SDcols = nms2,
+                    by = .(month(Dates), year(Dates))]
+    prodDm[, Yf := Yf * 1000]
+    prody <- prodD[, lapply(.SD/1000, sum, na.rm = TRUE),
+                   .SDcols = nms2,
+                   by = .(Dates = year(Dates))]
+    prody[, Yf := Yf * 1000]
+  }
+
+  promDays = c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
+  prodDm[, Dates := as.Date(paste(year, month,
+                                  promDays[month], sep = '-'))]
+  prodDm[, c('month', 'year') := NULL]
+  setcolorder(prodDm, 'Dates')
+
+  result <- new('ProdGCPV',
+                radEf,                  
+                prodD = prodD,
+                prodDm = prodDm,
+                prody = prody,
+                prodI = prodI,
+                module = module,
+                generator = generator,
+                inverter = inverter,
+                effSys = effSys
+                )
+}
+\end{lstlisting}
+\section{prodPVPS}
+\label{sec:org557f6d8}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+prodPVPS<-function(lat, 
+                   modeTrk = 'fixed', 
+                   modeRad = 'prom', 
+                   dataRad,
+                   sample = 'hour',
+                   keep.night = TRUE,
+                   sunGeometry = 'michalsky',
+                   corr, f,
+                   betaLim = 90, beta = abs(lat)-10, alpha  =  0,
+                   iS = 2, alb = 0.2, horizBright = TRUE, HCPV = FALSE,
+                   pump , H, 
+                   Pg, converter =  list(), 
+                   effSys = list(),
+                   ...){
+
+  stopifnot(is.list(converter),
+            is.list(effSys))
+
+  if (modeRad!='prev'){ 
+
+    radEf <- calcGef(lat = lat, modeTrk = modeTrk, modeRad = modeRad,
+                     dataRad = dataRad,
+                     sample = sample, keep.night = keep.night,
+                     sunGeometry = sunGeometry,
+                     corr = corr, f = f,
+                     betaLim = betaLim, beta = beta, alpha = alpha,
+                     iS = iS, alb = alb, horizBright = horizBright, HCPV = HCPV,
+                     modeShd = '', ...)
+
+  } else {
+    stopifnot(class(dataRad) nilinnil c('G0', 'Gef', 'ProdPVPS'))
+    radEf <- switch(class(dataRad),
+                    G0 = calcGef(lat = lat, 
+                                 modeTrk = modeTrk, modeRad = 'prev',
+                                 dataRad = dataRad,
+                                 betaLim = betaLim, beta = beta, alpha = alpha,
+                                 iS = iS, alb = alb, horizBright = horizBright,
+                                 HCPV = HCPV, modeShd = '', ...),
+                    Gef = dataRad,
+                    ProdPVPS = as(dataRad, 'Gef')
+                    )
+  }
+
+
+  converter.default <- list(Ki = c(0.01,0.025,0.05), Pnom = Pg)
+  converter <- modifyList(converter.default, converter)
+
+  effSys.default <- list(ModQual = 3,ModDisp = 2,OhmDC = 1.5,OhmAC = 1.5,MPP = 1,TrafoMT = 1,Disp = 0.5)
+  effSys <- modifyList(effSys.default, effSys)
+
+  TONC <- 47
+  Ct <- (TONC-20)/800
+  lambda <- 0.0045
+  Gef <- radEf@GefI$Gef
+  night <- radEf@solI$night
+  Ta <- radEf@Ta$Ta
+
+  Tc <- Ta+Ct*Gef
+  Pdc <- Pg*Gef/1000*(1-lambda*(Tc-25))
+  Pdc[is.na(Pdc)] <- 0 
+  PdcN <- with(effSys,
+               Pdc/converter$Pnom*(1-ModQual/100)*(1-ModDisp/100)*(1-OhmDC/100)
+               )
+  PacN <- with(converter,{
+    A <- Ki[3]
+    B <- Ki[2]+1
+    C <- Ki[1]-(PdcN)
+
+    result <- (-B+sqrt(B^2-4*A*C))/(2*A)
+  })
+  PacN[PacN<0]<-0
+
+  Pac <- with(converter,
+              PacN*Pnom*(1-effSys$OhmAC/100))
+  Pdc <- PdcN*converter$Pnom*(Pac>0)
+
+
+
+  fun<-fPump(pump = pump, H = H)
+
+  rango <- with(fun,Pac>=lim[1] & Pac<=lim[2]) 
+  Pac[!rango]<-0
+  Pdc[!rango]<-0
+  prodI <- data.table(Pac = Pac,Pdc = Pdc,Q = 0,Pb = 0,Ph = 0,f = 0)	
+  prodI <- within(prodI,{
+    Q[rango]<-fun$fQ(Pac[rango])
+    Pb[rango]<-fun$fPb(Pac[rango])
+    Ph[rango]<-fun$fPh(Pac[rango])
+    f[rango]<-fun$fFreq(Pac[rango])
+    etam <- Pb/Pac
+    etab <- Ph/Pb
+  })
+
+  prodI[night,]<-NA
+  prodI[, Dates := indexI(radEf)]
+  setcolorder(prodI, c('Dates', names(prodI)[-length(prodI)]))
+
+
+  by <- radEf@sample
+
+  if(radEf@type == 'prom'){
+    prodDm <- prodI[, .(Eac = P2E(Pac, by)/1000,
+                        Qd = P2E(Q, by)),
+                    by = .(month(Dates), year(Dates))]
+    prodDm[, Yf := Eac/(Pg/1000)]
+
+    prodD <- prodDm[, .(Eac = Eac*1000,
+                        Qd,
+                        Yf),
+                    by = .(Dates = indexD(radEf))]
+
+    prodDm[, DayOfMonth := DOM(prodDm)]
+
+    prody <- prodDm[, lapply(.SD*DayOfMonth, sum, na.rm = TRUE),
+                    .SDcols = c('Eac', 'Qd', 'Yf'),
+                    by = .(Dates = year)]
+    prodDm[, DayOfMonth := NULL]
+  } else {
+    prodD <- prodI[, .(Eac = P2E(Pac, by)/1000,
+                       Qd = P2E(Q, by)),
+                   by = .(Dates = truncDay(Dates))]
+    prodD[, Yf := Eac/Pg*1000]
+
+    prodDm <- prodD[, lapply(.SD, mean, na.rm = TRUE),
+                    .SDcols = c('Eac','Qd', 'Yf'),
+                    by = .(month(Dates), year(Dates))]
+    prody <- prodD[, lapply(.SD, sum, na.rm = TRUE),
+                   .SDcols = c('Eac', 'Qd', 'Yf'),
+                   by = .(Dates = year(Dates))]
+
+  }
+
+  promDays = c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
+  prodDm[, Dates := as.Date(paste(year, month,
+                                  promDays[month], sep = '-'))]
+  prodDm[, c('month', 'year') := NULL]
+  setcolorder(prodDm, 'Dates')
+
+  result <- new('ProdPVPS',
+                radEf,                 
+                prodD = prodD,
+                prodDm = prodDm,
+                prody = prody,
+                prodI = prodI,
+                pump = pump,
+                H = H,
+                Pg = Pg,
+                converter = converter,
+                effSys = effSys
+                )
+}
+\end{lstlisting}
+\section{calcShd}
+\label{sec:org581d995}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+calcShd<-function(radEf,
+                  modeShd = 'prom',      
+                  struct = list(), 
+                  distances = data.table() 
+                  )
+{
+  stopifnot(is.list(struct), is.data.frame(distances))
+
+
+  prom = ("prom"  nilinnil  modeShd)
+  prev <- as.data.tableI(radEf, complete = TRUE)
+
+  modeTrk <- radEf@modeTrk
+  sol <- data.table(AzS = prev$AzS,
+                    AlS = prev$AlS)
+  theta <- radEf@Theta
+  AngGen <- data.table(theta, sol)
+  FS <- fSombra(AngGen, distances, struct, modeTrk, prom)
+
+  gef0 <- radEf@GefI
+  Bef0 <- gef0$Bef
+  Dcef0 <- gef0$Dcef
+  Gef0 <- gef0$Gef
+  Dief0 <- gef0$Dief
+  Ref0 <- gef0$Ref
+
+  Bef <- Bef0*(1-FS)
+  Dcef <- Dcef0*(1-FS)
+  Def <- Dief0+Dcef
+  Gef <- Dief0+Ref0+Bef+Dcef 
+
+  nms <- c('Gef', 'Def', 'Dcef', 'Bef')
+  nmsIndex <- which(names(gef0) nilinnil nms)
+  names(gef0)[nmsIndex]<- paste(names(gef0)[nmsIndex], '0', sep = '')
+  GefShd <- gef0
+  GefShd[, c(nms, 'FS') := .(Gef, Def, Dcef, Bef, FS)]
+
+
+  by <- radEf@sample
+  nms <- c('Gef0', 'Def0', 'Bef0', 'G', 'D', 'B', 'Gef', 'Def', 'Bef')
+  nmsd <- paste(nms, 'd', sep = '')
+
+  Gefdm <- GefShd[, lapply(.SD/1000, P2E, by),
+                  by = .(month(truncDay(Dates)), year(truncDay(Dates))),
+                  .SDcols = nms]
+  names(Gefdm)[-c(1, 2)] <- nmsd
+
+  if(radEf@type == 'prom'){
+    GefD <- Gefdm[, .SD[, -c(1, 2)] * 1000,
+                  .SDcols = nmsd,
+                  by = .(Dates = indexD(radEf))] 
+
+    Gefdm[, DayOfMonth := DOM(Gefdm)]
+
+    Gefy <- Gefdm[, lapply(.SD*DayOfMonth, sum, na.rm = TRUE),
+                  .SDcols = nmsd,
+                  by = .(Dates = year)]
+    Gefdm[, DayOfMonth := NULL]
+  } else{    
+    GefD <- GefShd[, lapply(.SD/1000, P2E, by),
+                   .SDcols = nms,
+                   by = .(Dates = truncDay(Dates))]
+    names(GefD)[-1] <- nmsd
+
+    Gefy <- GefD[, lapply(.SD[, -1], sum, na.rm = TRUE),
+                 .SDcols = nmsd,
+                 by = .(Dates = year(Dates))]
+  }
+
+  promDays = c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13)
+  Gefdm[, Dates := as.Date(paste(year, month,
+                                 promDays[month], sep = '-'))]
+  Gefdm[, c('month', 'year') := NULL]
+  setcolorder(Gefdm, c('Dates', names(Gefdm)[-length(Gefdm)]))
+
+  radEf@modeShd <- modeShd
+  radEf@GefI <- GefShd
+  radEf@GefD <- GefD
+  radEf@Gefdm <- Gefdm
+  radEf@Gefy <- Gefy
+  return(radEf)
+}
+\end{lstlisting}
+\section{optimShd}
+\label{sec:orgefd2d1d}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+optimShd<-function(lat,
+                   modeTrk = 'fixed', 
+                   modeRad = 'prom', 
+                   dataRad,
+                   sample = 'hour',
+                   keep.night = TRUE,
+                   sunGeometry = 'michalsky',
+                   betaLim = 90, beta = abs(lat)-10, alpha = 0,
+                   iS = 2, alb = 0.2, HCPV = FALSE,
+                   module = list(), 
+                   generator = list(),
+                   inverter = list(), 
+                   effSys = list(), 
+                   modeShd = '',    
+                   struct = list(), 
+                   distances = data.table(),
+                   res = 2,      
+                   prog = TRUE){ 
+
+  if (('bt' nilinnil modeShd) & (modeTrk!='horiz')) {
+    modeShd[which(modeShd=='bt')] = 'area'
+    warning('backtracking is only implemented for modeTrk = horiz')}
+
+  listArgs <- list(lat = lat, modeTrk = modeTrk, modeRad = modeRad,
+                   dataRad = dataRad,
+                   sample = sample, keep.night = keep.night,
+                   sunGeometry = sunGeometry,
+                   betaLim = betaLim, beta = beta, alpha = alpha,
+                   iS = iS, alb = alb, HCPV = HCPV,
+                   module = module, generator = generator,
+                   inverter = inverter, effSys = effSys,
+                   modeShd = modeShd, struct = struct,
+                   distances = data.table(Lew = NA, Lns = NA, D = NA))
+
+  Red <- switch(modeTrk,
+                horiz = with(distances,
+                             data.table(Lew = seq(Lew[1],Lew[2],by = res),
+                                        H = 0)),
+                two = with(distances,
+                           data.table(
+                             expand.grid(Lew = seq(Lew[1],Lew[2],by = res),
+                                         Lns = seq(Lns[1],Lns[2],by = res),
+                                         H = 0))),
+                fixed = with(distances,
+                             data.table(D = seq(D[1],D[2],by = res),
+                                        H = 0))
+                )
+
+  casos <- dim(Red)[1]
+
+  if (prog) {pb <- txtProgressBar(min = 0, max = casos+1, style = 3)
+    setTxtProgressBar(pb, 0)}
+
+
+  listArgs0 <- modifyList(listArgs,
+                          list(modeShd = '', struct = NULL, distances = NULL) )
+  Prod0 <- do.call(prodGCPV, listArgs0)
+  YfAnual0 <- mean(Prod0@prody$Yf) 
+  if (prog) {setTxtProgressBar(pb, 1)}
+
+  YfAnual <- numeric(casos) 
+
+  BT <- ('bt' nilinnil modeShd)
+  if (BT) { 
+    RadBT <- as(Prod0, 'G0')
+    for (i in seq_len(casos)){
+      listArgsBT <- modifyList(listArgs,
+                               list(modeRad = 'prev', dataRad = RadBT,
+                                    distances = Red[i,]))
+      prod.i <- do.call(prodGCPV, listArgsBT)
+      YfAnual[i] <- mean(prod.i@prody$Yf)
+      if (prog) {setTxtProgressBar(pb, i+1)}
+    }
+  } else {
+    prom <- ('prom' nilinnil modeShd)
+    for (i in seq_len(casos)){
+      Gef0 <- as(Prod0, 'Gef')
+      GefShd <- calcShd(Gef0, modeShd = modeShd,
+                        struct = struct, distances = Red[i,])
+      listArgsShd <- modifyList(listArgs,
+                                list(modeRad = 'prev', dataRad = GefShd)
+                                )
+      prod.i <- do.call(prodGCPV, listArgsShd)
+      YfAnual[i] <- mean(prod.i@prody$Yf)
+      if (prog) {setTxtProgressBar(pb, i+1)}
+    }
+  }
+  if (prog) {close(pb)}
+
+
+  FS <- 1-YfAnual/YfAnual0
+  GRR <- switch(modeTrk,
+                two = with(Red,Lew*Lns)/with(struct,L*W),
+                fixed = Red$D/struct$L,
+                horiz = Red$Lew/struct$L)
+  SombraDF <- data.table(Red,GRR,FS,Yf = YfAnual)
+  FS.loess <- switch(modeTrk,
+                     two = loess(FS~Lew*Lns,data = SombraDF),
+                     horiz = loess(FS~Lew,data = SombraDF),
+                     fixed = loess(FS~D,data = SombraDF))
+  Yf.loess <- switch(modeTrk,
+                     two = loess(Yf~Lew*Lns,data = SombraDF),
+                     horiz = loess(Yf~Lew,data = SombraDF),
+                     fixed = loess(Yf~D,data = SombraDF))
+  result <- new('Shade',
+                Prod0, 
+                FS = FS,
+                GRR = GRR,
+                Yf = YfAnual,
+                FS.loess = FS.loess,
+                Yf.loess = Yf.loess,
+                modeShd = modeShd,
+                struct = struct,
+                distances = Red,
+                res = res
+                )
+  result
+}
+\end{lstlisting}
+\section{Meteo2Meteo}
+\label{sec:org8f8860d}
+\begin{itemize}
+\item \texttt{Meteoi2Meteod}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+Meteoi2Meteod <- function(G0i)
+{
+  lat <- G0i@latm
+  source <- G0i@source
+
+  dt0 <- getData(G0i)
+  dt <- dt0[, lapply(.SD, sum, na.rm = TRUE),
+            .SDcols = 'G0',
+            by = .(Dates = as.IDate(Dates))]
+  if('Ta' nilinnil names(dt0)){
+    Ta <- dt0[, .(Ta = mean(Ta),
+                  TempMin = min(Ta),
+                  TempMax = max(Ta)),
+              by = .(Dates = as.IDate(Dates))]
+    if(all(Ta$Ta == c(Ta$TempMin, Ta$TempMax)))
+      Ta[, c('TempMin', 'TempMax') := NULL]
+    dt <- merge(dt, Ta)
+  }
+  if('G0' nilinnil names(dt)){
+    names(dt)[names(dt) == 'G0'] <- 'G0d'
+  }
+  if('D0' nilinnil names(dt)){
+    names(dt)[names(dt) == 'D0'] <- 'D0d'
+  }
+  if('B0' nilinnil names(dt)){
+    names(dt)[names(dt) == 'B0'] <- 'B0d'
+  }
+  G0d <- dt2Meteo(dt, lat, source, type = 'bd')
+  return(G0d)
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{Meteod2Meteom}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+Meteod2Meteom <- function(G0d)
+{
+  lat <- G0d@latm
+  source <- G0d@source
+
+  dt <- getData(G0d)
+  nms <- names(dt)[-1]
+  dt <- dt[, lapply(.SD, mean),
+           .SDcols = nms,
+           by = .(month(Dates), year(Dates))]
+  dt[, Dates := fBTd()]
+  dt <- dt[, c('month', 'year') := NULL]
+
+  setcolorder(dt, 'Dates')
+
+  G0m <- dt2Meteo(dt, lat, source, type = 'prom')
+  return(G0m)
+}
+\end{lstlisting}
+\section{readBD}
+\label{sec:orgf0dbe48}
+\begin{itemize}
+\item \texttt{readBDd}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+readBDd <- function(file, lat,
+                    format = "nild/nilm/nilY",header = TRUE,
+                    fill = TRUE, dec = '.', sep = ';',
+                    dates.col = 'Dates', ta.col = 'Ta',
+                    g0.col = 'G0', keep.cols = FALSE, ...)
+{
+  stopifnot(is.character(dates.col) || is.numeric(dates.col))
+  stopifnot(is.character(ta.col) || is.numeric(ta.col))
+  stopifnot(is.character(g0.col) || is.numeric(g0.col))
+
+  bd <- fread(file, header = header, fill = fill, dec = dec, sep = sep, ...)
+
+  if(dates.col == ''){
+    names(bd)[1] <- 'Dates'
+    dates.col <- 'Dates'
+  }
+
+  if(!(dates.col nilinnil names(bd))) stop(paste('The column',
+                                             dates.col,
+                                             'is not in the file'))
+  if(!(g0.col nilinnil names(bd))) stop(paste('The column',
+                                          g0.col,
+                                          'is not in the file'))
+  if(!(ta.col nilinnil names(bd))) stop(paste('The column',
+                                          ta.col,
+                                          'is not in the file'))
+
+  Dates <- bd[[dates.col]]
+  bd[,(dates.col) := NULL]
+  bd[, Dates := as.IDate(Dates, format = format)]
+
+  G0 <- bd[[g0.col]]
+  bd[, (g0.col) := NULL]
+  bd[, G0 := as.numeric(G0)]
+
+  Ta <- bd[[ta.col]]
+  bd[, (ta.col) := NULL]
+  bd[, Ta := as.numeric(Ta)]
+
+  names0 <- NULL
+  if(all(c('D0', 'B0') nilinnil names(bd))){
+    names0 <- c(names0, 'D0', 'B0')
+  }
+
+  names0 <- c(names0, 'Ta')
+
+  if(all(c('TempMin', 'TempMax') nilinnil names(bd))){
+    names0 <- c(names0, 'TempMin', 'TempMax')
+  }
+  if(keep.cols)
+  {
+    setcolorder(bd, c('Dates', 'G0', names0))
+  }
+  else
+  {
+    cols <- c('Dates', 'G0', names0)
+    bd <- bd[, ..cols]
+  }
+
+  setkey(bd, 'Dates')
+  result <- new(Class = 'Meteo',
+                latm = lat,
+                data = bd,
+                type = 'bd',
+                source = file)
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{readBDi}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+readBDi <- function(file, lat,
+                    format = "nild/nilm/nilY nilH:nilM:nilS",
+                    header = TRUE, fill = TRUE, dec = '.',
+                    sep = ';', dates.col = 'Dates', times.col,
+                    ta.col = 'Ta', g0.col = 'G0', keep.cols = FALSE, ...)
+{
+  stopifnot(is.character(dates.col) || is.numeric(dates.col))
+  stopifnot(is.character(ta.col) || is.numeric(ta.col))
+  stopifnot(is.character(g0.col) || is.numeric(g0.col))
+
+  bd <- fread(file, header = header, fill = fill, dec = dec, sep = sep, ...)
+
+  if(dates.col == ''){
+    names(bd)[1] <- 'Dates'
+    dates.col <- 'Dates'
+  }
+
+  if(!(dates.col nilinnil names(bd))) stop(paste('The column', dates.col, 'is not in the file'))
+  if(!(g0.col nilinnil names(bd))) stop(paste('The column', g0.col, 'is not in the file'))
+  if(!(ta.col nilinnil names(bd))) stop(paste('The column', ta.col, 'is not in the file'))
+
+  if(!missing(times.col)){
+    stopifnot(is.character(times.col) || is.numeric(times.col))
+    if(!(times.col nilinnil names(bd))) stop(paste('The column', times.col, 'is not in the file'))
+
+    format <- strsplit(format, ' ')
+    dd <- as.IDate(bd[[dates.col]], format = format[[1]][1])
+    tt <- as.ITime(bd[[times.col]], format = format[[1]][2])
+    bd[,(dates.col) := NULL]
+    bd[,(times.col) := NULL]
+    bd[, Dates := as.POSIXct(dd, tt, tz = 'UTC')]
+  }
+
+  else
+  {
+    dd <- as.POSIXct(bd[[dates.col]], format = format, tz = 'UTC')
+    bd[, (dates.col) := NULL]
+    bd[, Dates := dd]
+  }
+
+  G0 <- bd[[g0.col]]
+  bd[, (g0.col) := NULL]
+  bd[, G0 := as.numeric(G0)]
+
+  Ta <- bd[[ta.col]]
+  bd[, (ta.col) := NULL]
+  bd[, Ta := as.numeric(Ta)]
+
+  names0 <- NULL
+  if(all(c('D0', 'B0') nilinnil names(bd))){
+    names0 <- c(names0, 'D0', 'B0')
+  }
+
+  names0 <- c(names0, 'Ta')
+
+  if(keep.cols)
+  {
+    setcolorder(bd, c('Dates', 'G0', names0))
+  }
+  else
+  {
+    cols <- c('Dates', 'G0', names0)
+    bd <- bd[, ..cols]
+  }
+
+  setkey(bd, 'Dates')
+  result <- new(Class = 'Meteo',
+                latm = lat,
+                data = bd,
+                type = 'bdI',
+                source = file)
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{dt2Meteo}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+dt2Meteo <- function(file, lat, source = '', type){
+  if(missing(lat)) stop('lat is missing')
+
+  if(source == '') source <- class(file)[1]
+
+  bd <- data.table(file)
+
+  bd[, Dates := as.POSIXct(Dates, tz = 'UTC')]
+
+  if(missing(type)){
+    sample <- median(diff(bd$Dates))
+    IsDaily <- as.numeric(sample, units = 'days')
+    if(is.na(IsDaily)) IsDaily <- ifelse('G0d' nilinnil names(bd),
+                                         1, 0)
+    if(IsDaily >= 30) type <- 'prom'
+    else{
+      type <- ifelse(IsDaily >= 1, 'bd', 'bdI') 
+    }
+
+  }
+  nms0 <- switch(type,
+                 bd = ,
+                 prom = {
+                   nms0 <- 'G0d'
+                   if(all(c('D0d', 'B0d') nilinnil names(bd))){
+                     nms0 <- c(nms0, 'D0d', 'B0d')
+                   }
+                   if('Ta' nilinnil names(bd)) nms0 <- c(nms0, 'Ta')
+                   if(all(c('TempMin', 'TempMax') nilinnil names(bd))){
+                     nms0 <- c(nms0, 'TempMin', 'TempMax')
+                   }
+                   nms0
+                 },
+                 bdI = {
+                   nms0 <- 'G0'
+                   if(all(c('D0', 'B0') nilinnil names(bd))){
+                     nms0 <- c(nms0, 'D0', 'B0')
+                   }
+                   if('Ta' nilinnil names(bd)) nms0 <- c(nms0, 'Ta')
+                   nms0
+                 })
+  setcolorder(bd, c('Dates', nms0))
+  setkey(bd, 'Dates')
+  result <- new(Class = 'Meteo',
+                latm = lat,
+                data = bd,
+                type = type,
+                source = source)
+
+  if(!('Ta' nilinnil names(bd))){
+    if(all(c('TempMin', 'TempMax') nilinnil names(bd))){
+      sol <- calcSol(lat = lat, BTi = indexD(result))
+      bd[, Ta := fTemp(sol, result)$Ta]
+    }
+    else bd[, Ta := 25]
+    result@data <- bd
+  }
+  return(result)
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{zoo2Meteo}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+zoo2Meteo <- function(file, lat, source = '')
+{
+  if(source == ''){
+    name <- deparse(substitute(file))
+    cl <- class(file)
+    source <- paste(cl, name, sep = '-')
+  }
+  bd <- data.table(file)
+  sample <- median(diff(index(file)))
+  IsDaily <- as.numeric(sample, units = 'days')>=1
+  type <- ifelse(IsDaily, 'bd', 'bdI')
+  result <- new(Class = 'Meteo',
+                latm = lat,
+                data = bd,
+                type = type,
+                source = source)
+}
+\end{lstlisting}
+\section{readG0dm}
+\label{sec:orga8dd3ea}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+readG0dm <- function(G0dm, Ta = 25, lat = 0,
+                     year = as.POSIXlt(Sys.Date())$year + 1900,
+                     promDays = c(17, 14, 15, 15, 15, 10, 18, 18, 18, 19, 18, 13),
+                     source = '')
+{
+  if(missing(lat)){lat <- 0}
+  Dates <- as.IDate(paste(year[1], 1:12, promDays, sep = '-'), tz = 'UTC')
+  if (length(year)>1){
+    for (i in year[-1]){
+      x <- as.IDate(paste(i, 1:12, promDays, sep = '-'), tz = 'UTC')
+      Dates <- c(Dates, x)
+    }
+  }
+  G0dm.dt <- data.table(Dates = Dates,
+                        G0d = G0dm,
+                        Ta = Ta)
+  setkey(G0dm.dt, 'Dates')
+  results <- new(Class = 'Meteo',
+                 latm = lat,
+                 data = G0dm.dt,
+                 type = 'prom',
+                 source = source)
+}
+\end{lstlisting}
+\section{readSIAR}
+\label{sec:orgf383895}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+readSIAR <- function(Lon = 0, Lat = 0,
+                     inicio = paste(year(Sys.Date())-1, '01-01', sep = '-'),
+                     final = paste(year(Sys.Date())-1, '12-31', sep = '-'),
+                     tipo = 'Mensuales', n_est = 3){
+  inicio <- as.Date(inicio)
+  final <- as.Date(final)
+
+  n_reg <- switch(tipo,
+                  Horarios = {
+                    tt <- difftime(final, inicio, units = 'days')
+                    tt <- (as.numeric(tt)+1)*48
+                    tt <- tt*n_est
+                    tt
+                  },
+                  Diarios = {
+                    tt <- difftime(final, inicio, units = 'days')
+                    tt <- as.numeric(tt)+1
+                    tt <- tt*n_est
+                    tt
+                  },
+                  Semanales = {
+                    tt <- difftime(final, inicio, units = 'weeks')
+                    tt <- as.numeric(tt)
+                    tt <- tt*n_est
+                    tt
+                  },
+                  Mensuales = {
+                    tt <- difftime(final, inicio, units = 'weeks')
+                    tt <- as.numeric(tt)/4.34524
+                    tt <- ceiling(tt)
+                    tt <- tt*n_est
+                    tt
+                  })
+  if(n_reg > 100) stop(paste('Number of requested records (', n_reg,
+                             ') exceeds the maximum allowed (100)', sep = ''))
+  siar <- est_SIAR[
+    Fecha_Instalacion <= final & (is.na(Fecha_Baja) | Fecha_Baja >= inicio)
+  ]
+
+  siar[, dist := haversine(Latitud, Longitud, Lat, Lon)]
+  siar <- siar[order(dist)][1:n_est]
+  siar[, peso := 1/dist]
+  siar[, peso := peso/sum(peso)]
+  siar <- siar[, .(Estacion, Codigo, dist, peso)]
+
+  siar_list <- list()
+  for(codigo in siar$Codigo){
+    siar_list[[codigo]] <- siarGET(id = codigo,
+                                   inicio = as.character(inicio),
+                                   final = as.character(final),
+                                   tipo = tipo)
+    siar_list[[codigo]]$peso <- siar[Codigo == codigo, peso]
+  }
+
+  s_comb <- rbindlist(siar_list, use.names = TRUE, fill = TRUE)
+
+  nms <- names(s_comb)
+  nms <- nms[-c(1, length(nms))]
+
+  res <- s_comb[, lapply(.SD * peso, sum, na.rm = TRUE),
+                .SDcols = nms,
+                by = Dates]
+
+  mainURL <- "https://servicio.mapama.gob.es"
+  Estaciones <- siar[, paste(Estacion, '(', Codigo, ')', sep = '')]
+  Estaciones <- paste(Estaciones, collapse = ', ')
+  source <- paste(mainURL, '\n  -Estaciones:', Estaciones, sep = ' ')
+
+  res <- switch(tipo,
+                Horarios = {dt2Meteo(res, lat = Lat,
+                                     source = mainURL, type = 'bdI')},
+                Diarios = {dt2Meteo(res, lat = Lat,
+                                    source = mainURL, type = 'bd')},
+                Semanales = {res},
+                Mensuales = {dt2Meteo(res, lat = Lat,
+                                      source = source, type = 'prom')})
+  return(res)
+}
+\end{lstlisting}
+\section{Clase Meteo}
+\label{sec:orge3cf5e2}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setClass(
+  Class = 'Meteo', 
+  slots = c(
+    latm = 'numeric',
+    data = 'data.table',
+    type = 'character',  
+    source = 'character'
+  ),
+  validity = function(object) {return(TRUE)}
+)
+\end{lstlisting}
+\section{Clase Sol}
+\label{sec:org86e54e6}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setClass(
+  Class = 'Sol', ##Solar angles
+  slots = c(
+    lat = 'numeric',      #latitud in degrees, >0 if North
+    solD = 'data.table',  #daily angles
+    solI = 'data.table',  #intradaily angles
+    sample = 'character', #sample of time
+    method = 'character'  #method used for geometry calculations
+  ),
+  validity = function(object) {return(TRUE)}
+)
+\end{lstlisting}
+\section{Clase G0}
+\label{sec:org22b8a7d}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setClass(
+  Class = 'G0',
+  slots = c(
+    G0D = 'data.table',  
+    G0dm = 'data.table', 
+    G0y = 'data.table',  
+    G0I = 'data.table',  
+    Ta = 'data.table'    
+  ),
+  contains = c('Sol', 'Meteo'),
+  validity = function(object) {return(TRUE)}
+)
+\end{lstlisting}
+\section{Clase Gef}
+\label{sec:orgb95bbf5}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setClass(
+  Class = 'Gef',
+  slots = c(
+    GefD = 'data.table',  
+    Gefdm = 'data.table', 
+    Gefy = 'data.table',  
+    GefI = 'data.table',  
+    Theta = 'data.table', 
+    iS = 'numeric',       
+    alb = 'numeric',      
+    modeTrk = 'character',   
+    modeShd = 'character',   
+    angGen = 'list',         
+    struct = 'list',         
+    distances = 'data.frame' 
+  ),
+  contains = 'G0',
+  validity = function(object) {return(TRUE)}
+)
+\end{lstlisting}
+\section{Clase ProdGCPV}
+\label{sec:orgd3c1abd}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setClass(
+  Class = 'ProdGCPV',
+  slots = c(
+    prodD = 'data.table',  
+    prodDm = 'data.table', 
+    prody = 'data.table',  
+    prodI = 'data.table',  
+    module = 'list',       
+    generator = 'list',    
+    inverter = 'list',     
+    effSys = 'list'        
+  ),
+  contains = 'Gef',
+  validity = function(object) {return(TRUE)}
+)
+\end{lstlisting}
+\section{Clase ProdPVPS}
+\label{sec:org517c287}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setClass(
+  Class = 'ProdPVPS',
+  slots = c(
+    prodD = 'data.table',  
+    prodDm = 'data.table', 
+    prody = 'data.table',  
+    prodI = 'data.table',  
+    Pg = 'numeric',        
+    H = 'numeric',         
+    pump = 'list',         
+    converter = 'list',    
+    effSys = 'list'        
+  ),
+  contains = 'Gef',
+  validity = function(object) {return(TRUE)}
+)
+\end{lstlisting}
+\section{Clase Shade}
+\label{sec:org1454e6e}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setClass(
+  Class = 'Shade',
+  slots = c(
+    FS = 'numeric',  
+    GRR = 'numeric', 
+    Yf = 'numeric',  
+    FS.loess = 'loess', 
+    Yf.loess = 'loess', 
+    modeShd = 'character', 
+    struct = 'list',       
+    distances = 'data.frame', 
+    res = 'numeric'           
+  ),
+  contains = 'ProdGCPV',
+  validity = function(object) {return(TRUE)}
+)
+\end{lstlisting}
+\section{corrFdKt}
+\label{sec:orged43895}
+\begin{itemize}
+\item \texttt{Ktm}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+Ktm <- function(sol, G0dm){
+  solf <- sol@solD[, .(Dates, Bo0d)]
+  solf[, c('month', 'year') := .(month(Dates), year(Dates))]
+  solf[,Bo0m := mean(Bo0d), by = .(month, year)]
+  G0df <- G0dm@data[, .(Dates, G0d)]
+  G0df[, c('month', 'year') := .(month(Dates), year(Dates))]
+  G0df[, G0d := mean(G0d), by = .(month, year)]
+  Ktm <- G0df$G0d/solf$Bo0m
+  return(Ktm)
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{FdKtPage}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+FdKtPage <- function(sol, G0dm){
+  Kt <- Ktm(sol, G0dm)
+  Fd = 1-1.13*Kt
+  return(data.table(Fd, Kt))
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{FdKtLJ}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+FdKtLJ <- function(sol, G0dm){
+  Kt <- Ktm(sol, G0dm)
+  Fd = (Kt<0.3)*0.595774 +
+    (Kt>=0.3 & Kt<=0.7)*(1.39-4.027*Kt+5.531*Kt^2-3.108*Kt^3)+
+    (Kt>0.7)*0.215246
+  return(data.table(Fd, Kt))
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{Ktd}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+Ktd <- function(sol, G0d){
+  Bo0d <- sol@solD$Bo0d
+  G0d <- getG0(G0d)
+  Ktd <- G0d/Bo0d
+  return(Ktd)
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{FdKtCPR}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+FdKtCPR <- function(sol, G0d){
+  Kt <- Ktd(sol, G0d)
+  Fd = (0.99*(Kt<=0.17))+(Kt>0.17 & Kt<0.8)*
+    (1.188-2.272*Kt+9.473*Kt^2-21.856*Kt^3+14.648*Kt^4)+
+    (Kt>=0.8)*0.2426688      
+  return(data.table(Fd, Kt))
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{FdKtEKDd}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+FdKtEKDd <- function(sol, G0d){
+  ws <- sol@solD$ws
+  Kt <- Ktd(sol, G0d)
+
+  WS1 = (abs(ws)<1.4208)
+  Fd = WS1*((Kt<0.715)*(1-0.2727*Kt+2.4495*Kt^2-11.9514*Kt^3+9.3879*Kt^4)+
+            (Kt>=0.715)*(0.143))+
+    !WS1*((Kt<0.722)*(1+0.2832*Kt-2.5557*Kt^2+0.8448*Kt^3)+
+          (Kt>=0.722)*(0.175))
+  return(data.table(Fd, Kt))
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{FdKtCLIMEDd}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+FdKtCLIMEDd <- function(sol, G0d){
+  Kt <- Ktd(sol, G0d)
+  Fd = (Kt<=0.13)*(0.952)+
+    (Kt>0.13 & Kt<=0.8)*(0.868+1.335*Kt-5.782*Kt^2+3.721*Kt^3)+
+    (Kt>0.8)*0.141
+  return(data.table(Fd, Kt))
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{Kti}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+Kti <- function(sol, G0i){
+  Bo0 <- sol@solI$Bo0
+  G0i <- getG0(G0i)
+  Kti <- G0i/Bo0
+  return(Kti)
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{FdKtEKDh}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+FdKtEKDh <- function(sol, G0i){
+  Kt <- Kti(sol, G0i)
+  Fd = (Kt<=0.22)*(1-0.09*Kt)+
+    (Kt>0.22 & Kt<=0.8)*(0.9511-0.1604*Kt+4.388*Kt^2-16.638*Kt^3+12.336*Kt^4)+
+    (Kt>0.8)*0.165
+  return(data.table(Fd, Kt))
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{FdKtCLIMEDh}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+FdKtCLIMEDh <- function(sol, G0i){
+  Kt <- Kti(sol, G0i)
+  Fd = (Kt<=0.21)*(0.995-0.081*Kt)+
+    (Kt>0.21 & Kt<=0.76)*(0.724+2.738*Kt-8.32*Kt^2+4.967*Kt^3)+
+    (Kt>0.76)*0.180
+  return(data.table(Fd, Kt))
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{FdKtBRL}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+FdKtBRL <- function(sol, G0i){
+  Kt <- Kti(sol, G0i)
+  sample <- sol@sample
+  ind <- indexI(sol)
+
+  solI <- as.data.tableI(sol, complete = TRUE)
+  w <- solI$w
+  night <- solI$night
+  AlS <- solI$AlS
+  Bo0 <- solI$Bo0
+
+  G0d <- data.table(ind,
+                    G0 = getG0(G0i),
+                    Bo0 = Bo0)
+  G0d[, G0d := P2E(G0, sample), by = truncDay(ind)]
+  G0d[, Bo0d := P2E(Bo0, sample), by = truncDay(ind)]
+  ktd <- G0d[, ifelse(night, 0, G0d/Bo0d)]
+
+  pers <- persistence(sol, Kt)
+
+  Fd = (1+exp(-5.38+6.63*Kt+0.006*r2h(w)-
+              0.007*r2d(AlS)+1.75*ktd+1.31*pers))^(-1)
+
+  return(data.table(Fd, Kt))
+}
+\end{lstlisting}
+\section{fBTd}
+\label{sec:orga8ab766}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fBTd<-function(mode = 'prom',
+               year =  as.POSIXlt(Sys.Date())$year+1900,
+               start = paste('01-01-', year, sep = ''),
+               end = paste('31-12-', year, sep = ''), 
+               format = 'nild-nilm-nilY'){
+  promDays<-c(17,14,15,15,15,10,18,18,18,19,18,13)
+  BTd = switch(mode,
+               serie = {
+                 start.<-as.POSIXct(start, format = format, tz = 'UTC')
+                 end.<-as.POSIXct(end, format = format, tz = 'UTC')
+                 res<-seq(start., end., by = "1 day")
+               },
+               prom = as.POSIXct(paste(year, 1:12, promDays, sep = '-'), tz = 'UTC')
+               )
+  BTd
+}
+\end{lstlisting}
+\section{fBTi}
+\label{sec:orgc2f2d5c}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fBTi <- function(BTd, sample = 'hour'){
+  BTi <- lapply(BTd, intervalo, sample)
+  BTi <- do.call(c, BTi)
+  return(BTi)
+}
+\end{lstlisting}
+\section{fCompD}
+\label{sec:org8f55aee}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fCompD <- function(sol, G0d, corr = 'CPR', f)
+{
+  if(!(corr nilinnil c('CPR', 'Page', 'LJ', 'EKDd', 'CLIMEDd', 'user', 'none')))
+  {
+    warning('Wrong descriptor of correlation Fd-Ktd. Set CPR.')
+    corr <- 'CPR'
+  }
+  if(class(sol)[1] != 'Sol'){
+    sol <- sol[, calcSol(lat = unique(lat), BTi = Dates)]
+  }
+  if(class(G0d)[1] != 'Meteo'){
+    dt <- copy(data.table(G0d))
+    if(!('Dates' nilinnil names(dt))){
+      dt[, Dates := indexD(sol)]
+      setcolorder(dt, 'Dates')
+      setkey(dt, 'Dates')
+    }
+    if('lat' nilinnil names(dt)){
+      latg <- unique(dt$lat)
+      dt[, lat := NULL]
+    }else{latg <- getLat(sol)}
+    G0d <- dt2Meteo(dt, latg)
+  }  
+
+  stopifnot(indexD(sol) == indexD(G0d))
+  Bo0d <- sol@solD$Bo0d
+  G0 <- getData(G0d)$G0
+
+  is.na(G0) <- (G0>Bo0d)
+
+  if(corr != 'none'){
+    Fd <- switch(corr,
+                 CPR = FdKtCPR(sol, G0d),
+                 Page = FdKtPage(sol, G0d),
+                 LJ = FdKtLJ(sol, G0d),
+                 EKDd = FdKtEKDd(sol, G0d),
+                 CLIMEDd = FdKtCLIMEDd(sol, G0d),
+                 user = f(sol, G0d))
+    Kt <- Fd$Kt
+    Fd <- Fd$Fd
+    D0d <- Fd * G0
+    B0d <- G0 - D0d
+  }
+
+  else {
+    G0 <- getData(G0d)$G0d
+    D0d <- getData(G0d)[['D0d']]
+    B0d <- getData(G0d)[['B0d']]
+    Fd <- D0d/G0
+    Kt <- G0/Bo0d
+  }
+
+  result <- data.table(Dates = indexD(sol), Fd, Kt, G0d = G0, D0d, B0d)
+  setkey(result, 'Dates')
+  result
+}
+\end{lstlisting}
+\section{fCompI}
+\label{sec:orga0cdea7}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fCompI <- function(sol, compD, G0I,
+                   corr = 'none', f,
+                   filterG0 = TRUE){
+  if(!(corr nilinnil c('EKDh', 'CLIMEDh', 'BRL', 'user', 'none'))){
+    warning('Wrong descriptor of correlation Fd-Ktd. Set EKDh.')
+    corr <- 'EKDh'
+  }
+
+  if(class(sol)[1] != 'Sol'){
+    sol <- sol[, calcSol(lat = unique(lat), BTi = Dates)]
+  }
+
+  lat <- sol@lat
+  sample <- sol@sample
+  night <- sol@solI$night
+  Bo0 <- sol@solI$Bo0
+  Dates <- indexI(sol)
+
+  if (missing(G0I)) { 
+
+    G0I <- collper(sol, compD)
+    G0 <- G0I$G0
+    B0 <- G0I$B0
+    D0 <- G0I$D0
+
+    Fd <- D0/G0
+    Kt <- G0/Bo0
+
+  } else { 
+
+    if(class(G0I)[1] != 'Meteo'){
+      dt <- copy(data.table(G0I))
+      if(!('Dates' nilinnil names(dt))){
+        if(length(dt) == 1) names(dt) <- 'G0'
+        dt[, Dates := indexI(sol)]
+        setcolorder(dt, 'Dates')
+        setkey(dt, 'Dates')
+      }
+      if('lat' nilinnil names(G0I)){latg <- unique(G0I$lat)}
+      else{latg <- lat}
+      G0I <- dt2Meteo(dt, latg)
+    }
+
+    if (corr != 'none'){
+      if (filterG0) {
+        G0 <- getG0(G0I)
+        is.na(G0) <- (G0 > Bo0)
+        G0I <- dt2Meteo(data.table(Dates = indexD(G0I),
+                                   G0 = G0),
+                        lat = G0I@latm,
+                        source = G0I@source,
+                        type = G0I@type)
+      }
+
+      Fd <- switch(corr,
+                   EKDh = FdKtEKDh(sol, G0I),
+                   CLIMEDh = FdKtCLIMEDh(sol, G0I),
+                   BRL = FdKtBRL(sol, G0I), 
+                   user = f(sol, G0I))
+
+      Kt <- Fd$Kt
+      Fd <- Fd$Fd
+      D0 <- Fd * G0
+      B0 <- G0 - D0
+
+    } else { 
+      G0 <- getG0(G0I)
+      D0 <- getData(G0I)[['D0']]
+      B0 <- getData(G0I)[['B0']]
+      if (isTRUE(filterG0)) is.na(G0) <- is.na(D0) <- is.na(B0) <- (G0 > Bo0)
+
+      Fd <- D0/G0
+      Kt <- G0/Bo0
+    }
+  }
+  G0[night] <- D0[night] <- B0[night] <- Kt[night] <- Fd[night] <- 0
+
+  result <- data.table(Dates, Fd, Kt, G0, D0, B0)
+  setkey(result, 'Dates')
+  result
+}
+\end{lstlisting}
+\section{fInclin}
+\label{sec:orge5a0f1b}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fInclin <- function(compI, angGen, iS = 2, alb = 0.2,
+                    horizBright = TRUE, HCPV = FALSE){
+  stopifnot(iS nilinnil 1:4)
+  Beta <- angGen$Beta
+  Alpha <- angGen$Alpha
+  cosTheta <- angGen$cosTheta
+
+  comp <- as.data.tableI(compI, complete = TRUE)
+  night <- comp$night
+  B0 <- comp$B0
+  Bo0 <- comp$Bo0
+  D0 <- comp$D0
+  G0 <- comp$G0
+  cosThzS <- comp$cosThzS
+  is.na(cosThzS) <- night
+
+  Suc <- rbind(c(1, 0.17, -0.069),
+               c(0.98,.2,-0.054),
+               c(0.97,0.21,-0.049),
+               c(0.92,0.27,-0.023))
+  FTb <- (exp(-cosTheta/Suc[iS,2]) -
+          exp(-1/Suc[iS,2]))/(1 - exp(-1/Suc[iS,2]))
+  FTd <- exp(-1/Suc[iS,2] *
+             (4/(3*pi) * (sin(Beta) +
+                          (pi - Beta - sin(Beta))/
+                          (1 + cos(Beta))) +
+              Suc[iS,3] * (sin(Beta) +
+                           (pi - Beta - sin(Beta))/
+                           (1 + cos(Beta)))^2))
+  FTr <- exp(-1/Suc[iS,2] * (4/(3*pi) * (sin(Beta) +
+                                         (Beta - sin(Beta))/
+                                         (1 - cos(Beta))) +
+                             Suc[iS,3] * (sin(Beta) +
+                                          (Beta - sin(Beta))/
+                                          (1 - cos(Beta)))^2))
+
+  B <- B0 * cosTheta/cosThzS * (cosThzS>0.007) 
+  k1 <- B0/(Bo0)
+  Di <- D0 * (1-k1) * (1+cos(Beta))/2
+  if (horizBright) Di <- Di * (1+sqrt(B0/G0) * sin(Beta/2)^3)
+  Dc <- D0 * k1 * cosTheta/cosThzS * (cosThzS>0.007)
+  R <- alb * G0 * (1-cos(Beta))/2
+  D <- (Di + Dc)
+  Bo <- Bo0 * cosTheta/cosThzS * (cosThzS>0.007) 
+  Bn <- B0/cosThzS
+  G <- B + D + R
+  Ref <- R * Suc[iS,1] * (1-FTr) * (!HCPV)
+  Ref[is.nan(FTr)] <- 0 
+  Dief <- Di * Suc[iS,1] * (1 - FTd) * (!HCPV)
+  Dcef <- Dc * Suc[iS,1] * (1 - FTb) * (!HCPV)
+  Def <- Dief + Dcef
+  Bef <- B * Suc[iS,1] * (1 - FTb)
+  Gef <- Bef + Def + Ref
+
+  result <- data.table(Bo, Bn,
+                       G, D, Di, Dc, B, R,
+                       FTb, FTd, FTr,
+                       Dief, Dcef, Gef, Def, Bef, Ref) 
+
+  result[night] <- 0
+  result[, Dates := indexI(compI)]
+  result[, .SD, by = Dates]
+  setcolorder(result, c('Dates', names(result)[-length(result)]))
+  result
+}
+\end{lstlisting}
+\section{fProd}
+\label{sec:org1df745e}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fProd <- function(inclin, 
+                  module = list(), 
+                  generator = list(), 
+                  inverter = list(),
+                  effSys = list()
+                  )
+{
+
+  stopifnot(is.list(module),
+            is.list(generator),
+            is.list(inverter),
+            is.list(effSys)
+            )
+  if (class(inclin)[1]=='Gef') {
+    indInclin <- indexI(inclin)
+    gefI <- as.data.tableI(inclin, complete = TRUE)
+    Gef <- gefI$Gef
+    Ta <- gefI$Ta
+  } else {
+    Gef <- inclin$Gef
+    Ta <- inclin$Ta
+  }
+
+  module.default <- list(Vocn = 51.91,
+                         Iscn = 14.07,
+                         Vmn = 43.76,
+                         Imn = 13.03,
+                         Ncs = 24,
+                         Ncp = 6,
+                         CoefVT = 0.0049,
+                         TONC = 45)
+  module <- modifyList(module.default, module)
+  ## Make these parameters visible because they will be used often.
+  Ncs <- module$Ncs
+  Ncp <- module$Ncp
+
+  generator.default <- list(Nms = 22,
+                            Nmp = 130)
+  generator <- modifyList(generator.default, generator)
+  generator$Pg <- (module$Vmn * generator$Nms) *
+    (module$Imn * generator$Nmp)
+  Nms <- generator$Nms
+  Nmp <- generator$Nmp
+
+  inverter.default <- list(Ki = c(0.002, 0.005, 0.008),
+                           Pinv = 1.5e6,
+                           Vmin = 822,
+                           Vmax = 1300,
+                           Gumb = 20)
+  inverter <- modifyList(inverter.default, inverter)
+  Pinv <- inverter$Pinv
+
+  effSys.default <- list(ModQual = 3,
+                         ModDisp = 2,
+                         OhmDC = 1.5,
+                         OhmAC = 1.5,
+                         MPP = 1,
+                         TrafoMT = 1,
+                         Disp = 0.5)
+  effSys <- modifyList(effSys.default, effSys)
+
+  vocn <- with(module, Vocn / Ncs)
+  iscn <- with(module, Iscn/ Ncp)
+  vmn <- with(module, Vmn / Ncs)
+  imn <- with(module, Imn / Ncp)
+  vmin <- with(inverter, Vmin / (Ncs * Nms))
+  vmax <- with(inverter, Vmax / (Ncs * Nms))
+
+  cell <- iv(vocn, iscn,
+             vmn, imn,
+             module$TONC, module$CoefVT,
+             Ta, Gef,
+             vmin, vmax)
+
+  Idc <- Nmp * Ncp * cell$idc
+  Isc <- Nmp * Ncp * cell$isc
+  Impp <- Nmp * Ncp * cell$impp
+  Vdc <- Nms * Ncs * cell$vdc
+  Voc <- Nms * Ncs * cell$voc
+  Vmpp <- Nms * Ncs * cell$vmpp
+
+  PdcN <- with(effSys, (Idc * Vdc) / Pinv *
+                       (1 - ModQual / 100) *
+                       (1 - ModDisp / 100) *
+                       (1 - MPP / 100) *
+                       (1 - OhmDC / 100)
+               ) 
+
+  Ki <- inverter$Ki
+  if (is.matrix(Ki)) { 
+    VP <- cbind(Vdc, PdcN)
+    PacN <- apply(VP, 1, solvePac, Ki)
+  } else { 
+    A <- Ki[3]
+    B <- Ki[2] + 1
+    C <- Ki[1] - (PdcN)
+    PacN <- (-B + sqrt(B^2 - 4 * A * C))/(2 * A)
+  }
+  EffI <- PacN / PdcN
+  pacNeg <- PacN <= 0
+  PacN[pacNeg] <- PdcN[pacNeg] <- EffI[pacNeg] <- 0
+
+
+  Pac <- with(effSys, PacN * Pinv *
+                      (Gef > inverter$Gumb) *
+                      (1 - OhmAC / 100) *
+                      (1 - TrafoMT / 100) *
+                      (1 - Disp / 100))
+  Pdc <- PdcN * Pinv * (Pac > 0)
+
+  resProd <- data.table(Tc = cell$Tc,
+                        Voc, Isc,
+                        Vmpp, Impp,
+                        Vdc, Idc,
+                        Pac, Pdc,
+                        EffI)
+  if (class(inclin)[1] nilinnil 'Gef'){
+    result <- resProd[, .SD,
+                      by = .(Dates = indInclin)]
+    attr(result, 'generator') <- generator
+    attr(result, 'module') <- module
+    attr(result, 'inverter') <- inverter
+    attr(result, 'effSys') <- effSys
+    return(result)
+  } else {
+    result <- cbind(inclin, resProd)
+    return(result)
+  }
+}
+\end{lstlisting}
+\section{fPump}
+\label{sec:orgf920dbc}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fPump <- function(pump, H){
+
+  w1 <- 3000 
+  wm <- 2870 
+  s <- (w1-wm)/w1
+  fen <- 50 
+  fmin <- sqrt(H/pump$a)
+  fmax <- with(pump, (-b*Qmax+sqrt(b^2*Qmax^2-4*a*(c*Qmax^2-H)))/(2*a))
+  fb <- seq(fmin,min(60,fmax),length = 1000)
+  fe <- fb/(1-s)
+
+  Q <- with(pump, (-b*fb-sqrt(b^2*fb^2-4*c*(a*fb^2-H)))/(2*c))
+  Qmin <- 0.1*pump$Qn*fb/50
+  Q <- Q+(Qmin-Q)*(Q<Qmin)
+
+  Ph <- 2.725*Q*H
+
+  Q50 <- 50*Q/fb
+  H50 <- H*(50/fb)^2
+  etab <- with(pump, j*Q50^2+k*Q50+l)
+  Pb50 <- 2.725*H50*Q50/etab
+  Pb <- Pb50*(fb/50)^3
+
+  Pbc <- Pb*50/fe
+  etam <- with(pump, g*(Pbc/Pmn)^2+h*(Pbc/Pmn)+i)
+  Pmc <- Pbc/etam
+  Pm <- Pmc*fe/50
+  Pac <- Pm
+
+  fQ <- splinefun(Pac,Q)
+  fFreq <- splinefun(Pac,fe)
+  fPb <- splinefun(Pac,Pb)
+  fPh <- splinefun(Pac,Ph)
+  lim <- c(min(Pac),max(Pac))
+  result <- list(lim = lim,
+                 fQ = fQ,
+                 fPb = fPb,
+                 fPh = fPh,
+                 fFreq = fFreq)
+}
+\end{lstlisting}
+\section{fSolD}
+\label{sec:org3849182}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fSolD <- function(lat, BTd, method = 'michalsky'){
+  if (abs(lat) > 90){
+    lat <- sign(lat) * 90
+    warning(paste('Latitude outside acceptable values. Set to', lat))
+  }
+  sun <- data.table(Dates = unique(as.IDate(BTd)),
+                    lat = lat)
+
+  sun[, decl := declination(Dates, method = method)]
+  sun[, eo := eccentricity(Dates, method = method)]
+  sun[, EoT := eot(Dates)]
+  sun[, ws := sunrise(Dates, lat, method = method,
+                      decl = decl)]
+  sun[, Bo0d := bo0d(Dates, lat, method = method,
+                     decl = decl,
+                     eo = eo,
+                     ws = ws
+                     )]
+  setkey(sun, Dates)
+  return(sun)
+}
+\end{lstlisting}
+\section{fSolI}
+\label{sec:org0847101}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fSolI <- function(solD, sample = 'hour', BTi,
+                  EoT = TRUE, keep.night = TRUE, method = 'michalsky')
+{
+                                        #Solar constant
+  Bo <- 1367
+
+  if(missing(BTi)){
+    BTd <- solD$Dates
+    BTi <- fBTi(BTd, sample)
+  }
+  sun <- data.table(Dates = as.IDate(BTi),
+                    Times = as.ITime(BTi))
+  sun <- merge(solD, sun, by = 'Dates')
+  sun[, eqtime := EoT]
+  sun[, EoT := NULL]
+
+  sun[, w := sunHour(Dates, BTi, EoT = EoT, method = method, eqtime = eqtime)]
+
+  sun[, night := abs(w) >= abs(ws)]
+
+  sun[, cosThzS := zenith(Dates, lat, BTi,
+                          method = method,
+                          decl = decl,
+                          w = w
+                          )]
+
+  sun[, AlS := asin(cosThzS)]
+
+  sun[, AzS := azimuth(Dates, lat, BTi, sample,
+                       method = method,
+                       decl = decl, 
+                       w = w,
+                       cosThzS = cosThzS)]
+
+  sun[, Bo0 := Bo * eo * cosThzS]
+  sun[night == TRUE, Bo0 := 0]
+  sun[, decl := NULL]
+  sun[, eo := NULL]
+  sun[, eqtime := NULL]
+  sun[, ws := NULL]
+  sun[, Bo0d := NULL]
+  sun[, Dates := as.POSIXct(Dates, Times, tz = 'UTC')]
+  sun[, Times := NULL]
+
+  if(!keep.night){
+    sun <- sun[night == FALSE]
+  }
+
+  return(sun)
+}
+\end{lstlisting}
+\section{fSombra}
+\label{sec:org7adc481}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fSombra<-function(angGen, distances, struct, modeTrk='fixed',prom=TRUE){
+
+  stopifnot(modeTrk nilinnil c('two','horiz','fixed'))
+  res <- switch(modeTrk, 
+                two = {fSombra6(angGen, distances, struct, prom)},
+                horiz = {fSombraHoriz(angGen, distances, struct)},
+                fixed = {fSombraEst(angGen, distances, struct)}
+                )
+  return(res)
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{fSombra6}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fSombra6<-function(angGen, distances, struct, prom=TRUE)
+{
+  stopifnot(is.list(struct),
+            is.data.frame(distances))
+  if (dim(distances)[1] == 1){ 
+    Red <- distances[, .(Lew = c(-Lew, 0, Lew, -Lew, Lew),
+                         Lns = c(Lns, Lns, Lns, 0, 0),
+                         H=H)]
+  } else { 
+    Red<-distances[1:5,]} 
+
+  SombraGrupo <- matrix(ncol=5,nrow=dim(angGen)[1]) ###VECTORIZE
+  for (i in 1:5) {SombraGrupo[,i]<-fSombra2X(angGen,Red[i,],struct)}
+  distrib <- with(struct,c(1,Ncol-2,1,Nrow-1,(Ncol-2)*(Nrow-1),Nrow-1)) 
+  vProm <- c(sum(distrib[c(5,6)]),
+             sum(distrib[c(4,5,6)]),
+             sum(distrib[c(4,5)]),
+             sum(distrib[c(2,3,5,6)]),
+             sum(distrib[c(1,2,4,5)]))
+  Nseg <- sum(distrib) ##Total number of followers
+
+  if (prom == TRUE){
+    FS <- rowSums(sweep(SombraGrupo,2,vProm,'*'))/Nseg
+    FS[FS>1] <- 1
+  } else {		
+    FS <- rowSums(SombraGrupo)
+    FS[FS>1] <-1
+  }
+  return(FS)
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{fSombra2x}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fSombra2X<-function(angGen,distances,struct)
+{
+  stopifnot(is.list(struct),is.data.frame(distances))
+  P <- with(struct,distances/W)
+  b <- with(struct,L/W)
+  AzS <- angGen$AzS
+  Beta <- angGen$Beta
+  AlS <- angGen$AlS
+
+  d1 <- abs(P$Lew*cos(AzS)-P$Lns*sin(AzS))
+  d2 <- abs(P$Lew*sin(AzS)+P$Lns*cos(AzS))
+  FC <- sin(AlS)/sin(Beta+AlS)
+  s <- b*cos(Beta)+(b*sin(Beta)+P$H)/tan(AlS)
+  FS1 <- 1-d1
+  FS2 <- s-d2
+  SombraCond <- (FS1>0)*(FS2>0)*(P$Lew*AzS>=0)
+  SombraCond[is.na(SombraCond)] <- FALSE 
+  FS <- SombraCond*(FS1*FS2*FC)/b
+  FS[FS>1] <- 1
+  return(FS)
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{fSombraHoriz}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fSombraHoriz<-function(angGen, distances, struct)
+{
+  stopifnot(is.list(struct), is.data.frame(distances))
+  d <- with(struct, distances/L)
+  AzS <- angGen$AzS
+  AlS <- angGen$AlS
+  Beta <- angGen$Beta
+  lew <- d$Lew 
+  Beta0 <- atan(abs(sin(AzS)/tan(AlS)))
+  FS <- 1-lew*cos(Beta0)/cos(Beta-Beta0)
+  SombraCond <- (FS>0)
+  FS <- FS*SombraCond
+  FS[FS>1] <- 1
+  return(FS)
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{fSombraEst}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fSombraEst<-function(angGen, distances, struct)
+{
+  stopifnot(is.list(struct),is.data.frame(distances))
+  dist <- with(struct, distances/L)
+  Alpha <- angGen$Alpha
+  Beta <- angGen$Beta
+  AlS <- angGen$AlS
+  AzS <- angGen$AzS
+  cosTheta <- angGen$cosTheta
+  h <- dist$H 
+  if(is.null(h)) h <- 0
+  d <- dist$D                   
+  s <- cos(Beta)+cos(Alpha-AzS)*(sin(Beta)+h)/tan(AlS)
+  FC <- sin(AlS)/sin(Beta+AlS)
+  SombraCond <- (s-d>0)
+  FS <- (s-d)*SombraCond*FC*(cosTheta>0)
+  FS <- FS*(FS>0)
+  FS[FS>1] <- 1
+  return(FS)
+}
+\end{lstlisting}
+\section{fTemp}
+\label{sec:org7325f6a}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fTemp<-function(sol, BD)
+{
+  stopifnot(class(sol) == 'Sol')
+  stopifnot(class(BD) == 'Meteo')
+
+  checkIndexD(indexD(sol), indexD(BD))
+
+  Dates <- indexI(sol)	
+  x <- as.Date(Dates)
+  ind.rep <- cumsum(c(1, diff(x) != 0))
+
+  TempMax <-  BD@data$TempMax[ind.rep]
+  TempMin <-  BD@data$TempMin[ind.rep]
+  ws <- sol@solD$ws[ind.rep]
+  w <- sol@solI$w
+
+  Tm <- (TempMin+TempMax)/2
+  Tr <- (TempMax-TempMin)/2
+
+  wp <- pi/4
+
+  a1 <- pi*12*(ws-w)/(21*pi+12*ws)
+  a2 <- pi*(3*pi-12*w)/(3*pi-12*ws)
+  a3 <- pi*(24*pi+12*(ws-w))/(21*pi+12*ws)
+
+  T1 <- Tm-Tr*cos(a1)
+  T2 <- Tm+Tr*cos(a2)
+  T3 <- Tm-Tr*cos(a3)
+
+  Ta <- T1*(w<=ws)+T2*(w>ws&w<=wp)+T3*(w>wp)
+
+  result <- data.table(Dates, Ta)
+}
+\end{lstlisting}
+\section{fTheta}
+\label{sec:org72a9c7c}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+fTheta<-function(sol, beta, alpha = 0, modeTrk = 'fixed', betaLim = 90, 
+                 BT = FALSE, struct, dist)
+{
+  stopifnot(modeTrk nilinnil c('two','horiz','fixed'))
+  if (!missing(struct)) {stopifnot(is.list(struct))}
+  if (!missing(dist)) {stopifnot(is.data.frame(dist))}
+
+  betaLim <- d2r(betaLim)
+  lat <- getLat(sol, 'rad')
+  signLat <- ifelse(sign(lat) == 0, 1, sign(lat)) 
+
+  solI <- as.data.tableI(sol, complete = TRUE, day = TRUE)
+  AlS <- solI$AlS
+  AzS <- solI$AzS
+  decl <- solI$decl
+  w <- solI$w
+
+  night <- solI$night
+
+  Beta <- switch(modeTrk,
+                 two = {Beta2x = pi/2-AlS	
+                   Beta = Beta2x+(betaLim-Beta2x)*(Beta2x>betaLim)},
+                 fixed = rep(d2r(beta), length(w)), 
+                 horiz = {BetaHoriz0 = atan(abs(sin(AzS)/tan(AlS)))
+                   if (BT){lew = dist$Lew/struct$L
+                     Longitud = lew*cos(BetaHoriz0)
+                     Cond = (Longitud>=1)
+                     Longitud[Cond] = 1
+                     BetaHoriz = BetaHoriz0+asin(Longitud)-pi/2                                     
+                   } else {
+                     BetaHoriz = BetaHoriz0
+                     rm(BetaHoriz0)}
+                   Beta = ifelse(BetaHoriz>betaLim,betaLim,BetaHoriz)}
+                 )
+  is.na(Beta) <- night
+
+  Alpha<-switch(modeTrk,
+                two = AzS,
+                fixed = rep(d2r(alpha), length(w)),
+                horiz=pi/2*sign(AzS))
+  is.na(Alpha) <- night
+
+  cosTheta<-switch(modeTrk,
+                   two = cos(Beta-(pi/2-AlS)),
+                   horiz = {
+                     t1 = sin(decl)*sin(lat)*cos(Beta)      
+                     t2 = cos(decl)*cos(w)*cos(lat)*cos(Beta)   
+                     t3 = cos(decl)*abs(sin(w))*sin(Beta)   
+                     cosTheta = t1+t2+t3
+                     rm(t1,t2,t3)
+                     cosTheta
+                   },
+                   fixed = {
+                     t1 = sin(decl)*sin(lat)*cos(Beta)      
+                     t2 = -signLat*sin(decl)*cos(lat)*sin(Beta)*cos(Alpha) 
+                     t3 = cos(decl)*cos(w)*cos(lat)*cos(Beta)   
+                     t4 = signLat*cos(decl)*cos(w)*sin(lat)*sin(Beta)*cos(Alpha) 
+                     t5 = cos(decl)*sin(w)*sin(Alpha)*sin(Beta)   
+                     cosTheta = t1+t2+t3+t4+t5
+                     rm(t1,t2,t3,t4,t5)
+                     cosTheta
+                   }
+                   )
+  is.na(cosTheta) <- night
+  cosTheta = cosTheta*(cosTheta>0) 
+
+  result <- data.table(Dates = indexI(sol),
+                       Beta, Alpha, cosTheta)
+  return(result)
+}
+\end{lstlisting}
+\section{HQCurve}
+\label{sec:org6cb0621}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+HQCurve<-function(pump){
+  w1 <- 3000 
+  wm <- 2870 
+  s <- (w1-wm)/w1
+  fen <- 50 
+
+  f <- seq(35, 50, by = 5)
+  Hn <- with(pump, a*50^2+b*50*Qn+c*Qn^2)
+
+  kiso <- Hn/pump$Qn^2 
+  Qiso <- with(pump,seq(0.1*Qn,Qmax,l=10))
+  Hiso <- kiso*Qiso^2 
+
+  Curva <- expand.grid(fb=f,Q=Qiso)
+
+  Curva <- within(Curva,{
+    fe = fb/(1-s)
+    H = with(pump,a*fb^2+b*fb*Q+c*Q^2)
+
+    is.na(H) <- (H<0)
+    Q50 <- 50*Q/fb
+    H50 <- H*(50/fb)^2
+    etab <- with(pump,j*Q50^2+k*Q50+l)
+    Pb50 <- 2.725*H50*Q50/etab
+    Pb <- Pb50*(fb/50)^3
+
+    Pbc <- Pb*50/fe
+    etam <- with(pump,g*(Pbc/Pmn)^2+h*(Pbc/Pmn)+i)
+    Pmc <- Pbc/etam
+    Pm <- Pmc*fe/50
+
+    etac <- 0.95 
+    cab <- 0.05  
+    Pdc <- Pm/(etac*(1-cab))
+    rm(etac,cab,Pmc,Pbc,Pb50,Q50,H50)
+  })
+
+  lattice.disp <- ("lattice" nilinnil .packages())
+  latticeExtra.disp <- ("latticeExtra" nilinnil .packages())
+  if (lattice.disp && latticeExtra.disp) {
+    p <- xyplot(H~Q, groups = factor(fb), data = Curva,
+                type = 'l', par.settings = custom.theme.2(),
+                panel = function(x, y, groups, ...){
+                  panel.superpose(x, y, groups, ...)
+                  panel.xyplot(Qiso, Hiso, col='black', ...)
+                  panel.text(Qiso[1], Hiso[1], 'ISO', pos = 3)}
+                )
+    p=p+glayer(panel.text(x[1], y[1], group.value, pos=3))
+    print(p)
+    result <- list(result = Curva, plot = p)
+  } else {
+    warning('lattice and/or latticeExtra packages are not available. Thus, the plot could not be created')
+    result <- Curva}
+}
+\end{lstlisting}
+\section{local2Solar}
+\label{sec:orgd6aa5c5}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+local2Solar <- function(x, lon=NULL){	
+  tz=attr(x, 'tzone')
+  if (tz == '' || is.null(tz)) {tz='UTC'}
+  ##Daylight savings time
+  AO <- 3600*dst(x)
+  AOneg <- (AO<0)
+  if (any(AOneg)) {
+    AO[AOneg] <- 0
+    warning('Some Daylight Savings Time unknown. Set to zero.')
+  }
+  ##Difference between local longitude and time zone longitude LH
+  LH <- lonHH(tz)
+  if (is.null(lon)) 
+  {deltaL <- 0
+  } else
+  {deltaL <- d2r(lon)-LH
+  }
+  ##Local time corrected to UTC
+  tt <- format(x, tz=tz)
+  result <- as.POSIXct(tt, tz='UTC')-AO+r2sec(deltaL)
+  result
+}
+\end{lstlisting}
+\section{NmgPVPS}
+\label{sec:org70bb1b9}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+NmgPVPS <- function(pump, Pg, H, Gd, Ta = 30,
+                    lambda = 0.0045, TONC = 47,
+                    eta = 0.95, Gmax = 1200, t0 = 6, Nm = 6,
+                    title = '', theme = custom.theme.2()){
+
+  t <- seq(-t0, t0, l = 2*t0*Nm);
+  d <- Gd/(Gmax*2*t0)
+  s <- (d*pi/2-1)/(1-pi/4)
+  G <- Gmax*cos(t/t0*pi/2)*(1+s*(1-cos(t/t0*pi/2)))
+  G[G<0] <- 0
+  G <- G/(sum(G,na.rm = 1)/Nm)*Gd
+  Red <- expand.grid(G = G,Pnom = Pg,H = H,Ta = Ta)
+  Red <- within(Red,{Tcm<-Ta+G*(TONC-20)/800
+    Pdc = Pnom*G/1000*(1-lambda*(Tcm-25))
+    Pac = Pdc*eta})                    
+
+  res <- data.table(Red,Q = 0)
+
+  for (i in seq_along(H)){
+    fun <- fPump(pump, H[i])
+    Cond <- res$H == H[i]
+    x <- res$Pac[Cond]
+    z <- res$Pdc[Cond]
+    rango <- with(fun, (x >= lim[1] & x <= lim[2])) 
+    x[!rango] <- 0
+    z[!rango] <- 0
+    y <- res$Q[Cond]
+    y[rango] <- fun$fQ(x[rango])
+    res$Q[Cond] <- y
+    res$Pac[Cond] <- x
+    res$Pdc[Cond] <- z
+  }
+
+  resumen <- res[, lapply(.SD, function(x)sum(x, na.rm = 1)/Nm),
+                 by = .(Pnom, H)]
+  param <- list(pump = pump, Pg = Pg, H = H, Gd = Gd, Ta = Ta,
+                lambda = lambda, TONC = TONC, eta = eta,
+                Gmax = Gmax, t0 = t0, Nm = Nm)
+
+
+  lattice.disp <- ("lattice" nilinnil .packages())
+  latticeExtra.disp <- ("latticeExtra" nilinnil .packages())
+  if (lattice.disp && latticeExtra.disp){
+    tema <- theme
+    tema1 <- modifyList(tema,
+                        list(layout.width = list(panel = 1,
+                                                 ylab = 2,
+                                                 axis.left = 1.0,
+                                                 left.padding = 1,
+                                                 ylab.axis.padding = 1,
+                                                 axis.panel = 1)))
+    tema2 <- modifyList(tema, list(layout.width = list(panel = 1,
+                                                       ylab = 2,
+                                                       axis.left = 1.0,
+                                                       left.padding = 1,
+                                                       ylab.axis.padding = 1,
+                                                       axis.panel = 1)))
+    temaT <- modifyList(tema, list(layout.heights = list(panel = c(1, 1))))
+    p1 <- xyplot(Q~Pdc, groups = H, data = resumen,
+                 ylab = "Qd (m\u00b3/d)",type = c('l','g'),
+                 par.settings = tema1)
+
+    p1lab <- p1+glayer(panel.text(x[1], y[1], group.value, pos = 2, cex = 0.7))
+
+    p2 <- xyplot(Pnom~Pdc, groups = H, data = resumen,
+                 ylab = "Pg",type = c('l','g'), 
+                 par.settings = tema2)
+    p2lab <- p2+glayer(panel.text(x[1], y[1], group.value, pos = 2, cex = 0.7))
+
+    p <- update(c(p1lab, p2lab, x.same = TRUE),
+                main = paste(title, '\nSP', pump$Qn, 'A', pump$stages, ' ',
+                             'Gd ', Gd/1000," kWh/m\u00b2",sep = ''),
+                layout = c(1, 2),
+                scales = list(x = list(draw = FALSE)),
+                xlab = '',              
+                ylab = list(c("Qd (m\u00b3/d)","Pg (Wp)"), y = c(1/4, 3/4)),
+                par.settings = temaT
+                )
+    print(p)
+    result <- list(I = res,D = resumen, plot = p, param = param)
+  } else {
+    warning('lattice, latticeExtra packages are not all available. Thus, the plot could not be created')
+    result <- list(I = res, D = resumen, param = param)
+  }
+}
+\end{lstlisting}
+\section{sample2Diff}
+\label{sec:orgc99f0a5}
+\begin{itemize}
+\item \texttt{diff2Hours}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+diff2Hours  <- function(by){
+  if (!inherits(by, 'difftime')) {
+    stop('This function is only useful for difftime objects.')
+  } else {
+    return(as.numeric(by, units='hours'))
+  }
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{char2diff}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+char2diff <- function(by){
+  if (!is.character(by)) {
+    stop('This function is only useful for character strings.')
+  } else {
+    ##Adapted from seq.POSIXt
+    by2 <- strsplit(by, " ", fixed = TRUE)[[1L]]
+    if (length(by2) > 2L || length(by2) < 1L) 
+      stop("invalid 'by' string")
+    units <- c("secs", "mins", "hours")
+    valid <- pmatch(by2[length(by2)], units)
+    if (is.na(valid)) {
+      stop("invalid string for 'by'")
+    } else {
+      unitValid <- units[valid]
+      if (length(by2)==1) {
+        by2=1
+      } else {
+        by2=as.numeric(by2[1])
+      }
+      result <- as.difftime(by2,units=unitValid)
+      return(result)
+    }
+  }
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{sample2Hours}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+sample2Hours <- function(by){
+  if (is.character(by)) {
+    y <- char2diff(by)
+    return(diff2Hours(y))
+  } else if (inherits(by, 'difftime')) {
+    return(diff2Hours(by))
+  } else {stop('by must be a character or difftime.')}
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{P2E}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+P2E <- function(x, by){
+  Nm <- 1/sample2Hours(by)
+  sum(x, na.rm = 1)/Nm
+}
+\end{lstlisting}
+\section{solarAngles}
+\label{sec:org3fc6529}
+\begin{itemize}
+\item \texttt{declination}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+declination <- function(d, method = 'michalsky')
+{
+  if(!(method nilinnil c("michalsky", "cooper", "strous", "spencer"))){
+    warning("'method' must be: michalsky, cooper, strous or spencer.
+Set michalsky")
+    method = 'michalsky'
+  }
+
+  d <- as.IDate(d)
+  dn <- yday(d)
+  origin <- as.IDate('2000-01-01')
+  jd <- as.numeric(d - origin)
+  X <- 2 * pi * (dn - 1) / 365
+
+  switch(method,
+         michalsky = {
+           meanLong <- (280.460 + 0.9856474 * jd)nilnil360
+           meanAnomaly <- (357.528 + 0.9856003 * jd)nilnil360
+           eclipLong <- (meanLong +1.915 * sin(d2r(meanAnomaly)) +
+                         0.02 * sin(d2r(2 * meanAnomaly)))nilnil360
+           excen <- 23.439 - 0.0000004 * jd
+           sinEclip <- sin(d2r(eclipLong))
+           sinExcen <- sin(d2r(excen))
+           asin(sinEclip * sinExcen)
+         },
+         cooper = {
+           d2r(23.45) * sin(2 * pi * (dn +284) / 365)
+         },
+         strous = {
+           meanAnomaly <- (357.5291 + 0.98560028 * jd)nilnil360
+           coefC <- c(1.9148, 0.02, 0.0003)
+           sinC <- sin(outer(1:3, d2r(meanAnomaly), '*'))
+           C <- colSums(coefC * sinC)
+           trueAnomaly <- (meanAnomaly + C)nilnil360
+           eclipLong <- (trueAnomaly + 282.9372)nilnil360
+           excen <- 23.435
+           sinEclip <- sin(d2r(eclipLong))
+           sinExcen <- sin(d2r(excen))
+           asin(sinEclip * sinExcen)
+         },
+         spencer = {
+           0.006918 - 0.399912 * cos(X) + 0.070257 * sin(X) -
+             0.006758 * cos(2 * X) + 0.000907 * sin(2 * X) -
+               0.002697 * cos(3 * X) + 0.001480 * sin(3 * X)           
+         })
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{eccentricity}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+eccentricity <- function(d, method = 'michalsky')
+{
+  if(!(method nilinnil c("michalsky", "cooper", "strous", "spencer"))){
+    warning("'method' must be: michalsky, cooper, strous or spencer. Set michalsky")
+    method = 'michalsky'
+  }
+
+  d <- as.IDate(d)
+  dn <- yday(d)
+  X <- 2 * pi * (dn-1)/365
+
+  switch(method,
+         cooper = 1 + 0.033*cos(2*pi*dn/365),
+         spencer = , 
+         michalsky = , 
+         strous = 1.000110 + 0.034221*cos(X) +
+           0.001280*sin(X) + 0.000719*cos(2*X) +
+           0.000077*sin(2*X)
+         )
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{eot}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+eot <- function(d)
+{
+  d <- as.IDate(d)
+  dn <- yday(d)
+  M <- 2 * pi/365.24 * dn
+  EoT <- 229.18 * (-0.0334 * sin(M) +
+                   0.04184 * sin(2 * M + 3.5884))
+  EoT <- h2r(EoT/60)
+  return(EoT)
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{sunrise}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+sunrise <- function(d, lat, method = 'michalsky',
+                    decl = declination(d, method = method))
+{
+  if(!(method nilinnil c("michalsky", "cooper", "strous", "spencer"))){
+    warning("'method' must be: michalsky, cooper, strous or spencer.
+Set michalsky")
+    method = 'michalsky'
+  }
+
+  cosWs <- -tan(d2r(lat)) * tan(decl)
+  ws <- -acos(cosWs)
+  polar <- which(is.nan(ws))
+  ws[polar] <- -pi * (cosWs[polar] < -1) + 0 * (cosWs[polar] > 1)
+  return(ws)
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{bo0d}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+bo0d <- function(d, lat, method = 'michalsky',
+                 decl = declination(d, method = method),
+                 eo = eccentricity(d, method = method),
+                 ws = sunrise(d, lat, method = method))
+{
+  if(!(method nilinnil c("michalsky", "cooper", "strous", "spencer"))){
+    warning("'method' must be: michalsky, cooper, strous or spencer.
+Set michalsky")
+    method = 'michalsky'
+  }
+
+  Bo <- 1367
+  latr <- d2r(lat)
+  Bo0d <- -24/pi * Bo * eo * (ws * sin(latr) * sin(decl) +
+                              cos(latr) * cos(decl) * sin(ws))
+  return(Bo0d)
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{sunHour}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+sunHour <- function(d, BTi, sample = 'hour', EoT = TRUE,
+                    method = 'michalsky',
+                    eqtime = eot(d))
+{
+  if(!(method nilinnil c("michalsky", "cooper", "strous", "spencer"))){
+    warning("'method' must be: michalsky, cooper, strous or spencer.
+Set michalsky")
+    method = 'michalsky'
+  }
+
+  if(missing(BTi)){
+    BTi <- fBTi(BTd = d, sample = sample)
+  }else {
+    if (inherits(BTi, 'data.table')) {
+      Times <- as.ITime(BTi$Times)
+      Dates <- as.IDate(BTi$Dates)
+      BTi <- as.POSIXct(Dates, Times, tz = 'UTC')
+    }
+    else {
+      BTi <- as.POSIXct(BTi, tz = 'UTC')
+    }   
+  }
+  rep <- cumsum(c(1, diff(as.Date(BTi)) != 0))
+  if(EoT)
+  {
+    EoT <- eqtime
+    if(length(EoT) != length(BTi)){EoT <- EoT[rep]}
+  }else{EoT <- 0}
+
+  jd <- as.numeric(julian(BTi, origin = '2000-01-01 12:00:00 UTC'))
+  TO <- hms(BTi)
+
+  w=switch(method,
+           cooper = h2r(TO-12)+EoT,
+           spencer = h2r(TO-12)+EoT,
+           michalsky = {
+             meanLong <- (280.460+0.9856474*jd)nilnil360
+             meanAnomaly <- (357.528+0.9856003*jd)nilnil360
+             eclipLong <- (meanLong +1.915*sin(d2r(meanAnomaly))+
+                           0.02*sin(d2r(2*meanAnomaly)))nilnil360
+             excen <- 23.439-0.0000004*jd
+
+             sinEclip <- sin(d2r(eclipLong))
+             cosEclip <- cos(d2r(eclipLong))
+             cosExcen <- cos(d2r(excen))
+
+             ascension <- r2d(atan2(sinEclip*cosExcen, cosEclip))nilnil360
+
+             lmst <- (h2d(6.697375 + 0.0657098242*jd + TO))nilnil360
+             w <- (lmst-ascension)
+             w <- d2r(w + 360*(w < -180) - 360*(w > 180))
+           },
+           strous = {
+             meanAnomaly  <-  (357.5291 + 0.98560028*jd)nilnil360
+             coefC <- c(1.9148, 0.02, 0.0003)
+             sinC <- sin(outer(1:3, d2r(meanAnomaly), '*'))
+             C  <-  colSums(coefC*sinC)
+             trueAnomaly <- (meanAnomaly + C)nilnil360
+             eclipLong <- (trueAnomaly + 282.9372)nilnil360
+             excen <- 23.435
+
+             sinEclip <- sin(d2r(eclipLong))
+             cosEclip <- cos(d2r(eclipLong))
+             cosExcen <- cos(d2r(excen))
+
+             ascension <- r2d(atan2(sinEclip*cosExcen, cosEclip))nilnil360
+
+             lmst <- (280.1600+360.9856235*jd)nilnil360
+             w <- (lmst-ascension)
+             w <- d2r(w + 360*(w< -180) - 360*(w>180))
+           }
+           )
+  return(w)
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{zenith}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+zenith <- function(d, lat, BTi, sample = 'hour',  method = 'michalsky',
+                   decl = declination(d, method = method),
+                   w = sunHour(d, BTi, sample, method = method))
+{
+  if(!(method nilinnil c("michalsky", "cooper", "strous", "spencer"))){
+    warning("'method' must be: michalsky, cooper, strous or spencer.
+Set michalsky")
+    method = 'michalsky'
+  }
+
+  if(missing(BTi)){BTi <- fBTi(d, sample)}
+  x <- as.Date(BTi)
+  rep <- cumsum(c(1, diff(x) != 0))
+  latr <- d2r(lat)
+  if(length(decl) == length(BTi)){decl <- decl}
+  else{decl <- decl[rep]}
+  zenith <- sin(decl) * sin(latr) +
+    cos(decl) * cos(w) * cos(latr)
+  zenith <- ifelse(zenith > 1, 1, zenith)
+  return(zenith)
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{azimuth}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+azimuth <- function(d, lat, BTi, sample = 'hour', method = 'michalsky',
+                    decl = declination(d, method = method),
+                    w = sunHour(d, BTi, sample, method = method),
+                    cosThzS = zenith(d, lat, BTi, sample,
+                                     method = method,
+                                     decl = decl,
+                                     w = w))
+{
+  if(!(method nilinnil c("michalsky", "cooper", "strous", "spencer"))){
+    warning("'method' must be: michalsky, cooper, strous or spencer.
+Set michalsky")
+    method = 'michalsky'
+  }
+
+  signLat <- ifelse(sign(lat) == 0, 1, sign(lat)) 
+  if(missing(BTi)){BTi <- fBTi(d, sample)}
+  x <- as.Date(BTi)
+  rep <- cumsum(c(1, diff(x) != 0))
+  latr <- d2r(lat)
+  if(length(decl) != length(BTi)){decl <- decl[rep]}
+  AlS <- asin(cosThzS)
+  cosazimuth <- signLat * (cos(decl) * cos(w) * sin(latr) -
+                           cos(latr) * sin(decl)) / cos(AlS)
+  cosazimuth <- ifelse(abs(cosazimuth)>1, sign(cosazimuth), cosazimuth)
+  azimuth <- sign(w)*acos(cosazimuth)
+  return(azimuth)
+}
+\end{lstlisting}
+\section{utils-angle}
+\label{sec:org34c5942}
+\begin{itemize}
+\item \texttt{d2r}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+d2r <- function(x){x*pi/180}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{r2d}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+r2d <- function(x){x*180/pi}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{h2r}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+h2r <- function(x){x*pi/12}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{h2d}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+h2d <- function(x){x*180/12}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{r2h}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+r2h <- function(x){x*12/pi}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{d2h}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+d2h <- function(x){x*12/180}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{r2sec}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+r2sec <- function(x){x*12/pi*3600}
+\end{lstlisting}
+\section{utils-time}
+\label{sec:orgd1c54e0}
+\begin{itemize}
+\item \texttt{hms}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+hms <- function(x)
+{
+  hour(x)+minute(x)/60+second(x)/3600
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{doy}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+doy <- function(x){
+  as.numeric(format(x, 'nilj'))
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{dom}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+dom <- function(x){
+  as.numeric(format(x, 'nild'))
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{dst}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+dst <- function(x) #Daylight Savings Time
+{
+  as.POSIXlt(x)$isdst
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{truncDay}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+truncDay <- function(x){as.POSIXct(trunc(x, units='days'))}
+\end{lstlisting}
+\section{as.data.tableD}
+\label{sec:org799595a}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setGeneric('as.data.tableD', function(object, complete = FALSE, day = FALSE){standardGeneric('as.data.tableD')})
+
+setMethod('as.data.tableD',
+          signature = (object = 'Sol'),
+          definition = function(object, complete = FALSE, day = FALSE){
+            sol <- copy(object)
+            solD <- sol@solD
+            data <- solD
+            if(day){
+              ind <- indexD(sol)
+
+            }
+            return(data)
+          }
+          )
+
+setMethod('as.data.tableD',
+          signature = (object = 'G0'),
+          definition = function(object, complete = FALSE, day = FALSE){
+            g0 <- copy(object)
+            G0D <- g0@G0D
+            solD <- g0@solD
+            if(complete){
+              data <- data.table(G0D, solD[, Dates := NULL])
+            } else {
+              G0D[, Fd := NULL]
+              G0D[, Kt := NULL]
+              data <- G0D
+            }
+            if(day){
+              ind <- indexD(object)
+              data$day <- doy(ind)
+              data$month <- month(ind)
+              data$year <- year(ind)
+            }
+            return(data)
+          })
+
+setMethod('as.data.tableD',
+          signature = (object = 'Gef'),
+          definition = function(object, complete = FALSE, day = FALSE){
+            gef <- copy(object)
+            GefD <- gef@GefD
+            G0D <- gef@G0D
+            solD <- gef@solD
+            if(complete){
+              data <- data.table(GefD,
+                                 G0D[, Dates := NULL],
+                                 solD[, Dates := NULL])
+            } else {data <- GefD[, c('Dates', 'Gefd',
+                                     'Defd', 'Befd')]}
+            if(day){
+              ind <- indexD(object)
+              data$day <- doy(ind)
+              data$month <- month(ind)
+              data$year <- year(ind)
+            }
+            return(data)
+          }
+          )
+
+setMethod('as.data.tableD',
+          signature = (object = 'ProdGCPV'),
+          definition = function(object, complete = FALSE, day = FALSE){
+            prodgcpv <- copy(object)
+            prodD <- prodgcpv@prodD
+            GefD <- prodgcpv@GefD
+            G0D <- prodgcpv@G0D
+            solD <- prodgcpv@solD
+            if(complete){
+              data <- data.table(prodD,
+                                 GefD[, Dates := NULL],
+                                 G0D[, Dates := NULL],
+                                 solD[, Dates := NULL]
+                                 )
+            } else { data <- prodD[, c('Dates', 'Eac',
+                                       'Edc', 'Yf')]}
+            if(day){
+              ind <- indexD(object)
+              data$day <- doy(ind)
+              data$month <- month(ind)
+              data$year <- year(ind)
+            }
+            return(data)
+          }
+          )
+
+setMethod('as.data.tableD',
+          signature = (object = 'ProdPVPS'),
+          definition = function(object, complete = FALSE, day = FALSE){
+            prodpvps <- copy(object)
+            prodD <- prodpvps@prodD
+            GefD <- prodpvps@GefD
+            G0D <- prodpvps@G0D
+            solD <- prodpvps@solD
+            if(complete){
+              data <- data.table(prodD,
+                                 GefD[, Dates := NULL],
+                                 G0D[, Dates := NULL],
+                                 solD[, Dates := NULL]
+                                 )
+            } else { data <- prodD[, c('Dates', 'Eac',
+                                       'Qd', 'Yf')]}
+            if(day){
+              ind <- indexD(object)
+              data$day <- doy(ind)
+              data$month <- month(ind)
+              data$year <- year(ind)
+            }
+            return(data)
+          }
+          )
+\end{lstlisting}
+\section{as.data.tableI}
+\label{sec:org10f8963}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setGeneric('as.data.tableI',
+           function(object, complete = FALSE, day = FALSE){standardGeneric('as.data.tableI')})
+
+setMethod('as.data.tableI',
+          signature = (object = 'Sol'),
+          definition = function(object, complete = FALSE, day = FALSE){
+            sol <- copy(object)
+            Dates <- indexI(sol)
+            x <- truncDay(Dates)
+            ind.rep <- cumsum(c(1, diff(x) != 0))
+            solI <- sol@solI
+            solD <- sol@solD[ind.rep]
+            if(complete){
+              data <- data.table(solI, solD[, Dates := NULL])
+            } else{data <- solI}
+            if(day){
+              ind <- indexI(sol)
+              data$day <- doy(ind)
+              data$month <- month(ind)
+              data$year <- year(ind)
+            }
+            return(data)
+          }
+          )
+
+setMethod('as.data.tableI',
+          signature = (object = 'G0'),
+          definition = function(object, complete = FALSE, day = FALSE){
+            g0 <- copy(object)
+            Dates <- indexI(g0)
+            x <- truncDay(Dates)
+            ind.rep <- cumsum(c(1, diff(x) != 0))
+            G0I <- g0@G0I
+            G0D <- g0@G0D[ind.rep]
+            solI <- as.data.tableI(as(g0, 'Sol'), complete = TRUE)
+            Ta <- g0@Ta
+            if(nrow(Ta) != nrow(G0I)) Ta <- Ta[ind.rep]
+            if(complete){
+              data <- data.table(solI,
+                                 G0I[, Dates := NULL],
+                                 G0D[, Dates := NULL],
+                                 Ta[, Dates := NULL])
+            } else{    
+              G0I[, Kt := NULL]
+              G0I[, Fd := NULL]
+              data <- G0I
+            }
+            if(day){
+              ind <- indexI(object)
+              data$day <- doy(ind)
+              data$month <- month(ind)
+              data$year <- year(ind)
+            }
+            return(data)
+          }
+          )
+
+setMethod('as.data.tableI',
+          signature = (object = 'Gef'),
+          definition = function(object, complete = FALSE, day = FALSE){
+            gef <- copy(object)
+            Dates <- indexI(gef)
+            x <- truncDay(Dates)
+            ind.rep <- cumsum(c(1, diff(x) != 0))
+            GefI <- gef@GefI
+            GefD <- gef@GefD[ind.rep]
+            G0I <- as.data.tableI(as(gef, 'G0'), complete = TRUE)
+            if(complete){
+              data <- data.table(G0I,
+                                 GefI[, Dates := NULL],
+                                 GefD[, Dates := NULL])
+            } else {
+              data <- GefI[, c('Dates','Gef',
+                               'Bef', 'Def')]
+            }
+            if(day){
+              ind <- indexI(object)
+              data$day <- doy(ind)
+              data$month <- month(ind)
+              data$year <- year(ind)
+            }
+            return(data)
+          }
+          )
+
+setMethod('as.data.tableI',
+          signature = (object = 'ProdGCPV'),
+          definition = function(object, complete = FALSE, day = FALSE){
+            prodgcpv <- copy(object)
+            Dates <- indexI(prodgcpv)
+            x <- truncDay(Dates)
+            ind.rep <- cumsum(c(1, diff(x) != 0))
+            prodI <- prodgcpv@prodI
+            prodD <- prodgcpv@prodD[ind.rep]
+            Theta <- prodgcpv@Theta
+            GefI <- as.data.tableI(as(prodgcpv, 'Gef'), complete = TRUE)
+            if(complete){
+              data <- data.table(GefI,
+                                 prodI[, Dates := NULL],
+                                 Theta[, Dates := NULL])
+            } else {
+              data <- prodI[, c('Dates', 'Pac', 'Pdc')]
+            }
+            if(day){
+              ind <- indexI(object)
+              data$day <- doy(ind)
+              data$month <- month(ind)
+              data$year <- year(ind)
+            }
+            return(data)
+          }
+          )
+
+setMethod('as.data.tableI',
+          signature = (object = 'ProdPVPS'),
+          definition = function(object, complete = FALSE, day = FALSE){
+            prodpvps <- copy(object)
+            Dates <- indexI(prodpvps)
+            x <- truncDay(Dates)
+            ind.rep <- cumsum(c(1, diff(x) != 0))
+            prodI <- prodpvps@prodI
+            prodD <- prodpvps@prodD[ind.rep]
+            Theta <- prodpvps@Theta
+            GefI <- as.data.tableI(as(prodpvps, 'Gef'), complete = TRUE)
+            if(complete){
+              data <- data.table(GefI,
+                                 prodI[, Dates := NULL],
+                                 prodD[, Dates := NULL],
+                                 Theta[, Dates := NULL])
+            } else {
+              data <- prodI[, c('Dates', 'Pac', 'Pdc')]
+            }
+            if(day){
+              ind <- indexI(object)
+              data$day <- doy(ind)
+              data$month <- month(ind)
+              data$year <- year(ind)
+            }
+            return(data)
+          }
+          )
+\end{lstlisting}
+\section{as.data.tableM}
+\label{sec:org8027a74}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setGeneric('as.data.tableM', function(object, complete = FALSE, day = FALSE){standardGeneric('as.data.tableM')})
+
+setMethod('as.data.tableM',
+          signature = (object = 'G0'),
+          definition = function(object, complete = FALSE, day = FALSE){
+            g0 <- copy(object)
+            G0dm <- g0@G0dm
+            data <- G0dm
+            if(day){
+              ind <- indexD(object)
+              data$month <- month(ind)
+              data$year <- year(ind)
+            }
+            return(data)
+          }
+          )
+
+setMethod('as.data.tableM',
+          signature = (object = 'Gef'),
+          definition = function(object, complete = FALSE, day = FALSE){
+            gef <- copy(object)
+            Gefdm <- gef@Gefdm
+            G0dm <- gef@G0dm
+            if(complete){
+              data <- data.table(Gefdm, G0dm[, Dates := NULL])
+            } else {data <- Gefdm}
+            if(day){
+              ind <- indexD(object)
+              data$month <- month(ind)
+              data$year <- year(ind)                  
+            }
+            return(data)
+          }
+          )
+
+setMethod('as.data.tableM',
+          signature = (object = 'ProdGCPV'),
+          definition = function(object, complete = FALSE, day = FALSE){
+            prodgcpv <- copy(object)
+            prodDm <- prodgcpv@prodDm
+            Gefdm <- prodgcpv@Gefdm
+            G0dm <- prodgcpv@G0dm
+            if(complete){
+              data <- data.table(prodDm,
+                                 Gefdm[, Dates := NULL],
+                                 G0dm[, Dates := NULL])
+            } else {data <- prodDm}
+            if(day){
+              ind <- indexD(object)
+              data$month <- month(ind)
+              data$year <- year(ind)                  
+            }
+            return(data)
+          }
+          )
+
+setMethod('as.data.tableM',
+          signature = (object = 'ProdPVPS'),
+          definition = function(object, complete = FALSE, day = FALSE){
+            prodpvps <- copy(object)
+            prodDm <- prodpvps@prodDm
+            Gefdm <- prodpvps@Gefdm
+            G0dm <- prodpvps@G0dm
+            if(complete){
+              data <- data.table(prodDm,
+                                 Gefdm[, Dates := NULL],
+                                 G0dm[, Dates := NULL])
+            } else {data <- prodDm}
+            if(day){
+              ind <- indexD(object)
+              data$month <- month(ind)
+              data$year <- year(ind)                  
+            }
+            return(data)
+          }
+          )
+\end{lstlisting}
+\section{as.data.tableY}
+\label{sec:orgaddcd21}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setGeneric('as.data.tableY', function(object, complete = FALSE, day = FALSE){standardGeneric('as.data.tableY')})
+
+setMethod('as.data.tableY',
+          signature = (object = 'G0'),
+          definition = function(object, complete = FALSE, day = FALSE){
+            g0 <- copy(object)
+            G0y <- g0@G0y
+            data <- G0y
+            if(day){data$year <- data$Dates}
+            return(data)
+          }
+          )
+
+setMethod('as.data.tableY',
+          signature = (object = 'Gef'),
+          definition = function(object, complete = FALSE, day = FALSE){
+            gef <- copy(object)
+            Gefy <- gef@Gefy
+            G0y <- gef@G0y
+            if(complete){
+              data <- data.table(Gefy, G0y[, Dates := NULL])
+            } else {data <- Gefy}
+            if(day){data[, year := Dates]}
+            return(data)
+          }
+          )
+
+setMethod('as.data.tableY',
+          signature = (object = 'ProdGCPV'),
+          definition = function(object, complete = FALSE, day = FALSE){
+            prodgcpv <- copy(object)
+            prody <- prodgcpv@prody
+            Gefy <- prodgcpv@Gefy
+            G0y <- prodgcpv@G0y
+            if(complete){
+              data <- data.table(prody,
+                                 Gefy[, Dates := NULL],
+                                 G0y[, Dates := NULL])       
+            } else {data <- prody}
+            if(day){data$year <- data$Dates}
+            return(data)
+          }
+          )
+
+setMethod('as.data.tableY',
+          signature = (object = 'ProdPVPS'),
+          definition = function(object, complete = FALSE, day = FALSE){
+            prodpvps <- copy(object)
+            prody <- prodpvps@prody
+            Gefy <- prodpvps@Gefy
+            G0y <- prodpvps@G0y
+            if(complete){
+              data <- data.table(prody,
+                                 Gefy[, Dates :=  NULL],
+                                 G0y[, Dates := NULL])       
+            } else {data <- prody}
+            if(day){data$year <- data$Dates}
+            return(data)
+          }
+          )
+\end{lstlisting}
+\section{compare}
+\label{sec:orge6195e2}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setMethod('compare',
+          signature = 'G0',
+          definition = function(...){
+            vars <- c('D0d', 'B0d', 'G0d')
+            res <- compareFunction(..., vars = vars)
+            return(res)
+          }
+          )
+
+setMethod('compare',
+          signature = 'Gef',
+          definition = function(...){
+            vars <- c('Defd', 'Befd', 'Gefd')
+            res <- compareFunction(..., vars = vars)
+            return(res)
+          }
+          )
+
+setMethod('compare',
+          signature = 'ProdGCPV',
+          definition = function(...){
+            vars <- c('G0d', 'Gefd', 'Yf')
+            res <- compareFunction(..., vars = vars)
+            return(res)
+          }
+          )
+\end{lstlisting}
+\section{getData}
+\label{sec:orga6f388e}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setGeneric('getData', function(object){standardGeneric('getData')})
+
+setMethod('getData',
+          signature = (object = 'Meteo'),
+          definition = function(object){
+            result <- object@data
+            return(result)
+          })
+\end{lstlisting}
+\section{getG0}
+\label{sec:org20e36aa}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setGeneric('getG0', function(object){standardGeneric('getG0')})
+
+setMethod('getG0',
+          signature = (object = 'Meteo'),
+          definition = function(object){
+            result <- getData(object)
+            return(result$G0)
+          })
+\end{lstlisting}
+\section{getLat}
+\label{sec:org50f7289}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setGeneric('getLat', function(object, units = 'rad')
+{standardGeneric('getLat')})
+
+setMethod('getLat',
+          signature = (object = 'Sol'),
+          definition = function(object, units = 'rad'){
+            stopifnot(units nilinnil c('deg', 'rad'))
+            result = switch(units,
+                            rad = d2r(object@lat),
+                            deg = object@lat)
+            return(result)
+          })
+
+setMethod('getLat',
+          signature = (object = 'Meteo'),
+          definition = function(object, units = 'rad'){
+            stopifnot(units nilinnil c('deg', 'rad'))
+            result = switch(units,
+                            rad = d2r(object@latm),
+                            deg = object@latm)
+            return(result)
+          })
+\end{lstlisting}
+\section{indexD}
+\label{sec:org7f50531}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setGeneric('indexD', function(object){standardGeneric('indexD')})
+
+setMethod('indexD',
+          signature = (object = 'Sol'),
+          definition = function(object){as.POSIXct(object@solD$Dates)
+          })
+
+setMethod('indexD',
+          signature = (object = 'Meteo'),
+          definition = function(object){as.POSIXct(getData(object)$Dates)})
+\end{lstlisting}
+\section{indexI}
+\label{sec:org3dd5fcd}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setGeneric('indexI', function(object){standardGeneric('indexI')})
+
+setMethod('indexI',
+          signature = (object = 'Sol'),
+          definition = function(object){as.POSIXct(object@solI$Dates)
+          })
+\end{lstlisting}
+\section{levelplot}
+\label{sec:org02db91f}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setGeneric('levelplot')
+
+setMethod('levelplot',
+          signature = c(x = 'formula', data = 'Meteo'),
+          definition = function(x, data,
+                                par.settings = solaR.theme,
+                                panel = panel.levelplot.raster, interpolate = TRUE,
+                                xscale.components = xscale.solar,
+                                yscale.components = yscale.solar,
+                                ...){
+            data0 <- getData(data)
+            ind <- data0$Dates
+            data0$day <- doy(ind)
+            data0$month <- month(ind)
+            data0$year <- year(ind)
+            data0$w <- h2r(hms(ind)-12)
+            levelplot(x, data0,
+                      par.settings = par.settings,
+                      xscale.components = xscale.components,
+                      yscale.components = yscale.components,
+                      panel = panel, interpolate = interpolate,
+                      ...)
+          }
+          )
+
+setMethod('levelplot',
+          signature = c(x = 'formula', data = 'Sol'),
+          definition = function(x, data,
+                                par.settings = solaR.theme,
+                                panel = panel.levelplot.raster, interpolate = TRUE,
+                                xscale.components = xscale.solar,
+                                yscale.components = yscale.solar,
+                                ...){
+            data0 <- as.data.tableI(data, complete=TRUE, day=TRUE)
+            ind <- data0$Dates
+            data0$day <- doy(ind)
+            data0$month <- month(ind)
+            data0$year <- year(ind)
+            levelplot(x, data0,
+                      par.settings = par.settings,
+                      xscale.components = xscale.components,
+                      yscale.components = yscale.components,
+                      panel = panel, interpolate = interpolate,
+                      ...)
+          }
+          )
+
+setMethod('levelplot',
+          signature = c(x = 'formula', data = 'G0'),
+          definition = function(x, data,
+                                par.settings = solaR.theme,
+                                panel = panel.levelplot.raster, interpolate = TRUE,
+                                xscale.components = xscale.solar,
+                                yscale.components = yscale.solar,
+                                ...){
+            data0 <- as.data.tableI(data, complete=TRUE, day=TRUE)
+            ind <- data0$Dates
+            data0$day <- doy(ind)
+            data0$month <- month(ind)
+            data0$year <- year(ind)
+            levelplot(x, data0, 
+                      par.settings = par.settings,
+                      xscale.components = xscale.components,
+                      yscale.components = yscale.components,
+                      panel = panel, interpolate = interpolate,
+                      ...)
+          }
+          )
+\end{lstlisting}
+\section{Losses}
+\label{sec:org9b117fc}
+\begin{itemize}
+\item \texttt{compareLosses}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setGeneric('losses', function(object){standardGeneric('losses')})
+
+setMethod('losses',
+          signature = (object = 'Gef'),
+          definition=function(object){
+            dat <- as.data.tableY(object, complete = TRUE)
+            isShd <- ('Gef0d' nilinnil names(dat)) ##is there shadows?
+            if (isShd) {
+              shd <- with(dat, mean(1-Gefd/Gef0d))
+              eff <- with(dat, mean(1-Gef0d/Gd))
+            } else {
+              shd <- 0
+              eff <- with(dat, mean(1-Gefd/Gd))
+            }
+            result <- data.table(Shadows = shd, AoI = eff)
+            result <- melt(result, measure.vars = names(result),
+                           variable.name = 'id')
+          }
+          )
+
+setMethod('losses',
+          signature = (object = 'ProdGCPV'),
+          definition = function(object){
+            datY <- as.data.tableY(object, complete = TRUE)
+            module0 <- object@module
+            module0$CoefVT <- 0 ##No losses with temperature
+            Pg <- object@generator$Pg
+            datI <- as.data.tableI(object, complete = TRUE)
+            if (object@type == 'prom'){
+              YfDC0 <- datI[, P2E(Vmpp*Impp, object@sample),
+                            by = .(month(Dates), year(Dates))]
+              YfDC0 <- YfDC0[, V1 := V1/Pg*DOM(YfDC0)]
+              YfDC0 <- sum(YfDC0$V1)
+              YfAC0 <- datI[, P2E(Pdc*EffI, object@sample),
+                            by = .(month(Dates), year(Dates))]
+              YfAC0 <- YfAC0[, V1 := V1/Pg*DOM(YfAC0)]
+              YfAC0 <- sum(YfAC0$V1)
+            } else {
+              YfDC0 <- datI[, P2E(Vmpp*Impp, object@sample),
+                            by = year(Dates)]
+              YfDC0 <- YfDC0[, V1 := V1/Pg]
+              YfDC0 <- sum(YfDC0$V1)
+              YfAC0 <- datI[, P2E(Pdc*EffI, object@sample),
+                            by = year(Dates)]
+              YfAC0 <- YfAC0[, V1 := V1/Pg]
+              YfAC0 <- sum(YfAC0$V1)
+            }
+            gen <- mean(1-YfDC0/datY$Gefd)
+            YfDC <- datY$Edc/Pg*1000
+            DC <- mean(1-YfDC/YfDC0)
+            inv <- mean(1-YfAC0/YfDC)
+            AC <- mean(1-datY$Yf/YfAC0)
+            result0 <- losses(as(object, 'Gef'))
+            result1 <- data.table(Generator = gen,
+                                  DC = DC,
+                                  Inverter = inv,
+                                  AC = AC)
+            result1 <- melt(result1, measure.vars = names(result1),
+                            variable.name = 'id')
+            result <- rbind(result0, result1)
+            result
+          }
+          )
+
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{losses}
+\end{itemize}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setGeneric('compareLosses', signature = '...', function(...){standardGeneric('compareLosses')})
+
+setMethod('compareLosses', 'ProdGCPV',
+          definition=function(...){
+            dots <- list(...)
+            nms0 <- substitute(list(...))
+            if (!is.null(names(nms0))){ ##do.call
+              nms <- names(nms0[-1])
+            } else {
+              nms <- as.character(nms0[-1])
+            }
+            foo <- function(object, label){
+              yY <- losses(object)
+              yY <- cbind(yY, name=label)
+              yY
+            }
+            cdata <- mapply(FUN=foo, dots, nms, SIMPLIFY=FALSE)
+            z <- do.call(rbind, cdata)
+            z$id <- ordered(z$id, levels = c('Shadows', 'AoI', 'Generator',
+                                             'DC', 'Inverter', 'AC'))
+            p <- dotplot(id~value*100, groups = name, data = z,
+                         par.settings = solaR.theme, type = 'b',
+                         auto.key = list(corner = c(0.95,0.2), cex = 0.7),
+                         xlab = 'Losses (nil)')
+            print(p)
+            return(z)
+          }
+          )
+\end{lstlisting}
+\section{mergesolaR}
+\label{sec:orgd0c60ee}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setGeneric('mergesolaR', signature = '...', function(...){standardGeneric('mergesolaR')})
+
+setMethod('mergesolaR',
+          signature = 'Meteo',
+          definition = function(...){
+            res <- mergeFunction(..., foo = fooMeteo, var = 'G0')
+            res
+          }
+          )
+
+setMethod('mergesolaR',
+          signature = 'G0',
+          definition = function(...){
+            res <- mergeFunction(..., foo = fooG0, var = 'G0d')
+            res
+          }
+          )
+
+setMethod('mergesolaR',
+          signature = 'Gef',
+          definition = function(...){
+            res <- mergeFunction(..., foo = fooG0, var = 'Gefd')
+            res
+          }
+          )
+
+setMethod('mergesolaR',
+          signature = 'ProdGCPV',
+          definition = function(...){
+            res <- mergeFunction(..., foo = fooG0, var = 'Yf')
+            res
+          }
+          )
+
+setMethod('mergesolaR',
+          signature = 'ProdPVPS',
+          definition = function(...){
+            res <- mergeFunction(..., foo = fooG0, var = 'Yf')
+            res
+          }
+          )
+\end{lstlisting}
+\section{shadeplot}
+\label{sec:org63f00f5}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setGeneric('shadeplot', function(x, ...)standardGeneric('shadeplot'))
+
+setMethod('shadeplot', signature(x = 'Shade'),
+          function(x,
+                   main = '',
+                   xlab = expression(L[ew]),
+                   ylab = expression(L[ns]),
+                   n = 9, ...){
+            red <- x@distances
+            FS.loess <- x@FS.loess
+            Yf.loess <- x@Yf.loess
+            struct <- x@struct
+            mode <- x@modeTrk
+            if (mode=='two'){
+              Lew <- seq(min(red$Lew),max(red$Lew),length = 100)
+              Lns <- seq(min(red$Lns),max(red$Lns),length = 100)
+              Red <- expand.grid(Lew = Lew,Lns = Lns)
+              FS <- predict(FS.loess,Red)
+              Red$FS <- as.numeric(FS)
+              AreaG <- with(struct,L*W)
+              GRR <- Red$Lew*Red$Lns/AreaG
+              Red$GRR <- GRR
+              FS.m <- matrix(1-FS,
+                             nrow = length(Lew),
+                             ncol = length(Lns))
+              GRR.m <- matrix(GRR,
+                              nrow = length(Lew),
+                              ncol = length(Lns))
+              niveles <- signif(seq(min(FS.m),max(FS.m),l = n+1),3)
+              pruebaCB <- ("RColorBrewer" nilinnil .packages())
+              if (pruebaCB) {
+                paleta <- rev(brewer.pal(n, 'YlOrRd'))
+              } else {
+                paleta <- rev(heat.colors(n))}
+              par(mar = c(4.1,4.1,2.1,2.1)) 
+              filled.contour(x = Lew,y = Lns,z = FS.m,
+                             col = paleta, 
+                             nlevels = n,
+                             plot.title = title(xlab = xlab,
+                                                ylab = ylab, main = main),
+                             plot.axes = {
+                               axis(1); axis(2);
+                               contour(Lew, Lns, FS.m,
+                                       nlevels = n, 
+                                       col = "black",
+                                       labcex = .8,  add = TRUE)
+                               contour(Lew, Lns, GRR.m,
+                                       col = "black", lty = 3,
+                                       labcex = .8, add = TRUE)
+                               grid(col = "white",lty = 3)},
+                             key.title = title("1-FS",cex.main = .8))
+            }
+            if (mode=='horiz') {
+              Lew <- seq(min(red$Lew),max(red$Lew),length = 100)
+              FS <- predict(FS.loess,Lew)
+              GRR <- Lew/struct$L
+              plot(GRR,1-FS,main = main,type = 'l',...)
+              grid()    }
+            if (mode=='fixed'){
+              D <- seq(min(red$D),max(red$D),length = 100)
+              FS <- predict(FS.loess,D)
+              GRR <- D/struct$L
+              plot(GRR,1-FS,main = main,type = 'l',...)
+              grid()    }
+          }
+          )
+\end{lstlisting}
+\section{window}
+\label{sec:orgbc5da38}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setMethod('[',
+          signature='Meteo',
+          definition=function(x, i, j,...){
+            if (!missing(i)) {
+              i <- truncDay(i)
+            } else {
+              i <- indexD(x)[1]
+            }
+            if (!missing(j)) {
+              j <- truncDay(j)+86400-1 
+            } else {
+              nDays <- length(indexD(x))
+              j <- indexD(x)[nDays]+86400-1
+            }
+            stopifnot(j>i)
+            if (!is.null(i)) i <- truncDay(i)
+            if (!is.null(j)) j <- truncDay(j)+86400-1
+            d <- indexD(x)
+            x@data <- x@data[(d >= i & d <= j)]
+            x
+          }
+          )
+
+
+setMethod('[',
+          signature='Sol',
+          definition=function(x, i, j, ...){
+            if (!missing(i)) {
+              i <- truncDay(i)
+            } else {
+              i <- indexD(x)[1]
+            }
+            if (!missing(j)) {
+              j <- truncDay(j)+86400-1
+            } else {
+              nDays <- length(indexD(x))
+              j <- indexD(x)[nDays]+86400-1
+            }
+            stopifnot(j>i)
+            if(!is.null(i)) i <- truncDay(i)
+            if(!is.null(j)) j <- truncDay(j)
+            d1 <- indexD(x)
+            d2 <- indexI(x)
+            x@solD <- x@solD[(d1 >= i & d1 <= j)]
+            x@solI <- x@solI[(d2 >= i & d2 <= j)]
+            x
+          }
+          )
+
+setMethod('[',
+          signature='G0',
+          definition=function(x, i, j, ...){
+            sol <- as(x, 'Sol')[i=i, j=j, ...] 
+            meteo <- as(x, 'Meteo')[i=i, j=j, ...] 
+            i <- indexI(sol)[1]
+            j <- indexI(sol)[length(indexI(sol))]
+            d1 <- indexD(x)
+            d2 <- indexI(x)
+            G0Iw <- x@G0I[(d2 >= i & d2 <= j)]
+            Taw <- x@Ta[(d2 >= i & d2 <= j)]
+            G0dw <- x@G0D[(d1 >= truncDay(i) & d1 <= truncDay(j))]
+            G0dmw <- G0dw[, lapply(.SD/1000, mean, na.rm= TRUE),
+                          .SDcols = c('G0d', 'D0d', 'B0d'),
+                          by = .(month(Dates), year(Dates))]
+            if (x@type == 'prom'){
+              G0dmw[, DayOfMonth := DOM(G0dmw)]
+              G0yw <- G0dmw[, lapply(.SD*DayOfMonth, sum, na.rm = TRUE),
+                            .SDcols = c('G0d', 'D0d', 'B0d'),
+                            by = .(Dates = year)]
+              G0dmw[, DayOfMonth := NULL]
+            } else {
+              G0yw <- G0dw[, lapply(.SD/1000, sum, na.rm = TRUE),
+                           .SDcols = c('G0d', 'D0d', 'B0d'),
+                           by = .(Dates = year(unique(truncDay(Dates))))]
+            }
+            G0dmw[, Dates := paste(month.abb[month], year, sep = '. ')]
+            G0dmw[, c('month', 'year') := NULL]
+            setcolorder(G0dmw, 'Dates')
+            result <- new('G0',
+                          meteo,
+                          sol,
+                          G0D = G0dw,
+                          G0dm = G0dmw,
+                          G0y = G0yw,
+                          G0I = G0Iw,
+                          Ta = Taw)
+            result
+          }
+          )
+
+
+setMethod('[',
+          signature = 'Gef',
+          definition = function(x, i, j, ...){
+            g0 <- as(x, 'G0')[i = i, j = j, ...] 
+            i <- indexI(g0)[1]
+            j <- indexI(g0)[length(indexI(g0))]
+            d1 <- indexD(x)
+            d2 <- indexI(x)
+            GefIw <- x@GefI[(d2 >= i & d2 <= j)]
+            Thetaw <- x@Theta[(d2 >= i & d2 <= j)]
+            Gefdw <- x@GefD[(d1 >= truncDay(i) & d1 <= truncDay(j))]
+            nms <- c('Bod', 'Bnd', 'Gd', 'Dd',
+                     'Bd', 'Gefd', 'Defd', 'Befd')
+            Gefdmw <- Gefdw[, lapply(.SD/1000, mean, na.rm = TRUE),
+                            .SDcols = nms,
+                            by = .(month(Dates), year(Dates))]
+            if (x@type == 'prom'){
+              Gefdmw[, DayOfMonth:= DOM(Gefdmw)]
+              Gefyw <- Gefdmw[, lapply(.SD*DayOfMonth, sum),
+                              .SDcols = nms,
+                              by = .(Dates = year)]
+              Gefdmw[, DayOfMonth := NULL]
+            } else {
+              Gefyw <- Gefdw[, lapply(.SD/1000, sum, na.rm = TRUE),
+                             .SDcols = nms,
+                             by = .(Dates = year(Dates))]
+            }
+            Gefdmw[, Dates := paste(month.abb[month], year, sep = '. ')]
+            Gefdmw[, c('month', 'year') := NULL]
+            setcolorder(Gefdmw, 'Dates')
+            result <- new('Gef',
+                          g0,
+                          GefD = Gefdw,
+                          Gefdm = Gefdmw,
+                          Gefy = Gefyw,
+                          GefI = GefIw,
+                          Theta = Thetaw,
+                          iS = x@iS,
+                          alb = x@alb,
+                          modeTrk = x@modeTrk,
+                          modeShd = x@modeShd,
+                          angGen = x@angGen,
+                          struct = x@struct,
+                          distances = x@distances
+                          )
+            result
+          }
+          )
+
+
+setMethod('[',
+          signature = 'ProdGCPV',
+          definition = function(x, i, j, ...){
+            gef <- as(x, 'Gef')[i = i, j = j, ...] 
+            i <- indexI(gef)[1]
+            j <- indexI(gef)[length(indexI(gef))]
+            d1 <- indexD(x)
+            d2 <- indexI(x)
+            prodIw <- x@prodI[(d2 >= i & d2 <= j)]
+            prodDw <- x@prodD[(d1 >= truncDay(i) & d1 <= truncDay(j))]
+            prodDmw <- prodDw[, lapply(.SD/1000, mean, na.rm = TRUE),
+                              .SDcols = c('Eac', 'Edc'),
+                              by = .(month(Dates), year(Dates))]
+            prodDmw$Yf <- prodDw$Yf
+            if (x@type == 'prom'){
+              prodDmw[, DayOfMonth := DOM(prodDmw)]
+              prodyw <- prodDmw[, lapply(.SD*DayOfMonth, sum, na.rm = TRUE),
+                                .SDcols = c('Eac', 'Edc', 'Yf'),
+                                by = .(Dates = year)]
+              prodDmw[, DayOfMonth := NULL]
+            } else {
+              prodyw <- prodDw[, lapply(.SD/1000, sum, na.rm = TRUE),
+                               .SDcols = c('Eac', 'Edc', 'Yf'),
+                               by = .(Dates = year(Dates))]
+            }
+            prodDmw[, Dates := paste(month.abb[month], year, sep = '. ')]
+            prodDmw[, c('month', 'year') := NULL]
+            setcolorder(prodDmw, c('Dates', names(prodDmw)[-length(prodDmw)]))
+            result <- new('ProdGCPV',
+                          gef,
+                          prodD = prodDw,
+                          prodDm = prodDmw,
+                          prody = prodyw,
+                          prodI = prodIw,
+                          module = x@module,
+                          generator = x@generator,
+                          inverter = x@inverter,
+                          effSys = x@effSys
+                          )
+            result
+          }
+          )
+
+setMethod('[',
+          signature = 'ProdPVPS',
+          definition = function(x, i, j, ...){
+            gef <- as(x, 'Gef')[i = i, j = j, ...] 
+            i <- indexI(gef)[1]
+            j <- indexI(gef)[length(indexI(gef))]
+            d1 <- indexD(x)
+            d2 <- indexI(x)
+            prodIw <- x@prodI[(d2 >= i & d2 <= j)]
+            prodDw <- x@prodD[(d1 >= truncDay(i) & d1 <= truncDay(j))]
+            prodDmw <- prodDw[, .(Eac = Eac/1000,
+                                  Qd = Qd,
+                                  Yf = Yf),
+                              by = .(month(Dates), year(Dates))]
+            if (x@type == 'prom'){
+              prodDmw[, DayOfMonth := DOM(prodDmw)]
+              prodyw <- prodDmw[, lapply(.SD*DayOfMonth, sum, na.rm = TRUE),
+                                .SDcols = c('Eac', 'Qd', 'Yf'),
+                                by = .(Dates = year)]
+              prodDmw[, DayOfMonth := NULL]
+            } else {
+              prodyw <- prodDw[, .(Eac = sum(Eac, na.rm = TRUE)/1000,
+                                   Qd = sum(Qd, na.rm = TRUE),
+                                   Yf = sum(Yf, na.rm = TRUE)),
+                               by = .(Dates = year(Dates))]
+            }
+            prodDmw[, Dates := paste(month.abb[month], year, sep = '. ')]
+            prodDmw[, c('month', 'year') := NULL]
+            setcolorder(prodDmw, c('Dates', names(prodDmw)[-length(prodDmw)]))
+            result <- new('ProdPVPS',
+                          gef,
+                          prodD = prodDw,
+                          prodDm = prodDmw,
+                          prody = prodyw,
+                          prodI = prodIw,
+                          pump = x@pump,
+                          H = x@H,
+                          Pg = x@Pg,
+                          converter = x@converter,
+                          effSys = x@effSys
+                          )
+            result
+          }
+          )
+\end{lstlisting}
+\section{writeSolar}
+\label{sec:orgb086f63}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setGeneric('writeSolar', function(object, file,
+                                  complete = FALSE, day = FALSE,
+                                  timeScales = c('i', 'd', 'm', 'y'), sep = ',',
+                                  ...){
+  standardGeneric('writeSolar')})
+
+setMethod('writeSolar', signature = (object = 'Sol'),
+          definition = function(object, file, complete = FALSE,
+                                day = FALSE,
+                                timeScales = c('i', 'd', 'm', 'y'),
+                                sep = ',', ...){
+            name <- strsplit(file, '\\.')[[1]][1]
+            ext <- strsplit(file, '\\.')[[1]][2]
+            timeScales <- match.arg(timeScales, several.ok = TRUE)
+            if ('i' nilinnil timeScales) {
+              zI <- as.data.tableI(object, complete = complete, day = day)
+              write.table(zI,
+                          file = file, sep = sep, row.names = FALSE, ...)
+            }
+            if ('d' nilinnil timeScales) {
+              zD <- as.data.tableD(object, complete = complete, day = day)
+              write.table(zD,
+                          file = paste(name, 'D', ext, sep = '.'),
+                          sep = sep, row.names = FALSE, ...)
+            }
+            if ('m' nilinnil timeScales) {
+              zM <- as.data.tableM(object, complete = complete, day = day)
+              write.table(zM,
+                          file = paste(name, 'M', ext, sep = '.'),
+                          sep = sep, row.names = FALSE, ...)
+            }
+            if ('y' nilinnil timeScales) {
+              zY <- as.data.tableY(object, complete = complete, day = day)
+              write.table(zY,
+                          file = paste(name, 'Y', ext, sep = '.'),
+                          sep = sep, row.names = FALSE, ...)
+            }
+          })
+\end{lstlisting}
+\section{xyplot}
+\label{sec:orgb84d9f3}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+setGeneric('xyplot')
+
+setMethod('xyplot',
+          signature = c(x = 'data.table', data = 'missing'),
+          definition = function(x, data,
+                                par.settings = solaR.theme.2,
+                                xscale.components = xscale.solar,
+                                yscale.components = yscale.solar,
+                                scales = list(y = 'free'),
+                                ...){
+            N <- length(x)-1
+            x0 <- x[, lapply(.SD, as.numeric), by = Dates]
+            x0 <- melt(x0, id.vars = 'Dates')
+            x0$variable <- factor(x0$variable,
+                                  levels = rev(levels(factor(x0$variable))))
+            xyplot(value ~ Dates | variable, x0,
+                   par.settings = par.settings,
+                   xscale.components = xscale.components,
+                   yscale.components = yscale.components,
+                   scales = scales,
+                   type = 'l', layout = c(1,N),
+                   ...)
+          })
+
+setMethod('xyplot',
+          signature = c(x = 'formula', data = 'Meteo'),
+          definition = function(x, data,
+                                par.settings = solaR.theme,
+                                xscale.components = xscale.solar,
+                                yscale.components = yscale.solar,
+                                ...){
+            data0  <-  getData(data)
+            xyplot(x, data0,
+                   par.settings = par.settings,
+                   xscale.components = xscale.components,
+                   yscale.components = yscale.components,
+                   strip = strip.custom(strip.levels = c(TRUE, TRUE)), ...)
+          }
+          )
+
+setMethod('xyplot',
+          signature = c(x = 'formula', data = 'Sol'),
+          definition = function(x, data,
+                                par.settings = solaR.theme,
+                                xscale.components = xscale.solar,
+                                yscale.components = yscale.solar,
+                                ...){
+            data0 <- as.data.tableI(data, complete = TRUE, day = TRUE)
+            data0[, w := h2r(hms(Dates)-12)]
+            xyplot(x, data0,
+                   par.settings = par.settings,
+                   xscale.components = xscale.components,
+                   yscale.components = yscale.components,
+                   strip = strip.custom(strip.levels = c(TRUE, TRUE)), ...)
+          }
+          )
+
+setMethod('xyplot',
+          signature = c(x = 'formula', data = 'G0'),
+          definition = function(x, data,
+                                par.settings = solaR.theme,
+                                xscale.components = xscale.solar,
+                                yscale.components = yscale.solar,
+                                ...){
+            data0 <- as.data.tableI(data, complete = TRUE, day = TRUE)
+            xyplot(x, data0,
+                   par.settings = par.settings,
+                   xscale.components = xscale.components,
+                   yscale.components = yscale.components,
+                   strip = strip.custom(strip.levels = c(TRUE, TRUE)), ...)
+          }
+          )
+
+setMethod('xyplot',
+          signature = c(x = 'formula', data = 'Shade'),
+          definition = function(x, data,
+                                par.settings = solaR.theme,
+                                xscale.components = xscale.solar,
+                                yscale.components = yscale.solar,
+                                ...){
+            data0 <- as.data.table(data)
+            xyplot(x, data0,
+                   par.settings = par.settings,
+                   xscale.components = xscale.components,
+                   yscale.components = yscale.components,
+                   strip = strip.custom(strip.levels = c(TRUE, TRUE)), ...)
+          }
+          )
+
+setMethod('xyplot',
+          signature = c(x = 'Meteo', data = 'missing'),
+          definition = function(x, data,
+                                ...){
+            x0 <- getData(x)
+            xyplot(x0,
+                   scales = list(cex = 0.6, rot = 0, y = 'free'),
+                   strip = FALSE, strip.left = TRUE,
+                   par.strip.text = list(cex = 0.6),
+                   ylab = '',
+                   ...)
+          }
+          )
+
+setMethod('xyplot',
+          signature = c(x = 'G0', data = 'missing'),
+          definition = function(x, data, ...){
+            x0 <- as.data.tableD(x, complete = FALSE)              
+            x0 <- melt(x0, id.vars = 'Dates')
+            xyplot(value~Dates, x0, groups = variable,
+                   par.settings = solaR.theme.2,
+                   xscale.components = xscale.solar,
+                   yscale.components = yscale.solar,
+                   superpose = TRUE,
+                   auto.key = list(space = 'right'),
+                   ylab = 'Wh/m\u00b2',
+                   type = 'l',
+                   ...)     
+          }
+          )
+
+setMethod('xyplot',
+          signature = c(x = 'ProdGCPV', data = 'missing'),
+          definition = function(x, data, ...){
+            x0 <- as.data.tableD(x, complete = FALSE)
+            xyplot(x0,
+                   strip = FALSE, strip.left = TRUE,
+                   ylab = '', ...)
+          }
+          )
+
+setMethod('xyplot',
+          signature = c(x = 'ProdPVPS', data = 'missing'),
+          definition = function(x, data, ...){
+            x0 <- as.data.tableD(x, complete = FALSE)
+            xyplot(x0,
+                   strip = FALSE, strip.left = TRUE,
+                   ylab = '', ...)
+          }
+          )
+\end{lstlisting}

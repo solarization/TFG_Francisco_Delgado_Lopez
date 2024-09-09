@@ -1,3 +1,22 @@
 \chapter*{Agradecimientos}
 
-Agradezco a ...
+A lo largo de estos años, muchas personas han sido parte esencial de este viaje.
+
+A mis compañeros de lucha: Candela, Hugo, Juan, Sebas, Santi, Jorge, Víctor, y a tantos otros cuyo nombre quizás omito en este momento, pero que sin duda han dejado una huella imborrable en mi camino.
+
+A aquellos que me han acompañado desde tiempos inmemoriales, siendo mi constante apoyo: Raquel, Samu, Adri (por partida doble), Diego y Jonhy. Gracias por estar siempre ahí.
+
+A Eva, por tu apoyo incondicional. Desde que te conocí, mis días han sido un poco mejores, y no tengo palabras para expresar lo que significas para mí.
+
+A mi familia: mi padre, mi madre y mi hermana, quienes han sido mi pilar y mi refugio. Sin vosotros, este logro no habría sido posible.
+
+Por último, a mi tutor, Óscar, quien con su paciencia y saber hacer me ha podido guiar en este proyecto. Gracias por tu tiempo, dedicación y por todo lo que me has enseñado.
+
+A todos vosotros, de corazón, os quiero y nada habría sido igual sin teneros en mi vida.
+
+#+begin_export latex
+\begin{center}
+\vspace{2cm}
+\Huge{\textbf{¡Gracias!}}
+\end{center}
+#+end_export

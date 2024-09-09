@@ -793,7 +793,7 @@ En la creación de un paquete en =R=, la estructura de los archivos es clave par
 - Un archivo *NAMESPACE*, que controla qué funciones y objetos son visibles fuera del paquete.
 - Subdirectoriso como =R/= y =man/=:
   - =R/=: contiene los archivos de codigo =.R=, que son las funciones, clases y métodos definidos en el paquete.
-  - =man/=: contiene las páginas de ayuda y documentación para las funciones, métodos y clases del paqeute.
+  - =man/=: contiene las páginas de ayuda y documentación para las funciones, métodos y clases del paquete.
 
 La estructura básica de un paquete puede generarse con =package.skeleton()=, una función que crea los archivos y carpetas necesarios para empezar a trabajar en el desarrollo.
 

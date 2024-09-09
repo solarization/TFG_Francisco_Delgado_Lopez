@@ -1,13 +1,13 @@
 \chapter{Ejemplo práctico de aplicación}
 \label{chap:ejemplo-practico-aplicacion}
-Una vez explicado cómo funciona el paquete, se puede realizar una demostración práctica tomando como ejemplo los módulos fotovoltaicos que tiene en su azotea la Escuela Técnica Superior de Ingeniería y Diseño Industrial (en adelante la ETSIDI).
+Una vez explicado cómo funciona el paquete, se puede realizar una demostración práctica tomando como ejemplo los módulos fotovoltaicos que tiene en su azotea la Escuela Técnica Superior de Ingeniería y Diseño Industrial (en adelante, la ETSIDI).
 
 Se tomará de base un estudio realizado por profesores de la escuela \cite{adrada17}, en el cual comparan la producción energética de seis tipos de tecnologías fotovoltaicas.
 
 En este ejemplo se realizará el mismo análisis tomando tres herramientas distintas: \texttt{solaR}, para poder tomar como referencia el paquete del que sale, apreciando las mejoras del programa. \texttt{PVSyst}, ya que es uno de los softwares más usados en el ámbito de la fotovoltaica y puede servir como punto de referencia. Y, por último, \texttt{solaR2}.
 
 \section{\texttt{solaR}}
-\label{sec:orgb6ba0d4}
+\label{sec:org1b92e05}
 \label{sec:solaR}
 Se empieza inicilizando el paquete:
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -199,7 +199,7 @@ compare(prod1, prod2)
 
 
 \section{\texttt{PVsyst}}
-\label{sec:org520b683}
+\label{sec:org5c7e7b9}
 Con la herramienta \texttt{PVsyst}, se ha generado un año promedio de datos de irradiación en la localización y con estos datos se han obtenido dos informes (uno por cada sistema).
 
 Por comodidad, en este documento se van a extraer solo unas tablas con los resultados principales. Sin embargo, los informes completos están disponibles en el \href{https://github.com/solarization/TFG\_Francisco\_Delgado\_Lopez}{github} del documento.
@@ -222,7 +222,7 @@ En las tabla \ref{tab:pvsyst} se tienen los resultados de la simulación de los 
 
 
 \section{\texttt{solaR2}}
-\label{sec:orgbedef1d}
+\label{sec:org0437bbf}
 \label{sec:solaR2}
 Con los datos obtenidos en la sección \ref{sec:solaR}, hacemos la misma operación pero con el paquete \texttt{solaR2}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -304,9 +304,9 @@ compare(prod1, prod2)
 
 
 \section{Comparación y conclusiones}
-\label{sec:org032a66a}
+\label{sec:org1a48dc4}
 \label{sec:comparacion-conclusiones}
-Como se puede observar en las secciones anteriores, tanto el paquete \texttt{solaR} como el paquete \texttt{solaR2} ofrecen los mismos resultados, ya que toman las mismas referencias y estudios para realizar los cáculos. Sin embargo, el paquete \texttt{solaR2}, aparte de la corrección de algunos erores, presenta unas claras ventajas frente a su antecesor. Estas son:
+Como se puede observar en las secciones anteriores, tanto el paquete \texttt{solaR} como el paquete \texttt{solaR2} ofrecen los mismos resultados, ya que toman las mismas referencias y estudios para realizar los cáculos. Además, ambos son muy aproximados a los cálculos realizados por \texttt{PVSyst}. Sin embargo, el paquete \texttt{solaR2}, aparte de la corrección de algunos erores, presenta unas claras ventajas frente a su antecesor. Estas son:
 \begin{itemize}
 \item \textbf{Modularidad}: el paquete \texttt{solaR2} presenta muchas funciones que son capaces de realizar pequeñas operaciones, al contrario que \texttt{solaR}, que no permite esto.
 \item \textbf{Eficiencia}: al estar basado en \texttt{data.table}, el paquete gana eficiencia en operaciones complejas. Para mostrar esto vamos a utilizar el paquete \texttt{microbenchmark}.
@@ -327,7 +327,7 @@ microbenchmark(prodGCPVcustom(), times = 20)
 \begin{verbatim}
 Unit: milliseconds
              expr      min       lq     mean   median       uq      max neval
- prodGCPVcustom() 788.9492 804.9692 826.0515 816.6483 851.8184 860.1984    20
+ prodGCPVcustom() 754.7734 772.7985 793.6245 798.6243 813.8846 819.8653    20
 \end{verbatim}
 
 
@@ -347,6 +347,8 @@ microbenchmark(prodGCPVcustom(), times = 20)
 \begin{verbatim}
 Unit: milliseconds
              expr      min       lq     mean   median       uq      max neval
- prodGCPVcustom() 538.4099 546.6735 562.1812 552.9084 571.2363 638.0682    20
+ prodGCPVcustom() 522.6409 526.3855 534.8977 532.7611 539.9016 573.6023    20
 \end{verbatim}
 \end{itemize}
+
+En los resultados anteriores se pueden ver los tiempos de ejecución que han tenido las expresiones, el tiempo que interesa es \texttt{mean} el cual es el tiempo medio de ejecución. Mientras que con \texttt{solaR} se tiene un tiempo de ejecución medio de \(805 ms\), en \texttt{solaR2} es de \(533 ms\) representando una notable mejoría.

@@ -1,7 +1,7 @@
 #+PROPERTY: header-args: :results output :exports both
 \chapter{Ejemplo práctico de aplicación}
 label:chap:ejemplo-practico-aplicacion
-Una vez explicado cómo funciona el paquete, se puede realizar una demostración práctica tomando como ejemplo los módulos fotovoltaicos que tiene en su azotea la Escuela Técnica Superior de Ingeniería y Diseño Industrial (en adelante la ETSIDI).
+Una vez explicado cómo funciona el paquete, se puede realizar una demostración práctica tomando como ejemplo los módulos fotovoltaicos que tiene en su azotea la Escuela Técnica Superior de Ingeniería y Diseño Industrial (en adelante, la ETSIDI).
 
 Se tomará de base un estudio realizado por profesores de la escuela cite:adrada17, en el cual comparan la producción energética de seis tipos de tecnologías fotovoltaicas.
 
@@ -247,7 +247,7 @@ file:figuras/ejemplos4.pdf
 
 * Comparación y conclusiones
 label:sec:comparacion-conclusiones
-Como se puede observar en las secciones anteriores, tanto el paquete =solaR= como el paquete =solaR2= ofrecen los mismos resultados, ya que toman las mismas referencias y estudios para realizar los cáculos. Sin embargo, el paquete =solaR2=, aparte de la corrección de algunos erores, presenta unas claras ventajas frente a su antecesor. Estas son:
+Como se puede observar en las secciones anteriores, tanto el paquete =solaR= como el paquete =solaR2= ofrecen los mismos resultados, ya que toman las mismas referencias y estudios para realizar los cáculos. Además, ambos son muy aproximados a los cálculos realizados por =PVSyst=. Sin embargo, el paquete =solaR2=, aparte de la corrección de algunos erores, presenta unas claras ventajas frente a su antecesor. Estas son:
 - *Modularidad*: el paquete =solaR2= presenta muchas funciones que son capaces de realizar pequeñas operaciones, al contrario que =solaR=, que no permite esto.
 - *Eficiencia*: al estar basado en =data.table=, el paquete gana eficiencia en operaciones complejas. Para mostrar esto vamos a utilizar el paquete =microbenchmark=.
   #+begin_src R :session solaR
@@ -276,3 +276,4 @@ Como se puede observar en las secciones anteriores, tanto el paquete =solaR= com
   microbenchmark(prodGCPVcustom(), times = 20)
   #+end_src
   
+En los resultados anteriores se pueden ver los tiempos de ejecución que han tenido las expresiones, el tiempo que interesa es =mean= el cual es el tiempo medio de ejecución. Mientras que con =solaR= se tiene un tiempo de ejecución medio de $805 ms$, en =solaR2= es de $533 ms$ representando una notable mejoría.

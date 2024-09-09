@@ -10,15 +10,15 @@
 }
 \makeatother
 
-En la figura \ref{fig:org01022e0}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
+En la figura \ref{fig:org0cd6c6b}, se muestra el proceso de cálculo que sigue el paquete a la hora de obtener la estimación de la producción del sistema fotovoltaico.
 \begin{figure}[!htb]
 \centering
 \includegraphics[keepaspectratio,width=0.8\textwidth,height=0.43\textheight]{figuras/procedure.pdf}
-\caption{\label{fig:org01022e0}Proceso de cálculo de las funciones de \texttt{solaR2}}
+\caption{\label{fig:org0cd6c6b}Proceso de cálculo de las funciones de \texttt{solaR2}}
 \end{figure}
 A la hora de estimar la producción, el programa sigue los siguientes procesos\footnote{Todas las funciones recogidas en este capítulo están descritas en el manual de uso del paquete \texttt{solaR2}, el cual, está disponible en el apéndice \ref{chap:manual} de este documento.}:
 \section{Geometría solar}
-\label{sec:org109a220}
+\label{sec:orgeb4a631}
 \label{sec:geometria-solar}
 Para calcular la geometría que definen las posiciones de la Tierra y el Sol, \texttt{solaR2} se vale de una función constructora, \texttt{calcSol}, la cual calcula mediante las funciones \texttt{fSolD} y \texttt{fSolI} todos los ángulos y componentes que caracterizan la geometría solar.
 \begin{figure}[!htb]
@@ -211,7 +211,7 @@ Intradaily values:
 
 
 \section{Datos meteorológicos}
-\label{sec:org92e7255}
+\label{sec:org7bab4b9}
 \label{sec:datos-meteorologicos}
 Para el procesamiento de datos meteorologicos, \texttt{solaR2} provee una serie de funciones que son capaces de leer todo tipo de datos. Estos datos se procesan y se almacenan en un objeto de tipo \texttt{Meteo} tal y como se ve en la figura \ref{fig:meteo}. Estas funciones son:
 \begin{figure}[!htb]
@@ -356,22 +356,22 @@ Source of meteorological information: bd-zoo-bd_zoo
 Latitude of source:  40 degrees
 
 Meteorological Data:
-    TempAvg          TempMax          TempMin           HumidAvg         HumidMax     
- Min.   :-5.309   Min.   :-2.362   Min.   :-12.980   Min.   : 19.89   Min.   : 35.88  
- 1st Qu.: 7.692   1st Qu.:14.530   1st Qu.:  1.515   1st Qu.: 47.04   1st Qu.: 81.60  
- Median :13.810   Median :21.670   Median :  7.170   Median : 62.58   Median : 90.90  
- Mean   :14.405   Mean   :22.531   Mean   :  6.888   Mean   : 62.16   Mean   : 87.22  
- 3rd Qu.:21.615   3rd Qu.:30.875   3rd Qu.: 12.590   3rd Qu.: 77.38   3rd Qu.: 94.90  
- Max.   :30.680   Max.   :41.910   Max.   : 22.710   Max.   :100.00   Max.   :100.00  
-                                   NA's   :4                          NA's   :13      
-    WindAvg         WindMax            Rain          Radiation            ET       
- Min.   :0.251   Min.   : 0.000   Min.   : 0.000   Min.   : 0.277   Min.   :0.000  
- 1st Qu.:0.667   1st Qu.: 3.783   1st Qu.: 0.000   1st Qu.: 9.370   1st Qu.:1.168  
- Median :0.920   Median : 5.027   Median : 0.000   Median :16.660   Median :2.758  
- Mean   :1.174   Mean   : 5.208   Mean   : 1.094   Mean   :16.742   Mean   :3.091  
- 3rd Qu.:1.431   3rd Qu.: 6.537   3rd Qu.: 0.200   3rd Qu.:24.650   3rd Qu.:4.926  
- Max.   :8.260   Max.   :10.000   Max.   :49.730   Max.   :32.740   Max.   :8.564  
- NA's   :8       NA's   :128      NA's   :4        NA's   :13       NA's   :18
+    TempAvg          TempMax          TempMin           HumidAvg         HumidMax         WindAvg     
+ Min.   :-5.309   Min.   :-2.362   Min.   :-12.980   Min.   : 19.89   Min.   : 35.88   Min.   :0.251  
+ 1st Qu.: 7.692   1st Qu.:14.530   1st Qu.:  1.515   1st Qu.: 47.04   1st Qu.: 81.60   1st Qu.:0.667  
+ Median :13.810   Median :21.670   Median :  7.170   Median : 62.58   Median : 90.90   Median :0.920  
+ Mean   :14.405   Mean   :22.531   Mean   :  6.888   Mean   : 62.16   Mean   : 87.22   Mean   :1.174  
+ 3rd Qu.:21.615   3rd Qu.:30.875   3rd Qu.: 12.590   3rd Qu.: 77.38   3rd Qu.: 94.90   3rd Qu.:1.431  
+ Max.   :30.680   Max.   :41.910   Max.   : 22.710   Max.   :100.00   Max.   :100.00   Max.   :8.260  
+                                   NA's   :4                          NA's   :13       NA's   :8      
+    WindMax            Rain          Radiation            ET       
+ Min.   : 0.000   Min.   : 0.000   Min.   : 0.277   Min.   :0.000  
+ 1st Qu.: 3.783   1st Qu.: 0.000   1st Qu.: 9.370   1st Qu.:1.168  
+ Median : 5.027   Median : 0.000   Median :16.660   Median :2.758  
+ Mean   : 5.208   Mean   : 1.094   Mean   :16.742   Mean   :3.091  
+ 3rd Qu.: 6.537   3rd Qu.: 0.200   3rd Qu.:24.650   3rd Qu.:4.926  
+ Max.   :10.000   Max.   :49.730   Max.   :32.740   Max.   :8.564  
+ NA's   :128      NA's   :4        NA's   :13       NA's   :18
 \end{verbatim}
 
 \begin{itemize}
@@ -406,7 +406,7 @@ xyplot(bd_SIAR)
 \FloatBarrier
 
 \section{Radiación en el plano horizontal}
-\label{sec:orgef52519}
+\label{sec:org94ee2d4}
 \label{sec:radiacion-plano-horizontal}
 Una vez se ha calculado la geometría solar (sección \ref{sec:geometria-solar}) y se han procesado los datos meteorológicos (sección \ref{sec:datos-meteorologicos}), es necesario calcular la radiación en el plano horizontal. Para ello, \texttt{solaR2} cuenta con la función \texttt{calcG0} la cual mediante las funciones \texttt{fCompD} y \texttt{fCompI} procesan los objetos de clase \texttt{Sol} y clase \texttt{Meteo} para dar un objeto de tipo \texttt{G0}.
 
@@ -682,26 +682,26 @@ Latitude of source:  37.2 degrees
 Latitude for calculations:  37.2 degrees
 
 Monthly avarages:
-	Dates   G0d       D0d      B0d
-       <char> <num>     <num>    <num>
- 1: Jan. 2024 2.766 1.1769780 1.589022
- 2: Feb. 2024 3.491 1.4965314 1.994469
- 3: Mar. 2024 4.494 1.9537945 2.540206
- 4: Apr. 2024 5.912 2.2418093 3.670191
- 5: May. 2024 6.989 2.5327481 4.456252
- 6: Jun. 2024 7.742 2.3121619 5.429838
- 7: Jul. 2024 7.919 2.1421337 5.776866
- 8: Aug. 2024 7.027 2.0625317 4.964468
- 9: Sep. 2024 5.369 1.9028916 3.466108
-10: Oct. 2024 3.562 1.5524009 2.009599
-11: Nov. 2024 2.814 1.2697345 1.544266
-12: Dec. 2024 2.179 0.9790772 1.199923
+	Dates   G0d      D0d      B0d
+       <char> <num>    <num>    <num>
+ 1: Jan. 2024 2.766 1.176443 1.589557
+ 2: Feb. 2024 3.491 1.552772 1.938228
+ 3: Mar. 2024 4.494 1.944015 2.549985
+ 4: Apr. 2024 5.912 2.262911 3.649089
+ 5: May. 2024 6.989 2.452166 4.536834
+ 6: Jun. 2024 7.742 2.340395 5.401605
+ 7: Jul. 2024 7.919 2.245288 5.673712
+ 8: Aug. 2024 7.027 1.984920 5.042080
+ 9: Sep. 2024 5.369 1.820113 3.548887
+10: Oct. 2024 3.562 1.631909 1.930091
+11: Nov. 2024 2.814 1.219041 1.594959
+12: Dec. 2024 2.179 1.168041 1.010959
 
 Yearly values:
 Key: <Dates>
    Dates      G0d      D0d      B0d
    <int>    <num>    <num>    <num>
-1:  2024 1839.365 659.5869 1179.778
+1:  2024 1839.365 664.9904 1174.375
 \end{verbatim}
 
 \item Diarios.
@@ -720,26 +720,26 @@ Latitude of source:  37.2 degrees
 Latitude for calculations:  37.2 degrees
 
 Monthly avarages:
-	Dates   G0d       D0d      B0d
-       <char> <num>     <num>    <num>
- 1: Jan. 2024 2.766 1.1769780 1.589022
- 2: Feb. 2024 3.491 1.4965314 1.994469
- 3: Mar. 2024 4.494 1.9537945 2.540206
- 4: Apr. 2024 5.912 2.2418093 3.670191
- 5: May. 2024 6.989 2.5327481 4.456252
- 6: Jun. 2024 7.742 2.3121619 5.429838
- 7: Jul. 2024 7.919 2.1421337 5.776866
- 8: Aug. 2024 7.027 2.0625317 4.964468
- 9: Sep. 2024 5.369 1.9028916 3.466108
-10: Oct. 2024 3.562 1.5524009 2.009599
-11: Nov. 2024 2.814 1.2697345 1.544266
-12: Dec. 2024 2.179 0.9790772 1.199923
+	Dates   G0d      D0d      B0d
+       <char> <num>    <num>    <num>
+ 1: Jan. 2024 2.766 1.176443 1.589557
+ 2: Feb. 2024 3.491 1.552772 1.938228
+ 3: Mar. 2024 4.494 1.944015 2.549985
+ 4: Apr. 2024 5.912 2.262911 3.649089
+ 5: May. 2024 6.989 2.452166 4.536834
+ 6: Jun. 2024 7.742 2.340395 5.401605
+ 7: Jul. 2024 7.919 2.245288 5.673712
+ 8: Aug. 2024 7.027 1.984920 5.042080
+ 9: Sep. 2024 5.369 1.820113 3.548887
+10: Oct. 2024 3.562 1.631909 1.930091
+11: Nov. 2024 2.814 1.219041 1.594959
+12: Dec. 2024 2.179 1.168041 1.010959
 
 Yearly values:
 Key: <Dates>
    Dates      G0d      D0d      B0d
    <int>    <num>    <num>    <num>
-1:  2024 1839.365 659.5869 1179.778
+1:  2024 1839.365 664.9904 1174.375
 \end{verbatim}
 
 \item Intradiarios
@@ -757,7 +757,7 @@ xyplot(g0_bdI)
 \end{itemize}
 
 \section{Radiación efectiva en el plano del generador}
-\label{sec:orgb6363bc}
+\label{sec:org76e2cc6}
 \label{sec:radiacion-efectiva-plano-generador}
 Teniendo la radiación incidente en plano horizontal (sección \ref{sec:radiacion-plano-horizontal}), se puede calcular la radiación efectiva incidente en el plano del generador. Para ello, \texttt{solaR2} cuenta con la función \texttt{calcGef} la cual mediante las funciones \texttt{fInclin} y \texttt{calcShd} procesa un objeto de clase \texttt{G0} para obtener un objeto \texttt{Gef}.
 
@@ -886,34 +886,34 @@ summary(inclin_horizBright)
 \end{lstlisting}
 
 \begin{verbatim}
-    Dates                              Bo               Bn               G            
-Min.   :2024-01-01 08:00:00.00   Min.   :   0.0   Min.   :   0.0   Min.   :   0.7525  
-1st Qu.:2024-01-09 09:45:00.00   1st Qu.: 642.2   1st Qu.: 172.3   1st Qu.: 217.3151  
-Median :2024-01-17 09:30:00.00   Median :1005.1   Median : 442.3   Median : 397.6211  
-Mean   :2024-01-16 21:56:08.92   Mean   : 898.5   Mean   : 429.1   Mean   : 440.6188  
-3rd Qu.:2024-01-24 13:15:00.00   3rd Qu.:1152.8   3rd Qu.: 620.6   3rd Qu.: 643.0926  
-Max.   :2024-01-31 17:00:00.00   Max.   :1248.5   Max.   :1096.3   Max.   :1233.0016  
-      D                  Di                 Dc               B               R          
-Min.   :  0.7325   Min.   :  0.7325   Min.   :  0.00   Min.   :  0.0   Min.   :0.02004  
-1st Qu.: 92.2355   1st Qu.: 42.5318   1st Qu.: 26.80   1st Qu.:102.7   1st Qu.:1.55837  
-Median :157.4754   Median : 69.8887   Median : 62.33   Median :243.2   Median :3.01912  
-Mean   :146.7138   Mean   : 80.7260   Mean   : 65.99   Mean   :290.7   Mean   :3.20341  
-3rd Qu.:201.0823   3rd Qu.:109.7007   3rd Qu.:102.84   3rd Qu.:448.2   3rd Qu.:4.70426  
-Max.   :258.4991   Max.   :194.7251   Max.   :217.20   Max.   :968.8   Max.   :8.95534  
-     FTb                FTd               FTr              Dief               Dcef       
-Min.   :0.005218   Min.   :0.06474   Min.   :0.2995   Min.   :  0.6714   Min.   :  0.00  
-1st Qu.:0.010325   1st Qu.:0.06474   1st Qu.:0.2995   1st Qu.: 38.9829   1st Qu.: 24.45  
-Median :0.022076   Median :0.06474   Median :0.2995   Median : 64.0571   Median : 57.44  
-Mean   :0.062300   Mean   :0.06474   Mean   :0.2995   Mean   : 73.9901   Mean   : 62.68  
-3rd Qu.:0.096613   3rd Qu.:0.06474   3rd Qu.:0.2995   3rd Qu.:100.5471   3rd Qu.: 99.37  
-Max.   :0.344085   Max.   :0.06474   Max.   :0.2995   Max.   :178.4769   Max.   :211.72  
-     Gef                 Def                Bef             Ref         
-Min.   :   0.6851   Min.   :  0.6714   Min.   :  0.0   Min.   :0.01376  
-1st Qu.: 189.3710   1st Qu.: 82.9391   1st Qu.: 89.3   1st Qu.:1.06983  
-Median : 368.1590   Median :146.3958   Median :228.1   Median :2.07265  
-Mean   : 414.8556   Mean   :136.6667   Mean   :276.0   Mean   :2.19917  
-3rd Qu.: 613.4620   3rd Qu.:190.1735   3rd Qu.:433.8   3rd Qu.:3.22951  
-Max.   :1197.0799   Max.   :246.6144   Max.   :944.3   Max.   :6.14792
+    Dates                              Bo               Bn              G                 D          
+Min.   :2024-01-01 08:00:00.00   Min.   :   0.0   Min.   :  0.0   Min.   :  1.254   Min.   :  1.239  
+1st Qu.:2024-01-09 09:45:00.00   1st Qu.: 642.2   1st Qu.:239.6   1st Qu.:250.068   1st Qu.: 92.531  
+Median :2024-01-17 09:30:00.00   Median :1005.1   Median :429.8   Median :435.266   Median :154.755  
+Mean   :2024-01-16 21:56:08.92   Mean   : 898.5   Mean   :431.0   Mean   :443.303   Mean   :146.836  
+3rd Qu.:2024-01-24 13:15:00.00   3rd Qu.:1152.8   3rd Qu.:600.9   3rd Qu.:632.498   3rd Qu.:199.386  
+Max.   :2024-01-31 17:00:00.00   Max.   :1248.5   Max.   :933.1   Max.   :973.752   Max.   :263.669  
+      Di                Dc               B               R                FTb          
+Min.   :  1.239   Min.   :  0.00   Min.   :  0.0   Min.   :0.01459   Min.   :0.005218  
+1st Qu.: 41.090   1st Qu.: 32.11   1st Qu.:118.0   1st Qu.:1.60665   1st Qu.:0.010325  
+Median : 70.073   Median : 64.77   Median :251.2   Median :3.18833   Median :0.022076  
+Mean   : 81.033   Mean   : 65.80   Mean   :293.3   Mean   :3.20341   Mean   :0.062300  
+3rd Qu.:111.953   3rd Qu.:100.94   3rd Qu.:433.3   3rd Qu.:4.65641   3rd Qu.:0.096613  
+Max.   :207.392   Max.   :138.00   Max.   :788.7   Max.   :6.63920   Max.   :0.344085  
+     FTd               FTr              Dief              Dcef             Gef         
+Min.   :0.06474   Min.   :0.2995   Min.   :  1.136   Min.   :  0.00   Min.   :  1.146  
+1st Qu.:0.06474   1st Qu.:0.2995   1st Qu.: 37.661   1st Qu.: 28.36   1st Qu.:222.077  
+Median :0.06474   Median :0.2995   Median : 64.226   Median : 60.97   Median :407.536  
+Mean   :0.06474   Mean   :0.2995   Mean   : 74.272   Mean   : 62.51   Mean   :417.403  
+3rd Qu.:0.06474   3rd Qu.:0.2995   3rd Qu.:102.611   3rd Qu.: 97.08   3rd Qu.:604.978  
+Max.   :0.06474   Max.   :0.2995   Max.   :190.087   Max.   :134.17   Max.   :942.569  
+     Def               Bef             Ref         
+Min.   :  1.136   Min.   :  0.0   Min.   :0.01001  
+1st Qu.: 84.049   1st Qu.:107.4   1st Qu.:1.10298  
+Median :145.718   Median :234.1   Median :2.18882  
+Mean   :136.777   Mean   :278.4   Mean   :2.19917  
+3rd Qu.:186.844   3rd Qu.:417.3   3rd Qu.:3.19667  
+Max.   :246.447   Max.   :766.8   Max.   :4.55787
 \end{verbatim}
 
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -923,34 +923,34 @@ summary(inclin_HCPV)
 \end{lstlisting}
 
 \begin{verbatim}
-    Dates                              Bo               Bn               G           
-Min.   :2024-01-01 08:00:00.00   Min.   :   0.0   Min.   :   0.0   Min.   :   0.759  
-1st Qu.:2024-01-09 09:45:00.00   1st Qu.: 642.2   1st Qu.: 172.3   1st Qu.: 217.582  
-Median :2024-01-17 09:30:00.00   Median :1005.1   Median : 442.3   Median : 398.216  
-Mean   :2024-01-16 21:56:08.92   Mean   : 898.5   Mean   : 429.1   Mean   : 441.268  
-3rd Qu.:2024-01-24 13:15:00.00   3rd Qu.:1152.8   3rd Qu.: 620.6   3rd Qu.: 643.703  
-Max.   :2024-01-31 17:00:00.00   Max.   :1248.5   Max.   :1096.3   Max.   :1233.438  
-      D                 Di                Dc               B               R          
-Min.   :  0.739   Min.   :  0.739   Min.   :  0.00   Min.   :  0.0   Min.   :0.02004  
-1st Qu.: 92.681   1st Qu.: 43.015   1st Qu.: 26.80   1st Qu.:102.7   1st Qu.:1.55837  
-Median :158.225   Median : 70.553   Median : 62.33   Median :243.2   Median :3.01912  
-Mean   :147.363   Mean   : 81.375   Mean   : 65.99   Mean   :290.7   Mean   :3.20341  
-3rd Qu.:201.937   3rd Qu.:110.504   3rd Qu.:102.84   3rd Qu.:448.2   3rd Qu.:4.70426  
-Max.   :259.957   Max.   :196.049   Max.   :217.20   Max.   :968.8   Max.   :8.95534  
-     FTb                FTd               FTr              Dief        Dcef        Gef       
-Min.   :0.005218   Min.   :0.06474   Min.   :0.2995   Min.   :0   Min.   :0   Min.   :  0.0  
-1st Qu.:0.010325   1st Qu.:0.06474   1st Qu.:0.2995   1st Qu.:0   1st Qu.:0   1st Qu.: 89.3  
-Median :0.022076   Median :0.06474   Median :0.2995   Median :0   Median :0   Median :228.1  
-Mean   :0.062300   Mean   :0.06474   Mean   :0.2995   Mean   :0   Mean   :0   Mean   :276.0  
-3rd Qu.:0.096613   3rd Qu.:0.06474   3rd Qu.:0.2995   3rd Qu.:0   3rd Qu.:0   3rd Qu.:433.8  
-Max.   :0.344085   Max.   :0.06474   Max.   :0.2995   Max.   :0   Max.   :0   Max.   :944.3  
-     Def         Bef             Ref   
-Min.   :0   Min.   :  0.0   Min.   :0  
-1st Qu.:0   1st Qu.: 89.3   1st Qu.:0  
-Median :0   Median :228.1   Median :0  
-Mean   :0   Mean   :276.0   Mean   :0  
-3rd Qu.:0   3rd Qu.:433.8   3rd Qu.:0  
-Max.   :0   Max.   :944.3   Max.   :0
+    Dates                              Bo               Bn              G                 D          
+Min.   :2024-01-01 08:00:00.00   Min.   :   0.0   Min.   :  0.0   Min.   :  1.254   Min.   :  1.239  
+1st Qu.:2024-01-09 09:45:00.00   1st Qu.: 642.2   1st Qu.:239.6   1st Qu.:250.737   1st Qu.: 92.991  
+Median :2024-01-17 09:30:00.00   Median :1005.1   Median :429.8   Median :436.322   Median :155.406  
+Mean   :2024-01-16 21:56:08.92   Mean   : 898.5   Mean   :431.0   Mean   :443.994   Mean   :147.526  
+3rd Qu.:2024-01-24 13:15:00.00   3rd Qu.:1152.8   3rd Qu.:600.9   3rd Qu.:633.625   3rd Qu.:200.380  
+Max.   :2024-01-31 17:00:00.00   Max.   :1248.5   Max.   :933.1   Max.   :974.219   Max.   :265.185  
+      Di                Dc               B               R                FTb          
+Min.   :  1.239   Min.   :  0.00   Min.   :  0.0   Min.   :0.01459   Min.   :0.005218  
+1st Qu.: 41.562   1st Qu.: 32.11   1st Qu.:118.0   1st Qu.:1.60665   1st Qu.:0.010325  
+Median : 70.740   Median : 64.77   Median :251.2   Median :3.18833   Median :0.022076  
+Mean   : 81.724   Mean   : 65.80   Mean   :293.3   Mean   :3.20341   Mean   :0.062300  
+3rd Qu.:112.885   3rd Qu.:100.94   3rd Qu.:433.3   3rd Qu.:4.65641   3rd Qu.:0.096613  
+Max.   :208.731   Max.   :138.00   Max.   :788.7   Max.   :6.63920   Max.   :0.344085  
+     FTd               FTr              Dief        Dcef        Gef             Def   
+Min.   :0.06474   Min.   :0.2995   Min.   :0   Min.   :0   Min.   :  0.0   Min.   :0  
+1st Qu.:0.06474   1st Qu.:0.2995   1st Qu.:0   1st Qu.:0   1st Qu.:107.4   1st Qu.:0  
+Median :0.06474   Median :0.2995   Median :0   Median :0   Median :234.1   Median :0  
+Mean   :0.06474   Mean   :0.2995   Mean   :0   Mean   :0   Mean   :278.4   Mean   :0  
+3rd Qu.:0.06474   3rd Qu.:0.2995   3rd Qu.:0   3rd Qu.:0   3rd Qu.:417.3   3rd Qu.:0  
+Max.   :0.06474   Max.   :0.2995   Max.   :0   Max.   :0   Max.   :766.8   Max.   :0  
+     Bef             Ref   
+Min.   :  0.0   Min.   :0  
+1st Qu.:107.4   1st Qu.:0  
+Median :234.1   Median :0  
+Mean   :278.4   Mean   :0  
+3rd Qu.:417.3   3rd Qu.:0  
+Max.   :766.8   Max.   :0
 \end{verbatim}
 \end{itemize}
 
@@ -1222,7 +1222,7 @@ xyplot(gef_shdbt)
 \end{figure}
 \FloatBarrier
 \section{Producción eléctrica de un SFCR}
-\label{sec:org6dbfbb7}
+\label{sec:org8637c40}
 \label{produccion-electrica-sfcr}
 Con la radiación efectiva, se puede estimar la producción eléctrica que va a tener un sistema fotovoltaico conectado a red. Esta estimación se puede calcular mediante la función \texttt{prodGCPV}, la cual mediante la función \texttt{fProd} procesa un objeto de clase \texttt{Gef} y obtiene un objeto \texttt{ProdGCPV}.
 
@@ -1411,7 +1411,7 @@ xyplot(prodHoriz)
 \end{figure}
 
 \section{Producción eléctrica de un SFB}
-\label{sec:orgff49876}
+\label{sec:orgd150467}
 De igual forma que en el apartado anterior, se puede estimar la producción eléctrica de un sistema fotovoltaico de bombeo.
 
 Como se puede ver en la figura \ref{fig:prodpvps}, \texttt{prodPVPS} funciona gracias a la siguiente función:
@@ -1475,8 +1475,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x000001b203fb2390>
-<environment: 0x000001b2046bf238>
+<bytecode: 0x000001fe77bc1ac0>
+<environment: 0x000001fe76b3f7b0>
 \end{verbatim}
 
 \item \texttt{fPb}: función que relaciona la potencia del eje de la bomba con la potencia eléctrica del motor.
@@ -1502,8 +1502,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x000001b203fb2390>
-<environment: 0x000001b201b95e60>
+<bytecode: 0x000001fe77bc1ac0>
+<environment: 0x000001fe77fb0b70>
 \end{verbatim}
 
 \item \texttt{fPh}: función que relaciona la potencia hidráulica con la potencia eléctrica del motor.
@@ -1529,8 +1529,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x000001b203fb2390>
-<environment: 0x000001b201a36ab0>
+<bytecode: 0x000001fe77bc1ac0>
+<environment: 0x000001fe75bb3078>
 \end{verbatim}
 
 \item \texttt{fFreq}: función que relaciona la frecuencia con la potencia eléctrica del motor.
@@ -1556,8 +1556,8 @@ function (x, deriv = 0L)
 	res[ind] <- ifelse(deriv == 1, z$y[1L], 0)
     res
 }
-<bytecode: 0x000001b203fb2390>
-<environment: 0x000001b2047b6198>
+<bytecode: 0x000001fe77bc1ac0>
+<environment: 0x000001fe709c7e68>
 \end{verbatim}
 \end{itemize}
 
@@ -1604,7 +1604,7 @@ xyplot(prodsfb)
 \end{figure}
 \end{itemize}
 \section{Optimización de distancias}
-\label{sec:org7ab9e30}
+\label{sec:org6b3673e}
 \label{optimizacion-distancias}
 Por último, el paquete \texttt{solaR2} contiene una función que permite calcular un conjunto de combinaciones de distancias entre los elementos de un sistema fotovoltaico conectado a red, con el fin de que el usuario posteriormente pueda valorar cuál es la opción mas rentable en base a los precios del cableado y de la ocupación del terreno.
 
@@ -1720,10 +1720,10 @@ shadeplot(Shd12Fixed)
 
 
 \section{Aspectos técnicos de la elaboración de un paquete en R}
-\label{sec:org87aed23}
+\label{sec:org7567f99}
 \label{sec:aspectos-tecnicos}
 \subsection{Estructura básica del paquete}
-\label{sec:org3441552}
+\label{sec:orgb835fb4}
 \label{subsec:estructura-paquete}
 En la creación de un paquete en \texttt{R}, la estructura de los archivos es clave para asegurar un desarrollo organizado y que \texttt{R} pueda interactuar correctamente con el código y  los datos. Los paquetes de R son esencialmente un conjunto de archivos organizados en un directorio específio. El contenido mínimo requerido incluye:
 \begin{itemize}
@@ -1732,14 +1732,14 @@ En la creación de un paquete en \texttt{R}, la estructura de los archivos es cl
 \item Subdirectoriso como \texttt{R/} y \texttt{man/}:
 \begin{itemize}
 \item \texttt{R/}: contiene los archivos de codigo \texttt{.R}, que son las funciones, clases y métodos definidos en el paquete.
-\item \texttt{man/}: contiene las páginas de ayuda y documentación para las funciones, métodos y clases del paqeute.
+\item \texttt{man/}: contiene las páginas de ayuda y documentación para las funciones, métodos y clases del paquete.
 \end{itemize}
 \end{itemize}
 
 La estructura básica de un paquete puede generarse con \texttt{package.skeleton()}, una función que crea los archivos y carpetas necesarios para empezar a trabajar en el desarrollo.
 
 \subsection{DESCRIPTION}
-\label{sec:orged42fd3}
+\label{sec:org8bf4bcb}
 \label{subsec:description}
 El fichero \textbf{DESCRIPTION} es fundamental, ya que incluye la información descriptiva y técnica del paquete, como el nombre, la versión, los autores y las dependencias. Un ejemplo típico de este archivo es el siguiente:
 \begin{examplebox}
@@ -1778,7 +1778,7 @@ Los campos principales de este archivo son:
 
 Este archivo es crucial para que los usuarios y el sistema \texttt{R} identifiquen las características y requisitos del paquete
 \subsection{NAMESPACE}
-\label{sec:org3734087}
+\label{sec:org77f93fb}
 \label{subsec:namespace}
 El archivo \textbf{NAMESPACE} es el encargado de gestionar el espacio de nombres del paquete, permitiendo definir qué funciones y objetos serán visibles (exportados) y cuáles se mantendrán internos. Además, es útil para definir qué funciones o métodos de otros paquetes serán importados para su uso dentro del paquete.
 
@@ -1809,7 +1809,7 @@ search()
 \end{verbatim}
 
 \subsubsection{Manejo de variables}
-\label{sec:org8f98ed2}
+\label{sec:org8351480}
 \begin{itemize}
 \item Exportar variables:
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -1826,7 +1826,7 @@ importFrom(pkgExt, var1, var2)
 \end{lstlisting}
 \end{itemize}
 \subsubsection{Manejo de clases y métodos}
-\label{sec:orge592cf5}
+\label{sec:org5985167}
 \begin{itemize}
 \item Para registrar un \textbf{método} para una \textbf{clase} determinada:
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -1852,7 +1852,7 @@ importMethodsFrom(package, ...)
 \end{lstlisting}
 \end{itemize}
 \subsection{Documentación}
-\label{sec:org35a40c9}
+\label{sec:org3d8430f}
 \label{subsec:documentacion}
 La documentación en R sigue un formato específico llamado \texttt{Rd} (\emph{R documentation}), que está inspirado en LaTex. Cada función, método o clase del paquete debe tener una página de documentación asociada, que generalmente se encuentra en el subdirectorio \texttt{man/}. Estas páginas incluyen información sobre el uso de la función, argumentos, detalles de la implementación y ejemplos de uso.
 \begin{examplebox}
