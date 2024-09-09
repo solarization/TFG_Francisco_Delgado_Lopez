@@ -1,23 +1,23 @@
 #+PROPERTY: header-args R :session solaR2 :eval yes :results output :exports both
 \chapter{Conclusiones}
 * Aportaciones
-Al partir de un proyecto ya creado, =solaR=, surge la necesidad de explicar cuales son las aportaciones de este paquete. Para ello, se puede usar el repositorio donde se ha alojado este proyecto y comentar los datos que este ofrece.
+Al partir de un proyecto ya creado, =solaR=, surge la necesidad de explicar cuáles son las aportaciones de este paquete. Para ello, se puede usar el repositorio donde se ha alojado este proyecto y comentar los datos que este ofrece.
 
 ** Blame
-En GitHub, el término /blame/ se refiere a una función que permite ver quién fue el autor de cada línea específica de código en un archivo. Por ejemplo, si se quisiera ver quien ha realizado cada línea de la función =fCompD= en GitHub, podriamos acceder a su página en el repositorio, y pulsar en el botón [[https://github.com/solarization/solaR2/blame/master/R/fCompD.R][/blame/]].
+En GitHub, el término /blame/ se refiere a una función que permite ver quién fue el autor de cada línea específica de código en un archivo. Por ejemplo, si se quisiera ver quién ha realizado cada línea de la función =fCompD= en GitHub, se podría acceder a su página en el repositorio, y pulsar en el botón [[https://github.com/solarization/solaR2/blame/master/R/fCompD.R][/blame/]].
 
 Una vez en esta pestaña (figura ref:fig:blame), se pueden distinguir varias partes:
 #+CAPTION: Pestaña /blame/ de GitHub de la función =fCompD=. label:fig:blame
 file:figuras/blame-fCompD.pdf
-- A la izquierda, se puede ver la fecha en la que se modificó esa linea por última vz.
+- A la izquierda, se puede ver la fecha en la que se modificó esa línea por última vez.
 - A continuación, se tiene el nombre del /commit/[fn:1] en el que se cambió.
-- Después, se puede tener acceso al /blame prior/, en el cual se puede ver como era el resto del archivo cuando se realizó ese /commit/.
+- Después, se puede tener acceso al /blame prior/, en el cual se puede ver cómo era el resto del archivo cuando se realizó ese /commit/.
 - Por último, se muestra el número de línea y su contenido.
 
 Este análisis resulta revelador a la hora de comprender los aprotes de este proyecto, ya que se pueden entender los cambios que se han hecho y comprenderlos en el contexto de cada momento del proyecto.
 
 ** Insights
-GitHub también cuenta con una serie de herramientas y características que proporcionan información detallada y análisis sobre el rendimiento, la actividad y la salud de un repositorio. Entre ellas, se encuentra /contributors/. Esta herramienta muestra información sobre las contribuciones individuales de los miembros del equipo. Con ella, se puede ver el número de lineas añadidas y eliminadas y el número de /commits/ realizado por cada miembro (ref:fig:contributors).
+GitHub también cuenta con una serie de herramientas y características que proporcionan información detallada y análisis sobre el rendimiento, la actividad y la salud de un repositorio. Entre ellas, se encuentra /contributors/. Esta herramienta muestra información sobre las contribuciones individuales de los miembros del equipo. Con ella, se puede ver el número de líneas añadidas y eliminadas y el número de /commits/ realizado por cada miembro (ref:fig:contributors).
 #+CAPTION: Sección /contributors/ de GitHub para los últimos 6 meses. label:fig:contributors
 file:figuras/contributors.png
 
@@ -25,10 +25,6 @@ Todas estas herramientas dejan ver la magnitud de los cambios que se han produci
 
 * Comparación de resultados
 Como se ve en el capítulo ref:chap:ejemplo-practico-aplicacion, los resultados son identicos a los que ofrecía =solaR=. Sin embargo, el número de funciones es mayor, lo que permite calcular datos aislados facilitando mucho las labores de investigación. Además, los tiempos de ejecución y el uso de memoria han disminuido mucho.
-#+begin_src R :exports none
-library(solaR2)
-library(profvis)
-#+end_src
 #+begin_src R :eval no :results none :exports code
 lat <- 37.2;
 
@@ -63,7 +59,7 @@ profvis({prodFixed <- prodGCPV(lat = lat, dataRad = prom,
 
 * Desarrollo futuro
 Pese a que =solaR2= ya es un paquete muy capaz, aún quedan varios puntos a mejorar:
-- *Interfaz de usuario*: el lenguaje =R= es un lenguaje orientado a objetos, por lo que un paquete basado en este puede entorpecer a los usuarios menos entendidos en este lenguaje. Por ello, cabe la posibilidad de añadir al paquete una interfaz de usuario que permita a los usuarios introducir sus datos de forma guiada.
+- *Interfaz de usuario*: el lenguaje =R= es un lenguaje orientado a objetos, por lo que un paquete basado en este, puede entorpecer a los usuarios menos entendidos en este lenguaje. Por ello, cabe la posibilidad de añadir al paquete una interfaz de usuario que permita a los usuarios introducir sus datos de forma guiada.
 - *Mejora de funciones*: muchas funciones pueden seguir desarrollandose, mejorando su eficiencia o simplemente incluyendo nuevas funcionalidades.
 - *Toma de datos*: Aunque =solaR2= ya cuente con la función =readSIAR=, mejoraría notablemente incorporando una función que sea capaz de obtener datos meteorológicos de forma ilimitada (la función =readSIAR= tiene un límite de 100 registros por minuto).
 - *Uso de paquetes especializados en datos espaciales*: Paquetes como =terra= cite:hijmans24 podrían ser útiles para aumentar la eficiencia y rapidez de =solaR2=.
