@@ -37,58 +37,58 @@ Como se mencionó en el capítulo ref:chap:introduccion, existen una serie de he
    
    Este software es probablemente se encuentra entre los más conocidos dentro del ámbito del estudio y la estimación de instalaciones fotovoltaicas. Destaca por la personalización detallada de los componentes de la instalación (módulos, inversores, sombreado, etc.), lo que permite una simulación precisa a través de datos meteorológicos y parámetros detallados del sistema. Su uso está extendido en proyectos de gran escala y estuidos avanzados de eficiencia.
    - Ventajas:
-     - *completo y profesional*: PVsyst es altamente detallado, permitiendo análisis avanzados para proyectos pequeños y grandes.
-     - *base de datos meteorológicos*: integra datos climáticos de fuentes como Meteonorm cite:jan20, lo que mejora la precisión de las simulaciones.
-     - *simulaciones avanzadas*: permite modelar la energía producida por una planta fotovoltaica y calcular las pérdidas debidas a sombreamiento, inclinación, orientaciones y resistencias internas de los módulos.
-     - *herramientas de dimensionamiento*: ofrece módulos específicos para diseñar la configuración de inversores y módulos solares.
+     - *Completo y profesional*: PVsyst es altamente detallado, permitiendo análisis avanzados para proyectos pequeños y grandes.
+     - *Base de datos meteorológicos*: integra datos climáticos de fuentes como Meteonorm cite:jan20, lo que mejora la precisión de las simulaciones.
+     - *Simulaciones avanzadas*: permite modelar la energía producida por una planta fotovoltaica y calcular las pérdidas debidas a sombreamiento, inclinación, orientaciones y resistencias internas de los módulos.
+     - *Herramientas de dimensionamiento*: ofrece módulos específicos para diseñar la configuración de inversores y módulos solares.
    - Limitaciones:
-     - *costo*: es un software comercial, con licencias que pueden ser costosas para proyectos pequeños.
-     - *curva de aprendizaje*: su interfaz puede resultar compleja para usuarios nuevos, lo que implica una curva de aprendizaje considerable.
-     - *enfoque técnico*: está más orientado a ingenieros y técnicos, por lo que carece de accedsibilidad para usuarios no especializados.
+     - *Costo*: es un software comercial, con licencias que pueden ser costosas para proyectos pequeños.
+     - *Curva de aprendizaje*: su interfaz puede resultar compleja para usuarios nuevos, lo que implica una curva de aprendizaje considerable.
+     - *Enfoque técnico*: está más orientado a ingenieros y técnicos, por lo que carece de accedsibilidad para usuarios no especializados.
 2. *SISIFO* cite:sisifo.
    
    Herramienta web diseñada por el *Grupo de Sistemas Fotovoltaicos del Instituto de Energía Solar de la Universidad Politécnica de Madrid*. Está diseñada para ser accesible y fácil de usar, enfocándose en una audiencia más general, incluyenco ingenieros, pero también técnicos y académicos.
    - Ventajas:
-     - *facilidad de uso*: tiene una interfaz amigable y fácil de utilizar, lo que lohace accesible para usuarios con distintos niveles de experiencia.
-     - *open-source*: al ser de código abierto, permite a los desarrolladores modificar y adaptar el software a sus necesidades específicas.
-     - *simulación integrada*: ofrece la posibilidad de realizar simulaciones basadas en datos meteorológicos, aunque con un nivel de detalle inferior a PVsyst.
-     - *soporte comunitario*: al ser de código abierto, cuenta con una comunidad activa de usuarios y desarrrolladores que colaboran en mejoras y actualizaciones.
+     - *Facilidad de uso*: tiene una interfaz amigable y fácil de utilizar, lo que lohace accesible para usuarios con distintos niveles de experiencia.
+     - *Open-source*: al ser de código abierto, permite a los desarrolladores modificar y adaptar el software a sus necesidades específicas.
+     - *Simulación integrada*: ofrece la posibilidad de realizar simulaciones basadas en datos meteorológicos, aunque con un nivel de detalle inferior a PVsyst.
+     - *Soporte comunitario*: al ser de código abierto, cuenta con una comunidad activa de usuarios y desarrrolladores que colaboran en mejoras y actualizaciones.
    - Limitaciones:
-     - *escasa precisión*: al compararse con otras herramientas, su precisión puede ser menor en cuanto a modelado y simulación de pérdidas, ya que simplifica varios aspectos del sistema.
-     - *poca funcionalidad en grandes proyectos*: no se adapta a las grandes instalaciones o análisis financieros avanzados con la misma eficacia que en los proyectos más reducidos.
+     - *Escasa precisión*: al compararse con otras herramientas, su precisión puede ser menor en cuanto a modelado y simulación de pérdidas, ya que simplifica varios aspectos del sistema.
+     - *Poca funcionalidad en grandes proyectos*: no se adapta a las grandes instalaciones o análisis financieros avanzados con la misma eficacia que en los proyectos más reducidos.
 3. *PVGIS* cite:pvgis.
    
    Aplicación web desarrolada por el *European Commission Joint Research Center* desde 2001. Está diseñada para proporcionar estimaciones de producción de energía solar en función de la ubicación geográfica y condiciones meteorológicas históricas.
    - Ventajas:
-     - *gratuito y accesible*: esta herramienta es completamente gratuira y accesible a través de una interfaz web, lo que facilita el uso por parte de cualquier persona.
-     - *datos meteorológicos precisos*: proporciona acceso a datos meteorológicos satelitales y de estaciones terrestres, lo que permite obtener estimaciones razonables de producción de energía.
-     - *estudios rápidos*: es ideal para obtener estimaciones preliminares y estudios de viabilidad de sistemas fotovoltaicos.
+     - *Gratuito y accesible*: esta herramienta es completamente gratuira y accesible a través de una interfaz web, lo que facilita el uso por parte de cualquier persona.
+     - *Datos meteorológicos precisos*: proporciona acceso a datos meteorológicos satelitales y de estaciones terrestres, lo que permite obtener estimaciones razonables de producción de energía.
+     - *Estudios rápidos*: es ideal para obtener estimaciones preliminares y estudios de viabilidad de sistemas fotovoltaicos.
    - Limitaciones:
-     - *falta de personalización*: en comparación con otros programas más avanzados, PVGIS no permite personalizar detalles técnicos de la instalación (por ejemplo, inversores específicos o modelos de paneles) lo que puede reducir la precisión en estudios detallados.
-     - *limitación en análisis de pérdidas*: no ofrece herramientas avanzadas para modelar pérdidas complejas como sombreamiento detallado, resistencias internas o interacciones entre componentes específicos del sistema.
-     - *enfoque limitado*: está diseñado principalmente para estimaciones rápidas, por lo que no es adecuado para proyectos a gran escala o análisis financieros detallados.
+     - *Falta de personalización*: en comparación con otros programas más avanzados, PVGIS no permite personalizar detalles técnicos de la instalación (por ejemplo, inversores específicos o modelos de paneles) lo que puede reducir la precisión en estudios detallados.
+     - *Limitación en análisis de pérdidas*: no ofrece herramientas avanzadas para modelar pérdidas complejas como sombreamiento detallado, resistencias internas o interacciones entre componentes específicos del sistema.
+     - *Enfoque limitado*: está diseñado principalmente para estimaciones rápidas, por lo que no es adecuado para proyectos a gran escala o análisis financieros detallados.
 4. *System Advisor Model* cite:sam.
    
    Desarrollado por el *Laboratorio Nacional de Energías Renovables*, perteneciente al Departamento de energía del gobierno de EE.UU. Está orientada a la modelación tanto técnica como económica de sistemas de energía renovable, incluyendo fotovoltaicos.
    - Ventajas:
-     - *modelo económico avanzado*: integra análisis detalados sobre la viabilidad económica, lo que permite evaluar tanto la producción energética como los costos y benefecios a lo largo de la vida útil del proyecto.
-     - *acceso a múltiples tecnologías*: además de fotovoltaicos, permite modelar otras tecnologías de energía renovable, lo que lo hace más flexible para estuidos multidisciplinares.
-     - *integración de bases de datos*: utiliza datos meteorológicos detallados, lo que mejora la precisión de las simulaciones.
+     - *Modelo económico avanzado*: integra análisis detalados sobre la viabilidad económica, lo que permite evaluar tanto la producción energética como los costos y benefecios a lo largo de la vida útil del proyecto.
+     - *Acceso a múltiples tecnologías*: además de fotovoltaicos, permite modelar otras tecnologías de energía renovable, lo que lo hace más flexible para estuidos multidisciplinares.
+     - *Integración de bases de datos*: utiliza datos meteorológicos detallados, lo que mejora la precisión de las simulaciones.
    - Limitaciones:
-     - *complejidad*: aunque gratuito, SAM es bastante complejo y técnico, esto puede hacer que solo los usuarios con experiencia en el modelado de sistemas energéticos puedan utilizarlo.
-     - *interfaz poco intuitiva*: comparado con otras herramientas, requiere un mayor tiempo de familiarización debido a su enfoque integral y detalle en las simulaciones.
+     - *Complejidad*: aunque gratuito, SAM es bastante complejo y técnico, esto puede hacer que solo los usuarios con experiencia en el modelado de sistemas energéticos puedan utilizarlo.
+     - *Interfaz poco intuitiva*: comparado con otras herramientas, requiere un mayor tiempo de familiarización debido a su enfoque integral y detalle en las simulaciones.
 
 Como se mencionó en el capitulo ref:chap:introduccion este proyecto toma su base en el paquete =solaR= cite:perpinan12, el cual es una herramienta robusta para el cálculo de la radiación solar y el rendimiento de sistemas fotvoltaicos.
 
 Este paquete está diseñado utilizando clases =S4= en =R=, y su núcleo se basa en series temporales multivariantes almacenadas en objetos de la clase =zoo=. Su funcionamiento se basa, al igual que =solaR2=, en una serie de funciones constructoras que calculan objetos relacionados con cada paso de la simulación de un sistema fotovoltaico. Podemos dividir su funcionamiento en los siguientes grupos:
-1. *cálculo de la geometría solar*: calcula el movimiento aparente diario (con =fSolD=) e intradiario (con =fSolI=) del Sol desde la Tierra. Para ello se vale de la función =calcSol= la cual devuelve un objeto de clase =Sol= que contiene todos los ángulos necesarios.
-2. *almacenamiento de datos meteorológicos*: se define la clase =Meteo=, la cual, se construye mediante una serie de funciones (=readBD=, =readG0dm=, =zoo2Meteo=, =df2Meteo= ...). Estas funciones toman los datos meteorológicos provenientes de distintas vias (un =data.frame=, un objeto =zoo=, un fichero...) y los adapta para que puedan ser manipulados por el resto de funciones del paquete.
-3. *cálculo de radiación en un plano horizontal*: tomando los objetos anteriores, es capaz de calcular (si no vienen ya dadas) las componentes de la irradiación (con =fCompD=) y de la irradiancia (con =fCompI=). La función =calcG0= devuelve un objeto =G0= que contiene las anteriores componentes y añade medias mensuales de valores diarios y sumas anuales de la irradiación.
-4. *cálculo de radiación en el plano del generador*: toma un objeto =G0= y lo transforma en un objeto =Gef= mediante la función =calcGef=, la cual utilizando las funciones =fTheta= y =fInclin= determinan la irradiación y la radiación efectiva al igual que las medias mensuales de la irradiación diaria y sumas anuales.
-5. *simulación de sistemas fotovoltaicos conectados a red*: con un objeto =Gef= y con los parametros del sistema, la función =prodGCPV=, tomando los resultado de la función =fProd=, cálcula la producción energética de un SFCR. Devuleve un objeto de clase =ProdGCPV= que incluye valores de potencias instantaneas y energías diarias, medias mensuales y sumas anuales.
-6. *simulación de sistemas fotovoltaicos de bombeo*: toma un objeto =Gef= y con los paremetros del sistema y de la bomba, la función =prodPVPS=, tomando los resultados de la función =fPump=, cálcula la producción energética de un SFB.
-7. *optimización de distancias*: es capaz de optimizar las distancias de un sfcr mediante la función =optimShd=, la cual devuelve un objeto =Shade= el cual contiene multiples combinaciones de distancias para que el usuario pueda decidir la mejor.
-8. *métodos de visualización*: para cada uno de los objetos mencionados existen métodos de visualización gráfica para ayudar a comprender los resultados obtenidos.
+1. *Cálculo de la geometría solar*: calcula el movimiento aparente diario (con =fSolD=) e intradiario (con =fSolI=) del Sol desde la Tierra. Para ello se vale de la función =calcSol= la cual devuelve un objeto de clase =Sol= que contiene todos los ángulos necesarios.
+2. *Almacenamiento de datos meteorológicos*: se define la clase =Meteo=, la cual, se construye mediante una serie de funciones (=readBD=, =readG0dm=, =zoo2Meteo=, =df2Meteo= ...). Estas funciones toman los datos meteorológicos provenientes de distintas vias (un =data.frame=, un objeto =zoo=, un fichero...) y los adapta para que puedan ser manipulados por el resto de funciones del paquete.
+3. *Cálculo de radiación en un plano horizontal*: tomando los objetos anteriores, es capaz de calcular (si no vienen ya dadas) las componentes de la irradiación (con =fCompD=) y de la irradiancia (con =fCompI=). La función =calcG0= devuelve un objeto =G0= que contiene las anteriores componentes y añade medias mensuales de valores diarios y sumas anuales de la irradiación.
+4. *Cálculo de radiación en el plano del generador*: toma un objeto =G0= y lo transforma en un objeto =Gef= mediante la función =calcGef=, la cual utilizando las funciones =fTheta= y =fInclin= determinan la irradiación y la radiación efectiva al igual que las medias mensuales de la irradiación diaria y sumas anuales.
+5. *Simulación de sistemas fotovoltaicos conectados a red*: con un objeto =Gef= y con los parametros del sistema, la función =prodGCPV=, tomando los resultado de la función =fProd=, cálcula la producción energética de un SFCR. Devuleve un objeto de clase =ProdGCPV= que incluye valores de potencias instantaneas y energías diarias, medias mensuales y sumas anuales.
+6. *Simulación de sistemas fotovoltaicos de bombeo*: toma un objeto =Gef= y con los paremetros del sistema y de la bomba, la función =prodPVPS=, tomando los resultados de la función =fPump=, cálcula la producción energética de un SFB.
+7. *Optimización de distancias*: es capaz de optimizar las distancias de un sfcr mediante la función =optimShd=, la cual devuelve un objeto =Shade= el cual contiene multiples combinaciones de distancias para que el usuario pueda decidir la mejor.
+8. *Métodos de visualización*: para cada uno de los objetos mencionados existen métodos de visualización gráfica para ayudar a comprender los resultados obtenidos.
    
 Pese a ser un herramienta muy capaz, =solaR= presenta una serie de carencias relativas:
 - *Modularidad*: el paquete =solaR= contiene funciones que realizan muchas operaciones, esto deja poco lugar al usuario para que pueda entender cada componente independientemente.

@@ -296,7 +296,8 @@ file:figuras/calcg0.pdf
     lat <- 37.2
     BTd <- fBTd(mode = 'prom')
     solD <- fSolD(lat, BTd)
-    G0d <- c(2.766,3.491,4.494,5.912,6.989,7.742,7.919,7.027,5.369,3.562,2.814,2.179) * 1000
+    G0d <- c(2.766,3.491,4.494,5.912,6.989,7.742,
+	     7.919,7.027,5.369,3.562,2.814,2.179) * 1000
     compD_page <- fCompD(sol = solD, G0d = G0d, corr = "Page")
     compD_page[, group := 'page']
     compD_lj <- fCompD(sol = solD, G0d = G0d, corr = "LJ")
@@ -313,15 +314,15 @@ file:figuras/calcg0.pdf
     file:figuras/codigo-fcompdmes.pdf
     - Diarios:
     #+begin_src R :results graphics output :file "figuras/codigo-fcompddia.pdf" :width 8 :height 6 
-    G0d <- readSIAR(Lat = 40.40596822621351, Lon =-3.70038308516172,
-		    inicio = '2024-07-15', final = '2024-08-01',
-		    tipo = 'Diarios', n_est = 3)
-    sol <- calcSol(lat, BTd = indexD(G0d))
-    compD_cpr <- fCompD(sol = sol, G0d = G0d, corr = "CPR")
+    sol <- calcSol(lat, BTd = indexD(helios_meteo))
+    compD_cpr <- fCompD(sol = sol, G0d = helios_meteo,
+			corr = "CPR")
     compD_cpr[, group := 'cpr']
-    compD_ekdd <- fCompD(sol = sol, G0d = G0d, corr = 'EKDd')
+    compD_ekdd <- fCompD(sol = sol, G0d = helios_meteo,
+			 corr = 'EKDd')
     compD_ekdd[, group := 'ekdd']
-    compD_climedd <- fCompD(sol = sol, G0d = G0d, corr = 'CLIMEDd')
+    compD_climedd <- fCompD(sol = sol, G0d = helios_meteo,
+			    corr = 'CLIMEDd')
     compD_climedd[, group := 'climedd']
     compD_mes <- rbind(compD_cpr, compD_ekdd, compD_climedd)
     xyplot(Fd + D0d + B0d ~ Dates, compD_mes,
@@ -342,7 +343,8 @@ file:figuras/calcg0.pdf
 	  (Kt>0.8)*0.141
       return(data.table(Fd, Kt))
     }
-    compD_user <- fCompD(sol = sol, G0d = G0d, corr = 'user', f = f_corrd)
+    compD_user <- fCompD(sol = sol, G0d = helios_meteo,
+			 corr = 'user', f = f_corrd)
     xyplot(compD_user)
     #+end_src
     #+ATTR_LATEX: :placement [!htb] :width 0.8\textwidth
@@ -359,11 +361,11 @@ file:figuras/calcg0.pdf
 - =fCompI=: calcula, en base a los valores de irradiación diaria, todas las componentes de irradiancia. Se vale de dos procedimientos en base al tipo de argumentos que toma:
   - =compD=: si recibe un =data.table= resultado de =fCompD=, calcula las relaciones entre las componentes de irradiancia e irradiación de las componentes de difusa y global, obteniendo con ellas un perfil de irradiancias [ref:sec:radiacion-superficies-inclinadas] (las irradiancias global y difusa salen de estas relaciones, mientras que la directa surge por diferencia entre las dos).
   #+begin_src R :results graphics output :file "figuras/codigo-fcompicompd.pdf" :width 8 :height 6
-  sol <- calcSol(lat = 37.2, BTd = fBTd(mode = 'prom'),
-		 sample = 'hour', keep.night = FALSE)
-  G0d <- c(2.766,3.491,4.494,5.912,6.989,7.742,7.919,
-	    7.027,5.369,3.562,2.814,2.179) * 1000
-  compD <- fCompD(sol = sol, G0d = G0d, corr = 'CPR')
+  ## Se recorta helios_meteo para mejorar la visualización
+  bdh <- helios_meteo[, as.Date('2009-01-03')]
+  sol <- calcSol(lat = 37.2, BTd = indexD(bdh),
+		 sample = 'min', keep.night = FALSE)
+  compD <- fCompD(sol = sol, G0d = bdh)
   compI <- fCompI(sol = sol, compD = compD)
   xyplot(compI)
   #+end_src
@@ -379,7 +381,7 @@ file:figuras/calcg0.pdf
   compI_brl[, group := 'brl']
   compI_climedh <- fCompI(sol = sol, G0I = G0I, corr = 'CLIMEDh')
   compI_climedh[, group := 'climedh']
-  compI_all <- rbind(compI_ekdh, compI_ekdh, compI_climedh)
+  compI_all <- rbind(compI_ekdh, compI_brl, compI_climedh)
   xyplot(Fd+ D0 +B0 ~ Dates, compI_all,
 	 groups= group, type = 'l',auto.key= TRUE,
 	 par.settings= solaR.theme,scales =list(y = 'free'),
@@ -522,7 +524,7 @@ file:figuras/calcgef.pdf
 	 par.settings = solaR.theme, scales = list(y = 'free'),
 	 ylab = '', layout = c(2, 2))
   #+end_src
-  #+ATTR_LATEX: :placement [!htb] :width 0.8\textwidth
+  #+ATTR_LATEX: :placement [!htb] :width 0.9\textwidth
   #+CAPTION: Comparación entre resultados de la función =fInclin= tomando diferentes niveles de suciedad.
   file:figuras/codigo-finclinis.pdf
   - =alb=: correspondiente al coeficiente de reflexión del terreno para la irradiancia de albedo. Por defecto, tiene un valor de 0,2 (valor aceptable para un terreno normal).
@@ -537,7 +539,7 @@ file:figuras/calcgef.pdf
 	 par.settings = solaR.theme, scales = list(y = 'free'),
 	 ylab = '', layout = c(2, 2))
   #+end_src
-  #+ATTR_LATEX: :placement [!htb] :width 0.8\textwidth
+  #+ATTR_LATEX: :placement [!htb] :width 0.9\textwidth
   #+CAPTION: Comparación entre resultados de la función =fInclin= tomando diferentes valores del coeficiente de reflexión del terreno.
   file:figuras/codigo-finclinalb.pdf
   Además, cuenta con dos argumentos adicionales, =horizBright=, el cual, cuando su valor es =TRUE= (el que tiene por defecto), realiza una corrección de la radiación difusa cite:REINDL19909, y =HCPV=, es el acrónimo de *High Concentration PV system*[fn:8] (sistema fotovoltaico de alta concentración) que cuando su valor es =TRUE= (por defecto está puesto en =FALSE=), anula los valores de radiación difusa y de albedo.
@@ -656,7 +658,7 @@ effSys <- list(ModQual=3, ModDisp=2, OhmDC=1.5, OhmAC=1.5,
 prod <- fProd(inclin = inclin, module = module,
               generator = generator, inverter = inverter,
               effSys = effSys)
-show(prod)
+summary(prod)
 #+end_src
 
 Esta función brinda tales datos a la función =prodGCPV= para que produzca un objeto de clase =ProdGCPV= como resultado. Esta función tiene como argumentos principales los mismo que =calcGef=, ya que parte de un objeto tipo =Gef=, y los argumentos de la función =fProd=.
@@ -668,7 +670,7 @@ show(prodFixed)
 prod2x <- prodGCPV(lat, modeTrk = 'two', dataRad = prom)
 show(prod2x)
 #+end_src
-#+begin_src R :results graphics output :file "figuras/codigo-prodgcpv.pdf" :width 8 :height 6
+#+begin_src R :results graphics output :file "figuras/codigo-prodgcpv.pdf" :width 12 :height 9
 prodHoriz <- prodGCPV(lat, modeTrk = 'horiz', dataRad = prom)
 xyplot(prodHoriz)
 #+end_src
@@ -690,9 +692,9 @@ file:figuras/prodpvps.pdf
       show(CoefSP8A44)
     #+end_src
   - =H=: el salto manometrico total.
-  #+begin_src R
+    #+begin_src R
     fSP8A44 <- fPump(pump = CoefSP8A44, H = 40)
-  #+end_src
+    #+end_src
   Obtiene como resultado los siguientes valores y funciones:
   - =lim=: rango de valores de la potencia eléctrica de salida.
     #+begin_src R

@@ -231,12 +231,9 @@ donde:
 Es importante resaltar que estos perfiles proceden de medias sobre largos períodos, de ahí que, como es observable en la figura [[fig:Perfil-de-irradiancia]], las fluctuaciones propias del movimiento de nubes a lo largo del día queden atenuadas y se obtenga una curva sin alteraciones.
 #+NAME: fig:Perfil-de-irradiancia
 #+CAPTION: Perfil de irradiancia difusa y global obtenido a partir del generador empírico de [[cite:Collares-Pereira.Rabl1979]] para valores de irradiancia tomadas cada 10 minutos. Figura 3.4 del libro ESF cite:Perpinan2023.
-#+ATTR_LATEX: :scale 0.85
+#+ATTR_LATEX: :scale 0.86 :placement [H]
 [[file:figuras/RgRd.pdf]]
 
-#+begin_export latex
-\FloatBarrier
-#+end_export
 ** Transformación al plano del generador
 label:subsec:transformación-plano-generador
 Una vez otenidos los valores de irradiancia en el plano horizontal, se traspone al plano del generador:
@@ -367,19 +364,19 @@ label:subsec:funcionamiento-celula-solar
 Para calcular la energía producida por un generador fotovoltaico, se deben tener en cuenta la influencia de factores tales como la radiación o la temperatura en una célula solar[fn:17] y en los valores de tensión y corriente que se alcanzan en dichas condiciones.
 
 Para definir una célula solar, se tomar 4 variables:
-- La corriente de cortocircuito: \(I_{sc}\)
+- La corriente de cortocircuito: \(I_{sc}\).
   #+begin_export latex
   \nomenclature[Isc]{\(I_{sc}\)}{Corriente de cortocircuito de una célula}
   #+end_export
-- La tensión de circuito abierto: \(V_{oc}\)
+- La tensión de circuito abierto: \(V_{oc}\).
   #+begin_export latex
   \nomenclature[VOC]{\(V_{oc}\)}{Tensión de circuito abierto de una célula}
   #+end_export
-- La corriente en el punto de máxima potencia: \(I_{mpp}\)
+- La corriente en el punto de máxima potencia: \(I_{mpp}\).
   #+begin_export latex
   \nomenclature[Impp]{$I_{mpp}$}{Corriente de una célula en el punto de máxima potencia}
   #+end_export
-- La tensión en el punto de máxima potencia: \(V_{mpp}\)
+- La tensión en el punto de máxima potencia: \(V_{mpp}\).
   #+begin_export latex
   \nomenclature[Vmpp]{$V_{mpp}$}{Tensión de una célula en el punto de máxima potencia}
   #+end_export
@@ -422,16 +419,16 @@ La temperatura y la radiación son factores cruciales en el funcionamiento de un
 En cuanto a la iluminación, la fotocorriente y la tensión de circuito abierto son proporcionales a la irradiancia incidente.
 
 Tomando en cuenta estas influencias, se definen una condiciones de funcionamiento, denominadas condiciones estándar de medida (STC)\nomenclature[STC]{STC}{Condiciones estándar de medida de un dispositivo fotovoltaico}, válidas para caracterizar una célula en el entorno de un laboratorio. Estas condiciones vienen determinadas por:
-- Irradiancia: $G_{stc}=1000W/m^2$ con incidencia normal
+- Irradiancia: $G_{stc}=1000W/m^2$ con incidencia normal.
   #+begin_export latex
   \nomenclature[GSTC]{\(G_{STC}\)}{Irradiancia incidente en condiciones estandar de medida}
   #+end_export
-- Temperatura de célula: $T_c^*=25^\circ C$ \nomenclature[TC*]{\(T_c^*\)}{Temperatura de célula en condiciones estándar de medida}
-- Masa de aire: $AM=1,5$[fn:18]
+- Temperatura de célula: $T_c^*=25^\circ C$. \nomenclature[TC*]{\(T_c^*\)}{Temperatura de célula en condiciones estándar de medida}
+- Masa de aire: $AM=1,5$[fn:18].
 Frecuentemente los fabricantes informan de los valores de las tensiones $V_{oc}^*$ y $V_{mpp}^*$ y las corrientes $I_{sc}^*$ y $I_{mpp}^*$[fn:19]. A partir de estos valores es posible referir a estas condiciones:
-- La potencia: $P_{mpp}^*=I_{mpp}^*\cdot V_{mpp}^*$
-- El factor de forma: $FF^*=\frac{P_{mpp}^*}{I_{sc}^*\cdot V_{oc}^*}$
-- La eficiencia: $\eta^*=\frac{I_{mpp}^*\cdot V_{mpp}^*}{A_c\cdot G_{stc}}$
+- La potencia: $P_{mpp}^*=I_{mpp}^*\cdot V_{mpp}^*$.
+- El factor de forma: $FF^*=\frac{P_{mpp}^*}{I_{sc}^*\cdot V_{oc}^*}$.
+- La eficiencia: $\eta^*=\frac{I_{mpp}^*\cdot V_{mpp}^*}{A_c\cdot G_{stc}}$.
   
 ** Funcionamiento de un módulo fotovoltaico
 label:subsec:funcionamiento-modulo-fotovoltaico
@@ -443,11 +440,11 @@ El módulo recibe una cantidad de radiación dada, absorbiendo la fracción de e
 Para simplificar, se puede asumir que el incremento de la temperatura de la célula respecto de la temperatura ambiente depende linealmente de la irradiancia incidente en esta. El coeficiente de proporcionalidad depende de muchos factores, tales como el modo de instalación del módulo, la velocidad del viento, la humedad ambiente y las características constructivas del laminado.
 
 Estos factores quedan recogidos en un valor único representado por la temperatura de operación nominal de célula (NOCT o TONC)\nomenclature[TONC]{\(TONC\)}{Temperatura de operación nominal de célula}, definida como aquella que alcanza una /célula/ cuando su /módulo/ trabaja en las siguientes condiciones:
-- Irradiancia: $G=800W/m^2$
-- Masa de aire: $AM= 1,5$
-- Irradiancia normal
-- Temperatura /ambiente/: $T_a=20^\circ C$
-- Velocidad de viento: $v_v=1m/s$
+- Irradiancia: $G=800W/m^2$.
+- Masa de aire: $AM= 1,5$.
+- Irradiancia normal.
+- Temperatura /ambiente/: $T_a=20^\circ C$.
+- Velocidad de viento: $v_v=1m/s$.
 
 La ecuación [[ref:eq:temp-cel]] expresa una aproximación aceptable del comportamiento térmico de una célula integrada en un módulo en base a las consideraciones previas:
 #+begin_export latex
@@ -739,15 +736,15 @@ Ahora el cálculo en la integral solo depende de la radiación, temperatura, y e
 
 Para calcular esta altura total equivalente, se debe suponer que:
 - El pozo está caracterizado con tres parámetros:
-  - Nivel estático, $H_{st}$
+  - Nivel estático, $H_{st}$.
     #+begin_export latex
     \nomenclature[Hst]{$H_{st}$}{Nivel estático de un pozo}
     #+end_export
-  - Nivel dinámico, $H_{dt}$
+  - Nivel dinámico, $H_{dt}$.
     #+begin_export latex
     \nomenclature[Hdt]{$H_{dt}$}{Nivel dinámico de un pozo}
     #+end_export
-  - Caudal de ensayo, $Q_t$ \nomenclature[Qt]{$Q_t$}{Caudal de ensayo de un pozo}
+  - Caudal de ensayo, $Q_t$ \nomenclature[Qt]{$Q_t$}{Caudal de ensayo de un pozo}.
 - Que se ha realizado el ensayo de bombeo para caracterizar los pozos con bomba portátil empleando el caudal máximo del pozo, $Q_{max}$ ($Q_t=Q_{max}$).
   #+begin_export latex
   \nomenclature[Qman]{$Q_{max}$}{Caudal máximo del pozo}
