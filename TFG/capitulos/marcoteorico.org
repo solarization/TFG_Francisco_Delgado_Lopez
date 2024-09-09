@@ -604,6 +604,11 @@ La potencia obtenida en el paso anterior es la de un solo módulo. Para conocer 
 P_g^*=N_s\cdot N_p\cdot P_m^*
 \end{equation}
 #+end_export
+#+begin_export latex
+\nomenclature[Pg*]{$P_g^*$}{Potencia del generador en condiciones estándar}
+\nomenclature[Ns]{$N_s$}{Número de módulos en serie de un generador}
+\nomenclature[Np]{$N_p$}{Número de ramas en paralelo en un generador}
+#+end_export
 Con este paso se obtiene la potencia horaria entregada por el generador fotovoltaico. El siguiente paso será pasar esa potencia a través del inversor y calcular la potencia a la salida de este.
 
 Primero, se esteblecen las expresiones de las potencias normalizadas, siendo $P_{inv}$ la potencia nominal del inversor:
@@ -614,9 +619,13 @@ Primero, se esteblecen las expresiones de las potencias normalizadas, siendo $P_
 \begin{equation}
 p_i=\frac{P_{DC}}{P_{inv}}
 \end{equation}
+\nomenclature[pi]{$p_i$}{Potencia continua a la entrada de un inversor normalizada por la potencia nominal del equipo}
+\nomenclature[PDC]{$P_{DC}$}{Potencia continua a la salida de un generador fotovoltaico}
 \begin{equation}
 p_o=\frac{P_{AC}}{P_{inv}}
 \end{equation}
+\nomenclature[po]{$p_o$}{Potencia alterna a la salida de un inversor normalizada por la potencia nominal del equipo}
+\nomenclature[PAC]{$P_{AC}$}{Potencia alterna a la salida de un inversor}
 #+end_export
 
 Por otro lado, el rendimiento de un inversor fotovoltaico se puede modelizar de la siguiente manera:
@@ -658,6 +667,7 @@ y la productividad:
 \begin{equation}
 Y_f=\frac{E_{ac}}{P_g^*}
 \end{equation}
+\nomenclature[Yf]{$Y_f$}{Productividad de un sistema fotovoltaico}
 #+end_export  
 
 ** Cálculo de potencias y energías de un sistema fovoltaico de bombeo
