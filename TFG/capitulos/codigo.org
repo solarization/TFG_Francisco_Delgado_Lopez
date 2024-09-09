@@ -26,14 +26,14 @@ Para calcular la geometría que definen las posiciones de la Tierra y el Sol, =s
 #+ATTR_LATEX: :placement [!htb] :height 0.8\textheight :width \textwidth :options keepaspectratio
 [[file:figuras/calcSol.pdf]]
 
-Como se puede ver en la figura ref:fig:calcSol, =calcSol= funcia gracias a las siguientes funciones:
+Como se puede ver en la figura ref:fig:calcSol, =calcSol= funciona gracias a las siguientes funciones:
 - =fSolD=: la cual, a partir de la latitud (\(\phi\)), calcula la geometría a nivel diario, es decir, los ángulos y componentes que se pueden calcular en cada día independiente.
   Estas son:
   - Declinación (\(\delta\)): calculada a partir de la función =declination=.
   - Excentricidad (\(\epsilon_o\)): obtenida mediante la función =eccentricity=.
   - Ecuación del tiempo (\(EoT\)): obtenida mediante la función =eot=.
   - Ángulo del amanecer (\(\omega_s\)): calculada a partir de la función =sunrise=.
-  - Irradiancia diaria extra-atmosférica (\(B_{0d}(0)\)): obtenida a paritr de la función =bo0d=.
+  - Irradiancia diaria extra-atmosférica (\(B_{0d}(0)\)): obtenida a partir de la función =bo0d=.
 #+begin_src R :exports none
   library(solaR2)
   library(zoo)
@@ -146,8 +146,8 @@ show(sol)
 
 * Datos meteorológicos
 label:sec:datos-meteorologicos
-Para el procesamiento de datos meteorologicos, =solaR2= provee una serie de funciones que son capaces de leer todo tipo de datos. Estos datos se procesan y se almacenan en un objeto de tipo =Meteo= tal y como se ve en la figura ref:fig:meteo. Estas funciones son:
-#+CAPTION: Los datos meteorologicas se pueden leer mediante las funciones =readG0dm=, =readBD=, =dt2Meteo=, =zoo2Meteo= y =readSIAR= las cuales procesan estos datos y los almacenan en un objeto de clase =Meteo=. label:fig:meteo
+Para el procesamiento de datos meteorológicos, =solaR2= provee una serie de funciones que son capaces de leer todo tipo de datos. Estos datos se procesan y se almacenan en un objeto de tipo =Meteo= tal y como se ve en la figura ref:fig:meteo. Estas funciones son:
+#+CAPTION: Los datos meteorológicas se pueden leer mediante las funciones =readG0dm=, =readBD=, =dt2Meteo=, =zoo2Meteo= y =readSIAR= las cuales procesan estos datos y los almacenan en un objeto de clase =Meteo=. label:fig:meteo
 #+ATTR_LATEX: :placement [!htb] :height 0.8\textheight :width \textwidth :options keepaspectratio
 file:figuras/meteo.pdf
 - =readG0dm=: Esta función construye un objeto =Meteo= a partir de 12 valores de medias mensuales de irradiación.
@@ -258,7 +258,7 @@ show(BD_zoo)
   - =inicio=: primer día de los registros.
   - =final=: último día de los registros.
   - =tipo=: la API SIAR[fn:6] permite tener 4 tipos de registros: =Mensuales=, =Semanales=, =Diarios= y =Horarios=.
-  - =n_est=: con este argumento, la función es capaz de localizar el número seleccionado de estaciones más proximas a la ubicación dada, y obtener los datos individuales de cada una de ellas. Una vez obtenidos estos datos realiza una interpolación de distancia inversa ponderada (IDW[fn:7]) y entrega un solo resultado. Es importante añadir que la API SIAR tiene una limitación a la solicitud de registros que se le hace cada minuto, por lo que esta función cuenta con un comprobante para impedir que el usuario exceda este límite.
+  - =n_est=: con este argumento, la función es capaz de localizar el número seleccionado de estaciones más próximas a la ubicación dada, y obtener los datos individuales de cada una de ellas. Una vez obtenidos estos datos realiza una interpolación de distancia inversa ponderada (IDW[fn:7]) y entrega un solo resultado. Es importante añadir que la API SIAR tiene una limitación a la solicitud de registros que se le hace cada minuto, por lo que esta función cuenta con un comprobante para impedir que el usuario exceda este límite.
 #+begin_src R :results graphics :file "figuras/codigo-readsiar.pdf" :width 8 :height 6
 library(httr2)
 library(jsonlite)
@@ -412,7 +412,7 @@ file:figuras/calcg0.pdf
   compI_none <- fCompI(sol = sol, G0I = G0I, corr = 'none')
   show(compI_none)
   #+end_src
-  Por útlimo, esta función incluye un argumento extra, =filterG0= que cuando su valor es =TRUE=, elimina todos aquellos valores de irradiancia que son mayores que la irradiancia extra-atmosfércia (ya que es incoherente que la irradiancia terrestre sea mayor que la extra-terrestre).
+  Por último, esta función incluye un argumento extra, =filterG0= que cuando su valor es =TRUE=, elimina todos aquellos valores de irradiancia que son mayores que la irradiancia extra-atmosfércia (ya que es incoherente que la irradiancia terrestre sea mayor que la extra-terrestre).
 
 Estas dos funciones, como se muestra en la figura ref:fig:calcg0, convergen en la función constructora =calcG0=, dando como resultado un objeto de clase =G0=. Este objeto muestra la media mensual de la irradiación diaria y la irradiación anual. Aparte, incluye los resultados de =fCompD= y =fCompI= y los objetos =Sol= y =Meteo= de los que parte.
 
@@ -509,7 +509,7 @@ file:figuras/calcgef.pdf
   file:figuras/codigo-fthetabt.pdf
 - =fInclin=: la cual, partiendo del resultado de =fTheta= y de un objeto de clase =G0=, calcula la irradiancia solar incidente en una superficie inclinada junto con los efectos del ángulo de incidencia y la suciedad para obtener la irradiancia efectiva.
   Como argumentos principales están:
-  - =iS=: permite seleccionar entre 4 valores del 1 al 4 correspondientes al grado de suciedad del módulo. Siendo 1 limpio y 4 alto y basandose en los valores de la tabla ref:tab:coef-perd calcula la irradiancia efectiva. Por defecto, tiene valor 2 (grado de suciedad bajo).
+  - =iS=: permite seleccionar entre 4 valores del 1 al 4 correspondientes al grado de suciedad del módulo. Siendo 1 limpio y 4 alto y basándose en los valores de la tabla ref:tab:coef-perd calcula la irradiancia efectiva. Por defecto, tiene valor 2 (grado de suciedad bajo).
   #+begin_src R :results graphics output :file "figuras/codigo-finclinis.pdf" :width 8 :height 6
   compI <- calcG0(lat, modeRad = 'bd', dataRad = bd[1:31], keep.night = FALSE)
   sol <- calcSol(lat, BTi = indexI(compI))
@@ -637,7 +637,7 @@ file:figuras/prodgcpv.pdf
     - =Pinv=: potencia nominal del inversor. Por defecto, tiene un valor de \(25000 W\).
     - =Vmin=: mínima tensión del rango MPP del inversor. Por defecto, tiene un valor de \(420V\).
     - =Vmax=: máxima tensión del rango MPP del inversor. Por defecto, tiene un valor de \(750V\).
-    - =Gumb=: irradiancia umbral de funcionamienot del inversor. Por defecto, tiene un valor de \(20W/m^2\).
+    - =Gumb=: irradiancia umbral de funcionamiento del inversor. Por defecto, tiene un valor de \(20W/m^2\).
   - =effSys=: una lista de valores numéricos con la información sobre las pérdidas del sistema.
     - =ModQual=: tolerancia media del set de módulos (\(\%\)). Por defecto, tiene un valor de 3.
     - =ModDisp=: pérdidas por dispersión en los módulos (\(\%\)). Por defecto, tiene un valor de 2.
@@ -686,7 +686,7 @@ Como se puede ver en la figura ref:fig:prodpvps, =prodPVPS= funciona gracias a l
 #+ATTR_LATEX: :placement [!htb] :width 0.8\textwidth :height 0.5\textheight :options keepaspectratio
 file:figuras/prodpvps.pdf
 - =fPump=: calcula el rendimiento de las diferentes partes de una bomba centrífuga alimentada por un convertidor de frecuencia siguiendo las leyes de afinidad. Tiene solo dos argumentos:
-  - =pump=: lista que contiene los parametros de la bomba que va a ser simulada. Puede ser una fila de =pumpCoef=:
+  - =pump=: lista que contiene los parámetros de la bomba que va a ser simulada. Puede ser una fila de =pumpCoef=:
     #+begin_src R
       CoefSP8A44 <- pumpCoef[Qn == 8 & stages == 44]
       show(CoefSP8A44)
@@ -754,7 +754,7 @@ ShdM2x <- optimShd(lat, dataRad = prom, modeTrk = 'two',
 shadeplot(ShdM2x)
 #+end_src
 #+ATTR_LATEX: :placement [!htb] :width 0.8\textwidth
-#+CAPTION: Ábaco para planta de seguimiento a doble eje producto de la función =optimShd=, e interpretado graficamente por la función =shadeplot=.
+#+CAPTION: Ábaco para planta de seguimiento a doble eje producto de la función =optimShd=, e interpretado gráficamente por la función =shadeplot=.
 file:figuras/codigo-optimshd2x.pdf
 #+begin_src R 
 structHoriz = list(L = 4.83)
@@ -780,7 +780,7 @@ Shd12Fixed <- optimShd(lat = lat, dataRad = prom,
 shadeplot(Shd12Fixed)
 #+end_src
 #+ATTR_LATEX: :placement [!htb] :width 0.8\textwidth
-#+CAPTION: Ábaco para planta fija producto de la función =optimShd=, e interpretado graficamente por la función =shadeplot=.
+#+CAPTION: Ábaco para planta fija producto de la función =optimShd=, e interpretado gráficamente por la función =shadeplot=.
 file:figuras/codigo-optimshdfixed.pdf
 
 
@@ -788,11 +788,11 @@ file:figuras/codigo-optimshdfixed.pdf
 label:sec:aspectos-tecnicos
 ** Estructura básica del paquete
 label:subsec:estructura-paquete
-En la creación de un paquete en =R=, la estructura de los archivos es clave para asegurar un desarrollo organizado y que =R= pueda interactuar correctamente con el código y  los datos. Los paquetes de R son esencialmente un conjunto de archivos organizados en un directorio específio. El contenido mínimo requerido incluye:
+En la creación de un paquete en =R=, la estructura de los archivos es clave para asegurar un desarrollo organizado y que =R= pueda interactuar correctamente con el código y  los datos. Los paquetes de R son esencialmente un conjunto de archivos organizados en un directorio específico. El contenido mínimo requerido incluye:
 - Un archivo *DESCRIPTION*, que proporciona la información esencial del paquete.
 - Un archivo *NAMESPACE*, que controla qué funciones y objetos son visibles fuera del paquete.
 - Subdirectoriso como =R/= y =man/=:
-  - =R/=: contiene los archivos de codigo =.R=, que son las funciones, clases y métodos definidos en el paquete.
+  - =R/=: contiene los archivos de código =.R=, que son las funciones, clases y métodos definidos en el paquete.
   - =man/=: contiene las páginas de ayuda y documentación para las funciones, métodos y clases del paquete.
 
 La estructura básica de un paquete puede generarse con =package.skeleton()=, una función que crea los archivos y carpetas necesarios para empezar a trabajar en el desarrollo.
@@ -832,7 +832,7 @@ Los campos principales de este archivo son:
 - *Authors@R*: especifica el o los autores con sus respectivos roles, como "aut" (autor) y "cre" (creador principal).
 - *Maintainer*: persona responsable del mantenimiento del paquete, con su correo electrónico.
 - *Depends*: lista de dependencias, es decir, otros paquetes de los que depende el correcto funcionamiento del paquete.
-- *Suggests*: lista de paqeute que no son obligatorios, pero que pueden ser útiles.
+- *Suggests*: lista de paquete que no son obligatorios, pero que pueden ser útiles.
 - *Description*: una breve descripción del propósito del paquete.
 - *License:* tipo de licencia bajo la cual se distribuye el paquete (GPL, MIT, etc.).
 
@@ -893,7 +893,7 @@ search()
   #+end_src
 ** Documentación
 label:subsec:documentacion
-La documentación en R sigue un formato específico llamado =Rd= (/R documentation/), que está inspirado en LaTex. Cada función, método o clase del paquete debe tener una página de documentación asociada, que generalmente se encuentra en el subdirectorio =man/=. Estas páginas incluyen información sobre el uso de la función, argumentos, detalles de la implementación y ejemplos de uso.
+La documentación en R sigue un formato específico llamado =Rd= (/R documentation/), que está inspirado en LaTeX. Cada función, método o clase del paquete debe tener una página de documentación asociada, que generalmente se encuentra en el subdirectorio =man/=. Estas páginas incluyen información sobre el uso de la función, argumentos, detalles de la implementación y ejemplos de uso.
 #+begin_export latex
 \begin{examplebox}
 #+end_export
@@ -935,7 +935,7 @@ La documentación en R sigue un formato específico llamado =Rd= (/R documentati
 
 El formato tiene varios componentes:
 - *name*: el nombre de la función.
-- *alias*: mombres alternativos o alias de la función.
+- *alias*: nombres alternativos o alias de la función.
 - *title*: título breve que describe la función.
 - *description*: una descripción de lo que hace la función.
 - *usage*: la sintaxis de la función de lo que hace la función.

@@ -24,7 +24,7 @@ file:figuras/contributors.png
 Todas estas herramientas dejan ver la magnitud de los cambios que se han producido en este proyecto en comparación con el anterior.
 
 * Comparación de resultados
-Como se ve en el capítulo ref:chap:ejemplo-practico-aplicacion, los resultados son identicos a los que ofrecía =solaR=. Sin embargo, el número de funciones es mayor, lo que permite calcular datos aislados facilitando mucho las labores de investigación. Además, los tiempos de ejecución y el uso de memoria han disminuido mucho.
+Como se ve en el capítulo ref:chap:ejemplo-practico-aplicacion, los resultados son idénticos a los que ofrecía =solaR=. Sin embargo, el número de funciones es mayor, lo que permite calcular datos aislados facilitando mucho las labores de investigación. Además, los tiempos de ejecución y el uso de memoria han disminuido mucho.
 #+begin_src R :eval no :results none :exports code
 lat <- 37.2;
 

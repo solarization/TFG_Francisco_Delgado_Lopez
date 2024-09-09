@@ -4,9 +4,9 @@ label:chap:estado-arte
 label:sec:situacion-actual-generacion-fotovoltaica
 Según el informe anual de 2023 de la UNEF[fn:1] cite:unef23, en 2022 la fotovoltaica se posicionó como la tecnología con más crecimiento a nivel internacional, tanto entre las renovables como entre las no renovables. Se instalaron 240 GWp de nueva capacidad fotovoltaica a nivel mundial, suponiendo esto un incremento del 137% con respecto a 2021.
 
-A pesar de las diversas crisis internacionales, la energía solar fotovoltaica superó los 1185 GWp instalados. Como otros años, las cifras indican que China continuó siendo el primer actor mundial, superando los 106 GWp de potencia instalada en el año. La Unión Europea se situó en el segundo puesto, duplicando la potencia instalada en 2021 y alcanzando un nuevo record con 41 GWp instalados en 2022.
+A pesar de las diversas crisis internacionales, la energía solar fotovoltaica superó los 1185 GWp instalados. Como otros años, las cifras indican que China continuó siendo el primer actor mundial, superando los 106 GWp de potencia instalada en el año. La Unión Europea se situó en el segundo puesto, duplicando la potencia instalada en 2021 y alcanzando un nuevo récord con 41 GWp instalados en 2022.
 
-La producción energía fotovoltaica a nivel mundial representó el 31% de la capacidad de generación renovable, convirtiendose así en la segunda fuente de generación, solo por detrás de la energía hidráulica. En 2022 se añadió 3 veces más de energía solar que de energía eólica en todo el mundo.
+La producción energía fotovoltaica a nivel mundial representó el 31% de la capacidad de generación renovable, convirtiéndose así en la segunda fuente de generación, solo por detrás de la energía hidráulica. En 2022 se añadió 3 veces más de energía solar que de energía eólica en todo el mundo.
 
 Por otro lado, la Unión Europea superó a EE.UU. como el segundo mayor actor mundial en desarrollo fotovoltaico, instalando un 47% más que en 2021 y alcanzando una potencia acumulada de más de 208 GWp. España lideró el mercado europeo con 8,6 GWp instalados en 2022, superando a Alemania.
 
@@ -26,7 +26,7 @@ El autoconsumo, apoyado por diversas regulaciones y altos precios de la electric
 
 La contribución del sector fotovoltaico a la economía española en 2022 fue significativa, aportando 7.014 millones de euros al PIB[fn:5], un 51% más que el año anterior, y generando una huella económica total de 15.656 millones de euros. En términos de empleo, el sector involucró a 197.383 trabajadores, de los cuales 40.683 fueros directos, 97.600 indirectos y 59.100 inducidos.
 
-El sector industrial fotovoltaico nacional tiene una fuerte presencia en España, con hasta un 65% de los componenetes manufacturados localmente. Empresas españolas se encuentran entre los principales fabricantes mundiales de inversores y seguidores solares. Además, España es un importante exportador de estructuras fotovoltaicas y cuenta con iniciativas prometedoras para la fabricación de módulos solares.
+El sector industrial fotovoltaico nacional tiene una fuerte presencia en España, con hasta un 65% de los componentes manufacturados localmente. Empresas españolas se encuentran entre los principales fabricantes mundiales de inversores y seguidores solares. Además, España es un importante exportador de estructuras fotovoltaicas y cuenta con iniciativas prometedoras para la fabricación de módulos solares.
 
 En definitiva, la fotovoltaica es una tecnología en auge y con perspectivas para ser el pilar de la transición ecológica. Por ello, surge la necesidad de encontrar herramientas que permitan estimar el desempeño que estos sistemas pueden tener a la hora de realizar estudios de viabilidad económica.
 
@@ -35,7 +35,7 @@ label:sec:soluciones-actuales-carencias
 Como se mencionó en el capítulo ref:chap:introduccion, existen una serie de herramientas que permiten el cálculo y la simulación de instalaciones fotovoltaicas. Todas ellas presentan una serie de ventajas específicas, en contraste de una serie de limitaciones. Estas son:
 1. *PVsyst - Photovoltaic Software* cite:pvsyst.
    
-   Este software se encuentra entre los más conocidos dentro del ámbito del estudio y la estimación de instalaciones fotovoltaicas. Destaca por la personalización detallada de los componentes de la instalación (módulos, inversores, sombreado, etc.), lo que permite una simulación precisa a través de datos meteorológicos y parámetros detallados del sistema. Su uso está extendido en proyectos de gran escala y estuidos avanzados de eficiencia.
+   Este software se encuentra entre los más conocidos dentro del ámbito del estudio y la estimación de instalaciones fotovoltaicas. Destaca por la personalización detallada de los componentes de la instalación (módulos, inversores, sombreado, etc.), lo que permite una simulación precisa a través de datos meteorológicos y parámetros detallados del sistema. Su uso está extendido en proyectos de gran escala y estudios avanzados de eficiencia.
    - Ventajas:
      - *Completo y profesional*: PVsyst es altamente detallado, permitiendo análisis avanzados para proyectos pequeños y grandes.
      - *Base de datos meteorológicos*: integra datos climáticos de fuentes como Meteonorm cite:jan20, lo que mejora la precisión de las simulaciones.
@@ -58,9 +58,9 @@ Como se mencionó en el capítulo ref:chap:introduccion, existen una serie de he
      - *Poca funcionalidad en grandes proyectos*: no se adapta a las grandes instalaciones o análisis financieros avanzados con la misma eficacia que en los proyectos más reducidos.
 3. *PVGIS* cite:pvgis.
    
-   Aplicación web desarrolada por el *European Commission Joint Research Center* desde 2001. Está diseñada para proporcionar estimaciones de producción de energía solar en función de la ubicación geográfica y condiciones meteorológicas históricas.
+   Aplicación web desarrollada por el *European Commission Joint Research Center* desde 2001. Está diseñada para proporcionar estimaciones de producción de energía solar en función de la ubicación geográfica y condiciones meteorológicas históricas.
    - Ventajas:
-     - *Gratuito y accesible*: esta herramienta es completamente gratuira y accesible a través de una interfaz web, lo que facilita el uso por parte de cualquier persona.
+     - *Gratuito y accesible*: esta herramienta es completamente gratuita y accesible a través de una interfaz web, lo que facilita el uso por parte de cualquier persona.
      - *Datos meteorológicos precisos*: proporciona acceso a datos meteorológicos satelitales y de estaciones terrestres, lo que permite obtener estimaciones razonables de producción de energía.
      - *Estudios rápidos*: es ideal para obtener estimaciones preliminares y estudios de viabilidad de sistemas fotovoltaicos.
    - Limitaciones:
@@ -71,7 +71,7 @@ Como se mencionó en el capítulo ref:chap:introduccion, existen una serie de he
    
    Desarrollado por el *Laboratorio Nacional de Energías Renovables*, perteneciente al Departamento de energía del Gobierno de EE.UU. Está orientada a la modelación tanto técnica como económica de sistemas de energía renovable, incluyendo fotovoltaicos.
    - Ventajas:
-     - *Modelo económico avanzado*: integra análisis detalados sobre la viabilidad económica, lo que permite evaluar tanto la producción energética como los costos y benefecios a lo largo de la vida útil del proyecto.
+     - *Modelo económico avanzado*: integra análisis detallados sobre la viabilidad económica, lo que permite evaluar tanto la producción energética como los costos y beneficios a lo largo de la vida útil del proyecto.
      - *Acceso a múltiples tecnologías*: además de fotovoltaicos, permite modelar otras tecnologías de energía renovable, lo que lo hace más flexible para estudios multidisciplinares.
      - *Integración de bases de datos*: utiliza datos meteorológicos detallados, lo que mejora la precisión de las simulaciones.
    - Limitaciones:
@@ -87,7 +87,7 @@ Este paquete está diseñado utilizando clases =S4= en =R=, y su núcleo se basa
 4. *Cálculo de radiación en el plano del generador*: toma un objeto =G0= y lo transforma en un objeto =Gef= mediante la función =calcGef=, la cual utilizando las funciones =fTheta= y =fInclin= determinan la irradiación y la radiación efectiva al igual que las medias mensuales de la irradiación diaria y sumas anuales.
 5. *Simulación de sistemas fotovoltaicos conectados a red*: con un objeto =Gef= y con los parámetros del sistema, la función =prodGCPV=, tomando los resultado de la función =fProd=, cálcula la producción energética de un SFCR. Devuleve un objeto de clase =ProdGCPV= que incluye valores de potencias instantaneas y energías diarias, medias mensuales y sumas anuales.
 6. *Simulación de sistemas fotovoltaicos de bombeo*: toma un objeto =Gef= y con los paremetros del sistema y de la bomba, la función =prodPVPS=, tomando los resultados de la función =fPump=, cálcula la producción energética de un SFB.
-7. *Optimización de distancias*: es capaz de optimizar las distancias de un sfcr mediante la función =optimShd=, la cual devuelve un objeto =Shade= el cual contiene multiples combinaciones de distancias para que el usuario pueda decidir la mejor.
+7. *Optimización de distancias*: es capaz de optimizar las distancias de un sfcr mediante la función =optimShd=, la cual devuelve un objeto =Shade= el cual contiene múltiples combinaciones de distancias para que el usuario pueda decidir la mejor.
 8. *Métodos de visualización*: para cada uno de los objetos mencionados existen métodos de visualización gráfica para ayudar a comprender los resultados obtenidos.
    
 Pese a ser un herramienta muy capaz, =solaR= presenta una serie de carencias relativas:

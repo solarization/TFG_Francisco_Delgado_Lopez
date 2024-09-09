@@ -106,7 +106,7 @@ Una vez se tienen todos los parámetros del sistema fotovoltaico, se requieren l
 \begin{center}
 {\footnotesize }%
 \begin{table}
-{\scriptsize \caption{Carácteristicas del inversor.\label{tab:caracteristicas-inversor}}}
+{\scriptsize \caption{Características del inversor.\label{tab:caracteristicas-inversor}}}
 \centering{}{\scriptsize }\begin{tabular}{*{2}{>{\centering}m{5cm}}}
 \toprule 
 {\scriptsize \textbf{Inversor}} & {\scriptsize \textbf{SMA Sunny Boy-1200}} \tabularnewline
@@ -247,7 +247,7 @@ file:figuras/ejemplos4.pdf
 
 * Comparación y conclusiones
 label:sec:comparacion-conclusiones
-Como se puede observar en las secciones anteriores, tanto el paquete =solaR= como el paquete =solaR2= ofrecen los mismos resultados, ya que toman las mismas referencias y estudios para realizar los cáculos. Además, ambos son muy aproximados a los cálculos realizados por =PVSyst=. Sin embargo, el paquete =solaR2=, aparte de la corrección de algunos erores, presenta unas claras ventajas frente a su antecesor. Estas son:
+Como se puede observar en las secciones anteriores, tanto el paquete =solaR= como el paquete =solaR2= ofrecen los mismos resultados, ya que toman las mismas referencias y estudios para realizar los cáculos. Además, ambos son muy aproximados a los cálculos realizados por =PVSyst=. Sin embargo, el paquete =solaR2=, aparte de la corrección de algunos errores, presenta unas claras ventajas frente a su antecesor. Estas son:
 - *Modularidad*: el paquete =solaR2= presenta muchas funciones que son capaces de realizar pequeñas operaciones, al contrario que =solaR=, que no permite esto.
 - *Eficiencia*: al estar basado en =data.table=, el paquete gana eficiencia en operaciones complejas. Para mostrar esto vamos a utilizar el paquete =microbenchmark=.
   #+begin_src R :session solaR
