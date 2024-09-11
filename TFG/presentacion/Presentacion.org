@@ -13,15 +13,17 @@ library(solaR2)
    #+end_src
 
 *** Objetivos secundarios
-- *GNU Emacs*
-- *Paquetes de =R=*:
-  - =zoo=
-  - =data.table=
-  - =microbenchmark=
-  - =profvis=
-  - =lattice=
-     
-** Análisis previo de soluciones
+**** GNU Emacs
+**** Paquetes de =R=
+- =solaR=
+- =zoo=
+- =data.table=
+- =microbenchmark=
+- =profvis=
+- =lattice=
+**** LaTeX
+**** Energía Solar Fotovoltaica
+
 * Estado del arte
 
 * Desarrollo del código

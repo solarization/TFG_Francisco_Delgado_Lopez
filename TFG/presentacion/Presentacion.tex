@@ -1,4 +1,4 @@
-% Created 2024-09-11 mi. 13:44
+% Created 2024-09-11 mi. 18:13
 % Intended LaTeX compiler: pdflatex
 \documentclass[aspectratio=169, usenames,svgnames,dvipsnames]{beamer}
 \usepackage{color}
@@ -10,7 +10,7 @@
 \setbeamercolor{block body}{use=block title,bg=block title.bg}
 \AtBeginSubsection[]{\begin{frame}[plain]\tableofcontents[currentsubsection,sectionstyle=show/shaded,subsectionstyle=show/shaded/hide]\end{frame}}
 \AtBeginSection[]{\begin{frame}[plain]\tableofcontents[currentsection,hideallsubsections]\end{frame}}
-\lstset{keywordstyle=\color{blue}, commentstyle=\color{gray!90}, basicstyle=\ttfamily\small, columns=fullflexible, breaklines=true,linewidth=0.95\textwidth, backgroundcolor=\color{gray!23}, basewidth={0.5em,0.4em}, literate={á}{{\'a}}1 {ñ}{{\~n}}1 {é}{{\'e}}1 {ó}{{\'o}}1 {º}{{\textordmasculine}}1, showstringspaces=false}
+\lstset{keywordstyle=\color{blue}, commentstyle=\color{gray!90}, basicstyle=\ttfamily\small, columns=fullflexible, breaklines=true,linewidth=\textwidth, backgroundcolor=\color{gray!23}, basewidth={0.5em,0.4em}, literate={á}{{\'a}}1 {ñ}{{\~n}}1 {é}{{\'e}}1 {ó}{{\'o}}1 {º}{{\textordmasculine}}1, showstringspaces=false}
 \usepackage{mathpazo}
 \hypersetup{colorlinks=true, linkcolor=Blue, urlcolor=Blue}
 \usepackage{fancyvrb}
@@ -41,10 +41,10 @@
 \maketitle
 
 \section{Introducción}
-\label{sec:orgf59c0a0}
+\label{sec:orgfbd76ba}
 \subsection{Objetivos}
-\label{sec:org4220068}
-\begin{frame}[label={sec:orgf1e2d24},fragile]{Objetivo principal}
+\label{sec:org01b6557}
+\begin{frame}[label={sec:orgcbdb8ba},fragile]{Objetivo principal}
  \begin{block}{Desarrollo de un paquete en \texttt{R}}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 library(solaR2)
@@ -52,31 +52,34 @@ library(solaR2)
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:orgdf9f721},fragile]{Objetivos secundarios}
- \begin{itemize}
-\item \alert{GNU Emacs}
-\item \alert{Paquetes de \texttt{R}}:
+\begin{frame}[label={sec:orgdfaa785},fragile]{Objetivos secundarios}
+ \begin{block}{GNU Emacs}
+\end{block}
+\begin{block}{Paquetes de \texttt{R}}
 \begin{itemize}
+\item \texttt{solaR}
 \item \texttt{zoo}
 \item \texttt{data.table}
 \item \texttt{microbenchmark}
 \item \texttt{profvis}
 \item \texttt{lattice}
 \end{itemize}
-\end{itemize}
+\end{block}
+\begin{block}{\LaTeX{}}
+\end{block}
+\begin{block}{Energía Solar Fotovoltaica}
+\end{block}
 \end{frame}
 
-\subsection{Análisis previo de soluciones}
-\label{sec:org6085dca}
 \section{Estado del arte}
-\label{sec:orgbd8931c}
+\label{sec:org545c2b9}
 
 \section{Desarrollo del código}
-\label{sec:orgd3f6ebc}
+\label{sec:org796e962}
 
 \section{Ejemplo práctico de aplicación}
-\label{sec:org736fbb9}
+\label{sec:org9eb95eb}
 
 \section{Conclusiones}
-\label{sec:org6ca79ae}
+\label{sec:org579b4e4}
 \end{document}
