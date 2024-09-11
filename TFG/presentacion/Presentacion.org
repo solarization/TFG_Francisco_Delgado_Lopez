@@ -1,0 +1,31 @@
+#+TITLE: Desarrollo de una herramienta software para la simulación de sistemas fotovoltaicos con R
+#+SUBTITLE: Trabajo de Fin de Grado
+#+STARTUP: indent
+#+SETUPFILE: config.org
+#+OPTIONS: H:3
+
+* Introducción
+** Objetivos
+*** Objetivo principal
+**** Desarrollo de un paquete en =R=
+   #+begin_src R :eval no
+library(solaR2)
+   #+end_src
+
+*** Objetivos secundarios
+- *GNU Emacs*
+- *Paquetes de =R=*:
+  - =zoo=
+  - =data.table=
+  - =microbenchmark=
+  - =profvis=
+  - =lattice=
+     
+** Análisis previo de soluciones
+* Estado del arte
+
+* Desarrollo del código
+
+* Ejemplo práctico de aplicación
+
+* Conclusiones
