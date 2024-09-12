@@ -1,14 +1,16 @@
 #+TITLE: Desarrollo de una herramienta software para la simulación de sistemas fotovoltaicos con R
 #+SUBTITLE: Trabajo de Fin de Grado
 #+STARTUP: indent
+#+STARTUP: inlineimages 
 #+SETUPFILE: config.org
 #+OPTIONS: H:3
+#+PROPERTY: header-args R :session solaR2
 
 * Introducción
 ** Objetivos
 *** Objetivo principal
 **** Desarrollo de un paquete en =R=
-   #+begin_src R :eval no
+   #+begin_src R :results none
 library(solaR2)
    #+end_src
 
@@ -25,8 +27,51 @@ library(solaR2)
 **** Energía Solar Fotovoltaica
 
 * Estado del arte
+** Sitación actual de la generación fotovoltaica
 
+** Soluciones actuales
+*** Soluciones actuales
+**** *PVsyst*
+**** *SISIFO*
+**** *PVGIS*
+**** *System Advisor Model*
+*** =solaR=
+**** Funcionamiento
+- Geometría solar
+- Datos meteorológicos
+- Radiación en el plano horizontal
+- Radiación en el plano del generador
+- Simulación de SFCR
+- Simulación de SFB
+- Optimización de distancias
+- Métodos de visualización
+*** =solaR=
+**** Carencias
+- Modularidad
+- Eficiencia y rendimiento
+- Escalibilidad
+- Manipulación de datos
+  
+* Marco teórico
+*** Procedimiento de cálculo
+#+ATTR_LATEX: :scale 1
+file:../figuras/ProcedimientoCalculoRadiacionInclinada.pdf
 * Desarrollo del código
+** Algorítmo de cálculo
+*** Algorítmo de cálculo
+#+ATTR_LATEX: :height 0.9\textheight
+file:../figuras/procedure.pdf
+** =calcSol=
+#+ATTR_LATEX: :scale 1
+file:../figuras/calcsol.pdf
+*** Ejemplo de uso
+#+begin_src R :results none
+sol <- calcSol(lat = 37.2, BTd = '2024-01-17', sample = 'hour')
+#+end_src
+*** Ejemplo de uso
+#+begin_src R :exports results
+show(sol)
+#+end_src
 
 * Ejemplo práctico de aplicación
 
