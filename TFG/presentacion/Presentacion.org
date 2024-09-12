@@ -7,7 +7,6 @@
 #+PROPERTY: header-args R :session solaR2
 
 * Introducción
-** Objetivos
 *** Objetivo principal
 **** Desarrollo de un paquete en =R=
    #+begin_src R :results none
@@ -57,31 +56,24 @@ library(solaR2)
 #+ATTR_LATEX: :scale 1
 file:../figuras/ProcedimientoCalculoRadiacionInclinada.pdf
 * Desarrollo del código
-** Algorítmo de cálculo
 *** Algorítmo de cálculo
 #+ATTR_LATEX: :height 0.9\textheight
 file:../figuras/procedure.pdf
-** =calcSol=
 *** =calcSol=
 #+ATTR_LATEX: :width \textwidth
 file:../figuras/calcsol.pdf
-** =Meteo=
 *** =Meteo=
 #+ATTR_LATEX: :width \textwidth
 file:../figuras/meteo.pdf
-** =calcG0=
 *** =calcG0=
 #+ATTR_LATEX: :width \textwidth
 file:../figuras/calcg0.pdf
-** =calcGef=
 *** =calcGef=
 #+ATTR_LATEX: :width \textwidth
 file:../figuras/calcgef.pdf
-** =prodGCPV=
 *** =prodGCPV=
 #+ATTR_LATEX: :width \textwidth
 file:../figuras/prodgcpv.pdf
-** =prodPVPS=
 *** =prodPVPS=
 #+ATTR_LATEX: :width \textwidth
 file:../figuras/prodpvps.pdf
@@ -93,8 +85,15 @@ file:../figuras/prodpvps.pdf
 #+ATTR_LATEX: :height 0.9\textheight
 file:../figuras/blame-fCompD.pdf
 *** Blame
-# #+ATTR_LATEX: :width \textwidth
-# file:../figuras/blame-fCompD_cropped.pdf
+#+ATTR_LATEX: :width \textwidth
+file:../figuras/blame-fCompD_cropped.pdf
 *** Insights
-# #+ATTR_LATEX :height 0.9\textheight
-# file:../figuras/contributors.png
+#+ATTR_LATEX: :height 0.9\textheight
+file:../figuras/contributors.png
+** Desarrollo a futuro
+*** Desarrollo a futuro
+**** Interfaz de usuario
+**** Mejora de funciones
+**** Toma de datos 
+**** Uso de paquete especializados en datos espaciales
+- =terra=
