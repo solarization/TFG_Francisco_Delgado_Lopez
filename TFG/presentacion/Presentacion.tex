@@ -1,4 +1,4 @@
-% Created 2024-09-12 ju. 11:04
+% Created 2024-09-12 ju. 18:10
 % Intended LaTeX compiler: pdflatex
 \documentclass[aspectratio=169, usenames,svgnames,dvipsnames]{beamer}
 \usepackage[utf8]{inputenc}
@@ -53,10 +53,10 @@
 \maketitle
 
 \section{Introducción}
-\label{sec:org12c974c}
+\label{sec:org9ddae57}
 \subsection{Objetivos}
-\label{sec:orgf14d9ee}
-\begin{frame}[label={sec:orgf501f5a},fragile]{Objetivo principal}
+\label{sec:org9375a05}
+\begin{frame}[label={sec:org8a97f6b},fragile]{Objetivo principal}
  \begin{block}{Desarrollo de un paquete en \texttt{R}}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 library(solaR2)
@@ -64,7 +64,7 @@ library(solaR2)
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:orgc431668},fragile]{Objetivos secundarios}
+\begin{frame}[label={sec:org8c82a57},fragile]{Objetivos secundarios}
  \begin{block}{GNU Emacs}
 \end{block}
 \begin{block}{Paquetes de \texttt{R}}
@@ -84,13 +84,13 @@ library(solaR2)
 \end{frame}
 
 \section{Estado del arte}
-\label{sec:orgc51f063}
+\label{sec:org7a08592}
 \subsection{Sitación actual de la generación fotovoltaica}
-\label{sec:orgbe3b03e}
+\label{sec:org8db2009}
 
 \subsection{Soluciones actuales}
-\label{sec:org27c6b1b}
-\begin{frame}[label={sec:org1b38691}]{Soluciones actuales}
+\label{sec:org93c9c76}
+\begin{frame}[label={sec:org7556389}]{Soluciones actuales}
 \begin{block}{\alert{PVsyst}}
 \end{block}
 \begin{block}{\alert{SISIFO}}
@@ -100,7 +100,7 @@ library(solaR2)
 \begin{block}{\alert{System Advisor Model}}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org4626c5c},fragile]{\texttt{solaR}}
+\begin{frame}[label={sec:org81e0569},fragile]{\texttt{solaR}}
  \begin{block}{Funcionamiento}
 \begin{itemize}
 \item Geometría solar
@@ -114,7 +114,7 @@ library(solaR2)
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgb35bd3f},fragile]{\texttt{solaR}}
+\begin{frame}[label={sec:org7d5e95e},fragile]{\texttt{solaR}}
  \begin{block}{Carencias}
 \begin{itemize}
 \item Modularidad
@@ -126,75 +126,77 @@ library(solaR2)
 \end{frame}
 
 \section{Marco teórico}
-\label{sec:orgb2a662d}
-\begin{frame}[label={sec:orgd5ef086}]{Procedimiento de cálculo}
+\label{sec:org4c12abd}
+\begin{frame}[label={sec:org2c5bcd2}]{Procedimiento de cálculo}
 \begin{center}
 \includegraphics[scale=1]{../figuras/ProcedimientoCalculoRadiacionInclinada.pdf}
 \end{center}
 \end{frame}
 \section{Desarrollo del código}
-\label{sec:orgbd62322}
+\label{sec:org480f134}
 \subsection{Algorítmo de cálculo}
-\label{sec:org44c12c6}
-\begin{frame}[label={sec:orgddef758}]{Algorítmo de cálculo}
+\label{sec:org869d159}
+\begin{frame}[label={sec:orgadc6bbe}]{Algorítmo de cálculo}
 \begin{center}
 \includegraphics[height=0.9\textheight]{../figuras/procedure.pdf}
 \end{center}
 \end{frame}
 \subsection{\texttt{calcSol}}
-\label{sec:org2171daa}
-\begin{center}
-\includegraphics[scale=1]{../figuras/calcsol.pdf}
+\label{sec:org2a87aa4}
+\begin{frame}[label={sec:orgbb5ac34},fragile]{\texttt{calcSol}}
+ \begin{center}
+\includegraphics[width=\textwidth]{../figuras/calcsol.pdf}
 \end{center}
-\begin{frame}[label={sec:org3e53a7d},fragile]{Ejemplo de uso}
- \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-sol <- calcSol(lat = 37.2, BTd = '2024-01-17', sample = 'hour')
-show(sol)
-\end{lstlisting}
 \end{frame}
-\begin{frame}[label={sec:org3871619},fragile]{Ejemplo de uso}
- \begin{verbatim}
-Object of class Sol 
-
-Latitude:  37.2 degrees
-
-Daily values:
-     Dates                 decl               eo             EoT                 ws        
- Min.   :2024-01-17   Min.   :-0.3627   Min.   :1.034   Min.   :-0.04553   Min.   :-1.279  
- 1st Qu.:2024-01-17   1st Qu.:-0.3627   1st Qu.:1.034   1st Qu.:-0.04553   1st Qu.:-1.279  
- Median :2024-01-17   Median :-0.3627   Median :1.034   Median :-0.04553   Median :-1.279  
- Mean   :2024-01-17   Mean   :-0.3627   Mean   :1.034   Mean   :-0.04553   Mean   :-1.279  
- 3rd Qu.:2024-01-17   3rd Qu.:-0.3627   3rd Qu.:1.034   3rd Qu.:-0.04553   3rd Qu.:-1.279  
- Max.   :2024-01-17   Max.   :-0.3627   Max.   :1.034   Max.   :-0.04553   Max.   :-1.279  
-      Bo0d     
- Min.   :4739  
- 1st Qu.:4739  
- Median :4739  
- Mean   :4739  
- 3rd Qu.:4739  
- Max.   :4739  
-
-Intradaily values: 
-     Dates                           w              night            cosThzS             AlS         
- Min.   :2024-01-17 00:00:00   Min.   :-2.92240   Mode :logical   Min.   :-0.9586   Min.   :-1.2819  
- 1st Qu.:2024-01-17 05:45:00   1st Qu.:-1.41740   FALSE:10        1st Qu.:-0.7289   1st Qu.:-0.8172  
- Median :2024-01-17 11:30:00   Median : 0.08759   TRUE :14        Median :-0.2143   Median :-0.2160  
- Mean   :2024-01-17 11:30:00   Mean   : 0.08766                   Mean   :-0.2144   Mean   :-0.2724  
- 3rd Qu.:2024-01-17 17:15:00   3rd Qu.: 1.59259                   3rd Qu.: 0.3003   3rd Qu.: 0.3051  
- Max.   :2024-01-17 23:00:00   Max.   : 3.09905                   Max.   : 0.5295   Max.   : 0.5580  
-      AzS                Bo0       
- Min.   :-2.49463   Min.   :  0.0  
- 1st Qu.:-1.18986   1st Qu.:  0.0  
- Median : 0.09526   Median :  0.0  
- Mean   : 0.08773   Mean   :197.0  
- 3rd Qu.: 1.28896   3rd Qu.:424.5  
- Max.   : 3.00158   Max.   :748.4
-\end{verbatim}
+\subsection{\texttt{Meteo}}
+\label{sec:orgb8fce20}
+\begin{frame}[label={sec:org74fb24a},fragile]{\texttt{Meteo}}
+ \begin{center}
+\includegraphics[width=\textwidth]{../figuras/meteo.pdf}
+\end{center}
 \end{frame}
-
+\subsection{\texttt{calcG0}}
+\label{sec:orgff16d78}
+\begin{frame}[label={sec:org527fe49},fragile]{\texttt{calcG0}}
+ \begin{center}
+\includegraphics[width=\textwidth]{../figuras/calcg0.pdf}
+\end{center}
+\end{frame}
+\subsection{\texttt{calcGef}}
+\label{sec:org837481b}
+\begin{frame}[label={sec:orgc7a1e1a},fragile]{\texttt{calcGef}}
+ \begin{center}
+\includegraphics[width=\textwidth]{../figuras/calcgef.pdf}
+\end{center}
+\end{frame}
+\subsection{\texttt{prodGCPV}}
+\label{sec:org949da93}
+\begin{frame}[label={sec:orgbae3f07},fragile]{\texttt{prodGCPV}}
+ \begin{center}
+\includegraphics[width=\textwidth]{../figuras/prodgcpv.pdf}
+\end{center}
+\end{frame}
+\subsection{\texttt{prodPVPS}}
+\label{sec:orgafcc4ac}
+\begin{frame}[label={sec:orgd5a905f},fragile]{\texttt{prodPVPS}}
+ \begin{center}
+\includegraphics[width=\textwidth]{../figuras/prodpvps.pdf}
+\end{center}
+\end{frame}
 \section{Ejemplo práctico de aplicación}
-\label{sec:org4048c77}
+\label{sec:org39486c1}
 
 \section{Conclusiones}
-\label{sec:org2ab48e8}
+\label{sec:org629c7b3}
+\subsection{Aportaciones}
+\label{sec:org0b26002}
+\begin{frame}[label={sec:org43df7eb}]{Blame}
+\begin{center}
+\includegraphics[height=0.9\textheight]{../figuras/blame-fCompD.pdf}
+\end{center}
+\end{frame}
+\begin{frame}[label={sec:org4bf6ea8}]{Blame}
+\end{frame}
+\begin{frame}[label={sec:org5a2a9c6}]{Insights}
+\end{frame}
 \end{document}
