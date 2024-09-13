@@ -1,4 +1,4 @@
-% Created 2024-09-12 ju. 21:54
+% Created 2024-09-13 vi. 10:42
 % Intended LaTeX compiler: pdflatex
 \documentclass[aspectratio=169, usenames,svgnames,dvipsnames]{beamer}
 \usepackage[utf8]{inputenc}
@@ -21,7 +21,8 @@
 \setbeamercolor{block body}{use=block title,bg=block title.bg}
 \AtBeginSubsection[]{\begin{frame}[plain]\tableofcontents[currentsubsection,sectionstyle=show/shaded,subsectionstyle=show/shaded/hide]\end{frame}}
 \AtBeginSection[]{\begin{frame}[plain]\tableofcontents[currentsection,hideallsubsections]\end{frame}}
-\lstset{keywordstyle=\color{blue}, commentstyle=\color{gray!90}, basicstyle=\ttfamily\small, columns=fullflexible, breaklines=true,linewidth=\textwidth, backgroundcolor=\color{gray!23}, basewidth={0.5em,0.4em}, literate={á}{{\'a}}1 {ñ}{{\~n}}1 {é}{{\'e}}1 {ó}{{\'o}}1 {º}{{\textordmasculine}}1, showstringspaces=false}
+\input{../myR.tex}
+\lstset{keywordstyle=\color{blue}, commentstyle=\color{gray!90}, basicstyle=\ttfamily\small, columns=fullflexible, breaklines=true,linewidth=\textwidth, backgroundcolor=\color{gray!23}, basewidth={0.5em,0.4em}, literate={á}{{\'a}}1 {ñ}{{\~n}}1 {é}{{\'e}}1 {ó}{{\'o}}1 {º}{{\textordmasculine}}1, showstringspaces=false, numbersep = 20pt}
 \usepackage{mathpazo}
 \hypersetup{colorlinks=true, linkcolor=Blue, urlcolor=Blue}
 \usepackage{fancyvrb}
@@ -53,8 +54,8 @@
 \maketitle
 
 \section{Introducción}
-\label{sec:orgdbbb0d1}
-\begin{frame}[label={sec:org478ff36},fragile]{Objetivo principal}
+\label{sec:orgacaf42f}
+\begin{frame}[label={sec:orge944fb0},fragile]{Objetivo principal}
  \begin{block}{Desarrollo de un paquete en \texttt{R}}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 library(solaR2)
@@ -62,7 +63,7 @@ library(solaR2)
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:org714719a},fragile]{Objetivos secundarios}
+\begin{frame}[label={sec:orgbb463f5},fragile]{Objetivos secundarios}
  \begin{block}{GNU Emacs}
 \end{block}
 \begin{block}{Paquetes de \texttt{R}}
@@ -82,13 +83,13 @@ library(solaR2)
 \end{frame}
 
 \section{Estado del arte}
-\label{sec:org2b6d742}
+\label{sec:org2bded65}
 \subsection{Sitación actual de la generación fotovoltaica}
-\label{sec:org6392b84}
+\label{sec:org1604831}
 
 \subsection{Soluciones actuales}
-\label{sec:org5163ded}
-\begin{frame}[label={sec:orgabdf933}]{Soluciones actuales}
+\label{sec:orgfb162c3}
+\begin{frame}[label={sec:orgfd65505}]{Soluciones actuales}
 \begin{block}{\alert{PVsyst}}
 \end{block}
 \begin{block}{\alert{SISIFO}}
@@ -98,7 +99,7 @@ library(solaR2)
 \begin{block}{\alert{System Advisor Model}}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orga4f6543},fragile]{\texttt{solaR}}
+\begin{frame}[label={sec:org4c8b7a8},fragile]{\texttt{solaR}}
  \begin{block}{Funcionamiento}
 \begin{itemize}
 \item Geometría solar
@@ -112,7 +113,7 @@ library(solaR2)
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org4dfc101},fragile]{\texttt{solaR}}
+\begin{frame}[label={sec:orgf1ae489},fragile]{\texttt{solaR}}
  \begin{block}{Carencias}
 \begin{itemize}
 \item Modularidad
@@ -124,74 +125,126 @@ library(solaR2)
 \end{frame}
 
 \section{Marco teórico}
-\label{sec:org284090f}
-\begin{frame}[label={sec:org159cbd6}]{Procedimiento de cálculo}
+\label{sec:orgd33fe62}
+\begin{frame}[label={sec:orgd3836c6}]{Procedimiento de cálculo}
 \begin{center}
 \includegraphics[scale=1]{../figuras/ProcedimientoCalculoRadiacionInclinada.pdf}
 \end{center}
 \end{frame}
 \section{Desarrollo del código}
-\label{sec:org0b2af3a}
-\begin{frame}[label={sec:org1b1e7f0}]{Algorítmo de cálculo}
+\label{sec:org56b46ec}
+\begin{frame}[label={sec:orgb629ec3}]{Algorítmo de cálculo}
 \begin{center}
 \includegraphics[height=0.9\textheight]{../figuras/procedure.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org3a273c7},fragile]{\texttt{calcSol}}
+\begin{frame}[label={sec:org29bd873},fragile]{\texttt{calcSol}}
  \begin{center}
 \includegraphics[width=\textwidth]{../figuras/calcsol.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orgb2de32e},fragile]{\texttt{Meteo}}
+\begin{frame}[label={sec:orga7d5cf1},fragile]{\texttt{Meteo}}
  \begin{center}
 \includegraphics[width=\textwidth]{../figuras/meteo.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orge41e3a1},fragile]{\texttt{calcG0}}
+\begin{frame}[label={sec:org66255db},fragile]{\texttt{calcG0}}
  \begin{center}
 \includegraphics[width=\textwidth]{../figuras/calcg0.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orgc057140},fragile]{\texttt{calcGef}}
+\begin{frame}[label={sec:org3b2b0f7},fragile]{\texttt{calcGef}}
  \begin{center}
 \includegraphics[width=\textwidth]{../figuras/calcgef.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org5358bdd},fragile]{\texttt{prodGCPV}}
+\begin{frame}[label={sec:org83522e1},fragile]{\texttt{prodGCPV}}
  \begin{center}
 \includegraphics[width=\textwidth]{../figuras/prodgcpv.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orgfa71dca},fragile]{\texttt{prodPVPS}}
+\begin{frame}[label={sec:orgb8cf0c6},fragile]{\texttt{prodPVPS}}
  \begin{center}
 \includegraphics[width=\textwidth]{../figuras/prodpvps.pdf}
 \end{center}
 \end{frame}
 \section{Ejemplo práctico de aplicación}
-\label{sec:orgef37413}
+\label{sec:org975f51e}
+\begin{frame}[label={sec:orgc050b39},fragile]{Información meteorológica}
+ \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+etsidi_1315 <- readBDi(file = 'TFG/data/PVGIS_1315.csv',
+                       lat = 40.4, dates.col = 'Dates',
+                       format = 'nilY-nilm-nild nilH:nilM:nilS')
+\end{lstlisting}
+\end{frame}
 
+\begin{frame}[label={sec:orgcc0b6a2}]{Información meteorológica}
+\begin{center}
+\includegraphics[height=0.9\textheight]{../figuras/ejemplos3.pdf}
+\end{center}
+\end{frame}
+\begin{frame}[label={sec:org6b66739},fragile]{Producción de diferentes sistemas}
+ \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+prod1 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
+                  dataRad = etsidi_1315, beta = 30, alpha = -19,
+                  module = module1, generator = generator1,
+                  inverter = inverter)
+show(as.data.tableY(prod1))
+\end{lstlisting}
+
+\begin{verbatim}
+   Dates      Eac      Edc       Yf
+   <int>    <num>    <num>    <num>
+1:  2013 1681.077 1757.235 1343.449
+2:  2014 1698.613 1775.426 1357.463
+3:  2015 1749.536 1828.569 1398.158
+\end{verbatim}
+
+
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+prod2 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
+                  dataRad = etsidi_1315, beta = 30, alpha = -19,
+                  module = module2, generator = generator2,
+                  inverter = inverter)
+show(as.data.tableY(prod2))
+\end{lstlisting}
+
+\begin{verbatim}
+   Dates      Eac      Edc       Yf
+   <int>    <num>    <num>    <num>
+1:  2013 1451.873 1517.779 1319.225
+2:  2014 1464.483 1530.833 1330.683
+3:  2015 1506.544 1574.704 1368.901
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[label={sec:org61353e9}]{Comparación de producciones}
+\begin{center}
+\includegraphics[height=0.9\textheight]{../figuras/ejemplos4.pdf}
+\end{center}
+\end{frame}
 \section{Conclusiones}
-\label{sec:org36fbc48}
+\label{sec:orgc8fa397}
 \subsection{Aportaciones}
-\label{sec:orgfda848b}
-\begin{frame}[label={sec:org999d179}]{Blame}
+\label{sec:org55629a5}
+\begin{frame}[label={sec:orge152f04}]{Blame}
 \begin{center}
 \includegraphics[height=0.9\textheight]{../figuras/blame-fCompD.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org0350899}]{Blame}
+\begin{frame}[label={sec:orgfefc3d8}]{Blame}
 \begin{center}
 \includegraphics[width=\textwidth]{../figuras/blame-fCompD_cropped.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org987a1e1}]{Insights}
+\begin{frame}[label={sec:orgf0c8454}]{Insights}
 \begin{center}
 \includegraphics[height=0.9\textheight]{../figuras/contributors.png}
 \end{center}
 \end{frame}
 \subsection{Desarrollo a futuro}
-\label{sec:org7f08db7}
-\begin{frame}[label={sec:org91c5e0e},fragile]{Desarrollo a futuro}
+\label{sec:org2d597ad}
+\begin{frame}[label={sec:org095ef54},fragile]{Desarrollo a futuro}
  \begin{block}{Interfaz de usuario}
 \end{block}
 \begin{block}{Mejora de funciones}

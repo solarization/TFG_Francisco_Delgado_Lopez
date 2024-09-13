@@ -78,7 +78,58 @@ file:../figuras/prodgcpv.pdf
 #+ATTR_LATEX: :width \textwidth
 file:../figuras/prodpvps.pdf
 * Ejemplo práctico de aplicación
-
+*** Información meteorológica
+#+begin_src R
+etsidi_1315 <- readBDi(file = 'TFG/data/PVGIS_1315.csv',
+                       lat = 40.4, dates.col = 'Dates',
+                       format = '%Y-%m-%d %H:%M:%S')
+#+end_src
+*** Información meteorológica
+#+ATTR_LATEX: :height 0.9\textheight
+file:../figuras/ejemplos3.pdf
+*** Producción de diferentes sistemas
+#+begin_src R :exports none
+module1 <- list(Vocn = 37.1,
+                Iscn = 8.76,
+                Vmn = 29.9,
+                Imn = 8.37,
+                Ncs = 60,
+                Ncp = 1,
+                CoefVT = 0.00338,
+                TONC = 43.7)
+module2 <- list(Vocn = 36.5,
+                Iscn = 8.15,
+                Vmn = 29,
+                Imn = 7.59,
+                Ncs = 60,
+                Ncp = 1,
+                CoefVT = 0.0037,
+                TONC = 46)
+generator1 <- list(Nms = 5, Nmp = 1)
+generator2 <- list(Nms = 5, Nmp = 1)
+inverter <- list(Ki = c(0.002, 0.005, 0.008),
+                 Pinv = 1200,
+                 Vmin = 100,
+                 Vmax = 320,
+                 Gumb = 20)
+#+end_src
+#+begin_src R
+prod1 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
+                  dataRad = etsidi_1315, beta = 30, alpha = -19,
+                  module = module1, generator = generator1,
+                  inverter = inverter)
+show(as.data.tableY(prod1))
+#+end_src
+#+begin_src R
+prod2 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
+                  dataRad = etsidi_1315, beta = 30, alpha = -19,
+                  module = module2, generator = generator2,
+                  inverter = inverter)
+show(as.data.tableY(prod2))
+#+end_src
+*** Comparación de producciones
+#+ATTR_LATEX: :height 0.9\textheight
+file:../figuras/ejemplos4.pdf
 * Conclusiones
 ** Aportaciones
 *** Blame
