@@ -27,6 +27,19 @@ library(solaR2)
 
 * Estado del arte
 ** Sitación actual de la generación fotovoltaica
+1. En 2022, la energía solar fotovoltaica creció un 137% a nivel mundial.
+2. Se instalaron 240 GWp de nueva capacidad, superando los 1185 GWp en total.
+3. China lidera con más de 106 GWp instalados, seguido por la Unión Europea con 41 GWp.
+4. La energía solar representa el 31% de la capacidad de generación renovable global.
+5. Se añadió tres veces más energía solar que eólica en 2022.
+6. La Unión Europea superó a EE.UU. en desarrollo fotovoltaico.
+7. España lideró el mercado europeo con 8,6 GWp instalados.
+8. El Plan REPowerEU busca alcanzar 400 GWp para 2030.
+9. España instaló 5.641 MWp en plantas y aumentó el autoconsumo en un 108%.
+10. El autoconsumo industrial creció notablemente, representando el 47% del total.
+11. Se adjudicaron 1.200 MW a proyectos de hidrógeno verde y agrovoltaica.
+12. El sector fotovoltaico aportó 7.014 millones de euros al PIB español y generó 197.383 empleos.
+13. España fabrica el 65% de los componentes fotovoltaicos localmente y es un importante exportador.
 
 ** Soluciones actuales
 *** Soluciones actuales

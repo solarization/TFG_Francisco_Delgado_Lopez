@@ -1,4 +1,4 @@
-% Created 2024-09-13 vi. 11:46
+% Created 2024-09-13 vi. 12:54
 % Intended LaTeX compiler: pdflatex
 \documentclass[aspectratio=169, usenames,svgnames,dvipsnames]{beamer}
 \usepackage[utf8]{inputenc}
@@ -53,8 +53,8 @@
 \maketitle
 
 \section{Introducción}
-\label{sec:orgee55c55}
-\begin{frame}[label={sec:orgb861117},fragile]{Objetivo principal}
+\label{sec:orgefd3b82}
+\begin{frame}[label={sec:orgd844b05},fragile]{Objetivo principal}
  \begin{block}{Desarrollo de un paquete en \texttt{R}}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 library(solaR2)
@@ -62,7 +62,7 @@ library(solaR2)
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:orgf639082},fragile]{Objetivos secundarios}
+\begin{frame}[label={sec:org08059e0},fragile]{Objetivos secundarios}
  \begin{block}{GNU Emacs}
 \end{block}
 \begin{block}{Paquetes de \texttt{R}}
@@ -82,13 +82,28 @@ library(solaR2)
 \end{frame}
 
 \section{Estado del arte}
-\label{sec:org67dd343}
+\label{sec:org0d44322}
 \subsection{Sitación actual de la generación fotovoltaica}
-\label{sec:orgd75c9b4}
+\label{sec:org55cfea6}
+\begin{enumerate}
+\item En 2022, la energía solar fotovoltaica creció un 137\% a nivel mundial.
+\item Se instalaron 240 GWp de nueva capacidad, superando los 1185 GWp en total.
+\item China lidera con más de 106 GWp instalados, seguido por la Unión Europea con 41 GWp.
+\item La energía solar representa el 31\% de la capacidad de generación renovable global.
+\item Se añadió tres veces más energía solar que eólica en 2022.
+\item La Unión Europea superó a EE.UU. en desarrollo fotovoltaico.
+\item España lideró el mercado europeo con 8,6 GWp instalados.
+\item El Plan REPowerEU busca alcanzar 400 GWp para 2030.
+\item España instaló 5.641 MWp en plantas y aumentó el autoconsumo en un 108\%.
+\item El autoconsumo industrial creció notablemente, representando el 47\% del total.
+\item Se adjudicaron 1.200 MW a proyectos de hidrógeno verde y agrovoltaica.
+\item El sector fotovoltaico aportó 7.014 millones de euros al PIB español y generó 197.383 empleos.
+\item España fabrica el 65\% de los componentes fotovoltaicos localmente y es un importante exportador.
+\end{enumerate}
 
 \subsection{Soluciones actuales}
-\label{sec:org96b2d5f}
-\begin{frame}[label={sec:org65286fc}]{Soluciones actuales}
+\label{sec:org3b08931}
+\begin{frame}[label={sec:org577f747}]{Soluciones actuales}
 \begin{block}{\alert{PVsyst}}
 \end{block}
 \begin{block}{\alert{SISIFO}}
@@ -98,7 +113,7 @@ library(solaR2)
 \begin{block}{\alert{System Advisor Model}}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgc5d95a3},fragile]{\texttt{solaR}}
+\begin{frame}[label={sec:org5611677},fragile]{\texttt{solaR}}
  \begin{block}{Funcionamiento}
 \begin{itemize}
 \item Geometría solar
@@ -112,7 +127,7 @@ library(solaR2)
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org65e27ef},fragile]{\texttt{solaR}}
+\begin{frame}[label={sec:org41d6875},fragile]{\texttt{solaR}}
  \begin{block}{Carencias}
 \begin{itemize}
 \item Modularidad
@@ -124,52 +139,52 @@ library(solaR2)
 \end{frame}
 
 \section{Marco teórico}
-\label{sec:org6fddc44}
-\begin{frame}[label={sec:org03f3fb1}]{Procedimiento de cálculo}
+\label{sec:org9ce2099}
+\begin{frame}[label={sec:org1e7fc94}]{Procedimiento de cálculo}
 \begin{center}
 \includegraphics[scale=1]{../figuras/ProcedimientoCalculoRadiacionInclinada.pdf}
 \end{center}
 \end{frame}
 \section{Desarrollo del código}
-\label{sec:orgf185e97}
-\begin{frame}[label={sec:org862a4d2}]{Algorítmo de cálculo}
+\label{sec:orgbcc3552}
+\begin{frame}[label={sec:orge6ec4a8}]{Algorítmo de cálculo}
 \begin{center}
 \includegraphics[height=0.9\textheight]{../figuras/procedure.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orgffb8ed3},fragile]{\texttt{calcSol}}
+\begin{frame}[label={sec:orgf997d71},fragile]{\texttt{calcSol}}
  \begin{center}
 \includegraphics[width=\textwidth]{../figuras/calcsol.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org244954c},fragile]{\texttt{Meteo}}
+\begin{frame}[label={sec:orga8b4018},fragile]{\texttt{Meteo}}
  \begin{center}
 \includegraphics[width=\textwidth]{../figuras/meteo.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orge18fe10},fragile]{\texttt{calcG0}}
+\begin{frame}[label={sec:org6664b82},fragile]{\texttt{calcG0}}
  \begin{center}
 \includegraphics[width=\textwidth]{../figuras/calcg0.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orgdf5a5ee},fragile]{\texttt{calcGef}}
+\begin{frame}[label={sec:org08115d4},fragile]{\texttt{calcGef}}
  \begin{center}
 \includegraphics[width=\textwidth]{../figuras/calcgef.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orgbdd371e},fragile]{\texttt{prodGCPV}}
+\begin{frame}[label={sec:orgc784978},fragile]{\texttt{prodGCPV}}
  \begin{center}
 \includegraphics[width=\textwidth]{../figuras/prodgcpv.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org6fb5f72},fragile]{\texttt{prodPVPS}}
+\begin{frame}[label={sec:org86fbec6},fragile]{\texttt{prodPVPS}}
  \begin{center}
 \includegraphics[width=\textwidth]{../figuras/prodpvps.pdf}
 \end{center}
 \end{frame}
 \section{Ejemplo práctico de aplicación}
-\label{sec:orge5a158d}
-\begin{frame}[label={sec:orgd6219d5},fragile]{Información meteorológica}
+\label{sec:org48e2126}
+\begin{frame}[label={sec:org83fec4d},fragile]{Información meteorológica}
  \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 etsidi_1315 <- readBDi(file = "TFG/data/PVGIS_1315.csv",
                        lat = 40.4, dates.col = "Dates",
@@ -177,12 +192,12 @@ etsidi_1315 <- readBDi(file = "TFG/data/PVGIS_1315.csv",
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[label={sec:org822935c}]{Información meteorológica}
+\begin{frame}[label={sec:orga168ce6}]{Información meteorológica}
 \begin{center}
 \includegraphics[height=0.9\textheight]{../figuras/ejemplos3.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orgaa9e570},fragile]{Producción de diferentes sistemas}
+\begin{frame}[label={sec:org6eaf176},fragile]{Producción de diferentes sistemas}
  \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 prod1 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
                   dataRad = etsidi_1315, beta = 30, alpha = -19,
@@ -217,33 +232,33 @@ show(as.data.tableY(prod2))
 \end{verbatim}
 \end{frame}
 
-\begin{frame}[label={sec:orgf8fbe1c}]{Comparación de producciones}
+\begin{frame}[label={sec:org2bd95d4}]{Comparación de producciones}
 \begin{center}
 \includegraphics[height=0.9\textheight]{../figuras/ejemplos4.pdf}
 \end{center}
 \end{frame}
 \section{Conclusiones}
-\label{sec:org4e4d3ab}
+\label{sec:org29bdb55}
 \subsection{Aportaciones}
-\label{sec:orgfa96f68}
-\begin{frame}[label={sec:org8220804}]{Blame}
+\label{sec:org960df63}
+\begin{frame}[label={sec:orgd989ab6}]{Blame}
 \begin{center}
 \includegraphics[height=0.9\textheight]{../figuras/blame-fCompD.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orgd21b6c2}]{Blame}
+\begin{frame}[label={sec:orgd6077de}]{Blame}
 \begin{center}
 \includegraphics[width=\textwidth]{../figuras/blame-fCompD_cropped.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orga48c619}]{Insights}
+\begin{frame}[label={sec:org854e4f6}]{Insights}
 \begin{center}
 \includegraphics[height=0.9\textheight]{../figuras/contributors.png}
 \end{center}
 \end{frame}
 \subsection{Desarrollo a futuro}
-\label{sec:org4a6d0f0}
-\begin{frame}[label={sec:org9b66dc6},fragile]{Desarrollo a futuro}
+\label{sec:orgb89d7e3}
+\begin{frame}[label={sec:org9680a3c},fragile]{Desarrollo a futuro}
  \begin{block}{Interfaz de usuario}
 \end{block}
 \begin{block}{Mejora de funciones}
