@@ -1,4 +1,4 @@
-#+PROPERTY: header-args: :results output :exports both
+#+PROPERTY: header-args:R :results output :exports both
 \chapter{Ejemplo práctico de aplicación}
 label:chap:ejemplo-practico-aplicacion
 Una vez explicado cómo funciona el paquete, se puede realizar una demostración práctica tomando como ejemplo los módulos fotovoltaicos que tiene en su azotea la Escuela Técnica Superior de Ingeniería y Diseño Industrial (en adelante, la ETSIDI).

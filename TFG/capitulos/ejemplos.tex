@@ -7,11 +7,11 @@ Se tomará de base un estudio realizado por profesores de la escuela \cite{adrad
 En este ejemplo se realizará el mismo análisis tomando tres herramientas distintas: \texttt{solaR}, para poder tomar como referencia el paquete del que sale, apreciando las mejoras del programa. \texttt{PVSyst}, ya que es uno de los softwares más usados en el ámbito de la fotovoltaica y puede servir como punto de referencia. Y, por último, \texttt{solaR2}.
 
 \section{\texttt{solaR}}
-\label{sec:org57b57b3}
+\label{sec:org5bf624d}
 \label{sec:solaR}
 Se empieza inicilizando el paquete:
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-library(solaR)
+  library(solaR)
 \end{lstlisting}
 
 \begin{verbatim}
@@ -140,26 +140,26 @@ Una vez se tienen todos los parámetros del sistema fotovoltaico, se requieren l
 
 Se almacena esta información en otra lista:
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-inverter <- list(Ki = c(0.002, 0.005, 0.008),
-                 Pinv = 1200,
-                 Vmin = 100,
-                 Vmax = 320,
-                 Gumb = 20)
+  inverter <- list(Ki = c(0.002, 0.005, 0.008),
+                   Pinv = 1200,
+		   Vmin = 100,
+		   Vmax = 320,
+                   Gumb = 20)
 \end{lstlisting}
 
 Una vez recopilada toda la información (la información que falta se deja sin añadir para que el propio paquete añada sus valores por defecto), se puede calcular la producción que tuvieron los sistemas:
 
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 prod1 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
-                  dataRad = etsidi_1315,
-                  beta = 30, alfa = -19, 
-                  module = module1, generator = generator1,
-                  inverter = inverter)
+		  dataRad = etsidi_1315,
+		  beta = 30, alfa = -19, 
+		  module = module1, generator = generator1,
+		  inverter = inverter)
 prod2 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
-                  dataRad = etsidi_1315,
-                  beta = 30, alfa = -19, 
-                  module = module2, generator = generator2,
-                  inverter = inverter)
+		  dataRad = etsidi_1315,
+		  beta = 30, alfa = -19, 
+		  module = module2, generator = generator2,
+		  inverter = inverter)
 
 \end{lstlisting}
 
@@ -199,7 +199,7 @@ compare(prod1, prod2)
 
 
 \section{\texttt{PVsyst}}
-\label{sec:org1db9f3a}
+\label{sec:org16d74a6}
 Con la herramienta \texttt{PVsyst}, se ha generado un año promedio de datos de irradiación en la localización y con estos datos se han obtenido dos informes (uno por cada sistema).
 
 Por comodidad, en este documento se van a extraer solo unas tablas con los resultados principales. Sin embargo, los informes completos están disponibles en el \href{https://github.com/solarization/TFG\_Francisco\_Delgado\_Lopez}{github} del documento.
@@ -222,7 +222,7 @@ En las tabla \ref{tab:pvsyst} se tienen los resultados de la simulación de los 
 
 
 \section{\texttt{solaR2}}
-\label{sec:org666f6fc}
+\label{sec:org4a41e68}
 \label{sec:solaR2}
 Con los datos obtenidos en la sección \ref{sec:solaR}, hacemos la misma operación pero con el paquete \texttt{solaR2}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -255,15 +255,15 @@ Con estos datos se procede al cálculo de la producción (los datos de los compo
 
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 prod1 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
-                  dataRad = etsidi_1315,
-                  beta = 30, alpha = -19, 
-                  module = module1, generator = generator1,
-                  inverter = inverter)
+		  dataRad = etsidi_1315,
+		  beta = 30, alpha = -19, 
+		  module = module1, generator = generator1,
+		  inverter = inverter)
 prod2 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
-                  dataRad = etsidi_1315,
-                  beta = 30, alpha = -19, 
-                  module = module2, generator = generator2,
-                  inverter = inverter)
+		  dataRad = etsidi_1315,
+		  beta = 30, alpha = -19, 
+		  module = module2, generator = generator2,
+		  inverter = inverter)
 \end{lstlisting}
 
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
@@ -304,50 +304,50 @@ compare(prod1, prod2)
 
 
 \section{Comparación y conclusiones}
-\label{sec:org305b2b0}
+\label{sec:orgec06447}
 \label{sec:comparacion-conclusiones}
 Como se puede observar en las secciones anteriores, tanto el paquete \texttt{solaR} como el paquete \texttt{solaR2} ofrecen los mismos resultados, ya que toman las mismas referencias y estudios para realizar los cáculos. Además, ambos son muy aproximados a los cálculos realizados por \texttt{PVSyst}. Sin embargo, el paquete \texttt{solaR2}, aparte de la corrección de algunos errores, presenta unas claras ventajas frente a su antecesor. Estas son:
 \begin{itemize}
 \item \textbf{Modularidad}: el paquete \texttt{solaR2} presenta muchas funciones que son capaces de realizar pequeñas operaciones, al contrario que \texttt{solaR}, que no permite esto.
 \item \textbf{Eficiencia}: al estar basado en \texttt{data.table}, el paquete gana eficiencia en operaciones complejas. Para mostrar esto vamos a utilizar el paquete \texttt{microbenchmark}.
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-## Con el paquete solaR
-library(microbenchmark)
-## se recortan los datos a un solo año
-etsidi_13 <- etsidi_1315[as.Date('2013-01-01'), as.Date('2013-12-31')]
-prodGCPVcustom <- function(){  
-  prod1 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
-                    dataRad = etsidi_13, beta = 30, alfa =-19,
-                    module = module1, generator = generator1,
-                    inverter = inverter)
-}
-microbenchmark(prodGCPVcustom(), times = 20)
+  ## Con el paquete solaR
+  library(microbenchmark)
+  ## se recortan los datos a un solo año
+  etsidi_13 <- etsidi_1315[as.Date('2013-01-01'), as.Date('2013-12-31')]
+  prodGCPVcustom <- function(){  
+    prod1 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
+		      dataRad = etsidi_13, beta = 30, alfa =-19,
+		      module = module1, generator = generator1,
+		      inverter = inverter)
+  }
+  microbenchmark(prodGCPVcustom(), times = 20)
 \end{lstlisting}
 
 \begin{verbatim}
 Unit: milliseconds
              expr      min       lq     mean   median       uq      max neval
- prodGCPVcustom() 761.8088 782.3594 801.0824 796.9506 822.6448 832.7593    20
+ prodGCPVcustom() 795.3715 808.1309 829.6126 823.2678 843.7688 883.5895    20
 \end{verbatim}
 
 
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
-## Con el paquete solaR2
-library(microbenchmark)
-etsidi_13 <- etsidi_1315[as.Date('2013-01-01'), as.Date('2013-12-31')]
-prodGCPVcustom <- function(){  
-  prod1 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
-                    dataRad = etsidi_13, beta = 30, alpha =-19,
-                    module = module1, generator = generator1,
-                    inverter = inverter)
-}
-microbenchmark(prodGCPVcustom(), times = 20)
+  ## Con el paquete solaR2
+  library(microbenchmark)
+  etsidi_13 <- etsidi_1315[as.Date('2013-01-01'), as.Date('2013-12-31')]
+  prodGCPVcustom <- function(){  
+    prod1 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
+		      dataRad = etsidi_13, beta = 30, alpha =-19,
+		      module = module1, generator = generator1,
+		      inverter = inverter)
+  }
+  microbenchmark(prodGCPVcustom(), times = 20)
 \end{lstlisting}
 
 \begin{verbatim}
 Unit: milliseconds
              expr      min       lq     mean   median       uq      max neval
- prodGCPVcustom() 521.7805 524.6307 530.9213 528.4282 533.4909 574.6818    20
+ prodGCPVcustom() 526.4726 533.9997 541.4782 540.2967 544.1377 578.8068    20
 \end{verbatim}
 \end{itemize}
 
