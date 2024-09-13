@@ -4,7 +4,7 @@
 #+STARTUP: inlineimages 
 #+SETUPFILE: config.org
 #+OPTIONS: H:3
-#+PROPERTY: header-args R :session solaR2
+#+PROPERTY: header-args: :session solaR2 :results output :exports both
 
 * Introducción
 *** Objetivo principal
@@ -80,9 +80,9 @@ file:../figuras/prodpvps.pdf
 * Ejemplo práctico de aplicación
 *** Información meteorológica
 #+begin_src R
-etsidi_1315 <- readBDi(file = 'TFG/data/PVGIS_1315.csv',
-                       lat = 40.4, dates.col = 'Dates',
-                       format = '%Y-%m-%d %H:%M:%S')
+etsidi_1315 <- readBDi(file = "TFG/data/PVGIS_1315.csv",
+                       lat = 40.4, dates.col = "Dates",
+                       format = "%Y-%m-%d %H:%M:%S")
 #+end_src
 *** Información meteorológica
 #+ATTR_LATEX: :height 0.9\textheight
