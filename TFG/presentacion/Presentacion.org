@@ -15,7 +15,17 @@ library(solaR2)
 
 *** Objetivos secundarios
 **** GNU Emacs
+:PROPERTIES:
+:BEAMER_COL: 0.2
+:BEAMER_ENV: block
+:END:
+- =Org mode=
+- =ESS=
 **** Paquetes de =R=
+:PROPERTIES:
+:BEAMER_COL: 0.25
+:BEAMER_ENV: block
+:END:
 - =solaR=
 - =zoo=
 - =data.table=
@@ -23,7 +33,19 @@ library(solaR2)
 - =profvis=
 - =lattice=
 **** LaTeX
+:PROPERTIES:
+:BEAMER_COL: 0.2
+:BEAMER_ENV: block
+:END:
+- Documento
+- Presentación
 **** Energía Solar Fotovoltaica
+:PROPERTIES:
+:BEAMER_COL: 0.25
+:BEAMER_ENV: block
+:END:
+#+ATTR_LATEX: :width \textwidth
+file:../figuras/portadaESF.png
 
 * Estado del arte
 ** Sitación actual de la generación fotovoltaica
@@ -44,9 +66,33 @@ library(solaR2)
 ** Soluciones actuales
 *** Soluciones actuales
 **** *PVsyst*
+:PROPERTIES:
+:BEAMER_COL: 0.2
+:BEAMER_ENV: block
+:END:
+#+ATTR_LATEX: :width \textwidth
+file:../figuras/Logo-PVsyst.png
 **** *SISIFO*
+:PROPERTIES:
+:BEAMER_COL: 0.2
+:BEAMER_ENV: block
+:END:
+#+ATTR_LATEX: :width \textwidth
+file:../figuras/sisifo_naranja_cab2colorpeque1.png
 **** *PVGIS*
+:PROPERTIES:
+:BEAMER_COL: 0.2
+:BEAMER_ENV: block
+:END:
+#+ATTR_LATEX: :width \textwidth
+file:../figuras/PVGIS.png
 **** *System Advisor Model*
+:PROPERTIES:
+:BEAMER_COL: 0.2
+:BEAMER_ENV: block
+:END:
+#+ATTR_LATEX: :width \textwidth
+file:../figuras/SAM-logo-horizontal.png
 *** =solaR=
 **** Funcionamiento
 - Geometría solar
@@ -142,7 +188,7 @@ show(as.data.tableY(prod2))
 #+end_src
 *** Comparación de producciones
 #+ATTR_LATEX: :height 0.9\textheight
-file:../figuras/ejemplos4.pdf
+[[file:../figuras/ejemplos4.pdf]]
 * Conclusiones
 ** Aportaciones
 *** Blame
@@ -160,4 +206,4 @@ file:../figuras/contributors.png
 **** Mejora de funciones
 **** Toma de datos 
 **** Uso de paquete especializados en datos espaciales
-- =terra=
+- =terra=   
