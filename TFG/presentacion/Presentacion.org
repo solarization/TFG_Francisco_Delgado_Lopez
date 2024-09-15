@@ -1,7 +1,6 @@
 #+TITLE: Desarrollo de una herramienta software para la simulación de sistemas fotovoltaicos con R
 #+SUBTITLE: Trabajo de Fin de Grado
-#+STARTUP: indent
-#+STARTUP: inlineimages 
+#+STARTUP: indent 
 #+SETUPFILE: config.org
 #+OPTIONS: H:3
 #+PROPERTY: header-args: :session solaR2 :results output :exports both
@@ -9,9 +8,9 @@
 * Introducción
 *** Objetivo principal
 **** Desarrollo de un paquete en =R=
-   #+begin_src R :results none
+#+begin_src R :results none
 library(solaR2)
-   #+end_src
+#+end_src
 
 *** Objetivos secundarios
 **** GNU Emacs
@@ -49,20 +48,9 @@ file:../figuras/portadaESF.png
 
 * Estado del arte
 ** Sitación actual de la generación fotovoltaica
-1. En 2022, la energía solar fotovoltaica creció un 137% a nivel mundial.
-2. Se instalaron 240 GWp de nueva capacidad, superando los 1185 GWp en total.
-3. China lidera con más de 106 GWp instalados, seguido por la Unión Europea con 41 GWp.
-4. La energía solar representa el 31% de la capacidad de generación renovable global.
-5. Se añadió tres veces más energía solar que eólica en 2022.
-6. La Unión Europea superó a EE.UU. en desarrollo fotovoltaico.
-7. España lideró el mercado europeo con 8,6 GWp instalados.
-8. El Plan REPowerEU busca alcanzar 400 GWp para 2030.
-9. España instaló 5.641 MWp en plantas y aumentó el autoconsumo en un 108%.
-10. El autoconsumo industrial creció notablemente, representando el 47% del total.
-11. Se adjudicaron 1.200 MW a proyectos de hidrógeno verde y agrovoltaica.
-12. El sector fotovoltaico aportó 7.014 millones de euros al PIB español y generó 197.383 empleos.
-13. España fabrica el 65% de los componentes fotovoltaicos localmente y es un importante exportador.
-
+1. Crecimiento mundial de la energía fotovoltaica: En 2022, la energía solar fotovoltaica experimentó un crecimiento récord, con 240 GWp de nueva capacidad instalada a nivel mundial, lo que representa un aumento del 137% respecto a 2021. China lideró este crecimiento, seguida de la Unión Europea, que duplicó su capacidad fotovoltaica.
+2. Desarrollo legislativo y de autoconsumo en España: España vivió un auge en el desarrollo fotovoltaico, con un aumento del autoconsumo del 108% y varias iniciativas legislativas para fomentar las energías renovables y el autoconsumo, como el Plan REPowerEU y medidas para limitar la dependencia del gas.
+3. Impacto económico del sector fotovoltaico en España: En 2022, el sector fotovoltaico en España generó un impacto económico significativo, aportando 7.014 millones de euros al PIB y creando 197.383 empleos, consolidando al país como un actor clave en la fabricación y exportación de componentes fotovoltaicos.
 ** Soluciones actuales
 *** Soluciones actuales
 **** *PVsyst*
@@ -95,6 +83,10 @@ file:../figuras/PVGIS.png
 file:../figuras/SAM-logo-horizontal.png
 *** =solaR=
 **** Funcionamiento
+:PROPERTIES:
+:BEAMER_COL: 0.45
+:BEAMER_ENV: block
+:END:
 - Geometría solar
 - Datos meteorológicos
 - Radiación en el plano horizontal
@@ -103,8 +95,11 @@ file:../figuras/SAM-logo-horizontal.png
 - Simulación de SFB
 - Optimización de distancias
 - Métodos de visualización
-*** =solaR=
 **** Carencias
+:PROPERTIES:
+:BEAMER_COL: 0.45
+:BEAMER_ENV: block
+:END:
 - Modularidad
 - Eficiencia y rendimiento
 - Escalibilidad
@@ -143,8 +138,7 @@ etsidi_1315 <- readBDi(file = "TFG/data/PVGIS_1315.csv",
                        lat = 40.4, dates.col = "Dates",
                        format = "%Y-%m-%d %H:%M:%S")
 #+end_src
-*** Información meteorológica
-#+ATTR_LATEX: :height 0.9\textheight
+#+ATTR_LATEX: :width 0.5\textwidth
 file:../figuras/ejemplos3.pdf
 *** Producción de diferentes sistemas
 #+begin_src R :exports none
@@ -204,6 +198,6 @@ file:../figuras/contributors.png
 *** Desarrollo a futuro
 **** Interfaz de usuario
 **** Mejora de funciones
-**** Toma de datos 
+**** Toma de datos
 **** Uso de paquete especializados en datos espaciales
 - =terra=   
