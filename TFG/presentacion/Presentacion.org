@@ -105,7 +105,7 @@ file:../figuras/SAM-logo-horizontal.png
 #+ATTR_LATEX: :scale 1
 file:../figuras/ProcedimientoCalculoRadiacionInclinada.pdf
 * Desarrollo del código
-*** Algorítmo de cálculo
+*** Algoritmo de cálculo
 #+ATTR_LATEX: :height 0.9\textheight
 file:../figuras/procedure.pdf
 *** =calcSol=
@@ -191,11 +191,14 @@ file:../figuras/blame-fCompD_cropped.pdf
 file:../figuras/contributors.png
 ** Desarrollo a futuro
 *** Desarrollo a futuro
-**** Interfaz de usuario
-**** Mejora de funciones
-**** Toma de datos
-**** Uso de paquete especializados en datos espaciales
-- =terra=
+- Interfaz de usuario
+    
+- Mejora de funciones
+  
+- Toma de datos
+  
+- Uso de paquete especializados en datos espaciales
+  - =terra=
 ** Estado del paquete
 *** GitHub
 #+begin_center
