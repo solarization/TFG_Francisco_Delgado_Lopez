@@ -28,4 +28,3 @@
 #+BEAMER_HEADER: \setbeamertemplate{enumerate items}[circle]
 #+BEAMER_HEADER: \setbeamertemplate{section in toc}[circle]
 #+BEAMER_HEADER: \setbeamertemplate{subsection in toc}[circle]
-#+LATEX_HEADER: \usepackage{pgfplots}

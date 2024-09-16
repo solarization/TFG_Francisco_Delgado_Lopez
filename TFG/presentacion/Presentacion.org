@@ -46,12 +46,7 @@ library(solaR2)
 #+ATTR_LATEX: :width \textwidth
 file:../figuras/portadaESF.png
 
-* Estado del arte
-** Sitación actual de la generación fotovoltaica
-1. Crecimiento mundial de la energía fotovoltaica: En 2022, la energía solar fotovoltaica experimentó un crecimiento récord, con 240 GWp de nueva capacidad instalada a nivel mundial, lo que representa un aumento del 137% respecto a 2021. China lideró este crecimiento, seguida de la Unión Europea, que duplicó su capacidad fotovoltaica.
-2. Desarrollo legislativo y de autoconsumo en España: España vivió un auge en el desarrollo fotovoltaico, con un aumento del autoconsumo del 108% y varias iniciativas legislativas para fomentar las energías renovables y el autoconsumo, como el Plan REPowerEU y medidas para limitar la dependencia del gas.
-3. Impacto económico del sector fotovoltaico en España: En 2022, el sector fotovoltaico en España generó un impacto económico significativo, aportando 7.014 millones de euros al PIB y creando 197.383 empleos, consolidando al país como un actor clave en la fabricación y exportación de componentes fotovoltaicos.
-** Soluciones actuales
+* Soluciones actuales
 *** Soluciones actuales
 **** *PVsyst*
 :PROPERTIES:
@@ -200,4 +195,18 @@ file:../figuras/contributors.png
 **** Mejora de funciones
 **** Toma de datos
 **** Uso de paquete especializados en datos espaciales
-- =terra=   
+- =terra=
+** Estado del paquete
+*** GitHub
+#+begin_center
+[[https://github.com/solarization/solaR2][file:../figuras/GitHub.png]]
+#+end_center
+*** CRAN
+#+begin_center
+[[https://cran.r-project.org/package=solaR2][file:../figuras/CRAN.png]]
+#+end_center
+*** Página web
+#+begin_center
+#+ATTR_LATEX: :height 0.9\textheight
+[[https://solarization.github.io/solaR2/][file:../figuras/github.io.png]]
+#+end_center

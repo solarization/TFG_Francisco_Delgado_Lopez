@@ -1,4 +1,4 @@
-% Created 2024-09-15 do. 13:23
+% Created 2024-09-16 lu. 12:27
 % Intended LaTeX compiler: pdflatex
 \documentclass[aspectratio=169, usenames,svgnames,dvipsnames]{beamer}
 \usepackage[utf8]{inputenc}
@@ -26,7 +26,6 @@
 \hypersetup{colorlinks=true, linkcolor=Blue, urlcolor=Blue}
 \usepackage{fancyvrb}
 \DefineVerbatimEnvironment{verbatim}{Verbatim}{fontsize=\tiny, formatcom = {\color{black!70}}}
-\usepackage{pgfplots}
 \usetheme{Boadilla}
 \usecolortheme{rose}
 \usefonttheme{serif}
@@ -53,8 +52,8 @@
 \maketitle
 
 \section{Introducción}
-\label{sec:orga0a166c}
-\begin{frame}[label={sec:orgd3d4bd1},fragile]{Objetivo principal}
+\label{sec:orgfa403bc}
+\begin{frame}[label={sec:org9f786de},fragile]{Objetivo principal}
  \begin{block}{Desarrollo de un paquete en \texttt{R}}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 library(solaR2)
@@ -62,7 +61,7 @@ library(solaR2)
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:org4f5116e},fragile]{Objetivos secundarios}
+\begin{frame}[label={sec:orgc385254},fragile]{Objetivos secundarios}
  \begin{columns}
 \begin{column}{0.2\columnwidth}
 \begin{block}{GNU Emacs}
@@ -102,18 +101,9 @@ library(solaR2)
 \end{columns}
 \end{frame}
 
-\section{Estado del arte}
-\label{sec:org6d6ecde}
-\subsection{Sitación actual de la generación fotovoltaica}
-\label{sec:org7680787}
-\begin{enumerate}
-\item Crecimiento mundial de la energía fotovoltaica: En 2022, la energía solar fotovoltaica experimentó un crecimiento récord, con 240 GWp de nueva capacidad instalada a nivel mundial, lo que representa un aumento del 137\% respecto a 2021. China lideró este crecimiento, seguida de la Unión Europea, que duplicó su capacidad fotovoltaica.
-\item Desarrollo legislativo y de autoconsumo en España: España vivió un auge en el desarrollo fotovoltaico, con un aumento del autoconsumo del 108\% y varias iniciativas legislativas para fomentar las energías renovables y el autoconsumo, como el Plan REPowerEU y medidas para limitar la dependencia del gas.
-\item Impacto económico del sector fotovoltaico en España: En 2022, el sector fotovoltaico en España generó un impacto económico significativo, aportando 7.014 millones de euros al PIB y creando 197.383 empleos, consolidando al país como un actor clave en la fabricación y exportación de componentes fotovoltaicos.
-\end{enumerate}
-\subsection{Soluciones actuales}
-\label{sec:org4a73901}
-\begin{frame}[label={sec:orgb9f1bfd}]{Soluciones actuales}
+\section{Soluciones actuales}
+\label{sec:orgadee140}
+\begin{frame}[label={sec:orgf829f9e}]{Soluciones actuales}
 \begin{columns}
 \begin{column}{0.2\columnwidth}
 \begin{block}{\alert{PVsyst}}
@@ -145,7 +135,7 @@ library(solaR2)
 \end{column}
 \end{columns}
 \end{frame}
-\begin{frame}[label={sec:org2a74c70},fragile]{\texttt{solaR}}
+\begin{frame}[label={sec:orgbd8b20c},fragile]{\texttt{solaR}}
  \begin{columns}
 \begin{column}{0.45\columnwidth}
 \begin{block}{Funcionamiento}
@@ -175,52 +165,52 @@ library(solaR2)
 \end{frame}
 
 \section{Marco teórico}
-\label{sec:org2ce21d3}
-\begin{frame}[label={sec:org3bceb74}]{Procedimiento de cálculo}
+\label{sec:org2c76111}
+\begin{frame}[label={sec:orgee11e12}]{Procedimiento de cálculo}
 \begin{center}
 \includegraphics[scale=1]{../figuras/ProcedimientoCalculoRadiacionInclinada.pdf}
 \end{center}
 \end{frame}
 \section{Desarrollo del código}
-\label{sec:orgec18bca}
-\begin{frame}[label={sec:org4531629}]{Algorítmo de cálculo}
+\label{sec:org79acaf8}
+\begin{frame}[label={sec:orgc554734}]{Algorítmo de cálculo}
 \begin{center}
 \includegraphics[height=0.9\textheight]{../figuras/procedure.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org35e969f},fragile]{\texttt{calcSol}}
+\begin{frame}[label={sec:orgf7ba42d},fragile]{\texttt{calcSol}}
  \begin{center}
 \includegraphics[width=\textwidth]{../figuras/calcsol.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org23eaa72},fragile]{\texttt{Meteo}}
+\begin{frame}[label={sec:org11140bd},fragile]{\texttt{Meteo}}
  \begin{center}
 \includegraphics[width=\textwidth]{../figuras/meteo.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org154e5d5},fragile]{\texttt{calcG0}}
+\begin{frame}[label={sec:orgce01ac3},fragile]{\texttt{calcG0}}
  \begin{center}
 \includegraphics[width=\textwidth]{../figuras/calcg0.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org9c3c817},fragile]{\texttt{calcGef}}
+\begin{frame}[label={sec:org65f6191},fragile]{\texttt{calcGef}}
  \begin{center}
 \includegraphics[width=\textwidth]{../figuras/calcgef.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orge6347c9},fragile]{\texttt{prodGCPV}}
+\begin{frame}[label={sec:org2540a9f},fragile]{\texttt{prodGCPV}}
  \begin{center}
 \includegraphics[width=\textwidth]{../figuras/prodgcpv.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orgbdb310c},fragile]{\texttt{prodPVPS}}
+\begin{frame}[label={sec:orge592036},fragile]{\texttt{prodPVPS}}
  \begin{center}
 \includegraphics[width=\textwidth]{../figuras/prodpvps.pdf}
 \end{center}
 \end{frame}
 \section{Ejemplo práctico de aplicación}
-\label{sec:orgb935394}
-\begin{frame}[label={sec:org96bfa1a},fragile]{Información meteorológica}
+\label{sec:org826a2ba}
+\begin{frame}[label={sec:orgba349ec},fragile]{Información meteorológica}
  \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 etsidi_1315 <- readBDi(file = "TFG/data/PVGIS_1315.csv",
                        lat = 40.4, dates.col = "Dates",
@@ -231,7 +221,7 @@ etsidi_1315 <- readBDi(file = "TFG/data/PVGIS_1315.csv",
 \includegraphics[width=0.5\textwidth]{../figuras/ejemplos3.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org3c397ef},fragile]{Producción de diferentes sistemas}
+\begin{frame}[label={sec:orge480b1b},fragile]{Producción de diferentes sistemas}
  \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 prod1 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
                   dataRad = etsidi_1315, beta = 30, alpha = -19,
@@ -266,33 +256,33 @@ show(as.data.tableY(prod2))
 \end{verbatim}
 \end{frame}
 
-\begin{frame}[label={sec:org411aab1}]{Comparación de producciones}
+\begin{frame}[label={sec:org9b057a5}]{Comparación de producciones}
 \begin{center}
 \includegraphics[height=0.9\textheight]{../figuras/ejemplos4.pdf}
 \end{center}
 \end{frame}
 \section{Conclusiones}
-\label{sec:orgbbce528}
+\label{sec:orgd3b275f}
 \subsection{Aportaciones}
-\label{sec:orgf64b99b}
-\begin{frame}[label={sec:org0f94fc4}]{Blame}
+\label{sec:org5d1edea}
+\begin{frame}[label={sec:org0ccd2b8}]{Blame}
 \begin{center}
 \includegraphics[height=0.9\textheight]{../figuras/blame-fCompD.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org74daa4b}]{Blame}
+\begin{frame}[label={sec:org73a901b}]{Blame}
 \begin{center}
 \includegraphics[width=\textwidth]{../figuras/blame-fCompD_cropped.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orgf6e8f7b}]{Insights}
+\begin{frame}[label={sec:org78e89cf}]{Insights}
 \begin{center}
 \includegraphics[height=0.9\textheight]{../figuras/contributors.png}
 \end{center}
 \end{frame}
 \subsection{Desarrollo a futuro}
-\label{sec:org8fed6e7}
-\begin{frame}[label={sec:org362e20a},fragile]{Desarrollo a futuro}
+\label{sec:org1c628f4}
+\begin{frame}[label={sec:orgddfceb6},fragile]{Desarrollo a futuro}
  \begin{block}{Interfaz de usuario}
 \end{block}
 \begin{block}{Mejora de funciones}
@@ -304,5 +294,22 @@ show(as.data.tableY(prod2))
 \item \texttt{terra}
 \end{itemize}
 \end{block}
+\end{frame}
+\subsection{Estado del paquete}
+\label{sec:org6c9a17e}
+\begin{frame}[label={sec:orgd78677e}]{GitHub}
+\begin{center}
+\href{https://github.com/solarization/solaR2}{\includegraphics[width=.9\linewidth]{../figuras/GitHub.png}}
+\end{center}
+\end{frame}
+\begin{frame}[label={sec:org28b4e35}]{CRAN}
+\begin{center}
+\href{https://cran.r-project.org/package=solaR2}{\includegraphics[width=.9\linewidth]{../figuras/CRAN.png}}
+\end{center}
+\end{frame}
+\begin{frame}[label={sec:org44b5127}]{Página web}
+\begin{center}
+\href{https://solarization.github.io/solaR2/}{\includegraphics[height=0.9\textheight]{../figuras/github.io.png}}
+\end{center}
 \end{frame}
 \end{document}
