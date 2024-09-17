@@ -177,8 +177,8 @@ show(as.data.tableY(prod2))
 *** Comparación de producciones
 #+ATTR_LATEX: :height 0.9\textheight
 [[file:../figuras/ejemplos4.pdf]]
-* Conclusiones
-** Aportaciones
+
+* Aportaciones
 *** Blame
 #+ATTR_LATEX: :height 0.9\textheight
 file:../figuras/blame-fCompD.pdf
@@ -188,6 +188,7 @@ file:../figuras/blame-fCompD_cropped.pdf
 *** Insights
 #+ATTR_LATEX: :height 0.9\textheight
 file:../figuras/contributors.png
+* Conclusiones
 ** Desarrollo a futuro
 *** Desarrollo a futuro
 - Interfaz de usuario
