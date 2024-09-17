@@ -97,7 +97,6 @@ file:../figuras/SAM-logo-horizontal.png
 :END:
 - Modularidad
 - Eficiencia y rendimiento
-- Escalibilidad
 - Manipulación de datos
   
 * Marco teórico
@@ -212,4 +211,11 @@ file:../figuras/contributors.png
 #+begin_center
 #+ATTR_LATEX: :height 0.9\textheight
 [[https://solarization.github.io/solaR2/][file:../figuras/github.io.png]]
+#+end_center
+*** 
+#+begin_export latex
+\Huge
+#+end_export
+#+begin_center
+*Gracias por su atención*
 #+end_center
