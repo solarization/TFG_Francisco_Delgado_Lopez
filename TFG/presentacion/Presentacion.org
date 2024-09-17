@@ -165,14 +165,14 @@ prod1 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
                   dataRad = etsidi_1315, beta = 30, alpha = -19,
                   module = module1, generator = generator1,
                   inverter = inverter)
-show(as.data.tableY(prod1))
+as.data.tableY(prod1)
 #+end_src
 #+begin_src R
 prod2 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
                   dataRad = etsidi_1315, beta = 30, alpha = -19,
                   module = module2, generator = generator2,
                   inverter = inverter)
-show(as.data.tableY(prod2))
+as.data.tableY(prod2)
 #+end_src
 *** Comparación de producciones
 #+ATTR_LATEX: :height 0.9\textheight
