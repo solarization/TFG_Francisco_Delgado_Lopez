@@ -1,4 +1,4 @@
-% Created 2024-09-18 mi. 09:36
+% Created 2024-09-18 mi. 10:25
 % Intended LaTeX compiler: pdflatex
 \documentclass[aspectratio=169, usenames,svgnames,dvipsnames]{beamer}
 \usepackage[utf8]{inputenc}
@@ -53,8 +53,8 @@
 \maketitle
 
 \section{Introducción}
-\label{sec:org4ec74c7}
-\begin{frame}[label={sec:org4f1b242},fragile]{Objetivo principal}
+\label{sec:org79635ee}
+\begin{frame}[label={sec:orge9f4b97},fragile]{Objetivo principal}
  \begin{block}{Desarrollo de un paquete en \texttt{R}}
 \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 library(solaR2)
@@ -62,7 +62,7 @@ library(solaR2)
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:org0666623},fragile]{Objetivos secundarios}
+\begin{frame}[label={sec:orgc61a6a7},fragile]{Objetivos secundarios}
  \begin{columns}
 \begin{column}{0.2\columnwidth}
 \begin{block}{GNU Emacs}
@@ -103,8 +103,8 @@ library(solaR2)
 \end{frame}
 
 \section{Soluciones actuales}
-\label{sec:org3fa9413}
-\begin{frame}[label={sec:orge931c99}]{Soluciones actuales}
+\label{sec:org5716ae7}
+\begin{frame}[label={sec:orgc8e9fca}]{Soluciones actuales}
 \begin{columns}
 \begin{column}{0.2\columnwidth}
 \begin{block}{\alert{PVsyst}}
@@ -136,7 +136,7 @@ library(solaR2)
 \end{column}
 \end{columns}
 \end{frame}
-\begin{frame}[label={sec:org25f9f81},fragile]{\texttt{solaR}}
+\begin{frame}[label={sec:org2851444},fragile]{\texttt{solaR}}
  \begin{columns}
 \begin{column}{0.45\columnwidth}
 \begin{block}{Funcionamiento}
@@ -165,52 +165,52 @@ library(solaR2)
 \end{frame}
 
 \section{Marco teórico}
-\label{sec:orgab3e9ef}
-\begin{frame}[label={sec:org2d37e74}]{Procedimiento de cálculo}
+\label{sec:orgb3cb716}
+\begin{frame}[label={sec:orgd3823e9}]{Procedimiento de cálculo}
 \begin{center}
 \includegraphics[scale=1]{../figuras/ProcedimientoCalculoRadiacionInclinada.pdf}
 \end{center}
 \end{frame}
 \section{Desarrollo del código}
-\label{sec:orgf82fbb8}
-\begin{frame}[label={sec:orge995bfa}]{Algoritmo de cálculo}
+\label{sec:org1aba452}
+\begin{frame}[label={sec:orgeeaecd2}]{Algoritmo de cálculo}
 \begin{center}
 \includegraphics[height=0.9\textheight]{../figuras/procedure.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org1dccc46},fragile]{\texttt{calcSol}}
+\begin{frame}[label={sec:orgb1086e5},fragile]{\texttt{calcSol}}
  \begin{center}
 \includegraphics[width=\textwidth]{../figuras/calcsol.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orgda5d84b},fragile]{\texttt{Meteo}}
+\begin{frame}[label={sec:org59faad3},fragile]{\texttt{Meteo}}
  \begin{center}
 \includegraphics[width=\textwidth]{../figuras/meteo.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org70b2b8f},fragile]{\texttt{calcG0}}
+\begin{frame}[label={sec:org0af3df0},fragile]{\texttt{calcG0}}
  \begin{center}
 \includegraphics[width=\textwidth]{../figuras/calcg0.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org2643723},fragile]{\texttt{calcGef}}
+\begin{frame}[label={sec:orgc994464},fragile]{\texttt{calcGef}}
  \begin{center}
 \includegraphics[width=\textwidth]{../figuras/calcgef.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orgcf91f39},fragile]{\texttt{prodGCPV}}
+\begin{frame}[label={sec:org60e90f0},fragile]{\texttt{prodGCPV}}
  \begin{center}
 \includegraphics[width=\textwidth]{../figuras/prodgcpv.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org270ee61},fragile]{\texttt{prodPVPS}}
+\begin{frame}[label={sec:org09d2c7b},fragile]{\texttt{prodPVPS}}
  \begin{center}
 \includegraphics[width=\textwidth]{../figuras/prodpvps.pdf}
 \end{center}
 \end{frame}
 \section{Ejemplo práctico de aplicación}
-\label{sec:org90e3e00}
-\begin{frame}[label={sec:orgd616c8c},fragile]{Información meteorológica}
+\label{sec:org9ded387}
+\begin{frame}[label={sec:org727d8f4},fragile]{Información meteorológica}
  \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 etsidi_1315 <- readBDi(file = "TFG/data/PVGIS_1315.csv",
                        lat = 40.4, dates.col = "Dates",
@@ -221,7 +221,7 @@ etsidi_1315 <- readBDi(file = "TFG/data/PVGIS_1315.csv",
 \includegraphics[width=0.5\textwidth]{../figuras/ejemplos3.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orgc03f028},fragile]{Producción de diferentes sistemas}
+\begin{frame}[label={sec:org1b48a96},fragile]{Producción de diferentes sistemas}
  \begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
 prod1 <- prodGCPV(lat = 40.4, modeTrk = 'fixed', modeRad = 'bdI',
                   dataRad = etsidi_1315, beta = 30, alpha = -19,
@@ -256,34 +256,43 @@ as.data.tableY(prod2)
 \end{verbatim}
 \end{frame}
 
-\begin{frame}[label={sec:orga232e0c}]{Comparación de producciones}
+\begin{frame}[label={sec:org282466c},fragile]{Comparación de producciones}
+ \begin{columns}
+\begin{column}{0.35\columnwidth}
+\begin{lstlisting}[numbers=left,language=r,label= ,caption= ,captionpos=b]
+compare(prod1, prod2)
+\end{lstlisting}
+\end{column}
+\begin{column}{0.65\columnwidth}
 \begin{center}
-\includegraphics[height=0.9\textheight]{../figuras/ejemplos4.pdf}
+\includegraphics[width=\textwidth]{../figuras/ejemplos4.pdf}
 \end{center}
+\end{column}
+\end{columns}
 \end{frame}
 
 \section{Aportaciones}
-\label{sec:org93a9bb7}
-\begin{frame}[label={sec:org8c4218f}]{Blame}
+\label{sec:orgd6f6a0d}
+\begin{frame}[label={sec:orgc4a4a94}]{Blame}
 \begin{center}
 \includegraphics[height=0.9\textheight]{../figuras/blame-fCompD.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org4644089}]{Blame}
+\begin{frame}[label={sec:org3e4f304}]{Blame}
 \begin{center}
 \includegraphics[width=\textwidth]{../figuras/blame-fCompD_cropped.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org8a777cd}]{Insights}
+\begin{frame}[label={sec:org284cc84}]{Insights}
 \begin{center}
 \includegraphics[height=0.9\textheight]{../figuras/contributors.png}
 \end{center}
 \end{frame}
 \section{Conclusiones}
-\label{sec:org956430e}
+\label{sec:org45ab449}
 \subsection{Desarrollo a futuro}
-\label{sec:org629bc50}
-\begin{frame}[label={sec:org73f9b5d},fragile]{Desarrollo a futuro}
+\label{sec:org462962c}
+\begin{frame}[label={sec:orgade0ad6},fragile]{Desarrollo a futuro}
  \begin{itemize}
 \item Interfaz de usuario
 
@@ -298,23 +307,23 @@ as.data.tableY(prod2)
 \end{itemize}
 \end{frame}
 \subsection{Estado del paquete}
-\label{sec:org9f86893}
-\begin{frame}[label={sec:orgd1d1512}]{GitHub}
+\label{sec:orgac7c1ba}
+\begin{frame}[label={sec:orgb84899f}]{GitHub}
 \begin{center}
 \href{https://github.com/solarization/solaR2}{\includegraphics[width=.9\linewidth]{../figuras/GitHub.png}}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org864bc44}]{CRAN}
+\begin{frame}[label={sec:orgd0a2fa6}]{CRAN}
 \begin{center}
 \href{https://cran.r-project.org/package=solaR2}{\includegraphics[width=.9\linewidth]{../figuras/CRAN.png}}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orgc0601d7}]{Página web}
+\begin{frame}[label={sec:orgda62556}]{Página web}
 \begin{center}
 \href{https://solarization.github.io/solaR2/}{\includegraphics[height=0.9\textheight]{../figuras/github.io.png}}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orgb5d1a53}]{}
+\begin{frame}[label={sec:orgb8daf7e}]{}
 \fontsize{35pt}{45pt}\selectfont
 \begin{center}
 \alert{Gracias por su atención}
