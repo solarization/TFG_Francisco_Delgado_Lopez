@@ -215,7 +215,7 @@ file:../figuras/contributors.png
 #+end_center
 *** 
 #+begin_export latex
-\Huge
+\fontsize{35pt}{45pt}\selectfont
 #+end_export
 #+begin_center
 *Gracias por su atención*
